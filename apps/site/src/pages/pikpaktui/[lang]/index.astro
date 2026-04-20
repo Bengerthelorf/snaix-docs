@@ -17,6 +17,7 @@ const locale = resolveLocale(Astro.params.lang!);
 
 const copy = {
   zh: {
+    tagline: 'pikpak 在你的终端里',
     eyebrow: 'pikpak · 在你的终端里。',
     overview: '§ 01 · 概览',
     headline: ['浏览.', '播放.', '脚本化.'],
@@ -47,6 +48,7 @@ const copy = {
     license: 'apache-2.0 授权 · 无遥测 · 开源',
   },
   'zh-Hant': {
+    tagline: 'pikpak 在你的終端機裡',
     eyebrow: 'pikpak · 在你的終端機裡。',
     overview: '§ 01 · 概覽',
     headline: ['瀏覽.', '播放.', '腳本化.'],
@@ -80,7 +82,7 @@ const copy = {
 
 const t = copy[locale.code as 'zh' | 'zh-Hant'];
 ---
-<DefaultLayout title={`${pikpaktui.title} — ${pikpaktui.tagline}`} lang={locale.lang ?? locale.code}>
+<DefaultLayout title={`${pikpaktui.title} — ${t.tagline}`} lang={locale.lang ?? locale.code}>
   <div class="page home">
     <TopBar
       brand={pikpaktui.title}

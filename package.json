@@ -8,9 +8,9 @@
     "apps/*"
   ],
   "scripts": {
-    "dev": "bun --filter './apps/example' dev",
-    "build": "bun --filter './apps/example' build",
-    "preview": "bun --filter './apps/example' preview"
+    "dev": "bun --filter './apps/site' dev",
+    "build": "bun --filter './apps/site' build",
+    "preview": "bun --filter './apps/site' preview"
   },
   "devDependencies": {
     "typescript": "^5.6.3"

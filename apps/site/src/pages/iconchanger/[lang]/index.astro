@@ -17,6 +17,7 @@ const locale = resolveLocale(Astro.params.lang!);
 
 const copy = {
   zh: {
+    tagline: '一次一个图标',
     eyebrow: '任意 macOS 图标，随手换。',
     overview: '§ 01 · 概览',
     headline: ['拖拽.', '放下.', '搞定.'],
@@ -46,6 +47,7 @@ const copy = {
     license: 'mit 授权 · 无遥测 · 开源',
   },
   'zh-Hant': {
+    tagline: '一次一個圖示',
     eyebrow: '任意 macOS 圖示，隨手換。',
     overview: '§ 01 · 概覽',
     headline: ['拖曳.', '放下.', '完成.'],
@@ -78,7 +80,7 @@ const copy = {
 
 const t = copy[locale.code as 'zh' | 'zh-Hant'];
 ---
-<DefaultLayout title={`${iconchanger.title} — ${iconchanger.tagline}`} lang={locale.lang ?? locale.code}>
+<DefaultLayout title={`${iconchanger.title} — ${t.tagline}`} lang={locale.lang ?? locale.code}>
   <div class="page home">
     <TopBar
       brand={iconchanger.title}
