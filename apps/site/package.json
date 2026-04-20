@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev --port 4321 --host",
+    "prebuild": "./scripts/sync-images.sh",
     "build": "astro build",
+    "predev": "./scripts/sync-images.sh",
     "preview": "astro preview",
     "astro": "astro"
   },

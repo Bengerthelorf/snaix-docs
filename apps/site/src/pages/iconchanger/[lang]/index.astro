@@ -1,0 +1,200 @@
+---
+import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
+import TopBar from '@snaix/docs-theme/components/TopBar.astro';
+import Footer from '@snaix/docs-theme/components/Footer.astro';
+import { BlockReveal, Scramble, Typewriter } from '@snaix/docs-theme';
+import { LOCALES, DEFAULT_LOCALE, resolveLocale } from '../../../lib/docs.ts';
+import { product } from '../../../lib/product.ts';
+
+export async function getStaticPaths() {
+  return LOCALES
+    .filter((l) => l.code !== DEFAULT_LOCALE.code)
+    .map((l) => ({ params: { lang: l.code } }));
+}
+
+const iconchanger = product('iconchanger');
+const locale = resolveLocale(Astro.params.lang!);
+const languages = iconchanger.pageLanguages(locale.code, '/');
+
+const copy = {
+  zh: {
+    eyebrow: '任意 macOS 图标，随手换。',
+    overview: '§ 01 · 概览',
+    headline: ['拖拽.', '放下.', '搞定.'],
+    lede: '自定义任意 macOS 应用或文件夹图标。美观的 GUI 带 Dock 实时预览，可脚本化的 CLI，内嵌 macosicons.com 的约 7 万张图标，以及在系统更新后自动恢复图标的后台服务。',
+    install: '↳ 安装',
+    docs: '阅读文档',
+    topLine: 'iconchanger · 一次一个图标',
+    topMid: 'gui + cli · macos 原生',
+    footerTail: 'swiftui + appkit · macos 13+',
+    features: [
+      { n: '01', t: '任意 macOS 图标', d: 'app、文件夹、系统卷。拖拽替换、拖拽复原，不用开终端。' },
+      { n: '02', t: 'macosicons.com 搜索', d: '应用内直接搜 ~70k 社区图标。预览、应用、收藏 —— 无需手动下载。' },
+      { n: '03', t: 'Dock 预览', d: '换前先看 Dock 效果 —— 是真实渲染，不是示意图。' },
+      { n: '04', t: '后台服务', d: 'macOS 更新会覆盖图标，launchd agent 按计划恢复它们。默认关闭。' },
+      { n: '05', t: '完整 CLI', d: 'ic set / ic reset / ic export —— 可与 dotfiles、chezmoi、ansible 组合。' },
+      { n: '06', t: '别名与收藏', d: '保存「图标 - 应用」配对。重装系统后一键重新应用。' },
+      { n: '07', t: '30 种语言', d: '端到端本地化：界面、帮助、错误提示。不只是字符串。' },
+      { n: '08', t: '原生 Swift', d: 'SwiftUI + AppKit，不是 Electron。约 20 MB，默认不留后台守护进程。' },
+    ],
+    sec2: '§ 02 · 特性',
+    sec2Title: ['八件事', '都做到位。'],
+    sec2Lede: 'iconchanger 只做一件事：换图标，并让它们留在那里。下面的特性存在，是因为图标定制真的需要它们。',
+    sec3: '§ 03 · 开始',
+    sec3Headline: ['拖拽.', '放下.', '搞定.'],
+    getStarted: '开始使用 ↳',
+    cliRef: 'CLI 参考',
+    license: 'mit 授权 · 无遥测 · 开源',
+  },
+  'zh-Hant': {
+    eyebrow: '任意 macOS 圖示，隨手換。',
+    overview: '§ 01 · 概覽',
+    headline: ['拖曳.', '放下.', '完成.'],
+    lede: '自訂任意 macOS 應用程式或資料夾圖示。美觀的 GUI 帶 Dock 即時預覽、可腳本化的 CLI、內嵌 macosicons.com 的約 7 萬張圖示，以及系統更新後自動還原圖示的背景服務。',
+    install: '↳ 安裝',
+    docs: '閱讀文件',
+    topLine: 'iconchanger · 一次一個圖示',
+    topMid: 'gui + cli · macos 原生',
+    footerTail: 'swiftui + appkit · macos 13+',
+    features: [
+      { n: '01', t: '任意 macOS 圖示', d: 'app、資料夾、系統卷宗。拖曳替換、拖曳還原，不必開終端機。' },
+      { n: '02', t: 'macosicons.com 搜尋', d: '程式內直接搜 ~70k 社群圖示。預覽、套用、收藏 —— 無需手動下載。' },
+      { n: '03', t: 'Dock 預覽', d: '換前先看 Dock 效果 —— 是真實渲染，不是示意圖。' },
+      { n: '04', t: '背景服務', d: 'macOS 更新會覆蓋圖示，launchd agent 按排程還原它們。預設關閉。' },
+      { n: '05', t: '完整 CLI', d: 'ic set / ic reset / ic export —— 可與 dotfiles、chezmoi、ansible 搭配。' },
+      { n: '06', t: '別名與收藏', d: '儲存「圖示 - 應用」配對。重裝系統後一鍵重新套用。' },
+      { n: '07', t: '30 種語言', d: '端到端在地化：介面、說明、錯誤提示。不只是字串。' },
+      { n: '08', t: '原生 Swift', d: 'SwiftUI + AppKit，不是 Electron。約 20 MB，預設不留背景守護程式。' },
+    ],
+    sec2: '§ 02 · 特性',
+    sec2Title: ['八件事', '都做到位。'],
+    sec2Lede: 'iconchanger 只做一件事：換圖示，並讓它們留在那裡。下面的特性存在，是因為圖示自訂真的需要它們。',
+    sec3: '§ 03 · 開始',
+    sec3Headline: ['拖曳.', '放下.', '完成.'],
+    getStarted: '開始使用 ↳',
+    cliRef: 'CLI 參考',
+    license: 'mit 授權 · 無遙測 · 開源',
+  },
+} as const;
+
+const t = copy[locale.code as 'zh' | 'zh-Hant'];
+---
+<DefaultLayout title={`${iconchanger.title} — ${iconchanger.tagline}`} lang={locale.lang ?? locale.code}>
+  <div class="page home">
+    <TopBar
+      brand={iconchanger.title}
+      version={iconchanger.version}
+      current="home"
+      logoVariant="product"
+      showStatus={false}
+      githubHref={iconchanger.githubUrl}
+      nav={iconchanger.nav()}
+    />
+
+    <section class="hero">
+      <div class="hero-top rule-b">
+        <span class="t-mono-sm">{t.topLine}</span>
+        <span class="t-mono-sm">{t.topMid}</span>
+        <span class="t-mono-sm">{iconchanger.version} · {iconchanger.releaseDate}</span>
+      </div>
+
+      <div class="hero-grid grid12">
+        <div class="hero-headline">
+          <div class="hero-eyebrow">
+            <span class="t-small">{t.overview}</span>
+            <span class="t-mono-sm" style="color: var(--steel-5);">
+              <Typewriter client:load text={`// ${t.eyebrow}`} speed={24} delay={300} />
+            </span>
+          </div>
+          <h1 class="t-display lower">
+            <span class="hl-line"><BlockReveal client:load delay={400} duration={520}>{t.headline[0]}</BlockReveal></span>
+            <span class="hl-line"><BlockReveal client:load delay={760} duration={520} color="var(--red)">{t.headline[1]}</BlockReveal></span>
+            <span class="hl-line"><BlockReveal client:load delay={1120} duration={520} color="var(--blue)">{t.headline[2]}</BlockReveal></span>
+          </h1>
+
+          <p class="hero-lede">{t.lede}</p>
+
+          <div class="hero-cta">
+            <a class="btn-block" href={iconchanger.href(`/${locale.code}/install`)}>{t.install} {iconchanger.version}</a>
+            <a class="btn-block is-ghost" href={iconchanger.href(`/${locale.code}/docs/getting-started`)}>{t.docs}</a>
+            <span class="hero-cta-meta t-mono-sm">
+              ⌘ <span>brew install Bengerthelorf/tap/iconchanger</span>
+            </span>
+          </div>
+        </div>
+
+        <aside class="hero-device hero-device--image">
+          <div class="device-head">
+            <div class="t-small">app.live</div>
+            <div class="chip is-blue"><span class="dot"/>swiftui</div>
+          </div>
+          <img
+            src={iconchanger.href('/images/hero-screenshot-light.png')}
+            alt="iconchanger"
+            loading="eager"
+            decoding="async"
+          />
+          <div class="device-footline">
+            <span class="t-mono-sm">{t.footerTail}</span>
+            <span class="t-mono-sm" style="color: var(--blue);">● native</span>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="home-section home-principles">
+      <div class="section-head">
+        <div class="section-head-left">
+          <div class="t-small">{t.sec2}</div>
+          <h2 class="t-h1 lower">{t.sec2Title[0]}<br/>{t.sec2Title[1]}</h2>
+        </div>
+        <div class="section-head-right">
+          <p class="t-body">{t.sec2Lede}</p>
+        </div>
+      </div>
+
+      <div class="principles-grid">
+        {t.features.map((it) => (
+          <div class="principle">
+            <div class="principle-n t-mono">{it.n}</div>
+            <div class="principle-title t-h3 lower">{it.t}</div>
+            <div class="principle-d">{it.d}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="home-cta">
+      <div class="cta-inner">
+        <div class="t-small" style="color: var(--steel-3);">{t.sec3}</div>
+        <h2 class="t-display lower" style="color: var(--paper-pure);">
+          <BlockReveal client:load delay={200} color="var(--yellow)">{t.sec3Headline[0]}</BlockReveal><br/>
+          <BlockReveal client:load delay={700} color="var(--red)">{t.sec3Headline[1]}</BlockReveal><br/>
+          <BlockReveal client:load delay={1200} color="var(--blue)">{t.sec3Headline[2]}</BlockReveal>
+        </h2>
+        <div class="cta-buttons">
+          <a class="btn-block" style="background: var(--paper-pure); color: var(--ink); border-color: var(--paper-pure);" href={iconchanger.href(`/${locale.code}/docs/getting-started`)}>
+            {t.getStarted}
+          </a>
+          <a class="btn-block" style="background: transparent; color: var(--paper-pure); border-color: var(--paper-pure);" href={iconchanger.href(`/${locale.code}/docs/cli/commands`)}>
+            {t.cliRef}
+          </a>
+        </div>
+        <div class="cta-small t-mono-sm">{t.license}</div>
+      </div>
+    </section>
+
+    <Footer product={iconchanger} locale={locale.code} languages={languages} />
+  </div>
+</DefaultLayout>
+
+<style>
+  .hero-device--image { padding: 0; background: var(--paper); }
+  .hero-device--image img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-top: 1px solid var(--steel-3);
+    border-bottom: 1px solid var(--steel-3);
+  }
+</style>

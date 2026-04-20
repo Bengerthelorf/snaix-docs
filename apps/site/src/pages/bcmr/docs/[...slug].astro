@@ -5,7 +5,6 @@ import {
   DEFAULT_LOCALE,
   bareSlug,
   docsBaseFor,
-  languagesFor,
   navFor,
 } from '../../../lib/docs.ts';
 import { product } from '../../../lib/product.ts';
@@ -34,8 +33,8 @@ const DOCS_SECTIONS = ['guide', 'cli'];
 
 const { entry } = Astro.props;
 const all = await getCollection('bcmr');
-const nav = await navFor(DEFAULT_LOCALE, all, DOCS_SECTIONS);
-const languages = await languagesFor(entry, all, '/docs');
+const nav = await navFor(DEFAULT_LOCALE, all, DOCS_SECTIONS, { docsRoot: '/bcmr/docs' });
+const languages = bcmrProduct.docsLanguages(entry, all, DEFAULT_LOCALE);
 const { Content, headings } = await entry.render();
 const toc = headings
   .filter((h) => h.depth >= 2 && h.depth <= 3)
@@ -65,7 +64,7 @@ const currentTab = sectionKey === 'cli' ? 'commands' : 'docs';
   }}
   locale={DEFAULT_LOCALE.code}
   languages={languages}
-  docsBase={docsBaseFor(DEFAULT_LOCALE)}
+  docsBase={docsBaseFor(DEFAULT_LOCALE, '/bcmr/docs')}
   tocLabel={DEFAULT_LOCALE.ui?.tocLabel ?? 'on this page'}
   math={true}
   mermaid={true}

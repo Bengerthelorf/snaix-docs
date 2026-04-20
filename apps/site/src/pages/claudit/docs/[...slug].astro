@@ -5,25 +5,11 @@ import {
   DEFAULT_LOCALE,
   bareSlug,
   docsBaseFor,
-  languagesFor,
   navFor,
 } from '../../../lib/docs.ts';
 import { product } from '../../../lib/product.ts';
 
 const claudit = product('claudit');
-
-const prHref = (path: string) => {
-  const pr = claudit.productRoot.replace(/\/$/, '');
-  const clean = path.startsWith('/') ? path : `/${path}`;
-  return pr && !clean.startsWith(pr + '/') ? pr + clean : clean;
-};
-
-const tabs = (claudit.tabs ?? []).map((t) => ({
-  id: t.id,
-  label: t.label,
-  href: t.external ? t.href : prHref(t.href),
-  external: t.external,
-}));
 
 export async function getStaticPaths() {
   const entries = await getCollection('claudit', (e) => (e.data.locale ?? 'en') === 'en');
@@ -36,7 +22,7 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const all = await getCollection('claudit');
 const nav = await navFor(DEFAULT_LOCALE, all, ['guide'], { docsRoot: '/claudit/docs' });
-const languages = await languagesFor(entry, all, '/claudit/docs');
+const languages = claudit.docsLanguages(entry, all, DEFAULT_LOCALE);
 const { Content, headings } = await entry.render();
 const toc = headings
   .filter((h) => h.depth >= 2 && h.depth <= 3)
@@ -63,9 +49,9 @@ const breadcrumb = [docsLabel, sectionLabel, entry.data.title];
   }}
   locale={DEFAULT_LOCALE.code}
   languages={languages}
-  docsBase="/claudit/docs"
+  docsBase={docsBaseFor(DEFAULT_LOCALE, '/claudit/docs')}
   tocLabel={DEFAULT_LOCALE.ui?.tocLabel ?? 'on this page'}
-  topNav={tabs}
+  topNav={claudit.nav()}
   currentTab="docs"
 >
   <Content />

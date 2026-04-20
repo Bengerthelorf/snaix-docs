@@ -1,7 +1,6 @@
 import type { CollectionEntry } from 'astro:content';
 import {
   buildDocsNav,
-  buildLanguageOptions,
   bareSlug as bareSlugLib,
   defaultLocale,
   localeOf,
@@ -55,27 +54,8 @@ export async function navFor(
   });
 }
 
-export function languagesFor(
-  entry: DocEntry,
-  entries: DocEntry[],
-  docsRoot: string,
-) {
-  return buildLanguageOptions(entries, entry.slug, localeOfEntry(entry), LOCALES, docsRoot);
-}
-
 export function docsBaseFor(locale: LocaleOption, root = '/docs'): string {
   return `${localePrefix(locale, LOCALES)}${root}`;
-}
-
-/** Footer language switcher for pages without per-page localized equivalents;
- *  case is preserved so routes like `/zh-Hant/` stay exact (Linux is case-sensitive). */
-export function localesAsLanguages(current: string, tail = '/') {
-  return LOCALES.map((l) => ({
-    code: l.code,
-    label: l.label,
-    href: `${l.default ? '' : `/${l.code}`}${tail}`,
-    active: l.code === current,
-  }));
 }
 
 export { slugPrefix, localePrefix };

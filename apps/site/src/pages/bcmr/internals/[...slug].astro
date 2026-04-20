@@ -4,7 +4,6 @@ import { getCollection } from 'astro:content';
 import {
   DEFAULT_LOCALE,
   docsBaseFor,
-  languagesFor,
   navFor,
 } from '../../../lib/docs.ts';
 import { product } from '../../../lib/product.ts';
@@ -24,8 +23,8 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const all = await getCollection('bcmr');
-const nav = await navFor(DEFAULT_LOCALE, all, ['internals']);
-const languages = await languagesFor(entry, all, '/internals');
+const nav = await navFor(DEFAULT_LOCALE, all, ['internals'], { internalsDocsRoot: '/bcmr/internals' });
+const languages = bcmrProduct.docsLanguages(entry, all, DEFAULT_LOCALE, '/internals');
 const { Content, headings } = await entry.render();
 const toc = headings
   .filter((h) => h.depth >= 2 && h.depth <= 3)
@@ -51,7 +50,7 @@ const breadcrumb = [docsLabel, 'internals', entry.data.title];
   }}
   locale={DEFAULT_LOCALE.code}
   languages={languages}
-  docsBase={docsBaseFor(DEFAULT_LOCALE, '/internals')}
+  docsBase={docsBaseFor(DEFAULT_LOCALE, '/bcmr/internals')}
   tocLabel={DEFAULT_LOCALE.ui?.tocLabel ?? 'on this page'}
   math={true}
   mermaid={true}

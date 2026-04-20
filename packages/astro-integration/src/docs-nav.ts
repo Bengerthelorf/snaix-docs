@@ -132,14 +132,23 @@ export function buildDocsNav<T extends DocEntryLike>(
   }));
 }
 
+export interface LanguageOptionsOptions {
+  /** Product root path, no trailing slash. Emitted before the locale prefix. */
+  productRoot?: string;
+  /** Path segment after the locale prefix — e.g. `/docs`, `/internals`. */
+  docsSubpath?: string;
+}
+
 export function buildLanguageOptions<T extends DocEntryLike>(
   entries: T[],
   currentSlug: string,
   currentLocale: LocaleOption,
   locales: LocaleOption[],
-  docsRoot = '/docs',
+  options: LanguageOptionsOptions = {},
 ): { code: string; label: string; href: string; active: boolean }[] {
   const current = bareSlug(currentSlug, locales);
+  const root = (options.productRoot ?? '').replace(/\/$/, '');
+  const docsSubpath = options.docsSubpath ?? '/docs';
   return locales
     .filter((l) => {
       const prefix = slugPrefix(l, locales);
@@ -152,7 +161,7 @@ export function buildLanguageOptions<T extends DocEntryLike>(
     .map((l) => ({
       code: l.code,
       label: l.label,
-      href: `${localePrefix(l, locales)}${docsRoot}/${current}`,
+      href: `${root}${localePrefix(l, locales)}${docsSubpath}/${current}`,
       active: l.code === currentLocale.code,
     }));
 }

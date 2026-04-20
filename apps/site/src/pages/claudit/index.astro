@@ -2,25 +2,21 @@
 import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
 import TopBar from '@snaix/docs-theme/components/TopBar.astro';
 import Footer from '@snaix/docs-theme/components/Footer.astro';
-import { BlockReveal, Tally } from '@snaix/docs-theme';
-import { snaixConfig } from 'virtual:snaix-config';
+import { BlockReveal, Scramble, Typewriter } from '@snaix/docs-theme';
 import { product } from '../../lib/product.ts';
 
 const claudit = product('claudit');
-const siteProduct = snaixConfig.siteData?.products?.find((p) => p.slug === 'claudit');
 
-const prHref = (path: string) => {
-  const pr = claudit.productRoot.replace(/\/$/, '');
-  const clean = path.startsWith('/') ? path : `/${path}`;
-  return pr && !clean.startsWith(pr + '/') ? pr + clean : clean;
-};
-
-const tabs = (claudit.tabs ?? []).map((t) => ({
-  id: t.id,
-  label: t.label,
-  href: t.external ? t.href : prHref(t.href),
-  external: t.external,
-}));
+const highlights = [
+  { n: '01', t: 'menu-bar cost',     d: 'today\'s spend visible at a glance. click for a full usage breakdown.' },
+  { n: '02', t: 'rich dashboard',    d: 'heatmaps, trend charts, model breakdowns, session browser, project analytics.' },
+  { n: '03', t: 'quota alerts',      d: 'system notification when the 5-hour window nears the limit. configurable.' },
+  { n: '04', t: 'multi-device',      d: 'aggregate usage from remote machines over ssh — fingerprint-cached, non-invasive.' },
+  { n: '05', t: 'session reader',    d: 'browse conversations with search, syntax highlighting, and tool-call expansion.' },
+  { n: '06', t: 'fully local',       d: 'parses ~/.claude jsonl logs on disk. no telemetry, no network calls for your data.' },
+  { n: '07', t: 'native swift',      d: 'swiftui + appkit with c-level i/o for large logs. opens multi-gigabyte histories fast.' },
+  { n: '08', t: 'zero setup',        d: 'install, grant access to ~/.claude, done. no api keys, no config file needed.' },
+];
 ---
 <DefaultLayout title={`${claudit.title} — ${claudit.tagline}`}>
   <div class="page home">
@@ -28,8 +24,10 @@ const tabs = (claudit.tabs ?? []).map((t) => ({
       brand={claudit.title}
       version={claudit.version}
       current="home"
+      logoVariant="product"
+      showStatus={false}
       githubHref={claudit.githubUrl}
-      nav={tabs}
+      nav={claudit.nav()}
     />
 
     <section class="hero">
@@ -43,7 +41,9 @@ const tabs = (claudit.tabs ?? []).map((t) => ({
         <div class="hero-headline">
           <div class="hero-eyebrow">
             <span class="t-small">§ 01 · overview</span>
-            <span class="t-mono-sm" style="color: var(--steel-5);">// claude code spend · live.</span>
+            <span class="t-mono-sm" style="color: var(--steel-5);">
+              <Typewriter client:load text="// claude api usage · at a glance." speed={24} delay={300} />
+            </span>
           </div>
           <h1 class="t-display lower">
             <span class="hl-line"><BlockReveal client:load delay={400} duration={520}>today.</BlockReveal></span>
@@ -52,14 +52,15 @@ const tabs = (claudit.tabs ?? []).map((t) => ({
           </h1>
 
           <p class="hero-lede">
-            {siteProduct?.description ?? claudit.tagline}. parses
-            <code class="inline-code">~/.claude</code> jsonl logs directly —
-            no data leaves your machine.
+            a lightweight macos menu-bar app that tracks your claude api
+            usage — cost, tokens, quota, and session analytics. parses
+            <code class="inline-code">~/.claude</code> jsonl logs directly,
+            so nothing leaves your machine.
           </p>
 
           <div class="hero-cta">
-            <a class="btn-block" href={prHref('/install')}>↳ install {claudit.version}</a>
-            <a class="btn-block is-ghost" href={prHref('/docs/getting-started')}>read the docs</a>
+            <a class="btn-block" href={claudit.href('/install')}>↳ install {claudit.version}</a>
+            <a class="btn-block is-ghost" href={claudit.href('/docs/getting-started')}>read the docs</a>
             <span class="hero-cta-meta t-mono-sm">
               ⌘ <span>brew install Bengerthelorf/tap/claudit</span>
             </span>
@@ -68,13 +69,13 @@ const tabs = (claudit.tabs ?? []).map((t) => ({
 
         <aside class="hero-device">
           <div class="device-head">
-            <div class="t-small">usage.live</div>
-            <div class="chip is-blue"><span class="dot"/>tracking</div>
+            <div class="t-small">menu-bar preview</div>
+            <div class="chip is-ghost">example values</div>
           </div>
           <div style="padding: 16px; background: var(--ink); color: var(--paper-pure); font-family: var(--mono); font-size: 12px; line-height: 1.7;">
             <div style="color: var(--steel-5);"># today · sonnet + opus</div>
             <div>tokens <b style="color: var(--paper-pure);">2.1M in</b> / <b style="color: var(--paper-pure);">312K out</b></div>
-            <div>cost  <span style="color: var(--yellow);"><Tally client:load to={842} duration={900} prefix="$" /></span> <span style="color: var(--steel-5);">/ today</span></div>
+            <div>cost  <span style="color: var(--yellow);">$8.42</span> <span style="color: var(--steel-5);">/ today</span></div>
             <div style="margin: 10px 0; color: var(--steel-3);">────────────────</div>
             <div>5-hour quota <span style="color: var(--yellow);">62%</span></div>
             <div>7-day quota <span style="color: var(--blue);">38%</span></div>
@@ -83,10 +84,89 @@ const tabs = (claudit.tabs ?? []).map((t) => ({
             </div>
           </div>
           <div class="device-footline">
-            <span class="t-mono-sm">menu bar · macos 15+</span>
-            <span class="t-mono-sm" style="color: var(--blue);">● live</span>
+            <span class="t-mono-sm">swiftui + appkit · macos 15+</span>
+            <span class="t-mono-sm" style="color: var(--steel-5);">schematic</span>
           </div>
         </aside>
+      </div>
+
+      <div class="hero-ribbon rule-t">
+        <div class="ribbon-item">
+          <div class="ribbon-head">
+            <span class="t-small">01</span>
+            <span class="ribbon-label"><Scramble client:load text="live cost in menu bar" delay={200} /></span>
+          </div>
+          <div class="ribbon-sub">today's spend always visible. click for the full dashboard — six tabs, one pane.</div>
+        </div>
+        <div class="ribbon-item">
+          <div class="ribbon-head">
+            <span class="t-small">02</span>
+            <span class="ribbon-label"><Scramble client:load text="parses ~/.claude directly" delay={350} /></span>
+          </div>
+          <div class="ribbon-sub">no api key. no network. jsonl logs on disk are the source of truth.</div>
+        </div>
+        <div class="ribbon-item">
+          <div class="ribbon-head">
+            <span class="t-small">03</span>
+            <span class="ribbon-label"><Scramble client:load text="multi-device aggregation" delay={500} /></span>
+          </div>
+          <div class="ribbon-sub">add ssh hosts, claudit fetches and caches remote usage alongside local.</div>
+        </div>
+        <div class="ribbon-item">
+          <div class="ribbon-head">
+            <span class="t-small">04</span>
+            <span class="ribbon-label"><Scramble client:load text="browse every session" delay={650} /></span>
+          </div>
+          <div class="ribbon-sub">search conversations, expand tool calls, follow a project across weeks.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="home-section home-principles">
+      <div class="section-head">
+        <div class="section-head-left">
+          <div class="t-small">§ 02 · features</div>
+          <h2 class="t-h1 lower">eight things<br/>it watches for you.</h2>
+        </div>
+        <div class="section-head-right">
+          <p class="t-body">
+            claudit exists so you don't have to tail jsonl files to know what
+            you spent today. everything below is built into the app — no
+            add-ons, no plugins.
+          </p>
+        </div>
+      </div>
+
+      <div class="principles-grid">
+        {highlights.map((it) => (
+          <div class="principle">
+            <div class="principle-n t-mono">{it.n}</div>
+            <div class="principle-title t-h3 lower">{it.t}</div>
+            <div class="principle-d">{it.d}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="home-cta">
+      <div class="cta-inner">
+        <div class="t-small" style="color: var(--steel-3);">§ 03 · begin</div>
+        <h2 class="t-display lower" style="color: var(--paper-pure);">
+          <BlockReveal client:load delay={200} color="var(--yellow)">today.</BlockReveal><br/>
+          <BlockReveal client:load delay={700} color="var(--red)">this week.</BlockReveal><br/>
+          <BlockReveal client:load delay={1200} color="var(--blue)">at a glance.</BlockReveal>
+        </h2>
+        <div class="cta-buttons">
+          <a class="btn-block" style="background: var(--paper-pure); color: var(--ink); border-color: var(--paper-pure);" href={claudit.href('/docs/getting-started')}>
+            get started ↳
+          </a>
+          <a class="btn-block" style="background: transparent; color: var(--paper-pure); border-color: var(--paper-pure);" href={claudit.href('/docs/remote-devices')}>
+            remote devices
+          </a>
+        </div>
+        <div class="cta-small t-mono-sm">
+          mit licensed · no telemetry · open source
+        </div>
       </div>
     </section>
 

@@ -10,11 +10,11 @@ import {
   withBase,
 } from '@snaix/docs-theme';
 import type { CmdLine } from '@snaix/docs-theme';
-import { resolveLocale, localesAsLanguages } from '../../../lib/docs.ts';
+import { resolveLocale } from '../../../lib/docs.ts';
 import { product } from '../../../lib/product.ts';
 
 const bcmrProduct = product('bcmr');
-const languages = localesAsLanguages('zh-Hant', '/');
+const languages = bcmrProduct.pageLanguages('zh-Hant', '/');
 
 const locale = resolveLocale('zh-Hant');
 

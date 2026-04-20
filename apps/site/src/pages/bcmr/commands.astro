@@ -5,13 +5,11 @@ import Footer from '@snaix/docs-theme/components/Footer.astro';
 import { BlockReveal, CliReference } from '@snaix/docs-theme';
 import type { CliCommand, CliGroup, CliSpec } from '@snaix/docs-theme';
 import { getCollection } from 'astro:content';
-import { localesAsLanguages } from '../../lib/docs.ts';
 import { product } from '../../lib/product.ts';
 
 const bcmrProduct = product('bcmr');
 
-// Commands reference isn't localized yet; fall back to each locale's home.
-const languages = localesAsLanguages('en', '/');
+const languages = bcmrProduct.pageLanguages('en', '/');
 
 const entries = await getCollection('commands');
 

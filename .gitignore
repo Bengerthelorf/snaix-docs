@@ -7,8 +7,14 @@ dist
 .env.local
 bun.lockb
 *.log
+.claude/
 
 # Product content populated per-env:
 #   - dev: symlinks (`ln -s ~/Documents/bcmr content/bcmr`)
 #   - CI: `git clone --depth 1 https://github.com/... content/<slug>`
 /content/
+
+/apps/site/public/bcmr/
+/apps/site/public/claudit/
+/apps/site/public/pikpaktui/
+/apps/site/public/iconchanger/

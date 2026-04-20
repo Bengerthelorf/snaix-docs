@@ -11,11 +11,10 @@ import {
 } from '../../../../lib/docs.ts';
 import { product } from '../../../../lib/product.ts';
 
-const bcmrProduct = product('bcmr');
+const iconchanger = product('iconchanger');
 
 export async function getStaticPaths() {
-  const sections = ['guide', 'cli'];
-  const all = await getCollection('bcmr');
+  const all = await getCollection('iconchanger');
   const paths = [];
   for (const locale of LOCALES) {
     if (locale.code === DEFAULT_LOCALE.code) continue;
@@ -23,7 +22,7 @@ export async function getStaticPaths() {
     const entries = all.filter(
       (e) =>
         e.slug.toLowerCase().startsWith(prefix) &&
-        sections.includes(e.data.section ?? 'guide'),
+        ['guide', 'cli'].includes(e.data.section ?? 'guide'),
     );
     for (const entry of entries) {
       paths.push({
@@ -35,29 +34,25 @@ export async function getStaticPaths() {
   return paths;
 }
 
-const DOCS_SECTIONS = ['guide', 'cli'];
-
 const { entry, localeCode } = Astro.props;
 const locale = resolveLocale(localeCode);
-const all = await getCollection('bcmr');
-const nav = await navFor(locale, all, DOCS_SECTIONS, { docsRoot: '/bcmr/docs' });
-const languages = bcmrProduct.docsLanguages(entry, all, locale);
+const all = await getCollection('iconchanger');
+const nav = await navFor(locale, all, ['guide', 'cli'], { docsRoot: '/iconchanger/docs' });
+const languages = iconchanger.docsLanguages(entry, all, locale);
 const { Content, headings } = await entry.render();
 const toc = headings
   .filter((h) => h.depth >= 2 && h.depth <= 3)
   .map((h) => ({ slug: h.slug, text: h.text, depth: h.depth }));
 
 const bare = bareSlug(entry.slug);
-const sectionKey = entry.data.section ?? 'guide';
-const sectionLabel = locale.ui?.sections?.[sectionKey] ?? sectionKey;
+const sectionLabel = locale.ui?.sections?.['guide'] ?? 'guide';
 const docsLabel = locale.ui?.docsLabel ?? 'docs';
 const breadcrumb = [docsLabel, sectionLabel, entry.data.title];
-const currentTab = sectionKey === 'cli' ? 'commands' : 'docs';
 ---
 <DocsLayout
-  product={bcmrProduct}
-  brand={bcmrProduct.title}
-  version={bcmrProduct.version}
+  product={iconchanger}
+  brand={iconchanger.title}
+  version={iconchanger.version}
   current={bare}
   nav={nav}
   title={entry.data.title}
@@ -66,16 +61,14 @@ const currentTab = sectionKey === 'cli' ? 'commands' : 'docs';
   toc={toc}
   source={{
     path: `docs/${locale.code}/${bare}.md`,
-    url: `https://github.com/Bengerthelorf/bcmr/edit/main/docs/${locale.code}/${bare}.md`,
+    url: `https://github.com/Bengerthelorf/macIconChanger/edit/main/docs/${locale.code}/${bare}.md`,
   }}
   locale={locale.lang ?? locale.code}
   languages={languages}
-  docsBase={docsBaseFor(locale, '/bcmr/docs')}
+  docsBase={docsBaseFor(locale, '/iconchanger/docs')}
   tocLabel={locale.ui?.tocLabel ?? 'on this page'}
-  math={true}
-  mermaid={true}
-  topNav={bcmrProduct.nav()}
-  currentTab={currentTab}
+  topNav={iconchanger.nav()}
+  currentTab="docs"
 >
   <Content />
 </DocsLayout>
