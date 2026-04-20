@@ -5,6 +5,7 @@ import snaixDocs from '@snaix/docs';
 import bcmrDocsConfig from '../../content/bcmr/docs/docs.config.ts';
 import clauditDocsConfig from '../../content/claudit/docs/docs.config.ts';
 import pikpaktuiDocsConfig from '../../content/pikpaktui/docs/docs.config.ts';
+import iconchangerDocsConfig from '../../content/iconchanger/docs/docs.config.ts';
 import { fetchProductMeta, readBuildInfo } from './src/data/fetch-github.ts';
 import {
   edition,
@@ -73,7 +74,8 @@ const bcmrProduct = {
 };
 
 const clauditMeta   = productMetas[productPresentations.findIndex((p) => p.slug === 'claudit')];
-const pikpaktuiMeta = productMetas[productPresentations.findIndex((p) => p.slug === 'pikpaktui')];
+const pikpaktuiMeta   = productMetas[productPresentations.findIndex((p) => p.slug === 'pikpaktui')];
+const iconchangerMeta = productMetas[productPresentations.findIndex((p) => p.slug === 'iconchanger')];
 const clauditProduct = {
   slug: 'claudit',
   title: 'claudit',
@@ -115,12 +117,33 @@ const pikpaktuiProduct = {
   contentDir: 'src/content/pikpaktui/',
 };
 
+const iconchangerProduct = {
+  slug: 'iconchanger',
+  title: 'iconchanger',
+  tagline: 'one icon at a time',
+  version: iconchangerMeta.version,
+  releaseDate: iconchangerMeta.releaseDate,
+  githubUrl: 'https://github.com/Bengerthelorf/macIconChanger',
+  productRoot: '/iconchanger',
+  install: iconchangerDocsConfig.install,
+  sections: iconchangerDocsConfig.sections,
+  tabs: [
+    { id: 'home',      label: 'overview', href: '/' },
+    { id: 'docs',      label: 'docs',     href: '/docs/getting-started', sections: ['guide'] },
+    { id: 'commands',  label: 'commands', href: '/docs/cli/commands',    sections: ['cli'] },
+    { id: 'install',   label: 'install',  href: '/install' },
+    { id: 'changelog', label: 'changelog', href: 'https://github.com/Bengerthelorf/macIconChanger/releases', external: true },
+  ],
+  linkRewrites: iconchangerDocsConfig.linkRewrites,
+  contentDir: 'src/content/iconchanger/',
+};
+
 export default defineConfig({
   site: 'https://app.snaix.homes',
   trailingSlash: 'ignore',
   integrations: [
     snaixDocs({
-      products: [bcmrProduct, clauditProduct, pikpaktuiProduct],
+      products: [bcmrProduct, clauditProduct, pikpaktuiProduct, iconchangerProduct],
       buildStamp: buildInfo,
       markdown: { math: true, mermaid: true },
       locales: [

@@ -9,9 +9,10 @@ const docsSchema = z.object({
   locale: z.enum(['en', 'zh', 'zh-Hant']).default('en'),
 });
 
-const bcmr      = defineCollection({ type: 'content', schema: docsSchema });
-const claudit   = defineCollection({ type: 'content', schema: docsSchema });
-const pikpaktui = defineCollection({ type: 'content', schema: docsSchema });
+const bcmr        = defineCollection({ type: 'content', schema: docsSchema });
+const claudit     = defineCollection({ type: 'content', schema: docsSchema });
+const pikpaktui   = defineCollection({ type: 'content', schema: docsSchema });
+const iconchanger = defineCollection({ type: 'content', schema: docsSchema });
 
 const flag = z.object({ f: z.string(), t: z.string(), d: z.string(), x: z.string() });
 
@@ -30,4 +31,4 @@ const commands = defineCollection({
   }),
 });
 
-export const collections = { bcmr, claudit, pikpaktui, commands };
+export const collections = { bcmr, claudit, pikpaktui, iconchanger, commands };
