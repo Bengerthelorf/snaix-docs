@@ -1,0 +1,69 @@
+---
+import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
+import TopBar from '@snaix/docs-theme/components/TopBar.astro';
+import Footer from '@snaix/docs-theme/components/Footer.astro';
+import { BlockReveal, InstallTabs } from '@snaix/docs-theme';
+import type { CmdLine } from '@snaix/docs-theme';
+import { product } from '../../lib/product.ts';
+
+const claudit = product('claudit');
+
+const prHref = (path: string) => {
+  const pr = claudit.productRoot.replace(/\/$/, '');
+  const clean = path.startsWith('/') ? path : `/${path}`;
+  return pr && !clean.startsWith(pr + '/') ? pr + clean : clean;
+};
+
+const tabs = (claudit.tabs ?? []).map((t) => ({
+  id: t.id,
+  label: t.label,
+  href: t.external ? t.href : prHref(t.href),
+  external: t.external,
+}));
+
+const options = claudit.install ?? {};
+
+const versionBare = String(claudit.version ?? '').replace(/^v/, '');
+
+const verifyScript: CmdLine[] = [
+  { type: 'prompt', text: 'open -a Claudit' },
+  { type: 'out',    text: 'menu bar icon appears', pause: 160 },
+  { type: 'blank' },
+  { type: 'prompt', text: 'defaults read cc.ffitch.Claudit CFBundleShortVersionString', pause: 220 },
+  { type: 'out',    text: versionBare, pause: 120 },
+  { type: 'ok',     text: 'installed and running', pause: 160 },
+];
+
+const firstCopyScript: CmdLine[] = [
+  { type: 'prompt', text: 'click menu bar icon' },
+  { type: 'out',    text: 'usage · today $0.00 · 0% quota', pause: 160 },
+  { type: 'ok',     text: 'parsing ~/.claude/**/*.jsonl',   pause: 180 },
+];
+---
+<DefaultLayout title="claudit · install">
+  <div class="page install">
+    <TopBar
+      brand={claudit.title}
+      version={claudit.version}
+      current="install"
+      githubHref={claudit.githubUrl}
+      nav={tabs}
+    />
+
+    <section class="install-hero">
+      <div class="t-small" style="color: var(--red);">§ install</div>
+      <h1 class="install-title lower">
+        <BlockReveal client:load>two</BlockReveal> <BlockReveal client:load color="var(--red)" delay={300}>ways</BlockReveal><br/>
+        <BlockReveal client:load color="var(--blue)" delay={600}>in.</BlockReveal>
+      </h1>
+      <p class="t-body" style="margin-top: 24px; max-width: 560px;">
+        claudit is a native macOS menu bar app. homebrew or DMG — pick
+        one, under a minute either way. no account, no server.
+      </p>
+    </section>
+
+    <InstallTabs client:load options={options} verifyScript={verifyScript} firstCopyScript={firstCopyScript} />
+
+    <Footer product={claudit} locale="en" />
+  </div>
+</DefaultLayout>

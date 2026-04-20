@@ -3,6 +3,7 @@ import react from '@astrojs/react';
 import mdx from '@astrojs/mdx';
 import snaixDocs from '@snaix/docs';
 import bcmrDocsConfig from '../../../bcmr/docs/docs.config.ts';
+import clauditDocsConfig from '../../../claudit/docs/docs.config.ts';
 import { fetchProductMeta, readBuildInfo } from './src/data/fetch-github.ts';
 import {
   edition,
@@ -67,7 +68,28 @@ const bcmrProduct = {
     { id: 'changelog', label: 'changelog', href: 'https://github.com/Bengerthelorf/bcmr/releases', external: true },
   ],
   linkRewrites: bcmrDocsConfig.linkRewrites,
-  contentDir: 'content/docs/',
+  contentDir: 'src/content/bcmr/',
+};
+
+const clauditMeta = productMetas[productPresentations.findIndex((p) => p.slug === 'claudit')];
+const clauditProduct = {
+  slug: 'claudit',
+  title: 'claudit',
+  tagline: 'claude api usage, at a glance',
+  version: clauditMeta.version,
+  releaseDate: clauditMeta.releaseDate,
+  githubUrl: 'https://github.com/Bengerthelorf/Claudit',
+  productRoot: '/claudit',
+  install: clauditDocsConfig.install,
+  sections: clauditDocsConfig.sections,
+  tabs: [
+    { id: 'home',      label: 'overview', href: '/' },
+    { id: 'docs',      label: 'docs',     href: '/docs/getting-started', sections: ['guide'] },
+    { id: 'install',   label: 'install',  href: '/install' },
+    { id: 'changelog', label: 'changelog', href: 'https://github.com/Bengerthelorf/Claudit/releases', external: true },
+  ],
+  linkRewrites: clauditDocsConfig.linkRewrites,
+  contentDir: 'src/content/claudit/',
 };
 
 export default defineConfig({
@@ -75,7 +97,7 @@ export default defineConfig({
   trailingSlash: 'ignore',
   integrations: [
     snaixDocs({
-      products: [bcmrProduct],
+      products: [bcmrProduct, clauditProduct],
       buildStamp: buildInfo,
       markdown: { math: true, mermaid: true },
       locales: [

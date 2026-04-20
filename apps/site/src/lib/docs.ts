@@ -1,4 +1,4 @@
-import { getCollection, type CollectionEntry } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
 import {
   buildDocsNav,
   buildLanguageOptions,
@@ -20,6 +20,9 @@ export const DEFAULT_LOCALE = defaultLocale(LOCALES);
 
 export const TABS = snaixConfig.tabs ?? [];
 
+/** Loose docs-entry shape shared across every product's content collection. */
+type DocEntry = CollectionEntry<'bcmr'> | CollectionEntry<'claudit'>;
+
 export function resolveLocale(code: string): LocaleOption {
   return LOCALES.find((l) => l.code === code) ?? DEFAULT_LOCALE;
 }
@@ -28,20 +31,20 @@ export function bareSlug(slug: string): string {
   return bareSlugLib(slug, LOCALES);
 }
 
-export function localeOfEntry(entry: CollectionEntry<'docs'>): LocaleOption {
+export function localeOfEntry(entry: DocEntry): LocaleOption {
   const code = entry.data.locale ?? localeOf(entry.slug, LOCALES);
   return resolveLocale(code);
 }
 
 export async function navFor(
   locale: LocaleOption,
+  entries: DocEntry[],
   sections?: string[],
-  entries?: CollectionEntry<'docs'>[],
+  options?: { docsRoot?: string; internalsDocsRoot?: string },
 ): Promise<NavSection[]> {
-  const all = entries ?? (await getCollection('docs'));
   const filtered = sections
-    ? all.filter((e) => sections.includes(e.data.section ?? 'guide'))
-    : all;
+    ? entries.filter((e) => sections.includes(e.data.section ?? 'guide'))
+    : entries;
 
   const isInternalsOnly = sections && sections.length === 1 && sections[0] === 'internals';
 
@@ -49,18 +52,17 @@ export async function navFor(
     locale,
     locales: LOCALES,
     sectionOrder: ['guide', 'cli', 'internals'],
-    docsRoot: isInternalsOnly ? '/internals' : '/docs',
+    docsRoot: isInternalsOnly ? (options?.internalsDocsRoot ?? '/internals') : (options?.docsRoot ?? '/docs'),
     slugTransform: isInternalsOnly ? (s) => s.replace(/^ablation\/?/, '') : undefined,
   });
 }
 
-export async function languagesFor(
-  entry: CollectionEntry<'docs'>,
+export function languagesFor(
+  entry: DocEntry,
+  entries: DocEntry[],
   docsRoot: string,
-  entries?: CollectionEntry<'docs'>[],
 ) {
-  const all = entries ?? (await getCollection('docs'));
-  return buildLanguageOptions(all, entry.slug, localeOfEntry(entry), LOCALES, docsRoot);
+  return buildLanguageOptions(entries, entry.slug, localeOfEntry(entry), LOCALES, docsRoot);
 }
 
 export function docsBaseFor(locale: LocaleOption, root = '/docs'): string {

@@ -1,0 +1,95 @@
+---
+import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
+import TopBar from '@snaix/docs-theme/components/TopBar.astro';
+import Footer from '@snaix/docs-theme/components/Footer.astro';
+import { BlockReveal, Tally } from '@snaix/docs-theme';
+import { snaixConfig } from 'virtual:snaix-config';
+import { product } from '../../lib/product.ts';
+
+const claudit = product('claudit');
+const siteProduct = snaixConfig.siteData?.products?.find((p) => p.slug === 'claudit');
+
+const prHref = (path: string) => {
+  const pr = claudit.productRoot.replace(/\/$/, '');
+  const clean = path.startsWith('/') ? path : `/${path}`;
+  return pr && !clean.startsWith(pr + '/') ? pr + clean : clean;
+};
+
+const tabs = (claudit.tabs ?? []).map((t) => ({
+  id: t.id,
+  label: t.label,
+  href: t.external ? t.href : prHref(t.href),
+  external: t.external,
+}));
+---
+<DefaultLayout title={`${claudit.title} — ${claudit.tagline}`}>
+  <div class="page home">
+    <TopBar
+      brand={claudit.title}
+      version={claudit.version}
+      current="home"
+      githubHref={claudit.githubUrl}
+      nav={tabs}
+    />
+
+    <section class="hero">
+      <div class="hero-top rule-b">
+        <span class="t-mono-sm">claudit · {claudit.tagline}</span>
+        <span class="t-mono-sm">menu bar · macos native</span>
+        <span class="t-mono-sm">{claudit.version} · {claudit.releaseDate}</span>
+      </div>
+
+      <div class="hero-grid grid12">
+        <div class="hero-headline">
+          <div class="hero-eyebrow">
+            <span class="t-small">§ 01 · overview</span>
+            <span class="t-mono-sm" style="color: var(--steel-5);">// claude code spend · live.</span>
+          </div>
+          <h1 class="t-display lower">
+            <span class="hl-line"><BlockReveal client:load delay={400} duration={520}>today.</BlockReveal></span>
+            <span class="hl-line"><BlockReveal client:load delay={760} duration={520} color="var(--red)">this week.</BlockReveal></span>
+            <span class="hl-line"><BlockReveal client:load delay={1120} duration={520} color="var(--blue)">every session.</BlockReveal></span>
+          </h1>
+
+          <p class="hero-lede">
+            {siteProduct?.description ?? claudit.tagline}. parses
+            <code class="inline-code">~/.claude</code> jsonl logs directly —
+            no data leaves your machine.
+          </p>
+
+          <div class="hero-cta">
+            <a class="btn-block" href={prHref('/install')}>↳ install {claudit.version}</a>
+            <a class="btn-block is-ghost" href={prHref('/docs/getting-started')}>read the docs</a>
+            <span class="hero-cta-meta t-mono-sm">
+              ⌘ <span>brew install Bengerthelorf/tap/claudit</span>
+            </span>
+          </div>
+        </div>
+
+        <aside class="hero-device">
+          <div class="device-head">
+            <div class="t-small">usage.live</div>
+            <div class="chip is-blue"><span class="dot"/>tracking</div>
+          </div>
+          <div style="padding: 16px; background: var(--ink); color: var(--paper-pure); font-family: var(--mono); font-size: 12px; line-height: 1.7;">
+            <div style="color: var(--steel-5);"># today · sonnet + opus</div>
+            <div>tokens <b style="color: var(--paper-pure);">2.1M in</b> / <b style="color: var(--paper-pure);">312K out</b></div>
+            <div>cost  <span style="color: var(--yellow);"><Tally client:load to={842} duration={900} prefix="$" /></span> <span style="color: var(--steel-5);">/ today</span></div>
+            <div style="margin: 10px 0; color: var(--steel-3);">────────────────</div>
+            <div>5-hour quota <span style="color: var(--yellow);">62%</span></div>
+            <div>7-day quota <span style="color: var(--blue);">38%</span></div>
+            <div style="margin-top: 10px; background: var(--steel-9); height: 6px; position: relative; overflow: hidden;">
+              <div style="position: absolute; inset: 0; right: 38%; background: var(--blue);" />
+            </div>
+          </div>
+          <div class="device-footline">
+            <span class="t-mono-sm">menu bar · macos 15+</span>
+            <span class="t-mono-sm" style="color: var(--blue);">● live</span>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <Footer product={claudit} locale="en" />
+  </div>
+</DefaultLayout>

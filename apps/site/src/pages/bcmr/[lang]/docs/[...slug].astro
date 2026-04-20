@@ -18,7 +18,7 @@ const bcmrProduct = product('bcmr');
 
 export async function getStaticPaths() {
   const sections = ['guide', 'cli'];
-  const all = await getCollection('docs');
+  const all = await getCollection('bcmr');
   const paths = [];
   for (const locale of LOCALES) {
     if (locale.code === DEFAULT_LOCALE.code) continue;
@@ -42,9 +42,9 @@ const DOCS_SECTIONS = ['guide', 'cli'];
 
 const { entry, localeCode } = Astro.props;
 const locale = resolveLocale(localeCode);
-const all = await getCollection('docs');
-const nav = await navFor(locale, DOCS_SECTIONS, all);
-const languages = await languagesFor(entry, '/docs', all);
+const all = await getCollection('bcmr');
+const nav = await navFor(locale, all, DOCS_SECTIONS);
+const languages = await languagesFor(entry, all, '/docs');
 const { Content, headings } = await entry.render();
 const toc = headings
   .filter((h) => h.depth >= 2 && h.depth <= 3)

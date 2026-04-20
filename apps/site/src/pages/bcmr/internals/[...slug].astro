@@ -15,7 +15,7 @@ import { product } from '../../../lib/product.ts';
 const bcmrProduct = product('bcmr');
 
 export async function getStaticPaths() {
-  const entries = await getCollection('docs', (e) => (e.data.section ?? 'guide') === 'internals');
+  const entries = await getCollection('bcmr', (e) => (e.data.section ?? 'guide') === 'internals');
   return entries.map((entry) => {
     const tail = entry.slug.replace(/^ablation\/?/, '');
     return {
@@ -26,9 +26,9 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const all = await getCollection('docs');
-const nav = await navFor(DEFAULT_LOCALE, ['internals'], all);
-const languages = await languagesFor(entry, '/internals', all);
+const all = await getCollection('bcmr');
+const nav = await navFor(DEFAULT_LOCALE, all, ['internals']);
+const languages = await languagesFor(entry, all, '/internals');
 const { Content, headings } = await entry.render();
 const toc = headings
   .filter((h) => h.depth >= 2 && h.depth <= 3)

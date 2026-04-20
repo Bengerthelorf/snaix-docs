@@ -69,6 +69,6 @@ export const productPresentations: ProductPresentation[] = [
     variant: 'claudit',
     eyebrow: '04 / claude audit',
     tag: 'gui · swift · macos native',
-    href: '#',
+    href: '/claudit/',
   },
 ];
