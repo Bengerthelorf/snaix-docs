@@ -4,6 +4,7 @@ import mdx from '@astrojs/mdx';
 import snaixDocs from '@snaix/docs';
 import bcmrDocsConfig from '../../../bcmr/docs/docs.config.ts';
 import clauditDocsConfig from '../../../claudit/docs/docs.config.ts';
+import pikpaktuiDocsConfig from '../../../pikpaktui/docs/docs.config.ts';
 import { fetchProductMeta, readBuildInfo } from './src/data/fetch-github.ts';
 import {
   edition,
@@ -71,7 +72,8 @@ const bcmrProduct = {
   contentDir: 'src/content/bcmr/',
 };
 
-const clauditMeta = productMetas[productPresentations.findIndex((p) => p.slug === 'claudit')];
+const clauditMeta   = productMetas[productPresentations.findIndex((p) => p.slug === 'claudit')];
+const pikpaktuiMeta = productMetas[productPresentations.findIndex((p) => p.slug === 'pikpaktui')];
 const clauditProduct = {
   slug: 'claudit',
   title: 'claudit',
@@ -92,12 +94,33 @@ const clauditProduct = {
   contentDir: 'src/content/claudit/',
 };
 
+const pikpaktuiProduct = {
+  slug: 'pikpaktui',
+  title: 'pikpaktui',
+  tagline: 'pikpak in your terminal',
+  version: pikpaktuiMeta.version,
+  releaseDate: pikpaktuiMeta.releaseDate,
+  githubUrl: 'https://github.com/Bengerthelorf/pikpaktui',
+  productRoot: '/pikpaktui',
+  install: pikpaktuiDocsConfig.install,
+  sections: pikpaktuiDocsConfig.sections,
+  tabs: [
+    { id: 'home',      label: 'overview', href: '/' },
+    { id: 'docs',      label: 'docs',     href: '/docs/getting-started', sections: ['guide'] },
+    { id: 'commands',  label: 'commands', href: '/docs/cli/commands',    sections: ['cli'] },
+    { id: 'install',   label: 'install',  href: '/install' },
+    { id: 'changelog', label: 'changelog', href: 'https://github.com/Bengerthelorf/pikpaktui/releases', external: true },
+  ],
+  linkRewrites: pikpaktuiDocsConfig.linkRewrites,
+  contentDir: 'src/content/pikpaktui/',
+};
+
 export default defineConfig({
   site: 'https://app.snaix.homes',
   trailingSlash: 'ignore',
   integrations: [
     snaixDocs({
-      products: [bcmrProduct, clauditProduct],
+      products: [bcmrProduct, clauditProduct, pikpaktuiProduct],
       buildStamp: buildInfo,
       markdown: { math: true, mermaid: true },
       locales: [

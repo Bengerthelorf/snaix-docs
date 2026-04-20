@@ -21,7 +21,7 @@ export const DEFAULT_LOCALE = defaultLocale(LOCALES);
 export const TABS = snaixConfig.tabs ?? [];
 
 /** Loose docs-entry shape shared across every product's content collection. */
-type DocEntry = CollectionEntry<'bcmr'> | CollectionEntry<'claudit'>;
+type DocEntry = CollectionEntry<'bcmr'> | CollectionEntry<'claudit'> | CollectionEntry<'pikpaktui'>;
 
 export function resolveLocale(code: string): LocaleOption {
   return LOCALES.find((l) => l.code === code) ?? DEFAULT_LOCALE;

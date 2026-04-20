@@ -51,7 +51,7 @@ export const productPresentations: ProductPresentation[] = [
     variant: 'pikpak',
     eyebrow: '02 / pikpak in your terminal',
     tag: 'tui + cli · ratatui · miller layout',
-    href: '#',
+    href: '/pikpaktui/',
   },
   {
     repo: 'Bengerthelorf/macIconChanger',
