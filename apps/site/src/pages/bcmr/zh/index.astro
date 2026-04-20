@@ -37,7 +37,7 @@ const terminalScript: CmdLine[] = [
       logoVariant="product"
       showStatus={false}
       githubHref={snaixConfig.githubUrl}
-      nav={topNavFor(locale)}
+      nav={bcmrProduct.nav()}
     />
 
     <section class="hero">
@@ -68,8 +68,8 @@ const terminalScript: CmdLine[] = [
           </p>
 
           <div class="hero-cta">
-            <a class="btn-block" href={withBase('/zh/install')}>↳ 安装 {snaixConfig.version}</a>
-            <a class="btn-block is-ghost" href={withBase('/zh/docs/getting-started')}>阅读文档</a>
+            <a class="btn-block" href={bcmrProduct.href('/zh/install')}>↳ 安装 {snaixConfig.version}</a>
+            <a class="btn-block is-ghost" href={bcmrProduct.href('/zh/docs/getting-started')}>阅读文档</a>
             <span class="hero-cta-meta t-mono-sm">
               ⌘ <span>brew install Bengerthelorf/tap/bcmr</span>
             </span>

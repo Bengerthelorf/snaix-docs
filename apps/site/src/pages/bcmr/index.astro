@@ -51,7 +51,7 @@ const features = [
       logoVariant="product"
       showStatus={false}
       githubHref={snaixConfig.githubUrl}
-      nav={topNavFor(DEFAULT_LOCALE)}
+      nav={bcmrProduct.nav()}
     />
 
     <section class="hero">
@@ -81,8 +81,8 @@ const features = [
           </p>
 
           <div class="hero-cta">
-            <a class="btn-block" href={withBase('/install')}>↳ install {snaixConfig.version}</a>
-            <a class="btn-block is-ghost" href={withBase('/docs/getting-started')}>read the docs</a>
+            <a class="btn-block" href={bcmrProduct.href('/install')}>↳ install {snaixConfig.version}</a>
+            <a class="btn-block is-ghost" href={bcmrProduct.href('/docs/getting-started')}>read the docs</a>
             <span class="hero-cta-meta t-mono-sm">
               ⌘ <span>brew install Bengerthelorf/tap/bcmr</span>
             </span>
@@ -215,10 +215,10 @@ const features = [
           <BlockReveal client:load delay={1200} color="var(--blue)">resumable.</BlockReveal>
         </h2>
         <div class="cta-buttons">
-          <a class="btn-block" style="background: var(--paper-pure); color: var(--ink); border-color: var(--paper-pure);" href={withBase('/docs/getting-started')}>
+          <a class="btn-block" style="background: var(--paper-pure); color: var(--ink); border-color: var(--paper-pure);" href={bcmrProduct.href('/docs/getting-started')}>
             get started ↳
           </a>
-          <a class="btn-block" style="background: transparent; color: var(--paper-pure); border-color: var(--paper-pure);" href={withBase('/docs/cli/commands')}>
+          <a class="btn-block" style="background: transparent; color: var(--paper-pure); border-color: var(--paper-pure);" href={bcmrProduct.href('/docs/cli/commands')}>
             cli reference
           </a>
         </div>

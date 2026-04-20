@@ -77,7 +77,7 @@ const currentTab = sectionKey === 'cli' ? 'commands' : 'docs';
   tocLabel={locale.ui?.tocLabel ?? 'on this page'}
   math={true}
   mermaid={true}
-  topNav={topNavFor(locale)}
+  topNav={bcmrProduct.nav()}
   currentTab={currentTab}
 >
   <Content />

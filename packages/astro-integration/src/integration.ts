@@ -33,20 +33,7 @@ export default function snaixDocs(opts: SnaixDocsOptions): AstroIntegration {
     name: '@snaix/docs',
     hooks: {
       'astro:config:setup': async ({ updateConfig, injectScript, config }) => {
-        const primary = opts.products[0];
-        const flat = {
-          ...opts,
-          title: primary?.title,
-          tagline: primary?.tagline,
-          version: primary?.version,
-          releaseDate: primary?.releaseDate,
-          githubUrl: primary?.githubUrl,
-          productRoot: primary?.productRoot,
-          install: primary?.install,
-          sections: primary?.sections,
-          tabs: primary?.tabs,
-        };
-        const serialized = JSON.stringify(flat);
+        const serialized = JSON.stringify(opts);
 
         const remark: any[] = [...snaixRemarkPlugins];
         const rehype: any[] = [];
