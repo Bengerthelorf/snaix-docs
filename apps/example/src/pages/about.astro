@@ -1,0 +1,92 @@
+---
+import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
+import TopBar from '@snaix/docs-theme/components/TopBar.astro';
+import Footer from '@snaix/docs-theme/components/Footer.astro';
+import { Tally } from '@snaix/docs-theme';
+import { snaixConfig } from 'virtual:snaix-config';
+---
+<DefaultLayout title={`${snaixConfig.title} · manifesto`}>
+  <div class="page about">
+    <TopBar brand={snaixConfig.title} version={snaixConfig.version} current="about" />
+
+    <section class="manifesto-hero">
+      <div class="manifesto-shapes">
+        <div class="mh-red" />
+        <div class="mh-yellow" />
+        <div class="mh-blue" />
+      </div>
+      <div class="t-small" style="color: var(--red); position: relative; z-index: 2;">§ manifesto</div>
+      <h1 class="manifesto-title lower">
+        moving bytes<br/>
+        is a <em>promise</em>.<br/>
+        keep it.
+      </h1>
+    </section>
+
+    <section class="manifesto-body">
+      <div class="mb-side">
+        <div></div>
+        <div>written by: snaix</div>
+        <div>last edit: 2026.04.14</div>
+      </div>
+      <div>
+        <p>
+          for fifty years we have been typing <code>cp</code> and hoping. it
+          usually works. it silently fails in the one case that matters — a
+          flipped bit in a vacation photo, a truncated file in a backup you
+          never verify, a scp that "finished" but left the last 2 mb
+          unwritten.
+        </p>
+        <p>
+          bcmr refuses to hope. <span class="highlight">every byte is
+          hashed on both ends. a transfer succeeds only if both ends agree.</span>
+          if the network lies, the disk lies, the kernel drops a byte — you
+          get an error, not a quiet corruption.
+        </p>
+        <p>
+          we also refuse the artificial split between local and remote. <code>cp</code>
+          and <code>scp</code> are the same verb in two skins. bcmr collapses
+          them: one command, two path types, same guarantees. it is the
+          shortest tool that does the job correctly.
+        </p>
+        <p>
+          bcmr is open source. built in public. no telemetry, no account,
+          no phone-home. it is written so a single person can read every
+          line in an afternoon and know exactly what their machine is doing
+          to their files.
+        </p>
+      </div>
+    </section>
+
+    <section class="credits">
+      <div style="margin-bottom: 20px;">
+        <div class="t-small" style="color: var(--red);">§ credits</div>
+        <h2 class="t-h1 lower" style="margin-top: 8px;">built by one,<br/>shared with many.</h2>
+      </div>
+      <div class="credits-grid">
+        <div class="credit">
+          <div class="credit-role">everything</div>
+          <div class="credit-name">snaix</div>
+          <div class="credit-loc"></div>
+        </div>
+        <div class="credit">
+          <div class="credit-role">depends on</div>
+          <div class="credit-name">blake3 · tokio</div>
+          <div class="credit-loc">rustls · openssh</div>
+        </div>
+        <div class="credit">
+          <div class="credit-role">license</div>
+          <div class="credit-name">mit</div>
+          <div class="credit-loc">no strings attached</div>
+        </div>
+        <div class="credit">
+          <div class="credit-role">community · you</div>
+          <div class="credit-name"><Tally client:load to={47} duration={900} /></div>
+          <div class="credit-loc">contributors on github</div>
+        </div>
+      </div>
+    </section>
+
+    <Footer brand={snaixConfig.title} />
+  </div>
+</DefaultLayout>

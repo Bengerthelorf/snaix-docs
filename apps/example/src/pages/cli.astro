@@ -1,0 +1,37 @@
+---
+import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
+import TopBar from '@snaix/docs-theme/components/TopBar.astro';
+import Footer from '@snaix/docs-theme/components/Footer.astro';
+import { BlockReveal, CliReference } from '@snaix/docs-theme';
+import { snaixConfig } from 'virtual:snaix-config';
+import { cliSpec } from '../data/cli-spec.ts';
+---
+<DefaultLayout title={`${snaixConfig.title} · commands`}>
+  <div class="page cli">
+    <TopBar brand={snaixConfig.title} version={snaixConfig.version} current="cli" />
+
+    <section class="cli-hero rule-b">
+      <div class="cli-hero-grid grid12">
+        <div class="cli-hero-left">
+          <div class="t-small" style="color: var(--red);">§ commands</div>
+          <h1 class="t-h1 lower">
+            <BlockReveal client:load delay={200}>15 verbs.</BlockReveal><br/>
+            <BlockReveal client:load delay={600} color="var(--blue)">zero magic.</BlockReveal>
+          </h1>
+        </div>
+        <div class="cli-hero-right">
+          <p class="t-body">
+            every action in bcmr is a command you can type, pipe, alias,
+            and commit to your shell history. below is the full surface —
+            grouped, searchable, and each one is introspectable via{' '}
+            <code class="inline-code">--explain</code> or <code class="inline-code">--dry-run</code>.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <CliReference client:load spec={cliSpec} />
+
+    <Footer brand={snaixConfig.title} />
+  </div>
+</DefaultLayout>

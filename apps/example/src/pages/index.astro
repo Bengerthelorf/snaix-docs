@@ -1,0 +1,277 @@
+---
+import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
+import PortalTile from '@snaix/docs-theme/components/portal/PortalTile.astro';
+import {
+  BlockReveal,
+  Tally,
+  Typewriter,
+} from '@snaix/docs-theme';
+import { snaixConfig } from 'virtual:snaix-config';
+
+const activity = [
+  { time: '14:22', proj: 'bcmr',    kind: 'is-bcmr',    msg: 'release <code>v0.9.1</code> · blake3 10% faster on arm64' },
+  { time: '11:40', proj: 'pikpak',  kind: 'is-pikpak',  msg: 'docs <code>/cli/rm.md</code> · added --trash flag' },
+  { time: '09:12', proj: 'claudit', kind: 'is-claudit', msg: 'beta push · session replay now lossless' },
+  { time: 'yday',  proj: 'icon',    kind: 'is-icon',    msg: '20 new locales · pl / hu / cs / ro / uk + 15 more' },
+  { time: '2d',    proj: 'bcmr',    kind: 'is-bcmr',    msg: 'fix · <code>--resume</code> across sparse-file transfers' },
+  { time: '3d',    proj: 'pikpak',  kind: 'is-pikpak',  msg: 'tui · kitty graphics protocol re-enabled' },
+  { time: '4d',    proj: 'claudit', kind: 'is-claudit', msg: 'first stable schema · <code>session.v1.json</code>' },
+];
+---
+<DefaultLayout title="snaix.homes">
+  <div class="portal">
+    <!-- ─── masthead ─── -->
+    <header class="p-mast">
+      <div class="p-mast-top">
+        <div class="mast-brand">snaix <b>//</b> tools</div>
+        <div>edition 04 · 2026.04.20</div>
+        <div>open source</div>
+      </div>
+
+      <div class="p-mast-shapes" aria-hidden="true">
+        <div class="pms-sq" />
+        <div class="pms-ci" />
+        <div class="pms-tr" />
+        <div class="pms-bar1" />
+        <div class="pms-bar2" />
+      </div>
+
+      <h1 class="p-mast-title">
+        <span class="w1"><BlockReveal client:load delay={100} duration={520}>four</BlockReveal></span>
+        <span class="w2"><BlockReveal client:load delay={400} duration={520} color="var(--red)">tools</BlockReveal></span>
+        <span class="w3"><BlockReveal client:load delay={700} duration={520} color="var(--blue)">open source</BlockReveal><span class="slash">/</span></span>
+      </h1>
+
+      <div class="p-mast-sub">
+        <div class="slot">
+          <span class="t-small">01 — what is this</span>
+          open source tools across cli, tui, and macos native. cli, tui, macos-native, flutter on the way. everything is open source, permissively licensed, and built to be understood.
+        </div>
+        <div class="slot">
+          <span class="t-small">02 — on offer</span>
+          <div class="kv">
+            <div><span>tools</span> · 4 shipping</div>
+            <div><span>stars</span> · <Tally client:load to={2847} duration={1200} /></div>
+            <div><span>docs</span> · 32 languages</div>
+            <div><span>licence</span> · mit / apache</div>
+          </div>
+        </div>
+        <div class="slot">
+          <span class="t-small">03 — get in</span>
+          <div class="kv" style="margin-bottom: 12px;">
+            <Typewriter client:load text="$ curl -sSf get.snaix.homes | sh" speed={22} delay={800} cursor={false} />
+          </div>
+          <a href="#wall" class="btn-block" style="padding: 10px 16px; font-size: 11px;">↳ pick a tool</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- ─── ticker ─── -->
+    <div class="p-ticker">
+      <div class="p-ticker-track">
+        {(() => {
+          const items = [
+            'bcmr · 0.9.1',
+            'pikpaktui · 0.4.3',
+            'iconchanger · 2.1.0',
+            'claudit · 0.2.0',
+            'all open source',
+            'built to be read',
+            'mit · apache-2.0',
+            'zero telemetry',
+          ];
+          const tripled = [...items, ...items, ...items];
+          return tripled.map((it) => (
+            <Fragment><span>{it}</span><span class="sep">●</span></Fragment>
+          ));
+        })()}
+      </div>
+    </div>
+
+    <!-- ─── product wall ─── -->
+    <section class="p-wall" id="wall">
+      <div class="p-wall-head">
+        <h2>the <em>wall</em>.</h2>
+        <div class="t-mono-sm" style="color: var(--steel-5);">§ 01 · products</div>
+      </div>
+
+      <div class="p-wall-grid">
+        <PortalTile
+          variant="bcmr"
+          n="01 / copy · move · remove"
+          name="bcmr"
+          tag="cli · rust · cross-platform"
+          description="a cp / mv / scp replacement with blake3 checksums, resumable transfers, and direct-tcp fast-path. local and ssh under one verb."
+          metaLeft="v0.9.1 · apr 2026"
+          metaRight="mit"
+          href="/products/bcmr"
+        />
+        <PortalTile
+          variant="pikpak"
+          n="02 / pikpak in your terminal"
+          name="pikpaktui"
+          tag="tui + cli · ratatui · miller layout"
+          description="a three-column keyboard-driven client for pikpak cloud. browse, preview, transfer, stream. 28 cli verbs. json mode. ai-agent friendly."
+          metaLeft="v0.4.3 · apr 2026"
+          metaRight="apache-2.0"
+          href="#"
+        />
+        <PortalTile
+          variant="icon"
+          n="03 / macos icons"
+          name="iconchanger"
+          tag="gui · swift · macos native"
+          description="change any app icon on macos. gui, cli, automatic restoration. search from macosicons.com or drag your own. 30 languages."
+          metaLeft="v2.1.0"
+          metaRight="mit"
+          href="#"
+        />
+        <PortalTile
+          variant="claudit"
+          n="04 / claude audit"
+          name="claudit"
+          tag="gui · swift · macos native"
+          description="an auditor for claude code sessions. diffs, replays, receipts. know what your agent did, and why. readable trails for humans."
+          metaLeft="v0.2.0 · beta"
+          metaRight="mit"
+          href="#"
+        />
+        <PortalTile
+          variant="ds"
+          n="05 / the rules of the house"
+          name="design<br/>language"
+          nameBr={true}
+          tag="tokens · motion · components"
+          description="the single source of visual truth. colors, type, motion primitives, components and principles — every page is built from these pieces."
+          metaLeft="v0.4 · living doc"
+          metaRight="internal"
+          href="/_/design-system"
+        />
+      </div>
+    </section>
+
+    <!-- ─── activity ─── -->
+    <section class="p-activity">
+      <div class="p-activity-left">
+        <div class="t-small" style="color: var(--red); margin-bottom: 12px; display: block;">§ 02 · activity</div>
+        <h2 class="lower">
+          <BlockReveal client:load>shipping</BlockReveal><br/>
+          <BlockReveal client:load delay={200} color="var(--blue)">out loud.</BlockReveal>
+        </h2>
+        <p>
+          no roadmap theatre. changes go in as they land. below is the
+          last week across the four repos, pulled live from the release
+          feed. every item links to a diff.
+        </p>
+        <div style="margin-top: 30px; display: flex; gap: 10px;">
+          <span class="chip is-red"><span class="dot"/>rec</span>
+          <span class="chip is-yellow"><span class="dot"/>wip</span>
+          <span class="chip is-blue"><span class="dot"/>shipped</span>
+        </div>
+      </div>
+
+      <div class="p-stream">
+        <div class="p-stream-head">
+          <span><span class="live-dot" />live feed</span>
+          <span>week · 16</span>
+        </div>
+        {activity.map((r) => (
+          <div class="p-stream-row">
+            <span class="r-time">{r.time}</span>
+            <span class={`r-proj ${r.kind}`}>{r.proj}</span>
+            <span class="r-msg" set:html={r.msg} />
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- ─── stats ─── -->
+    <section class="p-stats">
+      <h2 class="p-stats-title">
+        <span class="u1">small</span> tools.<br/>
+        <span class="u2">big</span> years.
+      </h2>
+      <div class="p-stats-grid">
+        <div class="p-stat">
+          <div class="num"><Tally client:load to={4} duration={800} /></div>
+          <div class="cap">shipping tools</div>
+          <span class="accent-mark" />
+        </div>
+        <div class="p-stat">
+          <div class="num"><Tally client:load to={2847} duration={1400} /></div>
+          <div class="cap">github stars</div>
+          <span class="accent-mark" />
+        </div>
+        <div class="p-stat">
+          <div class="num"><Tally client:load to={32} duration={1000} /></div>
+          <div class="cap">locales · across tools</div>
+          <span class="accent-mark" />
+        </div>
+        <div class="p-stat">
+          <div class="num"><Tally client:load to={0} duration={600} /></div>
+          <div class="cap">telemetry · forever</div>
+          <span class="accent-mark" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── manifesto ─── -->
+    <section class="p-manifest">
+      <div class="p-manifest-shapes" aria-hidden="true">
+        <div class="s1" />
+        <div class="s2" />
+        <div class="s3" />
+      </div>
+      <div class="t-small" style="color: var(--yellow); margin-bottom: 18px;">§ 03 · position</div>
+      <div class="p-manifest-lines">
+        <span class="hl-y">software</span> you can read.<br/>
+        tools that <span class="hl-r">don't phone home.</span><br/>
+        interfaces that<br/>
+        <span class="hl-b">respect your hands.</span>
+      </div>
+      <div class="p-manifest-sig">
+        signed · open source · 2023 →
+      </div>
+    </section>
+
+    <!-- ─── portal footer ─── -->
+    <footer class="p-foot">
+      <div class="p-foot-brand">
+        <div class="logo" aria-hidden="true" />
+        <div style="margin-top: 12px; font-size: 20px; font-weight: 700; letter-spacing: -0.01em;">snaix.homes</div>
+        <div class="t-mono-sm" style="color: var(--steel-5); margin-top: 6px;">small tools. big years.</div>
+      </div>
+      <div class="p-foot-col">
+        <span class="t-small">tools</span>
+        <ul>
+          <li><a href="/products/bcmr">bcmr</a></li>
+          <li><a href="#">pikpaktui</a></li>
+          <li><a href="#">iconchanger</a></li>
+          <li><a href="#">claudit</a></li>
+        </ul>
+      </div>
+      <div class="p-foot-col">
+        <span class="t-small">learn</span>
+        <ul>
+          <li><a href="/docs">docs</a></li>
+          <li><a href="/changelog">changelog</a></li>
+          <li><a href="#">recipes</a></li>
+          <li><a href="#">rss</a></li>
+        </ul>
+      </div>
+      <div class="p-foot-col">
+        <span class="t-small">elsewhere</span>
+        <ul>
+          <li><a href="#">github ↗</a></li>
+          <li><a href="#">x / twitter ↗</a></li>
+          <li><a href="#">discord ↗</a></li>
+          <li><a href="/about">manifesto</a></li>
+        </ul>
+      </div>
+    </footer>
+    <div class="p-foot-base">
+      <span>© 2023 – 2026 snaix · all open source</span>
+      <span>edition 04 · built 2026.04.20 · sha a3f109c</span>
+    </div>
+  </div>
+</DefaultLayout>

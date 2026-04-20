@@ -1,0 +1,38 @@
+---
+import ThemeInit from './ThemeInit.astro';
+import FontLinks from './FontLinks.astro';
+import { ThemeToggle } from '../components/ThemeToggle.tsx';
+
+import '../styles/tokens.css';
+import '../styles/theme.css';
+import '../styles/motion.css';
+import '../styles/layout.css';
+import '../styles/pages.css';
+import '../styles/directives.css';
+import '../styles/portal.css';
+import '../styles/home.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  bodyClass?: string;
+  lang?: string;
+}
+const { title, description, bodyClass, lang = 'en' } = Astro.props;
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    <ThemeInit />
+    <FontLinks />
+    <slot name="head" />
+  </head>
+  <body class={bodyClass}>
+    <slot />
+    <ThemeToggle client:load />
+  </body>
+</html>

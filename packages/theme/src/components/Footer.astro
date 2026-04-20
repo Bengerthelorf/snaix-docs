@@ -1,0 +1,139 @@
+---
+import { withBase } from '../utils/href.ts';
+import { snaixConfig } from 'virtual:snaix-config';
+import type { ProductIntegration } from '@snaix/docs';
+import LangSwitcher from './LangSwitcher.astro';
+import type { LangOption } from './LangSwitcher.astro';
+
+interface Props {
+  product: ProductIntegration;
+  blurb?: string;
+  portalHref?: string;
+  locale?: string;
+  languages?: LangOption[];
+}
+
+const { product, portalHref = '/', locale = 'en', languages = [] } = Astro.props;
+
+const brand = product.title;
+const blurb = Astro.props.blurb ?? (
+  product.tagline
+    ? `${product.tagline}. `
+    : ''
+);
+
+const tabs = product.tabs ?? [];
+const siteProducts = snaixConfig.siteData?.products ?? [];
+const otherProducts = siteProducts.filter((p) => p.slug !== product.slug);
+
+const prHref = (path: string): string => {
+  const pr = product.productRoot.replace(/\/$/, '');
+  const clean = path.startsWith('/') ? path : `/${path}`;
+  const rooted = pr && !clean.startsWith(pr + '/') && clean !== pr ? pr + clean : clean;
+  return withBase(rooted);
+};
+
+const hrefFor = (id: string, fallback: string): string => {
+  const t = tabs.find((x) => x.id === id);
+  if (!t) return prHref(fallback);
+  return t.external ? t.href : prHref(t.href);
+};
+
+const overviewHref = hrefFor('home', '/');
+const commandsHref = hrefFor('commands', '/commands');
+const installHref = hrefFor('install', '/install');
+const changelogHref = hrefFor('changelog', '/changelog');
+
+const github = product.githubUrl ?? '#';
+const issuesHref = github !== '#' ? `${github}/issues` : '#';
+const discussionsHref = github !== '#' ? `${github}/discussions` : '#';
+const releasesHref = github !== '#' ? `${github}/releases` : '#';
+
+const stamp = snaixConfig.buildStamp ?? {};
+const ver = String(product.version ?? '').replace(/^v/, '');
+const built = stamp.date ?? product.releaseDate ?? '';
+
+const year = new Date().getFullYear();
+const licenseTag = stamp.sig ? `${stamp.sig.split(':')[0]} licensed` : 'mit license';
+---
+<footer class="footer">
+  <div class="footer-grid grid12">
+    <div style="grid-column: span 4;">
+      <div class="t-small">{brand}</div>
+      <p class="t-body" style="margin-top: 8px; color: var(--steel-7);">
+        {blurb}part of <a href={portalHref} class="link-u">snaix.homes</a>.
+      </p>
+    </div>
+    <div style="grid-column: span 2;">
+      <div class="t-small">this tool</div>
+      <ul class="footer-list">
+        <li><a href={overviewHref}>overview</a></li>
+        <li><a href={commandsHref}>commands</a></li>
+        <li><a href={installHref}>install</a></li>
+        <li><a href={changelogHref}>changelog</a></li>
+      </ul>
+    </div>
+    <div style="grid-column: span 2;">
+      <div class="t-small">other tools</div>
+      <ul class="footer-list">
+        {otherProducts.map((p) => (
+          <li><a href={p.href}>{p.name}</a></li>
+        ))}
+        <li><a href={portalHref}>all →</a></li>
+      </ul>
+    </div>
+    <div style="grid-column: span 2;">
+      <div class="t-small">repo</div>
+      <ul class="footer-list">
+        <li><a href={github}>github ↗</a></li>
+        <li><a href={issuesHref}>issues</a></li>
+        <li><a href={discussionsHref}>discussions</a></li>
+        <li><a href={releasesHref}>releases</a></li>
+      </ul>
+    </div>
+    <div style="grid-column: span 2;">
+      <div class="t-small">build</div>
+      <div class="footer-stamp">
+        {ver       && <div><span>ver</span> <b>{ver}</b></div>}
+        {stamp.sha && <div><span>sha</span> <b>{stamp.sha}</b></div>}
+        {built     && <div><span>built</span> <b>{built}</b></div>}
+        {stamp.sig && <div><span>sig</span> <b>{stamp.sig}</b></div>}
+      </div>
+    </div>
+  </div>
+
+  {languages.length > 1 && (
+    <div class="footer-lang">
+      <span class="footer-lang__globe" aria-hidden="true">🌐</span>
+      <span class="footer-lang__label">language</span>
+      <LangSwitcher current={locale} options={languages} dropdownAt={2} />
+    </div>
+  )}
+
+  <div class="footer-baseline">
+    <div class="t-mono-sm">© 2023–{year} snaix · {licenseTag}</div>
+    <div class="footer-marks" aria-hidden="true">
+      <span class="mk mk-sq" style="background: var(--red);" />
+      <span class="mk mk-ci" style="background: var(--yellow);" />
+      <span class="mk mk-tr" />
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer-lang {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 0 4px;
+    margin-top: 24px;
+    border-top: 1px solid var(--steel-3);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--steel-7);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .footer-lang__globe { font-size: 14px; }
+  .footer-lang__label { margin-right: 4px; }
+</style>

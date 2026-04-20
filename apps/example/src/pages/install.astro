@@ -1,0 +1,55 @@
+---
+import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
+import TopBar from '@snaix/docs-theme/components/TopBar.astro';
+import Footer from '@snaix/docs-theme/components/Footer.astro';
+import { BlockReveal, InstallTabs } from '@snaix/docs-theme';
+import type { CmdLine } from '@snaix/docs-theme';
+import { snaixConfig } from 'virtual:snaix-config';
+
+const options = {
+  macos:   { name: 'macOS',   cmd: 'brew install melodic-lab/tap/bcmr',  note: 'homebrew; universal binary — arm64 + x86_64' },
+  linux:   { name: 'Linux',   cmd: 'curl -sSf get.bcmr.sh | sh',         note: 'debian, ubuntu, arch, alpine, fedora · musl static' },
+  windows: { name: 'Windows', cmd: 'scoop install bcmr',                 note: 'or winget install melodic-lab.bcmr' },
+  source:  { name: 'source',  cmd: 'cargo install bcmr --locked',        note: 'builds from crates.io · rust 1.78+' },
+};
+
+const verifyScript: CmdLine[] = [
+  { type: 'prompt', text: 'bcmr --version' },
+  { type: 'out',    text: 'bcmr 0.9.1 (a3f109c · 2026-04-14)', pause: 160 },
+  { type: 'blank' },
+  { type: 'prompt', text: 'bcmr doctor', pause: 220 },
+  { type: 'out',    text: 'fs apfs       reflink: yes', pause: 120 },
+  { type: 'out',    text: 'ssh agent     ok (3 keys)', pause: 120 },
+  { type: 'ok',     text: 'environment looks healthy', pause: 160 },
+];
+
+const firstCopyScript: CmdLine[] = [
+  { type: 'prompt', text: 'bcmr cp ./photos ~/Backup/' },
+  { type: 'out',    text: 'scanning……  1,204 files · 2.3 gb', pause: 160 },
+  { type: 'ok',     text: 'complete · all blake3 verified', pause: 180 },
+  { type: 'prompt', text: 'bcmr manifest ~/Backup/photos', pause: 240 },
+  { type: 'out',    text: 'signed · ed25519:2c…9a · 1,204 files', pause: 160 },
+];
+---
+<DefaultLayout title={`${snaixConfig.title} · install`}>
+  <div class="page install">
+    <TopBar brand={snaixConfig.title} version={snaixConfig.version} current="download" />
+
+    <section class="install-hero">
+      <div class="t-small" style="color: var(--red);">§ install</div>
+      <h1 class="install-title lower">
+        <BlockReveal client:load>four</BlockReveal> <BlockReveal client:load color="var(--red)" delay={300}>ways</BlockReveal><br/>
+        <BlockReveal client:load color="var(--blue)" delay={600}>in.</BlockReveal>
+      </h1>
+      <p class="t-body" style="margin-top: 24px; max-width: 560px;">
+        bcmr is a single static binary. pick a channel, paste one line, you
+        are moving verified bytes in under a minute. every release is
+        signed and reproducible from source.
+      </p>
+    </section>
+
+    <InstallTabs client:load options={options} verifyScript={verifyScript} firstCopyScript={firstCopyScript} />
+
+    <Footer brand={snaixConfig.title} />
+  </div>
+</DefaultLayout>

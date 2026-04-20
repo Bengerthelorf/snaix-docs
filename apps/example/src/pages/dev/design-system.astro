@@ -1,0 +1,193 @@
+---
+import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
+import TopBar from '@snaix/docs-theme/components/TopBar.astro';
+import Footer from '@snaix/docs-theme/components/Footer.astro';
+import Panel from '@snaix/docs-theme/components/Panel.astro';
+import BauhausMark from '@snaix/docs-theme/components/BauhausMark.astro';
+import MarginNote from '@snaix/docs-theme/components/MarginNote.astro';
+import {
+  BlockReveal,
+  Typewriter,
+  Scramble,
+  Tally,
+  GridFlip,
+  TickerRow,
+  CommandStream,
+} from '@snaix/docs-theme';
+import type { CmdLine } from '@snaix/docs-theme';
+import { snaixConfig } from 'virtual:snaix-config';
+
+const demoStream: CmdLine[] = [
+  { type: 'prompt', text: 'bcmr cp ./src node-04:/dst' },
+  { type: 'out',    text: 'hashing (blake3) ……  ok', pause: 160 },
+  { type: 'out',    text: 'handshake (ssh) ……  ok',  pause: 160 },
+  { type: 'ok',     text: 'complete · verified',      pause: 180 },
+];
+
+const surfaces = [
+  ['--bg',         'page background'],
+  ['--bg-raised',  'raised surface'],
+  ['--bg-inverse', 'inverse surface'],
+];
+const text = [
+  ['--fg',         'primary text'],
+  ['--fg-muted',   'secondary text'],
+  ['--fg-faint',   'tertiary, captions'],
+  ['--fg-inverse', 'text on inverse'],
+];
+const primary: [string, string, string][] = [
+  ['--red',    'red',    'error · recording · critical'],
+  ['--yellow', 'yellow', 'warning · focus · running'],
+  ['--blue',   'blue',   'link · success · actionable'],
+];
+const steel = ['--steel-1', '--steel-3', '--steel-5', '--steel-7', '--steel-9', '--ink'];
+---
+<DefaultLayout title={`${snaixConfig.title} · design system (dev)`}>
+  <div class="page">
+    <TopBar brand={snaixConfig.title} version={snaixConfig.version} current="design" />
+
+    <section style="padding: 48px 0 24px;">
+      <div class="t-mono-sm" style="color: var(--steel-5);">/_/design-system · dev-only</div>
+      <h1 class="t-display lower" style="margin: 8px 0 16px;">
+        the <span style="color: var(--red);">rules</span><br/>
+        of <span style="color: var(--blue);">the house</span>.
+      </h1>
+      <p class="t-body" style="max-width: 60ch; color: var(--fg-muted);">
+        living index of primitives. pull from here when extending the system;
+        when in doubt, reach for what is already here.
+      </p>
+    </section>
+
+    <section style="padding: 32px 0; border-top: 3px solid var(--ink);">
+      <div class="t-small" style="color: var(--red); margin-bottom: 14px;">§ 01 · colors</div>
+
+      <h3 class="t-h3 lower" style="margin: 18px 0 10px;">surfaces</h3>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+        {surfaces.map(([v, desc]) => (
+          <div style="display: flex; gap: 12px; align-items: center; border: 1px solid var(--border-faint); padding: 10px;">
+            <div style={`width: 40px; height: 40px; background: var(${v}); border: 1px solid var(--border-faint);`} />
+            <div><code class="t-mono">{v}</code><div class="t-mono-sm" style="color: var(--fg-muted);">{desc}</div></div>
+          </div>
+        ))}
+      </div>
+
+      <h3 class="t-h3 lower" style="margin: 24px 0 10px;">text</h3>
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
+        {text.map(([v, desc]) => (
+          <div style="display: flex; gap: 12px; align-items: center; border: 1px solid var(--border-faint); padding: 10px;">
+            <div style={`width: 40px; height: 40px; background: var(${v}); border: 1px solid var(--border-faint);`} />
+            <div><code class="t-mono">{v}</code><div class="t-mono-sm" style="color: var(--fg-muted);">{desc}</div></div>
+          </div>
+        ))}
+      </div>
+
+      <h3 class="t-h3 lower" style="margin: 24px 0 10px;">primaries</h3>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;">
+        {primary.map(([v, name, use]) => (
+          <div style={`background: var(${v}); color: ${v === '--yellow' ? 'var(--c-ink-0)' : '#fafaf7'}; padding: 24px; display: flex; flex-direction: column; gap: 6px; min-height: 160px;`}>
+            <div class="t-h2 lower">{name}</div>
+            <code class="t-mono">{v}</code>
+            <div class="t-mono-sm" style="margin-top: auto; opacity: 0.85;">{use}</div>
+          </div>
+        ))}
+      </div>
+
+      <h3 class="t-h3 lower" style="margin: 24px 0 10px;">neutral scale</h3>
+      <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 0;">
+        {steel.map((v) => (
+          <div style={`background: var(${v}); color: ${v === '--ink' || v === '--steel-9' || v === '--steel-7' ? 'var(--c-paper-pure)' : 'var(--c-ink-0)'}; padding: 24px 12px; min-height: 100px; display: flex; align-items: flex-end;`}>
+            <code class="t-mono-sm">{v}</code>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section style="padding: 32px 0; border-top: 3px solid var(--ink);">
+      <div class="t-small" style="color: var(--red); margin-bottom: 14px;">§ 02 · type scale</div>
+      <div class="t-display lower">t-display</div>
+      <div class="t-h1 lower">t-h1 heading</div>
+      <div class="t-h2 lower">t-h2 sub-head</div>
+      <div class="t-h3 lower">t-h3 small head</div>
+      <div class="t-body">t-body · the quick brown fox jumps over the lazy dog.</div>
+      <div class="t-small">t-small · labels and metadata</div>
+      <div class="t-mono">t-mono · $ echo hello</div>
+      <div class="t-mono-sm">t-mono-sm · chrome labels</div>
+    </section>
+
+    <section style="padding: 32px 0; border-top: 3px solid var(--ink);">
+      <div class="t-small" style="color: var(--red); margin-bottom: 14px;">§ 03 · shapes</div>
+      <div style="display: flex; gap: 32px; align-items: flex-end;">
+        <BauhausMark />
+        <div style="display: flex; gap: 16px;">
+          <div style="width: 64px; height: 64px; background: var(--red);" />
+          <div style="width: 64px; height: 64px; background: var(--blue); border-radius: 50%;" />
+          <div style="width: 0; height: 0; border-left: 32px solid transparent; border-right: 32px solid transparent; border-bottom: 64px solid var(--yellow);" />
+        </div>
+      </div>
+    </section>
+
+    <section style="padding: 32px 0; border-top: 3px solid var(--ink);">
+      <div class="t-small" style="color: var(--red); margin-bottom: 14px;">§ 04 · motion primitives</div>
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px;">
+        <Panel title="typewriter" eyebrow="text char-by-char">
+          <Typewriter client:load text="bcmr cp ./src node-04:/dst" speed={28} cursor={true} />
+        </Panel>
+        <Panel title="scramble" eyebrow="decode-from-garble">
+          <Scramble client:load text="blake3 verified" duration={1200} />
+        </Panel>
+        <Panel title="tally" eyebrow="number count-up">
+          <span class="t-h1"><Tally client:load to={2847} duration={1400} /></span>
+        </Panel>
+        <Panel title="block reveal" eyebrow="wipe-to-show">
+          <span class="t-h2"><BlockReveal client:load delay={150} color="var(--red)">shipping</BlockReveal></span>
+        </Panel>
+        <Panel title="command stream" eyebrow="terminal typing" class="demo-span2" style="grid-column: span 2;">
+          <div class="terminal-shell">
+            <div class="terminal-chrome">
+              <div class="terminal-lights"><span/><span/><span/></div>
+              <div class="t-mono-sm">demo</div>
+            </div>
+            <div class="terminal-body" style="min-height: 0; padding: 18px 22px;">
+              <CommandStream client:load lines={demoStream} />
+            </div>
+          </div>
+        </Panel>
+      </div>
+      <div style="margin-top: 24px;">
+        <TickerRow client:load items={['blake3 · verified', 'resume · journaled', 'reflink · fast', 'direct-tcp · open', 'mit · apache']} />
+      </div>
+      <div style="margin-top: 24px;">
+        <GridFlip client:load cols={4} items={['cp', 'mv', 'rm', 'sync', 'verify', 'hash', 'resume', 'ls']} />
+      </div>
+    </section>
+
+    <section style="padding: 32px 0; border-top: 3px solid var(--ink);">
+      <div class="t-small" style="color: var(--red); margin-bottom: 14px;">§ 05 · chrome</div>
+      <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-bottom: 24px;">
+        <button class="btn-block">block button</button>
+        <button class="btn-block is-ghost">ghost button</button>
+        <span class="chip is-blue"><span class="dot"/>online</span>
+        <span class="chip is-red"><span class="dot"/>rec</span>
+        <span class="chip is-yellow"><span class="dot"/>wip</span>
+        <a class="link-u" href="#">link with underline</a>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <Panel title="paper panel" eyebrow="default tone">
+          every card, every callout, every detail pane. paper-pure surface with
+          a 1px hairline.
+        </Panel>
+        <Panel title="dark panel" eyebrow="inverse tone" tone="dark">
+          for ctas and manifesto bands. inverse surface with inverse text.
+        </Panel>
+      </div>
+      <div style="margin-top: 20px; max-width: 420px;">
+        <MarginNote num={1}>
+          margin notes carry small annotations in the docs reading column.
+          red number, steel text, hairline divider on top.
+        </MarginNote>
+      </div>
+    </section>
+
+    <Footer brand={snaixConfig.title} />
+  </div>
+</DefaultLayout>

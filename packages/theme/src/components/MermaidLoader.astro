@@ -1,0 +1,38 @@
+---
+---
+<script>
+  const MERMAID_URL = 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+
+  async function bootMermaid() {
+    const nodes = document.querySelectorAll('pre.mermaid[data-source="snaix-mermaid"]:not([data-rendered="true"])');
+    if (nodes.length === 0) return;
+    for (const n of nodes) {
+      if (!n.hasAttribute('data-src')) {
+        n.setAttribute('data-src', n.textContent ?? '');
+      }
+    }
+    const { default: mermaid } = await import(/* @vite-ignore */ MERMAID_URL);
+    const theme = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'default';
+    mermaid.initialize({ startOnLoad: false, theme, securityLevel: 'loose' });
+    await mermaid.run({ nodes: Array.from(nodes) });
+    nodes.forEach((n) => n.setAttribute('data-rendered', 'true'));
+  }
+
+  bootMermaid();
+
+  const obs = new MutationObserver((muts) => {
+    for (const m of muts) {
+      if (m.attributeName === 'data-theme') {
+        document.querySelectorAll('pre.mermaid[data-rendered="true"]').forEach((el) => {
+          const src = el.getAttribute('data-src') ?? '';
+          el.removeAttribute('data-rendered');
+          el.removeAttribute('data-processed');
+          el.textContent = src;
+        });
+        bootMermaid();
+        break;
+      }
+    }
+  });
+  obs.observe(document.documentElement, { attributes: true });
+</script>

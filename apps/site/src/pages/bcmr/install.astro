@@ -1,0 +1,67 @@
+---
+import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
+import TopBar from '@snaix/docs-theme/components/TopBar.astro';
+import Footer from '@snaix/docs-theme/components/Footer.astro';
+import { BlockReveal, InstallTabs } from '@snaix/docs-theme';
+import type { CmdLine } from '@snaix/docs-theme';
+import { snaixConfig } from 'virtual:snaix-config';
+import { DEFAULT_LOCALE, topNavFor, localesAsLanguages } from '../../lib/docs.ts';
+import { product } from '../../lib/product.ts';
+
+const bcmrProduct = product('bcmr');
+// Install page isn't localized yet, so the switcher sends users to each
+// locale's home rather than a 404ing per-locale `/install` route.
+const languages = localesAsLanguages('en', '/');
+
+const buildSha = snaixConfig.siteData?.build?.sha ?? '';
+const options = snaixConfig.install ?? {};
+
+const versionBare = String(snaixConfig.version ?? '').replace(/^v/, '');
+const releaseIso = String(snaixConfig.releaseDate ?? '').replaceAll('.', '-');
+
+const verifyScript: CmdLine[] = [
+  { type: 'prompt', text: `${snaixConfig.title} --version` },
+  { type: 'out',    text: `${snaixConfig.title} ${versionBare} (${buildSha} · ${releaseIso})`, pause: 160 },
+  { type: 'blank' },
+  { type: 'prompt', text: `${snaixConfig.title} doctor`, pause: 220 },
+  { type: 'out',    text: 'fs apfs       reflink: yes', pause: 120 },
+  { type: 'out',    text: 'ssh agent     ok (3 keys)',   pause: 120 },
+  { type: 'ok',     text: 'environment looks healthy',    pause: 160 },
+];
+
+const firstCopyScript: CmdLine[] = [
+  { type: 'prompt', text: 'bcmr copy ./photos ~/Backup/' },
+  { type: 'out',    text: 'scanning……  1,204 files · 2.3 gb', pause: 160 },
+  { type: 'ok',     text: 'complete · all blake3 verified',    pause: 180 },
+  { type: 'prompt', text: 'bcmr manifest ~/Backup/photos',     pause: 240 },
+  { type: 'out',    text: 'signed · ed25519:2c…9a · 1,204 files', pause: 160 },
+];
+---
+<DefaultLayout title="bcmr · install">
+  <div class="page install">
+    <TopBar
+      brand={snaixConfig.title}
+      version={snaixConfig.version}
+      current="install"
+      githubHref={snaixConfig.githubUrl}
+      nav={topNavFor(DEFAULT_LOCALE)}
+    />
+
+    <section class="install-hero">
+      <div class="t-small" style="color: var(--red);">§ install</div>
+      <h1 class="install-title lower">
+        <BlockReveal client:load>four</BlockReveal> <BlockReveal client:load color="var(--red)" delay={300}>ways</BlockReveal><br/>
+        <BlockReveal client:load color="var(--blue)" delay={600}>in.</BlockReveal>
+      </h1>
+      <p class="t-body" style="margin-top: 24px; max-width: 560px;">
+        bcmr is a single static binary. pick a channel, paste one line, you
+        are moving verified bytes in under a minute. every release is
+        signed and reproducible from source.
+      </p>
+    </section>
+
+    <InstallTabs client:load options={options} verifyScript={verifyScript} firstCopyScript={firstCopyScript} />
+
+    <Footer product={bcmrProduct} locale="en" languages={languages} />
+  </div>
+</DefaultLayout>

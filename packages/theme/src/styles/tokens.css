@@ -1,0 +1,284 @@
+/* ─────────────────────────────────────────────────────────────
+   snaix / bcmr — design tokens
+   constructivism · swiss grid · industrial restraint
+   light + dark · responsive at 1280 / 980 / 720 / 480
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  /* ─── PALETTE (raw, theme-agnostic) ─── */
+  /* neutrals — low-chroma warm-grey scale */
+  --c-ink-0:    #0a0a0b;
+  --c-ink-1:    #18181a;
+  --c-ink-2:    #242428;
+  --c-steel-9:  #2a2a2d;
+  --c-steel-7:  #4a4a4f;
+  --c-steel-5:  #77777d;
+  --c-steel-3:  #b4b4ba;
+  --c-steel-1:  #e4e4e7;
+  --c-paper:    #f4f3ee;
+  --c-paper-pure: #fafaf7;
+
+  /* primaries — bauhaus red/yellow/blue, tuned for both themes */
+  --c-red:      #e1261c;
+  --c-red-dim:  #c21d14;
+  --c-yellow:   #f5c518;
+  --c-yellow-dim: #d4a912;
+  --c-blue:     #1c4ce1;
+  --c-blue-dim: #4a78ff;   /* lifted for dark bg contrast */
+
+  /* ─── SEMANTIC TOKENS (what components USE) ─── */
+  --ink:        var(--c-ink-0);
+  --ink-2:      var(--c-ink-1);
+  --steel-9:    var(--c-steel-9);
+  --steel-7:    var(--c-steel-7);
+  --steel-5:    var(--c-steel-5);
+  --steel-3:    var(--c-steel-3);
+  --steel-1:    var(--c-steel-1);
+  --paper:      var(--c-paper);
+  --paper-pure: var(--c-paper-pure);
+
+  --red:    var(--c-red);
+  --yellow: var(--c-yellow);
+  --blue:   var(--c-blue);
+
+  /* derived surface / text roles — use these in new code */
+  --bg:         var(--paper);
+  --bg-raised:  var(--paper-pure);
+  --bg-inverse: var(--ink);
+  --fg:         var(--ink);
+  --fg-muted:   var(--steel-7);
+  --fg-faint:   var(--steel-5);
+  --fg-inverse: var(--paper-pure);
+  --border:     var(--ink);
+  --border-faint: var(--steel-3);
+  --gridline:   rgba(10,10,11,0.04);
+
+  /* ─── type ─── */
+  --sans: 'Archivo', 'Space Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --mono: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+
+  /* ─── grid ─── */
+  --gutter: 24px;
+  --col: 12;
+  --page-pad: 32px;
+  --rule: 1px;
+
+  /* ─── motion ─── */
+  --t-fast: 120ms;
+  --t:      240ms;
+  --t-slow: 480ms;
+  --ease: cubic-bezier(.2,.7,.2,1);
+}
+
+/* ─── DARK THEME ─── */
+/* swap surfaces (paper ↔ ink), lift blue, keep red+yellow.
+   the character stays constructivist: now paper-on-black instead of black-on-paper. */
+[data-theme="dark"] {
+  --ink:        #f4f3ee;    /* fg role — inverted */
+  --ink-2:      #e4e4e7;
+  --steel-9:    #d4d4d7;
+  --steel-7:    #a8a8ad;
+  --steel-5:    #77777d;
+  --steel-3:    #4a4a4f;
+  --steel-1:    #2a2a2d;
+  --paper:      #0a0a0b;
+  --paper-pure: #18181a;
+
+  --blue:   var(--c-blue-dim);   /* lifted for AA on dark */
+
+  --bg:         #0a0a0b;
+  --bg-raised:  #18181a;
+  --bg-inverse: #f4f3ee;
+  --fg:         #f4f3ee;
+  --fg-muted:   #a8a8ad;
+  --fg-faint:   #77777d;
+  --fg-inverse: #0a0a0b;
+  --border:     #f4f3ee;
+  --border-faint: #4a4a4f;
+  --gridline:   rgba(244,243,238,0.05);
+}
+
+/* ─── reset-ish ─── */
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--sans);
+  color: var(--fg);
+  background: var(--bg);
+  font-size: 15px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "ss01", "cv11";
+  transition: background var(--t) var(--ease), color var(--t) var(--ease);
+}
+
+a { color: inherit; text-decoration: none; }
+button { font: inherit; border: 0; background: 0; cursor: pointer; color: inherit; padding: 0; }
+
+/* ─── lowercase-first (bayer universal spirit) ─── */
+.lower { text-transform: lowercase; letter-spacing: 0.01em; }
+.caps  { text-transform: uppercase; letter-spacing: 0.14em; font-weight: 600; }
+
+/* ─── type scale ─── */
+.t-display {
+  font-family: var(--sans);
+  font-weight: 700;
+  font-size: clamp(44px, 9vw, 148px);
+  line-height: 0.88;
+  letter-spacing: -0.035em;
+}
+.t-h1 {
+  font-size: clamp(34px, 5vw, 72px);
+  font-weight: 700;
+  line-height: 0.94;
+  letter-spacing: -0.02em;
+}
+.t-h2 { font-size: clamp(26px, 3.2vw, 34px); font-weight: 700; line-height: 1.02; letter-spacing: -0.01em; }
+.t-h3 { font-size: 22px; font-weight: 600; line-height: 1.15; }
+.t-body { font-size: 15px; line-height: 1.55; }
+.t-small { font-size: 12px; line-height: 1.4; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 600; }
+.t-mono { font-family: var(--mono); font-size: 13px; letter-spacing: -0.01em; }
+.t-mono-sm { font-family: var(--mono); font-size: 11px; letter-spacing: 0; }
+
+/* ─── page scaffolding ─── */
+.page {
+  min-height: 100vh;
+  padding: 0 var(--page-pad);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* swiss 12-col grid */
+.grid12 {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--gutter);
+}
+
+/* the background grid — industrial blueprint feel */
+.gridlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, var(--gridline) 1px, transparent 1px);
+  background-size: calc((100% - 2 * var(--page-pad)) / 12) 100%;
+  background-position: var(--page-pad) 0;
+  z-index: 0;
+}
+
+/* hairlines */
+.rule-t { border-top: 1px solid var(--border); }
+.rule-b { border-bottom: 1px solid var(--border); }
+.rule-l { border-left: 1px solid var(--border); }
+.rule-r { border-right: 1px solid var(--border); }
+.rule-t-thick { border-top: 3px solid var(--border); }
+.rule-b-thick { border-bottom: 3px solid var(--border); }
+
+/* corner marks — bauhaus geometric locators */
+.corner-mark {
+  position: absolute;
+  width: 12px; height: 12px;
+}
+.corner-mark--circle { border-radius: 50%; background: var(--ink); }
+.corner-mark--tri {
+  width: 0; height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 12px solid var(--ink);
+}
+.corner-mark--square { background: var(--ink); }
+
+/* vertical label — constructivism */
+.v-label {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+
+/* block button */
+.btn-block {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 22px;
+  background: var(--bg-inverse);
+  color: var(--fg-inverse);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border: 1px solid var(--border);
+  transition: background var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+  cursor: pointer;
+  position: relative;
+}
+.btn-block:hover { background: var(--blue); color: var(--paper-pure); border-color: var(--blue); }
+.btn-block.is-ghost { background: transparent; color: var(--fg); }
+.btn-block.is-ghost:hover { background: var(--bg-inverse); color: var(--fg-inverse); }
+
+/* state chips */
+.chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono);
+  font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 5px 10px 5px 8px;
+  border: 1px solid var(--border);
+}
+.chip .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ink); }
+.chip.is-red    .dot { background: var(--red); }
+.chip.is-yellow .dot { background: var(--yellow); }
+.chip.is-blue   .dot { background: var(--blue); }
+
+/* link */
+.link-u {
+  color: var(--fg);
+  border-bottom: 1px solid var(--border);
+  transition: color var(--t-fast), border-color var(--t-fast);
+}
+.link-u:hover { color: var(--blue); border-color: var(--blue); }
+
+/* selection */
+::selection { background: var(--yellow); color: var(--c-ink-0); }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--steel-7); }
+
+/* ─── RESPONSIVE ─── */
+/* scale grid padding + gutter at each breakpoint.
+   components add their own rules; these are the global knobs. */
+
+/* laptop */
+@media (max-width: 1280px) {
+  :root { --page-pad: 28px; --gutter: 20px; }
+}
+/* tablet */
+@media (max-width: 980px) {
+  :root { --page-pad: 24px; --gutter: 16px; }
+  .t-h3 { font-size: 20px; }
+  .t-body { font-size: 14px; }
+}
+/* large phone */
+@media (max-width: 720px) {
+  :root { --page-pad: 18px; --gutter: 14px; }
+}
+/* small phone */
+@media (max-width: 480px) {
+  :root { --page-pad: 14px; --gutter: 12px; }
+  .t-small { font-size: 11px; letter-spacing: 0.04em; }
+}
+
+/* reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

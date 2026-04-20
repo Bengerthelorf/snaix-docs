@@ -1,0 +1,14 @@
+node_modules
+.DS_Store
+dist
+.astro
+.cache
+.env
+.env.local
+bun.lockb
+*.log
+
+# Product content populated per-env:
+#   - dev: symlinks (`ln -s ~/Documents/bcmr content/bcmr`)
+#   - CI: `git clone --depth 1 https://github.com/... content/<slug>`
+/content/

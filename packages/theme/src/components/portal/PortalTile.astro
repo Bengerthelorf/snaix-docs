@@ -1,0 +1,68 @@
+---
+export type TileVariant = 'bcmr' | 'pikpak' | 'icon' | 'claudit' | 'ds';
+
+interface Props {
+  variant: TileVariant;
+  n: string;
+  name: string;
+  nameBr?: boolean;
+  tag: string;
+  description: string;
+  metaLeft: string;
+  metaRight: string;
+  href: string;
+}
+
+const { variant, n, name, nameBr, tag, description, metaLeft, metaRight, href } = Astro.props;
+---
+<a class:list={['p-tile', `p-tile--${variant}`]} href={href}>
+  <div class="tile-n">{n}</div>
+  <div class="tile-name">
+    {nameBr ? (
+      <Fragment set:html={name} />
+    ) : (
+      name
+    )}
+  </div>
+  <div class="tile-tag">{tag}</div>
+
+  {variant === 'bcmr' && <div class="tile-art" aria-hidden="true" />}
+
+  {variant === 'pikpak' && (
+    <div class="tile-art" aria-hidden="true">
+      {Array.from({ length: 9 }).map(() => <span />)}
+    </div>
+  )}
+
+  {variant === 'icon' && (
+    <div class="tile-art" aria-hidden="true">
+      <div class="sq" />
+      <div class="sq2" />
+      <div class="sq3" />
+    </div>
+  )}
+
+  {variant === 'claudit' && (
+    <div class="tile-art" aria-hidden="true">
+      <div class="dot1" />
+      <div class="dot2" />
+    </div>
+  )}
+
+  {variant === 'ds' && (
+    <div class="tile-art" aria-hidden="true">
+      <div class="ds-art-sq" />
+      <div class="ds-art-tri" />
+      <div class="ds-art-ci" />
+    </div>
+  )}
+
+  <div class="tile-desc" style={variant === 'bcmr' ? 'position: relative; z-index: 2;' : ''}>
+    {description}
+  </div>
+  <div class="tile-meta">
+    <span>{metaLeft}</span>
+    <span>{metaRight}</span>
+  </div>
+  <span class="tile-arrow">↗</span>
+</a>

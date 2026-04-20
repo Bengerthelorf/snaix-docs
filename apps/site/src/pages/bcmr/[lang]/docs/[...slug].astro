@@ -1,0 +1,84 @@
+---
+import DocsLayout from '@snaix/docs-theme/layouts/DocsLayout.astro';
+import { getCollection } from 'astro:content';
+import { snaixConfig } from 'virtual:snaix-config';
+import {
+  DEFAULT_LOCALE,
+  LOCALES,
+  bareSlug,
+  docsBaseFor,
+  languagesFor,
+  navFor,
+  resolveLocale,
+  topNavFor,
+} from '../../../../lib/docs.ts';
+import { product } from '../../../../lib/product.ts';
+
+const bcmrProduct = product('bcmr');
+
+export async function getStaticPaths() {
+  const sections = ['guide', 'cli'];
+  const all = await getCollection('docs');
+  const paths = [];
+  for (const locale of LOCALES) {
+    if (locale.code === DEFAULT_LOCALE.code) continue;
+    const prefix = `${locale.code.toLowerCase()}/`;
+    const entries = all.filter(
+      (e) =>
+        e.slug.toLowerCase().startsWith(prefix) &&
+        sections.includes(e.data.section ?? 'guide'),
+    );
+    for (const entry of entries) {
+      paths.push({
+        params: { lang: locale.code, slug: bareSlug(entry.slug) },
+        props: { entry, localeCode: locale.code },
+      });
+    }
+  }
+  return paths;
+}
+
+const DOCS_SECTIONS = ['guide', 'cli'];
+
+const { entry, localeCode } = Astro.props;
+const locale = resolveLocale(localeCode);
+const all = await getCollection('docs');
+const nav = await navFor(locale, DOCS_SECTIONS, all);
+const languages = await languagesFor(entry, '/docs', all);
+const { Content, headings } = await entry.render();
+const toc = headings
+  .filter((h) => h.depth >= 2 && h.depth <= 3)
+  .map((h) => ({ slug: h.slug, text: h.text, depth: h.depth }));
+
+const bare = bareSlug(entry.slug);
+const sectionKey = entry.data.section ?? 'guide';
+const sectionLabel = locale.ui?.sections?.[sectionKey] ?? sectionKey;
+const docsLabel = locale.ui?.docsLabel ?? 'docs';
+const breadcrumb = [docsLabel, sectionLabel, entry.data.title];
+const currentTab = sectionKey === 'cli' ? 'commands' : 'docs';
+---
+<DocsLayout
+  product={bcmrProduct}
+  brand={snaixConfig.title}
+  version={snaixConfig.version}
+  current={bare}
+  nav={nav}
+  title={entry.data.title}
+  description={entry.data.description}
+  breadcrumb={breadcrumb}
+  toc={toc}
+  source={{
+    path: `docs/${locale.code}/${bare}.md`,
+    url: `https://github.com/Bengerthelorf/bcmr/edit/main/docs/${locale.code}/${bare}.md`,
+  }}
+  locale={locale.lang ?? locale.code}
+  languages={languages}
+  docsBase={docsBaseFor(locale)}
+  tocLabel={locale.ui?.tocLabel ?? 'on this page'}
+  math={true}
+  mermaid={true}
+  topNav={topNavFor(locale)}
+  currentTab={currentTab}
+>
+  <Content />
+</DocsLayout>

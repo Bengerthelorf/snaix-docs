@@ -1,0 +1,15 @@
+---
+// Must run in <head> before CSS loads to avoid flash of wrong theme.
+---
+<script is:inline>
+  (function () {
+    try {
+      var saved = localStorage.getItem('snaix-theme');
+      var prefers = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var theme = saved || (prefers ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', theme);
+    } catch (e) {
+      document.documentElement.setAttribute('data-theme', 'light');
+    }
+  })();
+</script>

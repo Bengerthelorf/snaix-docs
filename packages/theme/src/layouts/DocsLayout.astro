@@ -1,0 +1,146 @@
+---
+import DefaultLayout from './DefaultLayout.astro';
+import TopBar from '../components/TopBar.astro';
+import Footer from '../components/Footer.astro';
+import MathStyles from '../components/MathStyles.astro';
+import MermaidLoader from '../components/MermaidLoader.astro';
+import type { LangOption } from '../components/LangSwitcher.astro';
+import { withBase } from '../utils/href.ts';
+import { snaixConfig } from 'virtual:snaix-config';
+import type { ProductIntegration } from '@snaix/docs';
+
+interface NavItem {
+  slug: string;
+  title: string;
+  href?: string;
+}
+
+interface NavSection {
+  label: string;
+  items: NavItem[];
+}
+
+interface TocItem {
+  slug: string;
+  text: string;
+  depth: number;
+}
+
+interface Props {
+  product: ProductIntegration;
+  brand?: string;
+  version?: string;
+  current: string;
+  nav: NavSection[];
+  title: string;
+  description?: string;
+  breadcrumb?: string[];
+  source?: { path: string; url?: string };
+  toc?: TocItem[];
+  locale?: string;
+  languages?: LangOption[];
+  docsBase?: string;
+  tocLabel?: string;
+  math?: boolean;
+  mermaid?: boolean;
+  topNav?: { id: string; label: string; href: string; external?: boolean }[];
+  currentTab?: string;
+}
+
+const {
+  product,
+  brand = product.title,
+  version = product.version,
+  current,
+  nav,
+  title,
+  description,
+  breadcrumb = [],
+  source,
+  toc = [],
+  locale = 'en',
+  languages = [],
+  docsBase = '/docs',
+  tocLabel = 'on this page',
+  math = false,
+  mermaid = false,
+  topNav,
+  currentTab = 'docs',
+} = Astro.props;
+
+function itemHref(item: NavItem) {
+  if (item.href) return withBase(item.href);
+  return withBase(`${docsBase}/${item.slug}`);
+}
+
+const githubHref = product.githubUrl ?? '#';
+---
+<DefaultLayout title={`${brand} · ${title}`} description={description} lang={locale}>
+  {math && <MathStyles slot="head" />}
+  <div class="page docs">
+    <TopBar
+      brand={brand}
+      version={version}
+      current={currentTab}
+      nav={topNav}
+      githubHref={githubHref}
+    />
+
+    <div class="docs-layout">
+      <aside class="docs-nav">
+        <div style="margin-bottom: 20px;">
+          <div class="t-small" style="color: var(--red); margin-bottom: 8px;">{brand} / docs</div>
+          {version && <div class="t-mono-sm" style="color: var(--steel-5);">{version}</div>}
+        </div>
+        {nav.map((g) => (
+          <div class="docs-nav-section">
+            <div class="docs-nav-section-title">{g.label}</div>
+            {g.items.map((it) => (
+              <a href={itemHref(it)} class={it.slug === current ? 'is-active' : ''}>
+                {it.title}
+              </a>
+            ))}
+          </div>
+        ))}
+      </aside>
+
+      <article class="docs-content">
+        {breadcrumb.length > 0 && (
+          <div class="docs-breadcrumb">
+            {breadcrumb.slice(0, -1).map((b) => <Fragment>{b} / </Fragment>)}
+            <span>{breadcrumb[breadcrumb.length - 1]}</span>
+          </div>
+        )}
+        <h1 class="docs-title lower">{title}</h1>
+        {description && <p class="docs-subtitle">{description}</p>}
+
+        {source && (
+          <div class="md-source-toggle" style="margin-bottom: 24px;">
+            <span class="t-mono-sm" style="color: var(--steel-5);">source:</span>
+            <code class="inline-code">{source.path}</code>
+            {source.url && (
+              <Fragment>
+                <span class="t-mono-sm" style="color: var(--steel-5);">·</span>
+                <a href={source.url} class="link-u t-mono-sm">edit on github ↗</a>
+              </Fragment>
+            )}
+          </div>
+        )}
+
+        <div class="snx-md">
+          <slot />
+        </div>
+      </article>
+
+      <aside class="docs-toc">
+        <div class="docs-toc-label">{tocLabel}</div>
+        {toc.map((t) => (
+          <a href={`#${t.slug}`} class={t.depth > 2 ? 'is-l2' : ''}>{t.text}</a>
+        ))}
+      </aside>
+    </div>
+
+    <Footer product={product} locale={locale} languages={languages} />
+  </div>
+  {mermaid && <MermaidLoader />}
+</DefaultLayout>

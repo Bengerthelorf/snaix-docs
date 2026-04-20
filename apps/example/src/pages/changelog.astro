@@ -1,0 +1,98 @@
+---
+import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
+import TopBar from '@snaix/docs-theme/components/TopBar.astro';
+import Footer from '@snaix/docs-theme/components/Footer.astro';
+import { BlockReveal } from '@snaix/docs-theme';
+import { snaixConfig } from 'virtual:snaix-config';
+
+type Group = { t: 'new' | 'fix' | 'break'; items: string[] };
+type Entry = {
+  ver: string;
+  date: string;
+  chipTone: 'is-blue' | 'is-yellow' | 'is-red';
+  chipText: string;
+  add: Group[];
+};
+
+const entries: Entry[] = [
+  {
+    ver: '0.9.1', date: '2026.04.14', chipTone: 'is-blue', chipText: 'stable',
+    add: [
+      { t: 'new', items: ['<code>bcmr sync</code> gains <code>--delete</code> flag with a hard confirm prompt', 'on-wire zstd level can now be tuned with <code>--compress=zst:9</code>'] },
+      { t: 'fix', items: ['resume journal no longer corrupts on nfs-backed home directories', '<code>bcmr verify</code> now handles file renames since the manifest was written'] },
+    ],
+  },
+  {
+    ver: '0.9.0', date: '2026.03.22', chipTone: 'is-yellow', chipText: 'minor',
+    add: [
+      { t: 'break', items: ['manifest format bumped to v1 (stable). <code>bcmr migrate</code> handles older sealed destinations.'] },
+      { t: 'new', items: ['<code>bcmr serve</code> + <code>bcmr connect</code> for peer-to-peer direct-tcp (no ssh)', 'mtls with pinned peer keys via <code>bcmr keys</code>'] },
+      { t: 'fix', items: ['linux: reflink detection on ext4 (no-op) and btrfs (fast) is now correct', 'windows: unicode paths on long directories no longer panic'] },
+    ],
+  },
+  {
+    ver: '0.8.4', date: '2026.02.10', chipTone: 'is-blue', chipText: 'stable',
+    add: [
+      { t: 'fix', items: ['blake3 chunk size raised to 1 mib — 40% faster on ssds', 'resume no longer rehashes the entire source if the dst is empty'] },
+    ],
+  },
+  {
+    ver: '0.8.0', date: '2025.12.02', chipTone: 'is-yellow', chipText: 'minor',
+    add: [
+      { t: 'new', items: ['first public release. cp · mv · rm · verify · resume · ls · stat', 'ssh transport with openssh-agent integration', '<code>--json</code> output on every command for scripting'] },
+    ],
+  },
+];
+
+function groupLabel(t: Group['t']) {
+  if (t === 'new') return 'added';
+  if (t === 'fix') return 'fixed';
+  return 'breaking';
+}
+---
+<DefaultLayout title={`${snaixConfig.title} · changelog`}>
+  <div class="page changelog">
+    <TopBar brand={snaixConfig.title} version={snaixConfig.version} current="changelog" />
+
+    <section class="log-hero">
+      <div class="t-small" style="color: var(--red);">§ changelog</div>
+      <h1 class="install-title lower">
+        <BlockReveal client:load>every</BlockReveal> <BlockReveal client:load color="var(--yellow)" delay={300}>change,</BlockReveal><br/>
+        <BlockReveal client:load delay={600}>logged.</BlockReveal>
+      </h1>
+      <p class="t-body" style="margin-top: 24px; max-width: 620px;">
+        semver, strictly. a breaking change requires a minor bump and a
+        migration path shipped in the same release. nothing silently
+        changes under your feet.
+      </p>
+    </section>
+
+    <section class="log-list">
+      {entries.map((e) => (
+        <div class="log-entry">
+          <div class="log-side">
+            <div class="log-version">v{e.ver}</div>
+            <div class="log-date">{e.date}</div>
+            <div class={`chip ${e.chipTone} log-chip`}>
+              <span class="dot" />{e.chipText}
+            </div>
+          </div>
+          <div class="log-body">
+            {e.add.map((group) => (
+              <Fragment>
+                <h4 class={`is-${group.t}`}>{groupLabel(group.t)}</h4>
+                <ul>
+                  {group.items.map((x) => (
+                    <li set:html={x} />
+                  ))}
+                </ul>
+              </Fragment>
+            ))}
+          </div>
+        </div>
+      ))}
+    </section>
+
+    <Footer brand={snaixConfig.title} />
+  </div>
+</DefaultLayout>

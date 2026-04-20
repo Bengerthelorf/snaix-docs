@@ -1,0 +1,98 @@
+---
+import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
+import TopBar from '@snaix/docs-theme/components/TopBar.astro';
+import Footer from '@snaix/docs-theme/components/Footer.astro';
+import {
+  BlockReveal,
+  Tally,
+  Typewriter,
+  CommandStream,
+  withBase,
+} from '@snaix/docs-theme';
+import type { CmdLine } from '@snaix/docs-theme';
+import { snaixConfig } from 'virtual:snaix-config';
+import { resolveLocale, topNavFor, localesAsLanguages } from '../../../lib/docs.ts';
+import { product } from '../../../lib/product.ts';
+
+const bcmrProduct = product('bcmr');
+const languages = localesAsLanguages('zh-Hant', '/');
+
+const locale = resolveLocale('zh-Hant');
+
+const terminalScript: CmdLine[] = [
+  { type: 'prompt', text: 'bcmr copy ./dataset user@node-04:/srv/' },
+  { type: 'out',    text: '掃描來源 …… 2,481 個檔案 · 14.2 gb', pause: 200 },
+  { type: 'out',    text: 'ssh 握手 …… ok', pause: 140 },
+  { type: 'out',    text: 'direct-tcp 快速通道 …… 已協商', pause: 180 },
+  { type: 'ok',     text: '完成 · 34.5s · 412 mb/s · 全部 blake3 已校驗', pause: 260 },
+];
+---
+<DefaultLayout title="bcmr — 更好的複製、移動、刪除" lang="zh-Hant">
+  <div class="page home">
+    <TopBar
+      brand={snaixConfig.title}
+      version={snaixConfig.version}
+      current="home"
+      logoVariant="product"
+      showStatus={false}
+      githubHref={snaixConfig.githubUrl}
+      nav={topNavFor(locale)}
+    />
+
+    <section class="hero">
+      <div class="hero-top rule-b">
+        <span class="t-mono-sm">bcmr · 更好的 cp / mv / rm</span>
+        <span class="t-mono-sm">本地與 ssh · 同一條指令</span>
+        <span class="t-mono-sm">{snaixConfig.version} · {snaixConfig.releaseDate}</span>
+      </div>
+
+      <div class="hero-grid grid12">
+        <div class="hero-headline">
+          <div class="hero-eyebrow">
+            <span class="t-small">§ 01 · 概覽</span>
+            <span class="t-mono-sm" style="color: var(--steel-5);">
+              <Typewriter client:load text="// cp + mv + scp —— 但是誠實的那種。" speed={24} delay={300} />
+            </span>
+          </div>
+          <h1 class="t-display lower">
+            <span class="hl-line"><BlockReveal client:load delay={400} duration={520}>複製.</BlockReveal></span>
+            <span class="hl-line"><BlockReveal client:load delay={760} duration={520} color="var(--red)">移動.</BlockReveal></span>
+            <span class="hl-line"><BlockReveal client:load delay={1120} duration={520} color="var(--blue)">刪除.</BlockReveal></span>
+          </h1>
+
+          <p class="hero-lede">
+            bcmr 是 cp / mv / scp 的現代替代品。每次寫入串流式 blake3 校驗，
+            崩潰後可續傳，本地路徑和 ssh 路徑在同一條指令裡 —— 一個指令，
+            兩端都校驗過。
+          </p>
+
+          <div class="hero-cta">
+            <a class="btn-block" href={withBase('/zh-Hant/install')}>↳ 安裝 {snaixConfig.version}</a>
+            <a class="btn-block is-ghost" href={withBase('/zh-Hant/docs/getting-started')}>閱讀文件</a>
+            <span class="hero-cta-meta t-mono-sm">
+              ⌘ <span>brew install Bengerthelorf/tap/bcmr</span>
+            </span>
+          </div>
+        </div>
+
+        <aside class="hero-device">
+          <div class="device-head">
+            <div class="t-small">transfer.live</div>
+            <div class="chip is-blue"><span class="dot"/>已校驗</div>
+          </div>
+          <div style="padding: 16px; background: var(--ink); color: var(--paper-pure); font-family: var(--mono); font-size: 12px; line-height: 1.7;">
+            <div style="color: var(--steel-5);"># 14.2 gb · 本地 → ssh</div>
+            <div>來源  <b style="color: var(--paper-pure);">./dataset/</b></div>
+            <div>目的 <b style="color: var(--paper-pure);">node-04:/srv/</b></div>
+            <div style="margin: 10px 0; color: var(--steel-3);">────────────────</div>
+            <div>速率 <span style="color: var(--yellow);"><Tally client:load to={412} duration={900} suffix=" mb/s" /></span></div>
+            <div>剩餘 <span style="color: var(--yellow);">00:00:12</span></div>
+            <div>校驗 <span style="color: var(--blue);">blake3</span> ok</div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <Footer product={bcmrProduct} locale="zh-Hant" languages={languages} />
+  </div>
+</DefaultLayout>

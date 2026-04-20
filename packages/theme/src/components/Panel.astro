@@ -1,0 +1,16 @@
+---
+interface Props {
+  title?: string;
+  eyebrow?: string;
+  tone?: 'paper' | 'dark' | 'none';
+  class?: string;
+  style?: string;
+}
+
+const { title, eyebrow, tone = 'paper', class: className = '', style } = Astro.props;
+---
+<section class:list={['panel', `panel--${tone}`, className]} style={style}>
+  {eyebrow && <div class="panel-eyebrow t-small">{eyebrow}</div>}
+  {title && <h3 class="panel-title t-h3 lower">{title}</h3>}
+  <div class="panel-body"><slot /></div>
+</section>

@@ -1,0 +1,86 @@
+---
+import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
+import TopBar from '@snaix/docs-theme/components/TopBar.astro';
+import Footer from '@snaix/docs-theme/components/Footer.astro';
+import { BlockReveal, CliReference } from '@snaix/docs-theme';
+import type { CliCommand, CliGroup, CliSpec } from '@snaix/docs-theme';
+import { getCollection } from 'astro:content';
+import { snaixConfig } from 'virtual:snaix-config';
+import { DEFAULT_LOCALE, topNavFor, localesAsLanguages } from '../../lib/docs.ts';
+import { product } from '../../lib/product.ts';
+
+const bcmrProduct = product('bcmr');
+
+// Commands reference isn't localized yet; fall back to each locale's home.
+const languages = localesAsLanguages('en', '/');
+
+const entries = await getCollection('commands');
+
+const buckets = new Map<string, CliCommand[]>();
+for (const e of entries) {
+  const arr = buckets.get(e.data.group) ?? [];
+  arr.push({
+    cmd: e.data.cmd,
+    sig: e.data.sig,
+    desc: e.data.desc,
+    tags: e.data.tags,
+    flags: e.data.flags,
+    example: e.data.example,
+    related: e.data.related,
+  });
+  buckets.set(e.data.group, arr);
+}
+
+const groups: CliGroup[] = [];
+for (const [group, items] of buckets.entries()) {
+  items.sort((a, b) => {
+    const ao = entries.find((e) => e.data.cmd === a.cmd)?.data.order ?? 9999;
+    const bo = entries.find((e) => e.data.cmd === b.cmd)?.data.order ?? 9999;
+    return ao - bo;
+  });
+  groups.push({ group, items });
+}
+
+const version = String(snaixConfig.version ?? '').replace(/^v/, '');
+const shellLabel = `zsh · ${snaixConfig.title ?? 'bcmr'}${version ? ` ${version}` : ''}`;
+
+const spec: CliSpec = { groups, shellLabel };
+---
+<DefaultLayout title={`${snaixConfig.title ?? 'bcmr'} · commands`}>
+  <div class="page cli">
+    <TopBar
+      brand={snaixConfig.title}
+      version={snaixConfig.version}
+      current="commands"
+      githubHref={snaixConfig.githubUrl}
+      nav={topNavFor(DEFAULT_LOCALE)}
+    />
+
+    <section class="cli-hero rule-b">
+      <div class="cli-hero-grid grid12">
+        <div class="cli-hero-left">
+          <div class="t-small" style="color: var(--red);">§ commands</div>
+          <h1 class="t-h1 lower">
+            <BlockReveal client:load delay={200}>{entries.length} verbs.</BlockReveal><br/>
+            <BlockReveal client:load delay={600} color="var(--blue)">zero magic.</BlockReveal>
+          </h1>
+        </div>
+        <div class="cli-hero-right">
+          <p class="t-body">
+            every action in bcmr is a command you can type, pipe, alias,
+            and commit to your shell history. below is the full surface —
+            grouped, searchable, each entry self-introspectable via{' '}
+            <code class="inline-code">--help</code> or <code class="inline-code">--json</code>.
+          </p>
+          <p class="t-mono-sm" style="color: var(--steel-5); margin-top: 12px;">
+            press <code>/</code> to search · <code>j</code>/<code>k</code> or arrows to move
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <CliReference client:load spec={spec} />
+
+    <Footer product={bcmrProduct} locale="en" languages={languages} />
+  </div>
+</DefaultLayout>

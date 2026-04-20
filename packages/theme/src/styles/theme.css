@@ -1,0 +1,50 @@
+/* ── theme toggle — floating corner switch ── */
+.theme-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg);
+  cursor: pointer;
+  transition: background var(--t-fast) var(--ease),
+              color var(--t-fast) var(--ease),
+              transform var(--t-fast) var(--ease);
+}
+.theme-toggle:hover { transform: translateY(-1px); }
+.tt-track {
+  position: relative;
+  width: 28px; height: 14px;
+  border: 1px solid var(--border);
+  display: inline-block;
+}
+.tt-sq {
+  position: absolute; top: 1px; left: 1px;
+  width: 10px; height: 10px;
+  background: var(--yellow);
+  transition: transform var(--t) var(--ease), background var(--t) var(--ease);
+}
+.tt-sq.is-dark { transform: translateX(14px); background: var(--blue); }
+.tt-ci {
+  position: absolute; top: 3px; right: 3px;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: transparent;
+  border: 1px solid var(--fg-faint);
+  transition: opacity var(--t-fast);
+}
+.tt-ci.is-dark { opacity: 0; }
+.tt-label { min-width: 32px; text-align: left; }
+
+@media (max-width: 720px) {
+  .theme-toggle { bottom: 14px; right: 14px; padding: 7px 10px; }
+  .tt-label { display: none; }
+}

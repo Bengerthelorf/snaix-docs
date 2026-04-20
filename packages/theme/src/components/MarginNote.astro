@@ -1,0 +1,10 @@
+---
+interface Props {
+  num: number | string;
+}
+const { num } = Astro.props;
+---
+<div class="margin-note">
+  <span class="mn-num t-mono-sm">[{num}]</span>
+  <span class="mn-text"><slot /></span>
+</div>

@@ -1,0 +1,82 @@
+---
+import { withBase } from '../utils/href.ts';
+
+interface NavItem {
+  id: string;
+  label: string;
+  href: string;
+  external?: boolean;
+}
+
+interface Props {
+  brand?: string;
+  version?: string;
+  nav?: NavItem[];
+  current?: string;
+  portalHref?: string;
+  githubHref?: string;
+  logoVariant?: 'portal' | 'product';
+  showStatus?: boolean;
+}
+
+const DEFAULT_NAV: NavItem[] = [
+  { id: 'home', label: 'index', href: '/' },
+  { id: 'cli', label: 'commands', href: '/cli' },
+  { id: 'docs', label: 'docs', href: '/docs' },
+  { id: 'download', label: 'install', href: '/install' },
+  { id: 'changelog', label: 'changelog', href: '/changelog' },
+  { id: 'about', label: 'manifesto', href: '/about' },
+];
+
+const {
+  brand = 'bcmr',
+  version = 'v0.9.1',
+  current = 'home',
+  portalHref = '/',
+  githubHref = '#',
+  logoVariant = 'portal',
+  showStatus = true,
+  nav = DEFAULT_NAV,
+} = Astro.props;
+---
+<header class="topbar">
+  <a href={portalHref} class="topbar-brand" title="back to snaix.homes">
+    <svg class="topbar-logo" viewBox="0 0 40 40" aria-hidden="true">
+      {logoVariant === 'product' ? (
+        <Fragment>
+          <rect x="0"  y="0"  width="20" height="20" fill="var(--ink)" />
+          <rect x="20" y="0"  width="20" height="20" fill="var(--red)" />
+          <rect x="0"  y="20" width="20" height="20" fill="var(--yellow)" />
+          <rect x="20" y="20" width="20" height="20" fill="var(--blue)" />
+        </Fragment>
+      ) : (
+        <Fragment>
+          <rect x="0" y="0" width="20" height="20" fill="var(--red)" />
+          <rect x="20" y="0" width="20" height="20" fill="var(--paper-pure)" stroke="var(--ink)" />
+          <circle cx="10" cy="30" r="10" fill="var(--blue)" />
+          <polygon points="20,40 40,40 40,20" fill="var(--yellow)" />
+        </Fragment>
+      )}
+    </svg>
+    <span class="topbar-wordmark">{brand}</span>
+    <span class="topbar-version">{version}</span>
+  </a>
+  <nav class="topbar-nav">
+    {nav.map((n) => (
+      <a
+        href={n.external ? n.href : withBase(n.href)}
+        target={n.external ? '_blank' : undefined}
+        rel={n.external ? 'noopener' : undefined}
+        class:list={['topbar-link', { 'is-active': current === n.id }]}
+      >
+        {n.label}
+      </a>
+    ))}
+  </nav>
+  <div class="topbar-right">
+    {showStatus && (
+      <span class="topbar-status"><span class="dot is-blue" />online</span>
+    )}
+    <a class="topbar-gh" href={githubHref}>github↗</a>
+  </div>
+</header>

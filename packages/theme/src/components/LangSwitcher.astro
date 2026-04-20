@@ -1,0 +1,157 @@
+---
+import { withBase } from '../utils/href.ts';
+
+export interface LangOption {
+  code: string;
+  label: string;
+  href: string;
+  active?: boolean;
+}
+
+interface Props {
+  current: string;
+  options: LangOption[];
+  /** ≥ threshold (default 4) renders as dropdown; below renders as pills. */
+  dropdownAt?: number;
+}
+
+const { current, options, dropdownAt = 4 } = Astro.props;
+const currentOption = options.find((o) => o.code === current);
+const useDropdown = options.length >= dropdownAt;
+---
+{options.length > 1 && (
+  useDropdown ? (
+    <details class="lang-dd">
+      <summary class="lang-dd__trigger">
+        <span class="lang-dd__label">{currentOption?.label ?? current}</span>
+        <span class="lang-dd__caret" aria-hidden="true">▾</span>
+      </summary>
+      <div class="lang-dd__menu" role="menu">
+        {options.map((opt) => (
+          <a
+            href={withBase(opt.href)}
+            class:list={['lang-dd__item', { 'is-active': opt.code === current }]}
+            hreflang={opt.code}
+            role="menuitem"
+          >
+            <span class="lang-dd__item-code">{opt.code}</span>
+            <span class="lang-dd__item-label">{opt.label}</span>
+          </a>
+        ))}
+      </div>
+    </details>
+  ) : (
+    <div class="lang-pills">
+      {options.map((opt) => (
+        <a
+          href={withBase(opt.href)}
+          class:list={['lang-pills__item', { 'is-active': opt.code === current }]}
+          hreflang={opt.code}
+        >
+          {opt.label}
+        </a>
+      ))}
+    </div>
+  )
+)}
+
+<style>
+  .lang-pills {
+    display: inline-flex;
+    gap: 2px;
+    border: 1px solid var(--border);
+    padding: 2px;
+    background: var(--bg-raised);
+    font-family: var(--mono);
+    font-size: 11px;
+  }
+  .lang-pills__item {
+    padding: 4px 10px;
+    color: var(--fg-muted);
+    transition: background var(--t-fast), color var(--t-fast);
+  }
+  .lang-pills__item:hover { background: var(--bg); color: var(--fg); }
+  .lang-pills__item.is-active {
+    background: var(--ink);
+    color: var(--paper-pure);
+  }
+
+  .lang-dd {
+    position: relative;
+    display: inline-block;
+  }
+  .lang-dd__trigger {
+    list-style: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--fg);
+    min-width: 120px;
+    justify-content: space-between;
+  }
+  .lang-dd__trigger::-webkit-details-marker { display: none; }
+  .lang-dd__trigger::marker { content: ''; }
+  .lang-dd__trigger:hover { background: var(--bg); }
+  .lang-dd[open] .lang-dd__trigger { background: var(--ink); color: var(--paper-pure); }
+  .lang-dd__caret { font-size: 9px; transition: transform var(--t-fast); }
+  .lang-dd[open] .lang-dd__caret { transform: rotate(180deg); }
+
+  .lang-dd__menu {
+    position: absolute;
+    top: calc(100% + 2px);
+    left: 0;
+    min-width: 220px;
+    max-height: 340px;
+    overflow-y: auto;
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    box-shadow: 4px 4px 0 0 var(--ink);
+    z-index: 60;
+    padding: 4px;
+  }
+  .lang-dd__item {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 10px;
+    align-items: baseline;
+    padding: 6px 10px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--fg-muted);
+    transition: background var(--t-fast), color var(--t-fast);
+  }
+  .lang-dd__item:hover { background: var(--bg); color: var(--fg); }
+  .lang-dd__item.is-active {
+    background: var(--ink);
+    color: var(--paper-pure);
+  }
+  .lang-dd__item-code { color: var(--steel-5); text-transform: uppercase; letter-spacing: 0.08em; }
+  .lang-dd__item.is-active .lang-dd__item-code { color: var(--yellow); }
+  .lang-dd__item-label {
+    font-family: var(--sans);
+    font-size: 13px;
+    letter-spacing: normal;
+  }
+</style>
+
+<script>
+  document.addEventListener('click', (e) => {
+    const target = e.target as Element;
+    document.querySelectorAll<HTMLDetailsElement>('details.lang-dd[open]').forEach((dd) => {
+      if (!dd.contains(target)) dd.open = false;
+    });
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll<HTMLDetailsElement>('details.lang-dd[open]').forEach((dd) => {
+        dd.open = false;
+      });
+    }
+  });
+</script>

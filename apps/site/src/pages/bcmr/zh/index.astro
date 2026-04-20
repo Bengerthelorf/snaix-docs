@@ -1,0 +1,125 @@
+---
+import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
+import TopBar from '@snaix/docs-theme/components/TopBar.astro';
+import Footer from '@snaix/docs-theme/components/Footer.astro';
+import {
+  BlockReveal,
+  Scramble,
+  Tally,
+  Typewriter,
+  CommandStream,
+  withBase,
+} from '@snaix/docs-theme';
+import type { CmdLine } from '@snaix/docs-theme';
+import { snaixConfig } from 'virtual:snaix-config';
+import { resolveLocale, topNavFor, localesAsLanguages } from '../../../lib/docs.ts';
+import { product } from '../../../lib/product.ts';
+
+const bcmrProduct = product('bcmr');
+const languages = localesAsLanguages('zh', '/');
+
+const locale = resolveLocale('zh');
+
+const terminalScript: CmdLine[] = [
+  { type: 'prompt', text: 'bcmr copy ./dataset user@node-04:/srv/' },
+  { type: 'out',    text: '扫描源 …… 2,481 个文件 · 14.2 gb', pause: 200 },
+  { type: 'out',    text: 'ssh 握手 …… ok', pause: 140 },
+  { type: 'out',    text: 'direct-tcp 快速通道 …… 已协商', pause: 180 },
+  { type: 'ok',     text: '完成 · 34.5s · 412 mb/s · 全部 blake3 已校验', pause: 260 },
+];
+---
+<DefaultLayout title="bcmr — 更好的复制、移动、删除" lang={locale.lang ?? 'zh-Hans'}>
+  <div class="page home">
+    <TopBar
+      brand={snaixConfig.title}
+      version={snaixConfig.version}
+      current="home"
+      logoVariant="product"
+      showStatus={false}
+      githubHref={snaixConfig.githubUrl}
+      nav={topNavFor(locale)}
+    />
+
+    <section class="hero">
+      <div class="hero-top rule-b">
+        <span class="t-mono-sm">bcmr · 更好的 cp / mv / rm</span>
+        <span class="t-mono-sm">本地与 ssh · 同一条命令</span>
+        <span class="t-mono-sm">{snaixConfig.version} · {snaixConfig.releaseDate}</span>
+      </div>
+
+      <div class="hero-grid grid12">
+        <div class="hero-headline">
+          <div class="hero-eyebrow">
+            <span class="t-small">§ 01 · 概览</span>
+            <span class="t-mono-sm" style="color: var(--steel-5);">
+              <Typewriter client:load text="// cp + mv + scp —— 但是诚实的那种。" speed={24} delay={300} />
+            </span>
+          </div>
+          <h1 class="t-display lower">
+            <span class="hl-line"><BlockReveal client:load delay={400} duration={520}>复制.</BlockReveal></span>
+            <span class="hl-line"><BlockReveal client:load delay={760} duration={520} color="var(--red)">移动.</BlockReveal></span>
+            <span class="hl-line"><BlockReveal client:load delay={1120} duration={520} color="var(--blue)">删除.</BlockReveal></span>
+          </h1>
+
+          <p class="hero-lede">
+            bcmr 是 cp / mv / scp 的现代替代品。每次写入流式 blake3 校验，
+            崩溃后可续传，本地路径和 ssh 路径在同一条命令里 —— 一个命令，
+            两端都校验过。
+          </p>
+
+          <div class="hero-cta">
+            <a class="btn-block" href={withBase('/zh/install')}>↳ 安装 {snaixConfig.version}</a>
+            <a class="btn-block is-ghost" href={withBase('/zh/docs/getting-started')}>阅读文档</a>
+            <span class="hero-cta-meta t-mono-sm">
+              ⌘ <span>brew install Bengerthelorf/tap/bcmr</span>
+            </span>
+          </div>
+        </div>
+
+        <aside class="hero-device">
+          <div class="device-head">
+            <div class="t-small">transfer.live</div>
+            <div class="chip is-blue"><span class="dot"/>已校验</div>
+          </div>
+          <div style="padding: 16px; background: var(--ink); color: var(--paper-pure); font-family: var(--mono); font-size: 12px; line-height: 1.7;">
+            <div style="color: var(--steel-5);"># 14.2 gb · 本地 → ssh</div>
+            <div>源  <b style="color: var(--paper-pure);">./dataset/</b></div>
+            <div>目标 <b style="color: var(--paper-pure);">node-04:/srv/</b></div>
+            <div style="margin: 10px 0; color: var(--steel-3);">────────────────</div>
+            <div>速率 <span style="color: var(--yellow);"><Tally client:load to={412} duration={900} suffix=" mb/s" /></span></div>
+            <div>剩余 <span style="color: var(--yellow);">00:00:12</span></div>
+            <div>校验 <span style="color: var(--blue);">blake3</span> ok</div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="home-section">
+      <div class="section-head">
+        <div class="section-head-left">
+          <div class="t-small">§ 02 · 同一条命令</div>
+          <h2 class="t-h1 lower">本地 ssh,<br/>一个命令。</h2>
+        </div>
+        <div class="section-head-right">
+          <p class="t-body">
+            cp 和 scp 把本地和远程当成两个世界。
+            bcmr 只当它们是两种路径。<code class="inline-code">bcmr copy</code> 在
+            3 mb 的本地拷贝和 300 gb 的跨机房传输里是同一条命令。
+          </p>
+        </div>
+      </div>
+
+      <div class="terminal-shell">
+        <div class="terminal-chrome">
+          <div class="terminal-lights"><span/><span/><span/></div>
+          <div class="t-mono-sm">zsh · {snaixConfig.title} {String(snaixConfig.version ?? "").replace(/^v/, "")}</div>
+        </div>
+        <div class="terminal-body">
+          <CommandStream client:load lines={terminalScript} />
+        </div>
+      </div>
+    </section>
+
+    <Footer product={bcmrProduct} locale="zh" languages={languages} />
+  </div>
+</DefaultLayout>
