@@ -6,7 +6,6 @@ import { BlockReveal, Scramble, Typewriter } from '@snaix/docs-theme';
 import { product } from '../../lib/product.ts';
 
 const iconchanger = product('iconchanger');
-const languages = iconchanger.pageLanguages('en', '/');
 
 const highlights = [
   { n: '01', t: 'any macos icon',        d: 'apps, folders, system volumes. drag to swap, drag to reset.' },
@@ -166,7 +165,7 @@ const highlights = [
       </div>
     </section>
 
-    <Footer product={iconchanger} locale="en" languages={languages} />
+    <Footer product={iconchanger} locale="en" languages={iconchanger.pageLanguages('en', '/')} />
   </div>
 </DefaultLayout>
 

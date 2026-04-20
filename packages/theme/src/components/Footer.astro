@@ -1,5 +1,5 @@
 ---
-import { withBase } from '../utils/href.ts';
+import { productHref } from '../utils/href.ts';
 import { snaixConfig } from 'virtual:snaix-config';
 import type { ProductIntegration } from '@snaix/docs';
 import LangSwitcher from './LangSwitcher.astro';
@@ -16,27 +16,14 @@ interface Props {
 const { product, portalHref = '/', locale = 'en', languages = [] } = Astro.props;
 
 const brand = product.title;
-const blurb = Astro.props.blurb ?? (
-  product.tagline
-    ? `${product.tagline}. `
-    : ''
-);
+const blurb = Astro.props.blurb ?? (product.tagline ? `${product.tagline}. ` : '');
 
-const tabs = product.tabs ?? [];
-const siteProducts = snaixConfig.siteData?.products ?? [];
-const otherProducts = siteProducts.filter((p) => p.slug !== product.slug);
-
-const prHref = (path: string): string => {
-  const pr = product.productRoot.replace(/\/$/, '');
-  const clean = path.startsWith('/') ? path : `/${path}`;
-  const rooted = pr && !clean.startsWith(pr + '/') && clean !== pr ? pr + clean : clean;
-  return withBase(rooted);
-};
+const otherProducts = snaixConfig.siteData!.products!.filter((p) => p.slug !== product.slug);
 
 const hrefFor = (id: string, fallback: string): string => {
-  const t = tabs.find((x) => x.id === id);
-  if (!t) return prHref(fallback);
-  return t.external ? t.href : prHref(t.href);
+  const t = product.tabs.find((x) => x.id === id);
+  if (!t) return productHref(product, fallback);
+  return t.external ? t.href : productHref(product, t.href);
 };
 
 const overviewHref = hrefFor('home', '/');

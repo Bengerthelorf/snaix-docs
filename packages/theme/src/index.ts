@@ -15,4 +15,4 @@ export type { CliCommand, CliGroup, CliFlag, CliSpec } from './components/cli/Cl
 
 export { InstallTabs } from './components/install/InstallTabs.tsx';
 
-export { withBase } from './utils/href.ts';
+export { withBase, productHref } from './utils/href.ts';

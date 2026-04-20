@@ -7,62 +7,47 @@ import type { CmdLine } from '@snaix/docs-theme';
 import { product } from '../../lib/product.ts';
 
 const iconchanger = product('iconchanger');
-
-const prHref = (path: string) => {
-  const pr = iconchanger.productRoot.replace(/\/$/, '');
-  const clean = path.startsWith('/') ? path : `/${path}`;
-  return pr && !clean.startsWith(pr + '/') ? pr + clean : clean;
-};
-
-const tabs = (iconchanger.tabs ?? []).map((t) => ({
-  id: t.id,
-  label: t.label,
-  href: t.external ? t.href : prHref(t.href),
-  external: t.external,
-}));
-
-const options = iconchanger.install ?? {};
-
-const versionBare = String(iconchanger.version ?? '').replace(/^v/, '');
+const versionBare = iconchanger.version.replace(/^v/, '');
 
 const verifyScript: CmdLine[] = [
-  { type: 'prompt', text: 'open -a Claudit' },
-  { type: 'out',    text: 'menu bar icon appears', pause: 160 },
+  { type: 'prompt', text: 'open -a IconChanger' },
+  { type: 'out',    text: 'main window opens', pause: 160 },
   { type: 'blank' },
-  { type: 'prompt', text: 'defaults read cc.ffitch.Claudit CFBundleShortVersionString', pause: 220 },
+  { type: 'prompt', text: 'defaults read cc.lcandy2.IconChanger CFBundleShortVersionString', pause: 220 },
   { type: 'out',    text: versionBare, pause: 120 },
-  { type: 'ok',     text: 'installed and running', pause: 160 },
+  { type: 'ok',     text: 'installed · ready to swap icons', pause: 160 },
 ];
 
-const firstCopyScript: CmdLine[] = [
-  { type: 'prompt', text: 'click menu bar icon' },
-  { type: 'out',    text: 'usage · today $0.00 · 0% quota', pause: 160 },
-  { type: 'ok',     text: 'parsing ~/.claude/**/*.jsonl',   pause: 180 },
+const firstUseScript: CmdLine[] = [
+  { type: 'prompt', text: 'drag an app onto the IconChanger window' },
+  { type: 'out',    text: 'searching macosicons.com …… 42 results', pause: 180 },
+  { type: 'out',    text: 'select an icon · click apply',            pause: 160 },
+  { type: 'ok',     text: 'Dock updated · favorites saved',          pause: 180 },
 ];
 ---
-<DefaultLayout title="iconchanger · install">
+<DefaultLayout title={`${iconchanger.title} · install`}>
   <div class="page install">
     <TopBar
       brand={iconchanger.title}
       version={iconchanger.version}
       current="install"
       githubHref={iconchanger.githubUrl}
-      nav={tabs}
+      nav={iconchanger.nav()}
     />
 
     <section class="install-hero">
       <div class="t-small" style="color: var(--red);">§ install</div>
       <h1 class="install-title lower">
-        <BlockReveal client:load>four</BlockReveal> <BlockReveal client:load color="var(--red)" delay={300}>ways</BlockReveal><br/>
+        <BlockReveal client:load>two</BlockReveal> <BlockReveal client:load color="var(--red)" delay={300}>ways</BlockReveal><br/>
         <BlockReveal client:load color="var(--blue)" delay={600}>in.</BlockReveal>
       </h1>
       <p class="t-body" style="margin-top: 24px; max-width: 560px;">
-        iconchanger is a native macOS app. install with homebrew or from the DMG — a minute either way. pick a channel, paste one
-        line, you're navigating your cloud drive in under a minute.
+        iconchanger is a native macOS app. homebrew or DMG — pick one, under a
+        minute either way. runs 100% on-device, no account needed.
       </p>
     </section>
 
-    <InstallTabs client:load options={options} verifyScript={verifyScript} firstCopyScript={firstCopyScript} />
+    <InstallTabs client:load options={iconchanger.install} verifyScript={verifyScript} firstCopyScript={firstUseScript} />
 
     <Footer product={iconchanger} locale="en" />
   </div>

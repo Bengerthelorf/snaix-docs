@@ -4,10 +4,12 @@ import { getCollection } from 'astro:content';
 import {
   DEFAULT_LOCALE,
   LOCALES,
+  PRODUCT_DOCS_SECTIONS,
   bareSlug,
   docsBaseFor,
   navFor,
   resolveLocale,
+  slugPrefix,
 } from '../../../../lib/docs.ts';
 import { product } from '../../../../lib/product.ts';
 
@@ -18,11 +20,11 @@ export async function getStaticPaths() {
   const paths = [];
   for (const locale of LOCALES) {
     if (locale.code === DEFAULT_LOCALE.code) continue;
-    const prefix = `${locale.code.toLowerCase()}/`;
+    const prefix = slugPrefix(locale, LOCALES);
     const entries = all.filter(
       (e) =>
         e.slug.toLowerCase().startsWith(prefix) &&
-        ['guide', 'cli'].includes(e.data.section ?? 'guide'),
+        PRODUCT_DOCS_SECTIONS.includes(e.data.section ?? 'guide'),
     );
     for (const entry of entries) {
       paths.push({
@@ -37,17 +39,16 @@ export async function getStaticPaths() {
 const { entry, localeCode } = Astro.props;
 const locale = resolveLocale(localeCode);
 const all = await getCollection('pikpaktui');
-const nav = await navFor(locale, all, ['guide', 'cli'], { docsRoot: '/pikpaktui/docs' });
-const languages = pikpaktui.docsLanguages(entry, all, locale);
+const nav = await navFor(locale, all, PRODUCT_DOCS_SECTIONS, '/pikpaktui/docs');
 const { Content, headings } = await entry.render();
 const toc = headings
   .filter((h) => h.depth >= 2 && h.depth <= 3)
   .map((h) => ({ slug: h.slug, text: h.text, depth: h.depth }));
 
 const bare = bareSlug(entry.slug);
-const sectionLabel = locale.ui?.sections?.['guide'] ?? 'guide';
+const sectionKey = entry.data.section ?? 'guide';
+const sectionLabel = locale.ui?.sections?.[sectionKey] ?? sectionKey;
 const docsLabel = locale.ui?.docsLabel ?? 'docs';
-const breadcrumb = [docsLabel, sectionLabel, entry.data.title];
 ---
 <DocsLayout
   product={pikpaktui}
@@ -57,14 +58,14 @@ const breadcrumb = [docsLabel, sectionLabel, entry.data.title];
   nav={nav}
   title={entry.data.title}
   description={entry.data.description}
-  breadcrumb={breadcrumb}
+  breadcrumb={[docsLabel, sectionLabel, entry.data.title]}
   toc={toc}
   source={{
     path: `docs/${locale.code}/${bare}.md`,
     url: `https://github.com/Bengerthelorf/pikpaktui/edit/main/docs/${locale.code}/${bare}.md`,
   }}
   locale={locale.lang ?? locale.code}
-  languages={languages}
+  languages={pikpaktui.docsLanguages(entry, all, locale)}
   docsBase={docsBaseFor(locale, '/pikpaktui/docs')}
   tocLabel={locale.ui?.tocLabel ?? 'on this page'}
   topNav={pikpaktui.nav()}

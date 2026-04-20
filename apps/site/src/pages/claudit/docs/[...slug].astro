@@ -5,6 +5,7 @@ import {
   DEFAULT_LOCALE,
   bareSlug,
   docsBaseFor,
+  isDefaultLocaleEntry,
   navFor,
 } from '../../../lib/docs.ts';
 import { product } from '../../../lib/product.ts';
@@ -12,7 +13,7 @@ import { product } from '../../../lib/product.ts';
 const claudit = product('claudit');
 
 export async function getStaticPaths() {
-  const entries = await getCollection('claudit', (e) => (e.data.locale ?? 'en') === 'en');
+  const entries = await getCollection('claudit', isDefaultLocaleEntry);
   return entries.map((entry) => ({
     params: { slug: entry.slug },
     props: { entry },
@@ -21,8 +22,7 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const all = await getCollection('claudit');
-const nav = await navFor(DEFAULT_LOCALE, all, ['guide'], { docsRoot: '/claudit/docs' });
-const languages = claudit.docsLanguages(entry, all, DEFAULT_LOCALE);
+const nav = await navFor(DEFAULT_LOCALE, all, ['guide'], '/claudit/docs');
 const { Content, headings } = await entry.render();
 const toc = headings
   .filter((h) => h.depth >= 2 && h.depth <= 3)
@@ -31,7 +31,6 @@ const toc = headings
 const bare = bareSlug(entry.slug);
 const sectionLabel = DEFAULT_LOCALE.ui?.sections?.['guide'] ?? 'guide';
 const docsLabel = DEFAULT_LOCALE.ui?.docsLabel ?? 'docs';
-const breadcrumb = [docsLabel, sectionLabel, entry.data.title];
 ---
 <DocsLayout
   product={claudit}
@@ -41,14 +40,14 @@ const breadcrumb = [docsLabel, sectionLabel, entry.data.title];
   nav={nav}
   title={entry.data.title}
   description={entry.data.description}
-  breadcrumb={breadcrumb}
+  breadcrumb={[docsLabel, sectionLabel, entry.data.title]}
   toc={toc}
   source={{
     path: `docs/${bare}.md`,
     url: `https://github.com/Bengerthelorf/Claudit/edit/main/docs/${bare}.md`,
   }}
   locale={DEFAULT_LOCALE.code}
-  languages={languages}
+  languages={claudit.docsLanguages(entry, all, DEFAULT_LOCALE)}
   docsBase={docsBaseFor(DEFAULT_LOCALE, '/claudit/docs')}
   tocLabel={DEFAULT_LOCALE.ui?.tocLabel ?? 'on this page'}
   topNav={claudit.nav()}

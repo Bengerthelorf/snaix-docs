@@ -6,7 +6,6 @@ import { BlockReveal, Scramble, Typewriter } from '@snaix/docs-theme';
 import { product } from '../../lib/product.ts';
 
 const pikpaktui = product('pikpaktui');
-const languages = pikpaktui.pageLanguages('en', '/');
 
 const highlights = [
   { n: '01', t: 'three-column tui',   d: 'yazi-style miller layout with live thumbnails, syntax highlighting, and keyboard-driven navigation.' },
@@ -165,7 +164,7 @@ const highlights = [
       </div>
     </section>
 
-    <Footer product={pikpaktui} locale="en" languages={languages} />
+    <Footer product={pikpaktui} locale="en" languages={pikpaktui.pageLanguages('en', '/')} />
   </div>
 </DefaultLayout>
 

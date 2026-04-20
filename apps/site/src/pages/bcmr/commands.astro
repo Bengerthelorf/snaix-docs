@@ -9,8 +9,6 @@ import { product } from '../../lib/product.ts';
 
 const bcmrProduct = product('bcmr');
 
-const languages = bcmrProduct.pageLanguages('en', '/');
-
 const entries = await getCollection('commands');
 
 const buckets = new Map<string, CliCommand[]>();
@@ -78,6 +76,6 @@ const spec: CliSpec = { groups, shellLabel };
 
     <CliReference client:load spec={spec} />
 
-    <Footer product={bcmrProduct} locale="en" languages={languages} />
+    <Footer product={bcmrProduct} locale="en" languages={bcmrProduct.pageLanguages('en', '/')} />
   </div>
 </DefaultLayout>

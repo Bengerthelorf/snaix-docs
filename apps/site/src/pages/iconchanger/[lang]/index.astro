@@ -14,7 +14,6 @@ export async function getStaticPaths() {
 
 const iconchanger = product('iconchanger');
 const locale = resolveLocale(Astro.params.lang!);
-const languages = iconchanger.pageLanguages(locale.code, '/');
 
 const copy = {
   zh: {
@@ -184,7 +183,7 @@ const t = copy[locale.code as 'zh' | 'zh-Hant'];
       </div>
     </section>
 
-    <Footer product={iconchanger} locale={locale.code} languages={languages} />
+    <Footer product={iconchanger} locale={locale.code} languages={iconchanger.pageLanguages(locale.code, '/')} />
   </div>
 </DefaultLayout>
 

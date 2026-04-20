@@ -8,13 +8,10 @@ import { snaixConfig } from 'virtual:snaix-config';
 import { product } from '../../lib/product.ts';
 
 const bcmrProduct = product('bcmr');
-const languages = bcmrProduct.pageLanguages('en', '/');
 
-const buildSha = snaixConfig.siteData?.build?.sha ?? '';
-const options = bcmrProduct.install ?? {};
-
-const versionBare = String(bcmrProduct.version ?? '').replace(/^v/, '');
-const releaseIso = String(bcmrProduct.releaseDate ?? '').replaceAll('.', '-');
+const buildSha = snaixConfig.siteData.build.sha;
+const versionBare = bcmrProduct.version.replace(/^v/, '');
+const releaseIso = bcmrProduct.releaseDate.replaceAll('.', '-');
 
 const verifyScript: CmdLine[] = [
   { type: 'prompt', text: `${bcmrProduct.title} --version` },
@@ -57,8 +54,8 @@ const firstCopyScript: CmdLine[] = [
       </p>
     </section>
 
-    <InstallTabs client:load options={options} verifyScript={verifyScript} firstCopyScript={firstCopyScript} />
+    <InstallTabs client:load options={bcmrProduct.install} verifyScript={verifyScript} firstCopyScript={firstCopyScript} />
 
-    <Footer product={bcmrProduct} locale="en" languages={languages} />
+    <Footer product={bcmrProduct} locale="en" languages={bcmrProduct.pageLanguages('en', '/')} />
   </div>
 </DefaultLayout>

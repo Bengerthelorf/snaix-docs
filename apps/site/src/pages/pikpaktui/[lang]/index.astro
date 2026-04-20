@@ -14,7 +14,6 @@ export async function getStaticPaths() {
 
 const pikpaktui = product('pikpaktui');
 const locale = resolveLocale(Astro.params.lang!);
-const languages = pikpaktui.pageLanguages(locale.code, '/');
 
 const copy = {
   zh: {
@@ -27,6 +26,7 @@ const copy = {
     topLine: 'pikpaktui · pikpak 在你的终端里',
     topMid: 'tui + cli · 纯 rust',
     footerTail: '三栏 · ratatui',
+    interactiveChip: '互动',
     features: [
       { n: '01', t: '三栏 tui',         d: 'yazi 风格的米勒布局，支持实时缩略图、语法高亮和键盘导航。' },
       { n: '02', t: '28 条子命令',      d: 'ls · mv · cp · rm · download · upload · share · update。彩色输出、--json、--dry-run。' },
@@ -56,6 +56,7 @@ const copy = {
     topLine: 'pikpaktui · pikpak 在你的終端機裡',
     topMid: 'tui + cli · 純 rust',
     footerTail: '三欄 · ratatui',
+    interactiveChip: '互動',
     features: [
       { n: '01', t: '三欄 tui',         d: 'yazi 風格的米勒佈局，支援即時縮圖、語法高亮與鍵盤導覽。' },
       { n: '02', t: '28 條子命令',      d: 'ls · mv · cp · rm · download · upload · share · update。彩色輸出、--json、--dry-run。' },
@@ -126,7 +127,7 @@ const t = copy[locale.code as 'zh' | 'zh-Hant'];
         <aside class="hero-device hero-device--image">
           <div class="device-head">
             <div class="t-small">tui.live</div>
-            <div class="chip is-blue"><span class="dot"/>{locale.code === 'zh' ? '互动' : '互動'}</div>
+            <div class="chip is-blue"><span class="dot"/>{t.interactiveChip}</div>
           </div>
           <img
             src={pikpaktui.href('/images/main.jpeg')}
@@ -184,7 +185,7 @@ const t = copy[locale.code as 'zh' | 'zh-Hant'];
       </div>
     </section>
 
-    <Footer product={pikpaktui} locale={locale.code} languages={languages} />
+    <Footer product={pikpaktui} locale={locale.code} languages={pikpaktui.pageLanguages(locale.code, '/')} />
   </div>
 </DefaultLayout>
 

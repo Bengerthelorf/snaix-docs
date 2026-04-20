@@ -95,9 +95,9 @@ export interface ProductIntegration {
   githubUrl?: string;
   /** No trailing slash. Pages live at `${productRoot}/*`. */
   productRoot: string;
-  install?: InstallOptions;
-  sections?: NavSection[];
-  tabs?: TopNavTab[];
+  install: InstallOptions;
+  sections: NavSection[];
+  tabs: TopNavTab[];
   linkRewrites?: Record<string, string>;
   /** Substring matched against source file paths to scope rewrites. Defaults to `content/${slug}/`. */
   contentDir?: string;

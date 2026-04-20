@@ -134,9 +134,8 @@ export function buildDocsNav<T extends DocEntryLike>(
 
 export interface LanguageOptionsOptions {
   /** Product root path, no trailing slash. Emitted before the locale prefix. */
-  productRoot?: string;
-  /** Path segment after the locale prefix — e.g. `/docs`, `/internals`. */
-  docsSubpath?: string;
+  productRoot: string;
+  docsSubpath: string;
 }
 
 export function buildLanguageOptions<T extends DocEntryLike>(
@@ -144,11 +143,10 @@ export function buildLanguageOptions<T extends DocEntryLike>(
   currentSlug: string,
   currentLocale: LocaleOption,
   locales: LocaleOption[],
-  options: LanguageOptionsOptions = {},
+  { productRoot, docsSubpath }: LanguageOptionsOptions,
 ): { code: string; label: string; href: string; active: boolean }[] {
   const current = bareSlug(currentSlug, locales);
-  const root = (options.productRoot ?? '').replace(/\/$/, '');
-  const docsSubpath = options.docsSubpath ?? '/docs';
+  const root = productRoot.replace(/\/$/, '');
   return locales
     .filter((l) => {
       const prefix = slugPrefix(l, locales);

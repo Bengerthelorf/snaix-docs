@@ -15,8 +15,6 @@ import { resolveLocale } from '../../../lib/docs.ts';
 import { product } from '../../../lib/product.ts';
 
 const bcmrProduct = product('bcmr');
-const languages = bcmrProduct.pageLanguages('zh', '/');
-
 const locale = resolveLocale('zh');
 
 const terminalScript: CmdLine[] = [
@@ -119,6 +117,6 @@ const terminalScript: CmdLine[] = [
       </div>
     </section>
 
-    <Footer product={bcmrProduct} locale="zh" languages={languages} />
+    <Footer product={bcmrProduct} locale="zh" languages={bcmrProduct.pageLanguages('zh', '/')} />
   </div>
 </DefaultLayout>

@@ -7,47 +7,33 @@ import type { CmdLine } from '@snaix/docs-theme';
 import { product } from '../../lib/product.ts';
 
 const pikpaktui = product('pikpaktui');
-
-const prHref = (path: string) => {
-  const pr = pikpaktui.productRoot.replace(/\/$/, '');
-  const clean = path.startsWith('/') ? path : `/${path}`;
-  return pr && !clean.startsWith(pr + '/') ? pr + clean : clean;
-};
-
-const tabs = (pikpaktui.tabs ?? []).map((t) => ({
-  id: t.id,
-  label: t.label,
-  href: t.external ? t.href : prHref(t.href),
-  external: t.external,
-}));
-
-const options = pikpaktui.install ?? {};
-
-const versionBare = String(pikpaktui.version ?? '').replace(/^v/, '');
+const versionBare = pikpaktui.version.replace(/^v/, '');
 
 const verifyScript: CmdLine[] = [
-  { type: 'prompt', text: 'open -a Claudit' },
-  { type: 'out',    text: 'menu bar icon appears', pause: 160 },
+  { type: 'prompt', text: 'pikpaktui --version' },
+  { type: 'out',    text: `pikpaktui ${versionBare}`, pause: 160 },
   { type: 'blank' },
-  { type: 'prompt', text: 'defaults read cc.ffitch.Claudit CFBundleShortVersionString', pause: 220 },
-  { type: 'out',    text: versionBare, pause: 120 },
-  { type: 'ok',     text: 'installed and running', pause: 160 },
+  { type: 'prompt', text: 'pikpaktui ls /', pause: 220 },
+  { type: 'out',    text: 'drwxr-xr-x   Downloads/', pause: 120 },
+  { type: 'out',    text: 'drwxr-xr-x   Movies/',    pause: 80 },
+  { type: 'ok',     text: 'connected',               pause: 160 },
 ];
 
-const firstCopyScript: CmdLine[] = [
-  { type: 'prompt', text: 'click menu bar icon' },
-  { type: 'out',    text: 'usage · today $0.00 · 0% quota', pause: 160 },
-  { type: 'ok',     text: 'parsing ~/.claude/**/*.jsonl',   pause: 180 },
+const firstRunScript: CmdLine[] = [
+  { type: 'prompt', text: 'pikpaktui' },
+  { type: 'out',    text: 'login · pikpak email + password', pause: 180 },
+  { type: 'ok',     text: 'session saved to ~/.config/pikpaktui/',  pause: 180 },
+  { type: 'out',    text: 'entering tui · press h for help',         pause: 160 },
 ];
 ---
-<DefaultLayout title="pikpaktui · install">
+<DefaultLayout title={`${pikpaktui.title} · install`}>
   <div class="page install">
     <TopBar
       brand={pikpaktui.title}
       version={pikpaktui.version}
       current="install"
       githubHref={pikpaktui.githubUrl}
-      nav={tabs}
+      nav={pikpaktui.nav()}
     />
 
     <section class="install-hero">
@@ -58,11 +44,11 @@ const firstCopyScript: CmdLine[] = [
       </h1>
       <p class="t-body" style="margin-top: 24px; max-width: 560px;">
         pikpaktui is a single static binary. pick a channel, paste one
-        line, you're navigating your cloud drive in under a minute.
+        line, you're browsing your pikpak drive in under a minute.
       </p>
     </section>
 
-    <InstallTabs client:load options={options} verifyScript={verifyScript} firstCopyScript={firstCopyScript} />
+    <InstallTabs client:load options={pikpaktui.install} verifyScript={verifyScript} firstCopyScript={firstRunScript} />
 
     <Footer product={pikpaktui} locale="en" />
   </div>

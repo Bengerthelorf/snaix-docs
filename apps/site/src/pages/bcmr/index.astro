@@ -15,8 +15,6 @@ import { product } from '../../lib/product.ts';
 
 const bcmrProduct = product('bcmr');
 
-const languages = bcmrProduct.pageLanguages('en', '/');
-
 const terminalScript: CmdLine[] = [
   { type: 'prompt', text: 'bcmr copy ./dataset user@node-04:/srv/' },
   { type: 'out',    text: 'scanning …… 2,481 files · 14.2 gb', pause: 200 },
@@ -226,6 +224,6 @@ const features = [
       </div>
     </section>
 
-    <Footer product={bcmrProduct} locale="en" languages={languages} />
+    <Footer product={bcmrProduct} locale="en" languages={bcmrProduct.pageLanguages('en', '/')} />
   </div>
 </DefaultLayout>

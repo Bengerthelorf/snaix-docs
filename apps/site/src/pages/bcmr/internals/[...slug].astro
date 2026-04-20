@@ -23,8 +23,7 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const all = await getCollection('bcmr');
-const nav = await navFor(DEFAULT_LOCALE, all, ['internals'], { internalsDocsRoot: '/bcmr/internals' });
-const languages = bcmrProduct.docsLanguages(entry, all, DEFAULT_LOCALE, '/internals');
+const nav = await navFor(DEFAULT_LOCALE, all, ['internals'], '/bcmr/internals');
 const { Content, headings } = await entry.render();
 const toc = headings
   .filter((h) => h.depth >= 2 && h.depth <= 3)
@@ -32,7 +31,6 @@ const toc = headings
 
 const bare = entry.slug.replace(/^ablation\/?/, '') || 'index';
 const docsLabel = DEFAULT_LOCALE.ui?.docsLabel ?? 'docs';
-const breadcrumb = [docsLabel, 'internals', entry.data.title];
 ---
 <DocsLayout
   product={bcmrProduct}
@@ -42,14 +40,14 @@ const breadcrumb = [docsLabel, 'internals', entry.data.title];
   nav={nav}
   title={entry.data.title}
   description={entry.data.description}
-  breadcrumb={breadcrumb}
+  breadcrumb={[docsLabel, 'internals', entry.data.title]}
   toc={toc}
   source={{
     path: `docs/ablation/${bare}.md`,
     url: `https://github.com/Bengerthelorf/bcmr/edit/main/docs/ablation/${bare}.md`,
   }}
   locale={DEFAULT_LOCALE.code}
-  languages={languages}
+  languages={bcmrProduct.docsLanguages(entry, all, DEFAULT_LOCALE, '/internals')}
   docsBase={docsBaseFor(DEFAULT_LOCALE, '/bcmr/internals')}
   tocLabel={DEFAULT_LOCALE.ui?.tocLabel ?? 'on this page'}
   math={true}
