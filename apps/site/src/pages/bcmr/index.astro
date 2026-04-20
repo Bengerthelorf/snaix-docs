@@ -11,8 +11,7 @@ import {
   withBase,
 } from '@snaix/docs-theme';
 import type { CmdLine } from '@snaix/docs-theme';
-import { snaixConfig } from 'virtual:snaix-config';
-import { DEFAULT_LOCALE, topNavFor, localesAsLanguages } from '../../lib/docs.ts';
+import { localesAsLanguages } from '../../lib/docs.ts';
 import { product } from '../../lib/product.ts';
 
 const bcmrProduct = product('bcmr');
@@ -45,12 +44,12 @@ const features = [
 <DefaultLayout title="bcmr — better copy move remove">
   <div class="page home">
     <TopBar
-      brand="bcmr"
-      version={snaixConfig.version}
+      brand={bcmrProduct.title}
+      version={bcmrProduct.version}
       current="home"
       logoVariant="product"
       showStatus={false}
-      githubHref={snaixConfig.githubUrl}
+      githubHref={bcmrProduct.githubUrl}
       nav={bcmrProduct.nav()}
     />
 
@@ -58,7 +57,7 @@ const features = [
       <div class="hero-top rule-b">
         <span class="t-mono-sm">bcmr / better copy move remove</span>
         <span class="t-mono-sm">one verb for local + ssh</span>
-        <span class="t-mono-sm">{snaixConfig.version} · {snaixConfig.releaseDate}</span>
+        <span class="t-mono-sm">{bcmrProduct.version} · {bcmrProduct.releaseDate}</span>
       </div>
 
       <div class="hero-grid grid12">
@@ -81,7 +80,7 @@ const features = [
           </p>
 
           <div class="hero-cta">
-            <a class="btn-block" href={bcmrProduct.href('/install')}>↳ install {snaixConfig.version}</a>
+            <a class="btn-block" href={bcmrProduct.href('/install')}>↳ install {bcmrProduct.version}</a>
             <a class="btn-block is-ghost" href={bcmrProduct.href('/docs/getting-started')}>read the docs</a>
             <span class="hero-cta-meta t-mono-sm">
               ⌘ <span>brew install Bengerthelorf/tap/bcmr</span>
@@ -167,7 +166,7 @@ const features = [
       <div class="terminal-shell">
         <div class="terminal-chrome">
           <div class="terminal-lights"><span/><span/><span/></div>
-          <div class="t-mono-sm">zsh · {snaixConfig.title} {String(snaixConfig.version ?? '').replace(/^v/, '')}</div>
+          <div class="t-mono-sm">zsh · {bcmrProduct.title} {String(bcmrProduct.version ?? '').replace(/^v/, '')}</div>
           <div class="t-mono-sm" style="color: var(--steel-5);">~/work</div>
         </div>
         <div class="terminal-body">

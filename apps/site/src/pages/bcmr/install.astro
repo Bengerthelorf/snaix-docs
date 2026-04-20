@@ -5,25 +5,23 @@ import Footer from '@snaix/docs-theme/components/Footer.astro';
 import { BlockReveal, InstallTabs } from '@snaix/docs-theme';
 import type { CmdLine } from '@snaix/docs-theme';
 import { snaixConfig } from 'virtual:snaix-config';
-import { DEFAULT_LOCALE, topNavFor, localesAsLanguages } from '../../lib/docs.ts';
+import { localesAsLanguages } from '../../lib/docs.ts';
 import { product } from '../../lib/product.ts';
 
 const bcmrProduct = product('bcmr');
-// Install page isn't localized yet, so the switcher sends users to each
-// locale's home rather than a 404ing per-locale `/install` route.
 const languages = localesAsLanguages('en', '/');
 
 const buildSha = snaixConfig.siteData?.build?.sha ?? '';
-const options = snaixConfig.install ?? {};
+const options = bcmrProduct.install ?? {};
 
-const versionBare = String(snaixConfig.version ?? '').replace(/^v/, '');
-const releaseIso = String(snaixConfig.releaseDate ?? '').replaceAll('.', '-');
+const versionBare = String(bcmrProduct.version ?? '').replace(/^v/, '');
+const releaseIso = String(bcmrProduct.releaseDate ?? '').replaceAll('.', '-');
 
 const verifyScript: CmdLine[] = [
-  { type: 'prompt', text: `${snaixConfig.title} --version` },
-  { type: 'out',    text: `${snaixConfig.title} ${versionBare} (${buildSha} · ${releaseIso})`, pause: 160 },
+  { type: 'prompt', text: `${bcmrProduct.title} --version` },
+  { type: 'out',    text: `${bcmrProduct.title} ${versionBare} (${buildSha} · ${releaseIso})`, pause: 160 },
   { type: 'blank' },
-  { type: 'prompt', text: `${snaixConfig.title} doctor`, pause: 220 },
+  { type: 'prompt', text: `${bcmrProduct.title} doctor`, pause: 220 },
   { type: 'out',    text: 'fs apfs       reflink: yes', pause: 120 },
   { type: 'out',    text: 'ssh agent     ok (3 keys)',   pause: 120 },
   { type: 'ok',     text: 'environment looks healthy',    pause: 160 },
@@ -40,10 +38,10 @@ const firstCopyScript: CmdLine[] = [
 <DefaultLayout title="bcmr · install">
   <div class="page install">
     <TopBar
-      brand={snaixConfig.title}
-      version={snaixConfig.version}
+      brand={bcmrProduct.title}
+      version={bcmrProduct.version}
       current="install"
-      githubHref={snaixConfig.githubUrl}
+      githubHref={bcmrProduct.githubUrl}
       nav={bcmrProduct.nav()}
     />
 

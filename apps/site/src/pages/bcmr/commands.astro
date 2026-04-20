@@ -5,8 +5,7 @@ import Footer from '@snaix/docs-theme/components/Footer.astro';
 import { BlockReveal, CliReference } from '@snaix/docs-theme';
 import type { CliCommand, CliGroup, CliSpec } from '@snaix/docs-theme';
 import { getCollection } from 'astro:content';
-import { snaixConfig } from 'virtual:snaix-config';
-import { DEFAULT_LOCALE, topNavFor, localesAsLanguages } from '../../lib/docs.ts';
+import { localesAsLanguages } from '../../lib/docs.ts';
 import { product } from '../../lib/product.ts';
 
 const bcmrProduct = product('bcmr');
@@ -41,18 +40,18 @@ for (const [group, items] of buckets.entries()) {
   groups.push({ group, items });
 }
 
-const version = String(snaixConfig.version ?? '').replace(/^v/, '');
-const shellLabel = `zsh · ${snaixConfig.title ?? 'bcmr'}${version ? ` ${version}` : ''}`;
+const version = String(bcmrProduct.version ?? '').replace(/^v/, '');
+const shellLabel = `zsh · ${bcmrProduct.title}${version ? ` ${version}` : ''}`;
 
 const spec: CliSpec = { groups, shellLabel };
 ---
-<DefaultLayout title={`${snaixConfig.title ?? 'bcmr'} · commands`}>
+<DefaultLayout title={`${bcmrProduct.title} · commands`}>
   <div class="page cli">
     <TopBar
-      brand={snaixConfig.title}
-      version={snaixConfig.version}
+      brand={bcmrProduct.title}
+      version={bcmrProduct.version}
       current="commands"
-      githubHref={snaixConfig.githubUrl}
+      githubHref={bcmrProduct.githubUrl}
       nav={bcmrProduct.nav()}
     />
 

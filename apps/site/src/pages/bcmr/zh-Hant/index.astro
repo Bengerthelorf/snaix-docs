@@ -10,8 +10,7 @@ import {
   withBase,
 } from '@snaix/docs-theme';
 import type { CmdLine } from '@snaix/docs-theme';
-import { snaixConfig } from 'virtual:snaix-config';
-import { resolveLocale, topNavFor, localesAsLanguages } from '../../../lib/docs.ts';
+import { resolveLocale, localesAsLanguages } from '../../../lib/docs.ts';
 import { product } from '../../../lib/product.ts';
 
 const bcmrProduct = product('bcmr');
@@ -30,12 +29,12 @@ const terminalScript: CmdLine[] = [
 <DefaultLayout title="bcmr — 更好的複製、移動、刪除" lang="zh-Hant">
   <div class="page home">
     <TopBar
-      brand={snaixConfig.title}
-      version={snaixConfig.version}
+      brand={bcmrProduct.title}
+      version={bcmrProduct.version}
       current="home"
       logoVariant="product"
       showStatus={false}
-      githubHref={snaixConfig.githubUrl}
+      githubHref={bcmrProduct.githubUrl}
       nav={bcmrProduct.nav()}
     />
 
@@ -43,7 +42,7 @@ const terminalScript: CmdLine[] = [
       <div class="hero-top rule-b">
         <span class="t-mono-sm">bcmr · 更好的 cp / mv / rm</span>
         <span class="t-mono-sm">本地與 ssh · 同一條指令</span>
-        <span class="t-mono-sm">{snaixConfig.version} · {snaixConfig.releaseDate}</span>
+        <span class="t-mono-sm">{bcmrProduct.version} · {bcmrProduct.releaseDate}</span>
       </div>
 
       <div class="hero-grid grid12">
@@ -67,7 +66,7 @@ const terminalScript: CmdLine[] = [
           </p>
 
           <div class="hero-cta">
-            <a class="btn-block" href={bcmrProduct.href('/zh-Hant/install')}>↳ 安裝 {snaixConfig.version}</a>
+            <a class="btn-block" href={bcmrProduct.href('/zh-Hant/install')}>↳ 安裝 {bcmrProduct.version}</a>
             <a class="btn-block is-ghost" href={bcmrProduct.href('/zh-Hant/docs/getting-started')}>閱讀文件</a>
             <span class="hero-cta-meta t-mono-sm">
               ⌘ <span>brew install Bengerthelorf/tap/bcmr</span>

@@ -1,14 +1,12 @@
 ---
 import DocsLayout from '@snaix/docs-theme/layouts/DocsLayout.astro';
 import { getCollection } from 'astro:content';
-import { snaixConfig } from 'virtual:snaix-config';
 import {
   DEFAULT_LOCALE,
   bareSlug,
   docsBaseFor,
   languagesFor,
   navFor,
-  topNavFor,
 } from '../../../lib/docs.ts';
 import { product } from '../../../lib/product.ts';
 
@@ -53,8 +51,8 @@ const currentTab = sectionKey === 'cli' ? 'commands' : 'docs';
 ---
 <DocsLayout
   product={bcmrProduct}
-  brand={snaixConfig.title}
-  version={snaixConfig.version}
+  brand={bcmrProduct.title}
+  version={bcmrProduct.version}
   current={bare}
   nav={nav}
   title={entry.data.title}

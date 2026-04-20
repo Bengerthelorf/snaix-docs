@@ -11,8 +11,7 @@ import {
   withBase,
 } from '@snaix/docs-theme';
 import type { CmdLine } from '@snaix/docs-theme';
-import { snaixConfig } from 'virtual:snaix-config';
-import { resolveLocale, topNavFor, localesAsLanguages } from '../../../lib/docs.ts';
+import { resolveLocale, localesAsLanguages } from '../../../lib/docs.ts';
 import { product } from '../../../lib/product.ts';
 
 const bcmrProduct = product('bcmr');
@@ -31,12 +30,12 @@ const terminalScript: CmdLine[] = [
 <DefaultLayout title="bcmr — 更好的复制、移动、删除" lang={locale.lang ?? 'zh-Hans'}>
   <div class="page home">
     <TopBar
-      brand={snaixConfig.title}
-      version={snaixConfig.version}
+      brand={bcmrProduct.title}
+      version={bcmrProduct.version}
       current="home"
       logoVariant="product"
       showStatus={false}
-      githubHref={snaixConfig.githubUrl}
+      githubHref={bcmrProduct.githubUrl}
       nav={bcmrProduct.nav()}
     />
 
@@ -44,7 +43,7 @@ const terminalScript: CmdLine[] = [
       <div class="hero-top rule-b">
         <span class="t-mono-sm">bcmr · 更好的 cp / mv / rm</span>
         <span class="t-mono-sm">本地与 ssh · 同一条命令</span>
-        <span class="t-mono-sm">{snaixConfig.version} · {snaixConfig.releaseDate}</span>
+        <span class="t-mono-sm">{bcmrProduct.version} · {bcmrProduct.releaseDate}</span>
       </div>
 
       <div class="hero-grid grid12">
@@ -68,7 +67,7 @@ const terminalScript: CmdLine[] = [
           </p>
 
           <div class="hero-cta">
-            <a class="btn-block" href={bcmrProduct.href('/zh/install')}>↳ 安装 {snaixConfig.version}</a>
+            <a class="btn-block" href={bcmrProduct.href('/zh/install')}>↳ 安装 {bcmrProduct.version}</a>
             <a class="btn-block is-ghost" href={bcmrProduct.href('/zh/docs/getting-started')}>阅读文档</a>
             <span class="hero-cta-meta t-mono-sm">
               ⌘ <span>brew install Bengerthelorf/tap/bcmr</span>
@@ -112,7 +111,7 @@ const terminalScript: CmdLine[] = [
       <div class="terminal-shell">
         <div class="terminal-chrome">
           <div class="terminal-lights"><span/><span/><span/></div>
-          <div class="t-mono-sm">zsh · {snaixConfig.title} {String(snaixConfig.version ?? "").replace(/^v/, "")}</div>
+          <div class="t-mono-sm">zsh · {bcmrProduct.title} {String(bcmrProduct.version ?? "").replace(/^v/, "")}</div>
         </div>
         <div class="terminal-body">
           <CommandStream client:load lines={terminalScript} />

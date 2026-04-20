@@ -18,8 +18,6 @@ export const LOCALES: LocaleOption[] = snaixConfig.locales ?? [
 
 export const DEFAULT_LOCALE = defaultLocale(LOCALES);
 
-export const TABS = snaixConfig.tabs ?? [];
-
 /** Loose docs-entry shape shared across every product's content collection. */
 type DocEntry = CollectionEntry<'bcmr'> | CollectionEntry<'claudit'> | CollectionEntry<'pikpaktui'> | CollectionEntry<'iconchanger'>;
 
@@ -67,15 +65,6 @@ export function languagesFor(
 
 export function docsBaseFor(locale: LocaleOption, root = '/docs'): string {
   return `${localePrefix(locale, LOCALES)}${root}`;
-}
-
-export function topNavFor(_locale: LocaleOption) {
-  return TABS.map((t) => ({
-    id: t.id,
-    label: t.label,
-    href: t.href,
-    external: t.external,
-  }));
 }
 
 /** Footer language switcher for pages without per-page localized equivalents;
