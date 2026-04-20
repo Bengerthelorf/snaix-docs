@@ -2,9 +2,9 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import mdx from '@astrojs/mdx';
 import snaixDocs from '@snaix/docs';
-import bcmrDocsConfig from '../../../bcmr/docs/docs.config.ts';
-import clauditDocsConfig from '../../../claudit/docs/docs.config.ts';
-import pikpaktuiDocsConfig from '../../../pikpaktui/docs/docs.config.ts';
+import bcmrDocsConfig from '../../content/bcmr/docs/docs.config.ts';
+import clauditDocsConfig from '../../content/claudit/docs/docs.config.ts';
+import pikpaktuiDocsConfig from '../../content/pikpaktui/docs/docs.config.ts';
 import { fetchProductMeta, readBuildInfo } from './src/data/fetch-github.ts';
 import {
   edition,
