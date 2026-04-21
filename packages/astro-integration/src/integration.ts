@@ -68,7 +68,13 @@ export default function snaixDocs(opts: SnaixDocsOptions): AstroIntegration {
             remarkPlugins: remark,
             rehypePlugins: rehype,
             smartypants: false,
-            shikiConfig: { theme: 'github-light-default', wrap: true },
+            shikiConfig: {
+              themes: {
+                light: 'github-light-default',
+                dark: 'github-dark-default',
+              },
+              wrap: true,
+            },
           },
           vite: {
             plugins: [

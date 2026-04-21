@@ -13,11 +13,14 @@ interface Props {
   options: LangOption[];
   /** ≥ threshold (default 4) renders as dropdown; below renders as pills. */
   dropdownAt?: number;
+  /** ≥ threshold (default 8) lays the dropdown menu out as a multi-column grid. */
+  gridAt?: number;
 }
 
-const { current, options, dropdownAt = 4 } = Astro.props;
+const { current, options, dropdownAt = 4, gridAt = 8 } = Astro.props;
 const currentOption = options.find((o) => o.code === current);
 const useDropdown = options.length >= dropdownAt;
+const useGrid = options.length >= gridAt;
 ---
 {options.length > 1 && (
   useDropdown ? (
@@ -26,7 +29,7 @@ const useDropdown = options.length >= dropdownAt;
         <span class="lang-dd__label">{currentOption?.label ?? current}</span>
         <span class="lang-dd__caret" aria-hidden="true">▾</span>
       </summary>
-      <div class="lang-dd__menu" role="menu">
+      <div class:list={['lang-dd__menu', { 'is-grid': useGrid }]} role="menu">
         {options.map((opt) => (
           <a
             href={withBase(opt.href)}
@@ -104,16 +107,28 @@ const useDropdown = options.length >= dropdownAt;
 
   .lang-dd__menu {
     position: absolute;
-    top: calc(100% + 2px);
+    bottom: calc(100% + 2px);
     left: 0;
     min-width: 220px;
-    max-height: 340px;
+    max-height: 60vh;
     overflow-y: auto;
     background: var(--bg-raised);
     border: 1px solid var(--border);
-    box-shadow: 4px 4px 0 0 var(--ink);
+    box-shadow: 4px -4px 0 0 var(--ink);
     z-index: 60;
     padding: 4px;
+  }
+  .lang-dd__menu.is-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(180px, 1fr));
+    gap: 2px;
+    min-width: min(560px, calc(100vw - 48px));
+  }
+  @media (max-width: 720px) {
+    .lang-dd__menu.is-grid {
+      grid-template-columns: repeat(2, minmax(160px, 1fr));
+      min-width: min(360px, calc(100vw - 32px));
+    }
   }
   .lang-dd__item {
     display: grid;

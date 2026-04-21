@@ -150,11 +150,14 @@
   font-family: var(--mono); font-size: 13px; line-height: 1.6;
   overflow-x: auto;
 }
-/* Shiki inlines `background-color` on <pre class="astro-code">, beating any
-   non-`!important` rule. Override to match paper bg; drop if Shiki ever
-   switches to a css-variables theme. */
-.docs-content pre.astro-code { background: var(--paper-pure) !important; }
-[data-theme="dark"] .docs-content pre.astro-code { background: var(--paper) !important; }
+[data-theme="dark"] .astro-code,
+[data-theme="dark"] .astro-code span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
+}
 .docs-content img, .docs-content svg {
   display: block;
   max-width: 100%;
