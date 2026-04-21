@@ -64,7 +64,7 @@ export function DsMotionDemo() {
           <div className="ds-motion-label"><code>&lt;CommandStream/&gt;</code></div>
           <div
             className="ds-motion-stage"
-            style={{ background: 'var(--bg-inverse)', color: 'var(--fg-inverse)', padding: 16 }}
+            style={{ background: 'var(--c-ink-0)', color: 'var(--c-paper-pure)', padding: 16 }}
           >
             <CommandStream
               lines={[
