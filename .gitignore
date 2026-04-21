@@ -8,6 +8,7 @@ dist
 bun.lockb
 *.log
 .claude/
+.playwright-mcp/
 
 # Product content populated per-env:
 #   - dev: symlinks (`ln -s ~/Documents/bcmr content/bcmr`)
