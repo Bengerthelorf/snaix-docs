@@ -4,10 +4,14 @@ import BauhausMark from '@snaix/docs-theme/components/BauhausMark.astro';
 import Panel from '@snaix/docs-theme/components/Panel.astro';
 import MarginNote from '@snaix/docs-theme/components/MarginNote.astro';
 import { DsMotionDemo } from '../../components/DsMotionDemo.tsx';
-import { designSystem } from '../../data/site-static.ts';
+import { readLastModifiedDate } from '../../data/fetch-github.ts';
 import '@snaix/docs-theme/styles/design-system.css';
 
-const stamp = `${designSystem.version} · ${designSystem.date}`;
+const lastUpdated = readLastModifiedDate([
+  'apps/site/src/pages/design-system',
+  'packages/theme/src/styles',
+]);
+const stamp = `living doc${lastUpdated ? ` · updated ${lastUpdated}` : ''}`;
 
 const surfaces = [
   ['--bg',         'page background'],

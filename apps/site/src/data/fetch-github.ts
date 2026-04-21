@@ -83,6 +83,24 @@ export function readLocalCommits(limit = 10): RecentCommit[] {
   }
 }
 
+export function readLastModifiedDate(paths: string[]): string {
+  try {
+    const root = execSync('git rev-parse --show-toplevel', {
+      stdio: ['ignore', 'pipe', 'ignore'],
+    }).toString().trim();
+    if (!root) return '';
+    const out = execSync(
+      `git -C '${root}' log -1 --format=%aI -- ${paths.map((p) => `'${p}'`).join(' ')}`,
+      { stdio: ['ignore', 'pipe', 'ignore'] },
+    ).toString().trim();
+    if (!out) return '';
+    const d = new Date(out);
+    return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`;
+  } catch {
+    return '';
+  }
+}
+
 export interface BuildInfo {
   sha: string;
   date: string;

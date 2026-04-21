@@ -34,11 +34,6 @@ export interface ProductPresentation {
   descriptionOverride?: string;
 }
 
-export const designSystem = {
-  version: 'v0.4',
-  date: '2026.04.20',
-};
-
 export interface InternalTile {
   slug: string;
   name: string;
@@ -60,7 +55,7 @@ export const internalTiles: InternalTile[] = [
     tag: 'tokens · motion · components',
     description:
       'the single source of visual truth. colors, type, motion primitives, components and principles — every page is built from these pieces.',
-    metaLeft: `${designSystem.version} · living doc`,
+    metaLeft: 'living doc',
     metaRight: 'internal',
     href: '/design-system/',
   },
