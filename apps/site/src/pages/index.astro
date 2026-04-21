@@ -52,7 +52,7 @@ const year = new Date().getFullYear();
         <div class="slot">
           <span class="t-small">03 — get started</span>
           <div class="kv" style="margin-bottom: 12px;">
-            <Typewriter client:visible text="$ curl -sSf get.snaix.homes | sh" speed={22} delay={800} cursor={false} />
+            <Typewriter client:visible text="$ brew install Bengerthelorf/tap/bcmr" speed={22} delay={800} cursor={false} />
           </div>
           <a href="#wall" class="btn-block" style="padding: 10px 16px; font-size: 11px;">↳ pick a tool</a>
         </div>
@@ -98,8 +98,8 @@ const year = new Date().getFullYear();
         </h2>
         <p>
           no roadmap theatre. changes go in as they land. below is a
-          curated digest of recent releases and doc updates across the
-          four repos — not a live feed.
+          live feed of the most recent commits across the four product
+          repos and the site itself — pulled at build time.
         </p>
         <div style="margin-top: 30px; display: flex; gap: 10px;">
           <span class="chip is-red"><span class="dot"/>rec</span>
@@ -187,18 +187,15 @@ const year = new Date().getFullYear();
       <div class="p-foot-col">
         <span class="t-small">learn</span>
         <ul>
-          <li><a href="/bcmr/docs/getting-started">docs</a></li>
-          <li><a href="https://github.com/Bengerthelorf/bcmr/releases">changelog ↗</a></li>
-          <li><a href="#">recipes</a></li>
-          <li><a href="#">rss</a></li>
+          {products.filter((p) => p.variant !== 'ds').map((p) => (
+            <li><a href={`${p.href}docs/getting-started`}>{p.name} docs</a></li>
+          ))}
         </ul>
       </div>
       <div class="p-foot-col">
         <span class="t-small">elsewhere</span>
         <ul>
-          <li><a href="#">github ↗</a></li>
-          <li><a href="#">x / twitter ↗</a></li>
-          <li><a href="#">discord ↗</a></li>
+          <li><a href="https://github.com/Bengerthelorf">github ↗</a></li>
           <li><a href="/about/">manifesto</a></li>
         </ul>
       </div>

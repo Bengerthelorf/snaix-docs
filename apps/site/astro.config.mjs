@@ -6,7 +6,7 @@ import bcmrDocsConfig from '../../content/bcmr/docs/docs.config.ts';
 import clauditDocsConfig from '../../content/claudit/docs/docs.config.ts';
 import pikpaktuiDocsConfig from '../../content/pikpaktui/docs/docs.config.ts';
 import iconchangerDocsConfig from '../../content/iconchanger/docs/docs.config.ts';
-import { fetchProductMeta, fetchRecentCommits, readBuildInfo } from './src/data/fetch-github.ts';
+import { fetchProductMeta, fetchRecentCommits, readBuildInfo, readLocalCommits } from './src/data/fetch-github.ts';
 import {
   edition,
   manualStats,
@@ -55,8 +55,8 @@ const ticker = [
   ...tickerStatic,
 ];
 
-const PROJ_LABEL = { bcmr: 'bcmr', pikpaktui: 'pikpak', iconchanger: 'icon', claudit: 'claudit' };
-const PROJ_KIND  = { bcmr: 'is-bcmr', pikpaktui: 'is-pikpak', iconchanger: 'is-icon', claudit: 'is-claudit' };
+const PROJ_LABEL = { bcmr: 'bcmr', pikpaktui: 'pikpak', iconchanger: 'icon', claudit: 'claudit', site: 'site' };
+const PROJ_KIND  = { bcmr: 'is-bcmr', pikpaktui: 'is-pikpak', iconchanger: 'is-icon', claudit: 'is-claudit', site: 'is-site' };
 
 const escapeHtml = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 const formatMsg = (raw) => {
@@ -89,12 +89,14 @@ const formatTime = (iso, now) => {
   return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`;
 };
 
+const PER_REPO_CAP = 2;
 const commitBatches = await Promise.all(
-  productPresentations.map((p) => fetchRecentCommits(p.repo, 6)),
+  productPresentations.map((p) => fetchRecentCommits(p.repo, PER_REPO_CAP)),
 );
-const allCommits = productPresentations.flatMap((p, i) =>
-  commitBatches[i].map((c) => ({ ...c, slug: p.slug })),
-);
+const allCommits = [
+  ...productPresentations.flatMap((p, i) => commitBatches[i].map((c) => ({ ...c, slug: p.slug }))),
+  ...readLocalCommits(PER_REPO_CAP).map((c) => ({ ...c, slug: 'site' })),
+];
 const now = new Date();
 const liveActivity = allCommits
   .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())

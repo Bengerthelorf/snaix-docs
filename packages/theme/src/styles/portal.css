@@ -389,6 +389,7 @@
 .p-stream-row .r-proj.is-icon    { background: var(--red);   color: var(--paper-pure); border-color: var(--red); }
 .p-stream-row .r-proj.is-pikpak  { background: var(--yellow); color: var(--ink); }
 .p-stream-row .r-proj.is-claudit { background: var(--blue);  color: var(--paper-pure); border-color: var(--blue); }
+.p-stream-row .r-proj.is-site    { background: var(--steel-7); color: var(--paper-pure); border-color: var(--steel-7); }
 .p-stream-row .r-msg { color: var(--ink); }
 .p-stream-row .r-msg code { background: var(--steel-1); padding: 0 6px; }
 
