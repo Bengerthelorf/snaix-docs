@@ -56,13 +56,13 @@ const sources = [
           <div class="ic-hero-eyebrow">
             <span class="t-small">§ 01 · overview</span>
             <span class="t-mono-sm" style="color: var(--steel-5);">
-              <Typewriter client:load text="// your dock, your rules." speed={24} delay={300} />
+              <Typewriter client:visible text="// your dock, your rules." speed={24} delay={300} />
             </span>
           </div>
           <h1 class="ic-hero-title lower">
-            <span class="hl-line"><BlockReveal client:load delay={300} duration={520} color="var(--red)">change</BlockReveal></span>
-            <span class="hl-line"><BlockReveal client:load delay={700} duration={520} color="var(--yellow)">every</BlockReveal></span>
-            <span class="hl-line em-red"><BlockReveal client:load delay={1100} duration={520} color="var(--blue)">icon.</BlockReveal></span>
+            <span class="hl-line"><BlockReveal client:visible delay={300} duration={520} color="var(--red)">change</BlockReveal></span>
+            <span class="hl-line"><BlockReveal client:visible delay={700} duration={520} color="var(--yellow)">every</BlockReveal></span>
+            <span class="hl-line em-red"><BlockReveal client:visible delay={1100} duration={520} color="var(--blue)">icon.</BlockReveal></span>
           </h1>
           <p class="ic-lede">
             swap any app icon on macos. browse thousands of curated variants
@@ -88,22 +88,22 @@ const sources = [
       <div class="ic-ribbon">
         <div class="item">
           <span class="t-small">01</span>
-          <div class="lbl"><Scramble client:load text="macosicons.com" delay={200} /></div>
+          <div class="lbl"><Scramble client:visible text="macosicons.com" delay={200} /></div>
           <div class="sub">direct browse into the community icon library. search, filter, preview.</div>
         </div>
         <div class="item">
           <span class="t-small">02</span>
-          <div class="lbl"><Scramble client:load text="live dock" delay={320} /></div>
+          <div class="lbl"><Scramble client:visible text="live dock" delay={320} /></div>
           <div class="sub">see your new icon in a live dock preview before you commit. no surprises.</div>
         </div>
         <div class="item">
           <span class="t-small">03</span>
-          <div class="lbl"><Scramble client:load text="per-app revert" delay={440} /></div>
+          <div class="lbl"><Scramble client:visible text="per-app revert" delay={440} /></div>
           <div class="sub">every change is reversible. restore default on any app with one click.</div>
         </div>
         <div class="item">
           <span class="t-small">04</span>
-          <div class="lbl"><Scramble client:load text="sandboxed" delay={560} /></div>
+          <div class="lbl"><Scramble client:visible text="sandboxed" delay={560} /></div>
           <div class="sub">signed, notarised, sandboxed. no system mods, no reboots, no SIP tricks.</div>
         </div>
       </div>
@@ -190,7 +190,7 @@ const sources = [
           <div class="c">appkit · native</div>
         </div>
         <div class="ic-metric">
-          <div class="n"><Tally client:load to={6} duration={800} /></div>
+          <div class="n"><Tally client:visible to={6} duration={800} /></div>
           <div class="c">input formats</div>
         </div>
         <div class="ic-metric">
@@ -198,7 +198,7 @@ const sources = [
           <div class="c">min · signed · notarised</div>
         </div>
         <div class="ic-metric">
-          <div class="n"><Tally client:load to={0} duration={600} /></div>
+          <div class="n"><Tally client:visible to={0} duration={600} /></div>
           <div class="c">reboots required</div>
         </div>
       </div>
@@ -208,8 +208,8 @@ const sources = [
       <div class="ic-cta-inner">
         <div class="t-small" style="color: rgba(255,255,255,0.7);">§ 04 · install</div>
         <h2 class="lower">
-          <BlockReveal client:load delay={200} color="var(--yellow)">your dock.</BlockReveal><br />
-          <BlockReveal client:load delay={700} color="var(--ink)">your rules.</BlockReveal>
+          <BlockReveal client:visible delay={200} color="var(--yellow)">your dock.</BlockReveal><br />
+          <BlockReveal client:visible delay={700} color="var(--ink)">your rules.</BlockReveal>
         </h2>
         <div class="buttons">
           <a class="btn-block" style="background: var(--paper-pure); color: var(--ink); border-color: var(--paper-pure);" href={iconchanger.href('/install')}>

@@ -58,10 +58,12 @@ export interface SiteStats {
   telemetry?: number;
 }
 
+export type TileVariant = 'bcmr' | 'pikpak' | 'icon' | 'claudit' | 'ds';
+
 export interface ProductCard {
   slug: string;
   name: string;
-  variant: string;
+  variant: TileVariant;
   eyebrow: string;
   tag: string;
   description: string;
@@ -107,9 +109,9 @@ export interface ProductIntegration {
 
 export interface SnaixDocsOptions {
   products: ProductIntegration[];
-  locales?: LocaleOption[];
-  buildStamp?: BuildStamp;
-  siteData?: SiteData;
+  locales: LocaleOption[];
+  buildStamp: BuildStamp;
+  siteData: SiteData;
   markdown?: Pick<MarkdownOptions, 'math' | 'mermaid'>;
 }
 

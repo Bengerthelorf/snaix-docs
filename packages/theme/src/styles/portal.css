@@ -201,6 +201,7 @@
 .p-tile--bcmr .tile-n    { color: var(--c-red); }
 .p-tile--bcmr .tile-tag  { color: var(--c-steel-3); }
 .p-tile--bcmr .tile-desc { color: var(--c-steel-1); }
+.p-tile .tile-desc.is-over-art { position: relative; z-index: 2; }
 .p-tile--bcmr .tile-meta { border-top-color: var(--c-steel-7); color: var(--c-steel-3); }
 .p-tile--bcmr .tile-art {
   position: absolute; right: -40px; bottom: -40px;

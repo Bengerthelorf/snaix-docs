@@ -1,5 +1,5 @@
 ---
-export type TileVariant = 'bcmr' | 'pikpak' | 'icon' | 'claudit' | 'ds';
+import type { TileVariant } from '@snaix/docs';
 
 interface Props {
   variant: TileVariant;
@@ -57,7 +57,7 @@ const { variant, n, name, nameBr, tag, description, metaLeft, metaRight, href } 
     </div>
   )}
 
-  <div class="tile-desc" style={variant === 'bcmr' ? 'position: relative; z-index: 2;' : ''}>
+  <div class:list={['tile-desc', { 'is-over-art': variant === 'bcmr' }]}>
     {description}
   </div>
   <div class="tile-meta">

@@ -47,13 +47,13 @@ const nav = [
           <div class="cl-hero-eyebrow">
             <span class="t-small">§ 01 · overview</span>
             <span class="t-mono-sm" style="color: var(--steel-5);">
-              <Typewriter client:load text="// see what you actually spent." speed={24} delay={300} />
+              <Typewriter client:visible text="// see what you actually spent." speed={24} delay={300} />
             </span>
           </div>
           <h1 class="cl-hero-title lower">
-            <span class="hl-line"><BlockReveal client:load delay={300} color="var(--blue)">audit</BlockReveal></span>
-            <span class="hl-line"><BlockReveal client:load delay={700} color="var(--red)">every</BlockReveal></span>
-            <span class="hl-line"><BlockReveal client:load delay={1100} color="var(--yellow)">token.</BlockReveal></span>
+            <span class="hl-line"><BlockReveal client:visible delay={300} color="var(--blue)">audit</BlockReveal></span>
+            <span class="hl-line"><BlockReveal client:visible delay={700} color="var(--red)">every</BlockReveal></span>
+            <span class="hl-line"><BlockReveal client:visible delay={1100} color="var(--yellow)">token.</BlockReveal></span>
           </h1>
           <p class="cl-lede">
             claudit is a macos menu-bar app that reads your local claude
@@ -79,22 +79,22 @@ const nav = [
       <div class="cl-ribbon">
         <div class="item">
           <span class="t-small">01</span>
-          <div class="lbl"><Scramble client:load text="local-first" delay={200} /></div>
+          <div class="lbl"><Scramble client:visible text="local-first" delay={200} /></div>
           <div class="sub">reads <code>~/.claude</code> directly. nothing leaves the disk.</div>
         </div>
         <div class="item">
           <span class="t-small">02</span>
-          <div class="lbl"><Scramble client:load text="per-project" delay={320} /></div>
+          <div class="lbl"><Scramble client:visible text="per-project" delay={320} /></div>
           <div class="sub">group by cwd, by repo, by model, by day. filter to one project in one keystroke.</div>
         </div>
         <div class="item">
           <span class="t-small">03</span>
-          <div class="lbl"><Scramble client:load text="session browser" delay={440} /></div>
+          <div class="lbl"><Scramble client:visible text="session browser" delay={440} /></div>
           <div class="sub">full transcripts — user, assistant, tool calls, diffs — rendered from the log on disk.</div>
         </div>
         <div class="item">
           <span class="t-small">04</span>
-          <div class="lbl"><Scramble client:load text="multi-device" delay={560} /></div>
+          <div class="lbl"><Scramble client:visible text="multi-device" delay={560} /></div>
           <div class="sub">aggregate usage from remote machines over ssh. fingerprint-cached.</div>
         </div>
       </div>
@@ -186,11 +186,11 @@ const nav = [
           <div class="c">min · menu bar native</div>
         </div>
         <div class="cl-metric">
-          <div class="n"><Tally client:load to={3} duration={800} /></div>
+          <div class="n"><Tally client:visible to={3} duration={800} /></div>
           <div class="c">views · spend · use · sessions</div>
         </div>
         <div class="cl-metric">
-          <div class="n"><Tally client:load to={0} duration={600} /></div>
+          <div class="n"><Tally client:visible to={0} duration={600} /></div>
           <div class="c">network calls · forever</div>
         </div>
       </div>
@@ -200,8 +200,8 @@ const nav = [
       <div class="cl-cta-inner">
         <div class="t-small" style="color: rgba(255,255,255,0.7);">§ 04 · install</div>
         <h2 class="lower">
-          <BlockReveal client:load delay={200} color="var(--yellow)">audit.</BlockReveal><br />
-          <BlockReveal client:load delay={700} color="var(--red)">locally.</BlockReveal>
+          <BlockReveal client:visible delay={200} color="var(--yellow)">audit.</BlockReveal><br />
+          <BlockReveal client:visible delay={700} color="var(--red)">locally.</BlockReveal>
         </h2>
         <div class="buttons">
           <a class="btn-block" style="background: var(--paper-pure); color: var(--ink); border-color: var(--paper-pure);" href={claudit.href('/install')}>

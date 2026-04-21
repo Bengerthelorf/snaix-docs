@@ -22,7 +22,7 @@ const sessions = [
     <div class="cl-cell">
       <div class="ch"><span class="t">spend · 30d</span><span class="m">usd</span></div>
       <div class="cl-big is-blue">
-        $<Tally client:load to={184} duration={1100} /><span class="sfx">.42</span>
+        $<Tally client:visible to={184} duration={1100} /><span class="sfx">.42</span>
       </div>
       <div class="cl-sub">+18% vs previous 30 days · 1.2k requests</div>
       <div class="cl-spark">
@@ -34,7 +34,7 @@ const sessions = [
     <div class="cl-cell">
       <div class="ch"><span class="t">tokens · 30d</span><span class="m">in · out</span></div>
       <div class="cl-big">
-        <Tally client:load to={4.7} duration={1100} format={(v: number) => v.toFixed(1)} /><span class="sfx">m</span>
+        <Tally client:visible to={4.7} duration={1100} format={(v: number) => v.toFixed(1)} /><span class="sfx">m</span>
       </div>
       <div class="cl-sub">3.1m in · 1.6m out · 0.3m cache hits</div>
       <div class="cl-bars">

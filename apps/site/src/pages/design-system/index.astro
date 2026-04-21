@@ -4,7 +4,10 @@ import BauhausMark from '@snaix/docs-theme/components/BauhausMark.astro';
 import Panel from '@snaix/docs-theme/components/Panel.astro';
 import MarginNote from '@snaix/docs-theme/components/MarginNote.astro';
 import { DsMotionDemo } from '../../components/DsMotionDemo.tsx';
+import { designSystem } from '../../data/site-static.ts';
 import '@snaix/docs-theme/styles/design-system.css';
+
+const stamp = `${designSystem.version} · ${designSystem.date}`;
 
 const surfaces = [
   ['--bg',         'page background'],
@@ -75,7 +78,7 @@ const navLinks = [
     <header class="ds-mast">
       <div class="ds-mast-row">
         <span class="t-mono-sm">snaix \ design language</span>
-        <span class="t-mono-sm">v0.4 · 2026.04.20</span>
+        <span class="t-mono-sm">{stamp}</span>
         <span class="t-mono-sm">living document</span>
       </div>
       <h1 class="ds-mast-title t-display lower">
@@ -177,7 +180,7 @@ const navLinks = [
         <span class="ds-n t-mono-sm">§ 03</span>
         <h2 class="ds-title t-h1 lower">text motion</h2>
       </header>
-      <DsMotionDemo client:load />
+      <DsMotionDemo client:visible />
     </section>
 
     <section id="s4" class="ds-section">
@@ -319,7 +322,7 @@ const navLinks = [
     </section>
 
     <footer class="ds-foot">
-      <span class="t-mono-sm">snaix \ design language · v0.4 · 2026.04.20</span>
+      <span class="t-mono-sm">snaix \ design language · {stamp}</span>
       <span class="t-mono-sm">living document · edit in design-system.css + tokens.css</span>
     </footer>
   </div>

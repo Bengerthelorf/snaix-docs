@@ -16,6 +16,7 @@ export type {
   SiteStats,
   LocaleOption,
   TopNavTab,
+  TileVariant,
   InstallOption,
   InstallOptions,
   MarkdownOptions,

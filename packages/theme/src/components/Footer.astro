@@ -18,7 +18,7 @@ const { product, portalHref = '/', locale = 'en', languages = [] } = Astro.props
 const brand = product.title;
 const blurb = Astro.props.blurb ?? (product.tagline ? `${product.tagline}. ` : '');
 
-const otherProducts = snaixConfig.siteData!.products!.filter((p) => p.slug !== product.slug);
+const otherProducts = snaixConfig.siteData.products.filter((p) => p.slug !== product.slug);
 
 const hrefFor = (id: string, fallback: string): string => {
   const t = product.tabs.find((x) => x.id === id);

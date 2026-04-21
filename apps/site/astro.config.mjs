@@ -166,7 +166,7 @@ export default defineConfig({
         edition,
         build: buildInfo,
         stats: {
-          shippingTools: productsData.length,
+          shippingTools: productPresentations.length,
           githubStars: totalStars,
           locales: 3,
           telemetry: manualStats.telemetry,

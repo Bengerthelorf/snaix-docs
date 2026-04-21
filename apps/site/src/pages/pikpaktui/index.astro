@@ -57,12 +57,12 @@ const keys = [
           <div class="pk-hero-eyebrow">
             <span class="t-small">§ 01 · overview</span>
             <span class="t-mono-sm" style="color: var(--steel-5);">
-              <Typewriter client:load text="// tui · keyboard-first" speed={24} delay={300} />
+              <Typewriter client:visible text="// tui · keyboard-first" speed={24} delay={300} />
             </span>
           </div>
           <h1 class="pk-hero-title lower">
-            <span class="hl-line"><BlockReveal client:load delay={300} duration={520} color="var(--yellow)">pikpak.</BlockReveal></span>
-            <span class="hl-line r2"><BlockReveal client:load delay={700} duration={520}>in the<em>tui</em></BlockReveal></span>
+            <span class="hl-line"><BlockReveal client:visible delay={300} duration={520} color="var(--yellow)">pikpak.</BlockReveal></span>
+            <span class="hl-line r2"><BlockReveal client:visible delay={700} duration={520}>in the<em>tui</em></BlockReveal></span>
           </h1>
           <p class="pk-lede">
             the browser is a lie. pikpaktui brings your cloud drive into the
@@ -87,22 +87,22 @@ const keys = [
       <div class="pk-ribbon">
         <div class="item">
           <span class="t-small">01</span>
-          <div class="lbl"><Scramble client:load text="three panes" delay={200} /></div>
+          <div class="lbl"><Scramble client:visible text="three panes" delay={200} /></div>
           <div class="sub">miller columns: roots, current directory, live preview of the focused item.</div>
         </div>
         <div class="item">
           <span class="t-small">02</span>
-          <div class="lbl"><Scramble client:load text="keyboard only" delay={320} /></div>
+          <div class="lbl"><Scramble client:visible text="keyboard only" delay={320} /></div>
           <div class="sub">vim-style motion. j/k, h/l, enter, q. 26 keys do everything.</div>
         </div>
         <div class="item">
           <span class="t-small">03</span>
-          <div class="lbl"><Scramble client:load text="kitty graphics" delay={440} /></div>
+          <div class="lbl"><Scramble client:visible text="kitty graphics" delay={440} /></div>
           <div class="sub">inline jpeg/png/mkv thumbs in terminals that speak the kitty graphics protocol.</div>
         </div>
         <div class="item">
           <span class="t-small">04</span>
-          <div class="lbl"><Scramble client:load text="resumable dl" delay={560} /></div>
+          <div class="lbl"><Scramble client:visible text="resumable dl" delay={560} /></div>
           <div class="sub">download queue lives on disk. kill the process, restart, pick up.</div>
         </div>
       </div>
@@ -172,11 +172,11 @@ const keys = [
     <section class="pk-section">
       <div class="pk-metrics">
         <div class="pk-metric">
-          <div class="n"><Tally client:load to={26} duration={900} /></div>
+          <div class="n"><Tally client:visible to={26} duration={900} /></div>
           <div class="c">keys · complete</div>
         </div>
         <div class="pk-metric">
-          <div class="n"><Tally client:load to={3} duration={700} /></div>
+          <div class="n"><Tally client:visible to={3} duration={700} /></div>
           <div class="c">panes · miller</div>
         </div>
         <div class="pk-metric">
@@ -184,7 +184,7 @@ const keys = [
           <div class="c">render · crossterm</div>
         </div>
         <div class="pk-metric">
-          <div class="n"><Tally client:load to={0} duration={600} /></div>
+          <div class="n"><Tally client:visible to={0} duration={600} /></div>
           <div class="c">telemetry · forever</div>
         </div>
       </div>
@@ -194,8 +194,8 @@ const keys = [
       <div class="pk-cta-inner">
         <div class="t-small" style="color: rgba(10,10,11,0.6);">§ 04 · install</div>
         <h2 class="lower">
-          <BlockReveal client:load delay={200} color="var(--ink)">one binary.</BlockReveal><br />
-          <BlockReveal client:load delay={700} color="var(--red)">zero config.</BlockReveal>
+          <BlockReveal client:visible delay={200} color="var(--ink)">one binary.</BlockReveal><br />
+          <BlockReveal client:visible delay={700} color="var(--red)">zero config.</BlockReveal>
         </h2>
         <div class="buttons">
           <a class="btn-block" style="background: var(--ink); color: var(--yellow); border-color: var(--ink);" href={pikpaktui.href('/install')}>

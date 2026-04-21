@@ -1,4 +1,4 @@
-import type { ActivityRow } from '@snaix/docs';
+import type { ActivityRow, TileVariant } from '@snaix/docs';
 
 export const edition = 'edition 04';
 
@@ -27,17 +27,22 @@ export interface ProductPresentation {
   repo: string;
   slug: string;
   name: string;
-  variant: string;
+  variant: TileVariant;
   eyebrow: string;
   tag: string;
   href: string;
   descriptionOverride?: string;
 }
 
+export const designSystem = {
+  version: 'v0.4',
+  date: '2026.04.20',
+};
+
 export interface InternalTile {
   slug: string;
   name: string;
-  variant: string;
+  variant: TileVariant;
   eyebrow: string;
   tag: string;
   description: string;
@@ -55,7 +60,7 @@ export const internalTiles: InternalTile[] = [
     tag: 'tokens · motion · components',
     description:
       'the single source of visual truth. colors, type, motion primitives, components and principles — every page is built from these pieces.',
-    metaLeft: 'v0.4 · living doc',
+    metaLeft: `${designSystem.version} · living doc`,
     metaRight: 'internal',
     href: '/design-system/',
   },

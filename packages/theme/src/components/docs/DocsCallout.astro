@@ -21,6 +21,6 @@ const label = title ?? defaultLabel;
 <div class:list={['docs-callout', `is-${kind}`]}>
   <div>
     <div class="docs-callout-title" style={`color: ${color};`}>{label}</div>
-    <div><slot /></div>
+    <slot />
   </div>
 </div>

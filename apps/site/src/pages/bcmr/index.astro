@@ -59,13 +59,13 @@ const features = [
           <div class="hero-eyebrow">
             <span class="t-small">§ 01 · overview</span>
             <span class="t-mono-sm" style="color: var(--steel-5);">
-              <Typewriter client:load text="// cp + mv + scp · verified end-to-end." speed={24} delay={300} />
+              <Typewriter client:visible text="// cp + mv + scp · verified end-to-end." speed={24} delay={300} />
             </span>
           </div>
           <h1 class="t-display lower">
-            <span class="hl-line"><BlockReveal client:load delay={400} duration={520}>copy.</BlockReveal></span>
-            <span class="hl-line"><BlockReveal client:load delay={760} duration={520} color="var(--red)">move.</BlockReveal></span>
-            <span class="hl-line"><BlockReveal client:load delay={1120} duration={520} color="var(--blue)">remove.</BlockReveal></span>
+            <span class="hl-line"><BlockReveal client:visible delay={400} duration={520}>copy.</BlockReveal></span>
+            <span class="hl-line"><BlockReveal client:visible delay={760} duration={520} color="var(--red)">move.</BlockReveal></span>
+            <span class="hl-line"><BlockReveal client:visible delay={1120} duration={520} color="var(--blue)">remove.</BlockReveal></span>
           </h1>
 
           <p class="hero-lede">
@@ -92,7 +92,7 @@ const features = [
             <div>src  <b style="color: var(--paper-pure);">./dataset/</b></div>
             <div>dst  <b style="color: var(--paper-pure);">node-04:/srv/</b></div>
             <div style="margin: 10px 0; color: var(--steel-3);">────────────────</div>
-            <div>rate <span style="color: var(--yellow);"><Tally client:load to={412} duration={900} suffix=" mb/s" /></span></div>
+            <div>rate <span style="color: var(--yellow);"><Tally client:visible to={412} duration={900} suffix=" mb/s" /></span></div>
             <div>eta  <span style="color: var(--yellow);">00:00:12</span></div>
             <div>hash <span style="color: var(--blue);">blake3</span> ok</div>
             <div style="margin-top: 10px; background: var(--steel-9); height: 6px; position: relative; overflow: hidden;">
@@ -113,28 +113,28 @@ const features = [
         <div class="ribbon-item">
           <div class="ribbon-head">
             <span class="t-small">01</span>
-            <span class="ribbon-label"><Scramble client:load text="blake3 streamed" delay={200} /></span>
+            <span class="ribbon-label"><Scramble client:visible text="blake3 streamed" delay={200} /></span>
           </div>
           <div class="ribbon-sub">every byte hashed on both ends as it's written. --verify promotes it to a full 2-pass re-read.</div>
         </div>
         <div class="ribbon-item">
           <div class="ribbon-head">
             <span class="t-small">02</span>
-            <span class="ribbon-label"><Scramble client:load text="crash-safe resume" delay={350} /></span>
+            <span class="ribbon-label"><Scramble client:visible text="crash-safe resume" delay={350} /></span>
           </div>
           <div class="ribbon-sub">kill the process, pull the cable. rerun the same command. pick up from the last verified chunk.</div>
         </div>
         <div class="ribbon-item">
           <div class="ribbon-head">
             <span class="t-small">03</span>
-            <span class="ribbon-label"><Scramble client:load text="local + ssh · one cli" delay={500} /></span>
+            <span class="ribbon-label"><Scramble client:visible text="local + ssh · one cli" delay={500} /></span>
           </div>
           <div class="ribbon-sub">bcmr copy a.txt user@host:/b/ is the same verb as bcmr copy a.txt /b/. same flags, same guarantees.</div>
         </div>
         <div class="ribbon-item">
           <div class="ribbon-head">
             <span class="t-small">04</span>
-            <span class="ribbon-label"><Scramble client:load text="reflink · sparse · dedup" delay={650} /></span>
+            <span class="ribbon-label"><Scramble client:visible text="reflink · sparse · dedup" delay={650} /></span>
           </div>
           <div class="ribbon-sub">copy_file_range on linux, clone_file on apfs, sparse file detection, content-addressed dedup ≥ 16 mib.</div>
         </div>
@@ -164,7 +164,7 @@ const features = [
           <div class="t-mono-sm" style="color: var(--steel-5);">~/work</div>
         </div>
         <div class="terminal-body">
-          <CommandStream client:load lines={terminalScript} />
+          <CommandStream client:visible lines={terminalScript} />
         </div>
       </div>
     </section>
@@ -202,19 +202,19 @@ const features = [
     <section class="home-section home-metrics">
       <div class="metrics-strip">
         <div class="metric">
-          <div class="metric-num t-display"><Tally client:load to={412} suffix=" mb/s" duration={1100} /></div>
+          <div class="metric-num t-display"><Tally client:visible to={412} suffix=" mb/s" duration={1100} /></div>
           <div class="metric-cap t-small">direct-tcp · peak</div>
         </div>
         <div class="metric">
-          <div class="metric-num t-display"><Tally client:load to={100} suffix="%" duration={1000} /></div>
+          <div class="metric-num t-display"><Tally client:visible to={100} suffix="%" duration={1000} /></div>
           <div class="metric-cap t-small">blake3 coverage</div>
         </div>
         <div class="metric">
-          <div class="metric-num t-display"><Tally client:load to={4} duration={800} /></div>
+          <div class="metric-num t-display"><Tally client:visible to={4} duration={800} /></div>
           <div class="metric-cap t-small">platforms supported</div>
         </div>
         <div class="metric">
-          <div class="metric-num t-display"><Tally client:load to={0} duration={600} /><span style="font-size: 0.5em; vertical-align: super; margin-left: 6px;">kb</span></div>
+          <div class="metric-num t-display"><Tally client:visible to={0} duration={600} /><span style="font-size: 0.5em; vertical-align: super; margin-left: 6px;">kb</span></div>
           <div class="metric-cap t-small">telemetry · forever</div>
         </div>
       </div>
@@ -224,9 +224,9 @@ const features = [
       <div class="cta-inner">
         <div class="t-small" style="color: var(--steel-3);">§ 04 · begin</div>
         <h2 class="t-display lower" style="color: var(--paper-pure);">
-          <BlockReveal client:load delay={200} color="var(--yellow)">one verb.</BlockReveal><br/>
-          <BlockReveal client:load delay={700} color="var(--red)">verified.</BlockReveal><br/>
-          <BlockReveal client:load delay={1200} color="var(--blue)">resumable.</BlockReveal>
+          <BlockReveal client:visible delay={200} color="var(--yellow)">one verb.</BlockReveal><br/>
+          <BlockReveal client:visible delay={700} color="var(--red)">verified.</BlockReveal><br/>
+          <BlockReveal client:visible delay={1200} color="var(--blue)">resumable.</BlockReveal>
         </h2>
         <div class="cta-buttons">
           <a class="btn-block" style="background: var(--paper-pure); color: var(--ink); border-color: var(--paper-pure);" href={bcmrProduct.href('/install')}>

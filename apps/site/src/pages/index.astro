@@ -8,7 +8,7 @@ import {
 } from '@snaix/docs-theme';
 import { snaixConfig } from 'virtual:snaix-config';
 
-const { stats, build, ticker, activity, edition, products } = snaixConfig.siteData!;
+const { stats, build, ticker, activity, edition, products } = snaixConfig.siteData;
 
 const year = new Date().getFullYear();
 ---
@@ -30,9 +30,9 @@ const year = new Date().getFullYear();
       </div>
 
       <h1 class="p-mast-title">
-        <span class="w1"><BlockReveal client:load delay={100} duration={520}>four</BlockReveal></span>
-        <span class="w2"><BlockReveal client:load delay={400} duration={520} color="var(--red)">tools</BlockReveal></span>
-        <span class="w3"><BlockReveal client:load delay={700} duration={520} color="var(--blue)">one hand</BlockReveal><span class="slash">/</span></span>
+        <span class="w1"><BlockReveal client:visible delay={100} duration={520}>four</BlockReveal></span>
+        <span class="w2"><BlockReveal client:visible delay={400} duration={520} color="var(--red)">tools</BlockReveal></span>
+        <span class="w3"><BlockReveal client:visible delay={700} duration={520} color="var(--blue)">one hand</BlockReveal><span class="slash">/</span></span>
       </h1>
 
       <div class="p-mast-sub">
@@ -44,7 +44,7 @@ const year = new Date().getFullYear();
           <span class="t-small">02 — by the numbers</span>
           <div class="kv">
             <div><span>tools</span> · {stats.shippingTools} shipping</div>
-            <div><span>stars</span> · <Tally client:load to={stats.githubStars} duration={1200} /></div>
+            <div><span>stars</span> · <Tally client:visible to={stats.githubStars} duration={1200} /></div>
             <div><span>docs</span> · {stats.locales} languages</div>
             <div><span>licence</span> · mit / apache</div>
           </div>
@@ -52,7 +52,7 @@ const year = new Date().getFullYear();
         <div class="slot">
           <span class="t-small">03 — get started</span>
           <div class="kv" style="margin-bottom: 12px;">
-            <Typewriter client:load text="$ curl -sSf get.snaix.homes | sh" speed={22} delay={800} cursor={false} />
+            <Typewriter client:visible text="$ curl -sSf get.snaix.homes | sh" speed={22} delay={800} cursor={false} />
           </div>
           <a href="#wall" class="btn-block" style="padding: 10px 16px; font-size: 11px;">↳ pick a tool</a>
         </div>
@@ -93,8 +93,8 @@ const year = new Date().getFullYear();
       <div class="p-activity-left">
         <div class="t-small" style="color: var(--red); margin-bottom: 12px; display: block;">§ 02 · activity</div>
         <h2 class="lower">
-          <BlockReveal client:load>shipping</BlockReveal><br/>
-          <BlockReveal client:load delay={200} color="var(--blue)">out loud.</BlockReveal>
+          <BlockReveal client:visible>shipping</BlockReveal><br/>
+          <BlockReveal client:visible delay={200} color="var(--blue)">out loud.</BlockReveal>
         </h2>
         <p>
           no roadmap theatre. changes go in as they land. below is a
@@ -130,22 +130,22 @@ const year = new Date().getFullYear();
       </h2>
       <div class="p-stats-grid">
         <div class="p-stat">
-          <div class="num"><Tally client:load to={stats.shippingTools} duration={800} /></div>
+          <div class="num"><Tally client:visible to={stats.shippingTools} duration={800} /></div>
           <div class="cap">shipping tools</div>
           <span class="accent-mark" />
         </div>
         <div class="p-stat">
-          <div class="num"><Tally client:load to={stats.githubStars} duration={1400} /></div>
+          <div class="num"><Tally client:visible to={stats.githubStars} duration={1400} /></div>
           <div class="cap">github stars</div>
           <span class="accent-mark" />
         </div>
         <div class="p-stat">
-          <div class="num"><Tally client:load to={stats.locales} duration={1000} /></div>
+          <div class="num"><Tally client:visible to={stats.locales} duration={1000} /></div>
           <div class="cap">locales · across tools</div>
           <span class="accent-mark" />
         </div>
         <div class="p-stat">
-          <div class="num"><Tally client:load to={stats.telemetry} duration={600} /></div>
+          <div class="num"><Tally client:visible to={stats.telemetry} duration={600} /></div>
           <div class="cap">zero telemetry</div>
           <span class="accent-mark" />
         </div>

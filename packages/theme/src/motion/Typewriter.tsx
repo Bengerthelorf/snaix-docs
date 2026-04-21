@@ -27,18 +27,22 @@ export function Typewriter({
   useEffect(() => {
     if (!inView) return;
     let i = 0;
+    let tickId = 0;
     const start = window.setTimeout(() => {
-      const id = window.setInterval(() => {
+      tickId = window.setInterval(() => {
         i++;
         setShown(text.slice(0, i));
         if (i >= text.length) {
-          window.clearInterval(id);
+          window.clearInterval(tickId);
           setDone(true);
           onDone?.();
         }
       }, speed);
     }, delay);
-    return () => window.clearTimeout(start);
+    return () => {
+      window.clearTimeout(start);
+      window.clearInterval(tickId);
+    };
   }, [inView, text, speed, delay, onDone]);
 
   return (
