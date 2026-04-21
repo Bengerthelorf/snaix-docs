@@ -9,6 +9,12 @@ bun.lockb
 *.log
 .claude/
 .playwright-mcp/
+*.jpeg
+*.png
+!apps/site/public/**/*.jpeg
+!apps/site/public/**/*.png
+!packages/**/public/**/*.jpeg
+!packages/**/public/**/*.png
 
 # Product content populated per-env:
 #   - dev: symlinks (`ln -s ~/Documents/bcmr content/bcmr`)
