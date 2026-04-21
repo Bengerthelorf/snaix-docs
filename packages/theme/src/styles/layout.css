@@ -39,13 +39,6 @@
   border-left: 1px solid var(--ink);
   padding-left: 24px; margin-left: 24px;
 }
-.topbar-status {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--steel-7);
-}
-.topbar-status .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
-.topbar-status .dot.is-blue { background: var(--blue); box-shadow: 0 0 0 3px rgba(28,76,225,0.15); }
 .topbar-gh {
   font-family: var(--mono); font-size: 11px;
   padding: 6px 10px;

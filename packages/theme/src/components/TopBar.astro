@@ -15,7 +15,6 @@ interface Props {
   current?: string;
   portalHref?: string;
   githubHref?: string;
-  showStatus?: boolean;
 }
 
 const DEFAULT_NAV: NavItem[] = [
@@ -33,7 +32,6 @@ const {
   current = 'home',
   portalHref = '/',
   githubHref = '#',
-  showStatus = true,
   nav = DEFAULT_NAV,
 } = Astro.props;
 ---
@@ -63,9 +61,6 @@ const {
     ))}
   </nav>
   <div class="topbar-right">
-    {showStatus && (
-      <span class="topbar-status"><span class="dot is-blue" />online</span>
-    )}
     <a class="topbar-gh" href={githubHref}>github↗</a>
   </div>
 </header>
