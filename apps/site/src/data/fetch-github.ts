@@ -47,6 +47,24 @@ export async function fetchProductMeta(repo: string): Promise<ProductMeta> {
   };
 }
 
+export interface RecentCommit {
+  repo: string;
+  sha: string;
+  date: string;
+  message: string;
+}
+
+export async function fetchRecentCommits(repo: string, limit = 10): Promise<RecentCommit[]> {
+  const data = await ghJson(`repos/${repo}/commits?per_page=${limit}`);
+  if (!Array.isArray(data)) return [];
+  return data.map((c: any) => ({
+    repo,
+    sha: String(c.sha ?? '').slice(0, 7),
+    date: c.commit?.author?.date ?? c.commit?.committer?.date ?? '',
+    message: String(c.commit?.message ?? '').split('\n', 1)[0].trim(),
+  })).filter((c) => c.sha && c.date && c.message);
+}
+
 export interface BuildInfo {
   sha: string;
   date: string;

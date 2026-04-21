@@ -6,12 +6,12 @@ import bcmrDocsConfig from '../../content/bcmr/docs/docs.config.ts';
 import clauditDocsConfig from '../../content/claudit/docs/docs.config.ts';
 import pikpaktuiDocsConfig from '../../content/pikpaktui/docs/docs.config.ts';
 import iconchangerDocsConfig from '../../content/iconchanger/docs/docs.config.ts';
-import { fetchProductMeta, readBuildInfo } from './src/data/fetch-github.ts';
+import { fetchProductMeta, fetchRecentCommits, readBuildInfo } from './src/data/fetch-github.ts';
 import {
   edition,
   manualStats,
   tickerStatic,
-  activity,
+  activity as fallbackActivity,
   productPresentations,
   internalTiles,
 } from './src/data/site-static.ts';
@@ -54,6 +54,58 @@ const ticker = [
     .filter(Boolean),
   ...tickerStatic,
 ];
+
+const PROJ_LABEL = { bcmr: 'bcmr', pikpaktui: 'pikpak', iconchanger: 'icon', claudit: 'claudit' };
+const PROJ_KIND  = { bcmr: 'is-bcmr', pikpaktui: 'is-pikpak', iconchanger: 'is-icon', claudit: 'is-claudit' };
+
+const escapeHtml = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+const formatMsg = (raw) => {
+  const out = [];
+  let i = 0;
+  while (i < raw.length) {
+    if (raw[i] === '`') {
+      const end = raw.indexOf('`', i + 1);
+      if (end !== -1) {
+        out.push(`<code>${escapeHtml(raw.slice(i + 1, end))}</code>`);
+        i = end + 1;
+        continue;
+      }
+    }
+    const next = raw.indexOf('`', i);
+    out.push(escapeHtml(raw.slice(i, next === -1 ? raw.length : next)));
+    i = next === -1 ? raw.length : next;
+  }
+  return out.join('');
+};
+const formatTime = (iso, now) => {
+  const d = new Date(iso);
+  const diffMs = now.getTime() - d.getTime();
+  const dayMs = 86_400_000;
+  const sameDay = d.toDateString() === now.toDateString();
+  if (sameDay) return `${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+  const days = Math.floor(diffMs / dayMs);
+  if (days <= 1) return 'yday';
+  if (days < 7) return `${days}d`;
+  return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`;
+};
+
+const commitBatches = await Promise.all(
+  productPresentations.map((p) => fetchRecentCommits(p.repo, 6)),
+);
+const allCommits = productPresentations.flatMap((p, i) =>
+  commitBatches[i].map((c) => ({ ...c, slug: p.slug })),
+);
+const now = new Date();
+const liveActivity = allCommits
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  .slice(0, 7)
+  .map((c) => ({
+    time: formatTime(c.date, now),
+    proj: PROJ_LABEL[c.slug] ?? c.slug,
+    kind: PROJ_KIND[c.slug] ?? '',
+    msg: formatMsg(c.message),
+  }));
+const activity = liveActivity.length > 0 ? liveActivity : fallbackActivity;
 
 const bcmrProduct = {
   slug: 'bcmr',
