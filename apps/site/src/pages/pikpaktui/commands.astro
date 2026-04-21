@@ -1,0 +1,53 @@
+---
+import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
+import TopBar from '@snaix/docs-theme/components/TopBar.astro';
+import Footer from '@snaix/docs-theme/components/Footer.astro';
+import { BlockReveal, CliReference } from '@snaix/docs-theme';
+import type { CliSpec } from '@snaix/docs-theme';
+import { product } from '../../lib/product.ts';
+import { pikpaktuiCommandGroups, pikpaktuiCommandCount } from '../../data/pikpaktui-commands.ts';
+
+const pikpaktui = product('pikpaktui');
+const version = String(pikpaktui.version ?? '').replace(/^v/, '');
+const shellLabel = `zsh · ${pikpaktui.title}${version ? ` ${version}` : ''}`;
+const spec: CliSpec = { groups: pikpaktuiCommandGroups, shellLabel };
+---
+<DefaultLayout title={`${pikpaktui.title} · commands`}>
+  <div class="page cli">
+    <TopBar
+      brand={pikpaktui.title}
+      version={pikpaktui.version}
+      current="commands"
+      showStatus={false}
+      githubHref={pikpaktui.githubUrl}
+      nav={pikpaktui.nav()}
+    />
+
+    <section class="cli-hero rule-b">
+      <div class="cli-hero-grid grid12">
+        <div class="cli-hero-left">
+          <div class="t-small" style="color: var(--yellow);">§ commands</div>
+          <h1 class="t-h1 lower">
+            <BlockReveal client:visible delay={200}>{pikpaktuiCommandCount} verbs.</BlockReveal><br/>
+            <BlockReveal client:visible delay={600} color="var(--blue)">one tui.</BlockReveal>
+          </h1>
+        </div>
+        <div class="cli-hero-right">
+          <p class="t-body">
+            every action in pikpaktui is a command you can type, pipe, alias,
+            and commit to your shell history. below is the full surface —
+            grouped, searchable, each entry self-introspectable via{' '}
+            <code class="inline-code">--help</code> or <code class="inline-code">--json</code>.
+          </p>
+          <p class="t-mono-sm" style="color: var(--steel-5); margin-top: 12px;">
+            press <code>/</code> to search · <code>j</code>/<code>k</code> or arrows to move
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <CliReference client:visible spec={spec} />
+
+    <Footer product={pikpaktui} locale="en" languages={pikpaktui.pageLanguages('en', '/commands', ['en'])} />
+  </div>
+</DefaultLayout>

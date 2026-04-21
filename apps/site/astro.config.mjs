@@ -172,7 +172,7 @@ const pikpaktuiProduct = {
   tabs: [
     { id: 'home',      label: 'overview', href: '/' },
     { id: 'docs',      label: 'docs',     href: '/docs/getting-started', sections: ['guide'] },
-    { id: 'commands',  label: 'commands', href: '/docs/cli/commands',    sections: ['cli'] },
+    { id: 'commands',  label: 'commands', href: '/commands' },
     { id: 'install',   label: 'install',  href: '/install' },
     { id: 'changelog', label: 'changelog', href: '/changelog' },
   ],
