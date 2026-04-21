@@ -195,7 +195,7 @@ const iconchangerProduct = {
   tabs: [
     { id: 'home',      label: 'overview', href: '/' },
     { id: 'docs',      label: 'docs',     href: '/docs/getting-started', sections: ['guide'] },
-    { id: 'commands',  label: 'cli', href: '/docs/cli/commands',    sections: ['cli'] },
+    { id: 'commands',  label: 'cli', href: '/commands' },
     { id: 'install',   label: 'install',  href: '/install' },
     { id: 'changelog', label: 'changelog', href: '/changelog' },
   ],

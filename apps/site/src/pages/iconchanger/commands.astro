@@ -1,0 +1,51 @@
+---
+import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
+import TopBar from '@snaix/docs-theme/components/TopBar.astro';
+import Footer from '@snaix/docs-theme/components/Footer.astro';
+import { BlockReveal, CliReference } from '@snaix/docs-theme';
+import type { CliSpec } from '@snaix/docs-theme';
+import { product } from '../../lib/product.ts';
+import { iconchangerCommandGroups, iconchangerCommandCount } from '../../data/iconchanger-commands.ts';
+
+const iconchanger = product('iconchanger');
+const version = String(iconchanger.version ?? '').replace(/^v/, '');
+const shellLabel = `zsh · ${iconchanger.title}${version ? ` ${version}` : ''}`;
+const spec: CliSpec = { groups: iconchangerCommandGroups, shellLabel };
+---
+<DefaultLayout title={`${iconchanger.title} · commands`}>
+  <div class="page cli">
+    <TopBar
+      brand={iconchanger.title}
+      version={iconchanger.version}
+      current="commands"
+      githubHref={iconchanger.githubUrl}
+      nav={iconchanger.nav()}
+    />
+
+    <section class="cli-hero rule-b">
+      <div class="cli-hero-grid grid12">
+        <div class="cli-hero-left">
+          <div class="t-small" style="color: var(--red);">§ commands</div>
+          <h1 class="t-h1 lower">
+            <BlockReveal client:visible delay={200}>{iconchangerCommandCount} verbs.</BlockReveal><br/>
+            <BlockReveal client:visible delay={600} color="var(--blue)">one app.</BlockReveal>
+          </h1>
+        </div>
+        <div class="cli-hero-right">
+          <p class="t-body">
+            iconchanger is a macos gui first, but the same engine ships as a
+            scriptable cli. dotfile-friendly: pair with chezmoi, ansible, or
+            a one-liner in your post-os-update hook.
+          </p>
+          <p class="t-mono-sm" style="color: var(--steel-5); margin-top: 12px;">
+            press <code>/</code> to search · <code>j</code>/<code>k</code> or arrows to move
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <CliReference client:visible spec={spec} />
+
+    <Footer product={iconchanger} locale="en" languages={iconchanger.pageLanguages('en', '/commands', ['en'])} />
+  </div>
+</DefaultLayout>
