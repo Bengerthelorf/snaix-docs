@@ -1,0 +1,98 @@
+---
+import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
+import { BlockReveal } from '@snaix/docs-theme';
+---
+<DefaultLayout title="snaix · manifesto">
+  <div class="page about">
+    <nav class="ds-nav">
+      <a href="/" class="ds-nav-home">← snaix.homes</a>
+      <div class="ds-nav-links">
+        <a href="/design-system/">design language</a>
+        <a href="#stance">stance</a>
+      </div>
+    </nav>
+
+    <section class="manifesto-hero">
+      <div class="manifesto-shapes" aria-hidden="true">
+        <div class="mh-red" />
+        <div class="mh-yellow" />
+        <div class="mh-blue" />
+      </div>
+      <div class="t-small" style="color: var(--red); position: relative; z-index: 2;">§ manifesto</div>
+      <h1 class="manifesto-title lower">
+        <BlockReveal client:visible>small tools,</BlockReveal><br />
+        <BlockReveal client:visible delay={300} color="var(--red)">readable,</BlockReveal><br />
+        <BlockReveal client:visible delay={600} color="var(--blue)">in your hands.</BlockReveal>
+      </h1>
+    </section>
+
+    <section class="manifesto-body">
+      <div class="mb-side">
+        <div>§ 01 · position</div>
+        <div>no telemetry</div>
+        <div>no account</div>
+      </div>
+      <div>
+        <p>
+          snaix is where i put the tools i build for myself and decide are
+          worth sharing. cli, tui, macos-native. apache-2.0 or mit,
+          permissively. written to be read end-to-end, not black-boxed
+          behind sdks.
+        </p>
+        <p>
+          four principles run through every tool here. <span class="highlight">
+          software you can read. tools that don't phone home. interfaces
+          that respect your hands. defaults that are the right answer.</span>
+        </p>
+        <p>
+          bcmr treats transfers as a promise you keep — every byte hashed on
+          both ends, or the transfer didn't succeed. pikpaktui puts a cloud
+          drive under 26 keyboard shortcuts. iconchanger swaps macos icons
+          with a live dock preview. claudit reads your <code>~/.claude</code>
+          logs so you can see what you actually spent. no cloud for any of
+          them. no account. no phone-home.
+        </p>
+        <p>
+          every tool on this site is open source. nothing is served from an
+          api you can't inspect. every release is built from a commit you
+          can check out, diff, and compile. the whole point is that you can
+          read the code and know exactly what your machine is doing to your
+          files, your keystrokes, your logs.
+        </p>
+      </div>
+    </section>
+
+    <section class="credits" id="stance">
+      <div style="margin-bottom: 20px;">
+        <div class="t-small" style="color: var(--red);">§ stance</div>
+        <h2 class="t-h1 lower" style="margin-top: 8px;">open source.<br />zero telemetry.</h2>
+      </div>
+      <div class="credits-grid">
+        <div class="credit">
+          <div class="credit-role">license</div>
+          <div class="credit-name">mit · apache-2.0</div>
+          <div class="credit-loc">no strings attached</div>
+        </div>
+        <div class="credit">
+          <div class="credit-role">telemetry</div>
+          <div class="credit-name">none</div>
+          <div class="credit-loc">no account · no ping</div>
+        </div>
+        <div class="credit">
+          <div class="credit-role">source</div>
+          <div class="credit-name">readable</div>
+          <div class="credit-loc">one afternoon, end-to-end</div>
+        </div>
+        <div class="credit">
+          <div class="credit-role">built with</div>
+          <div class="credit-name">rust · swift · astro</div>
+          <div class="credit-loc">native where it matters</div>
+        </div>
+      </div>
+    </section>
+  </div>
+</DefaultLayout>
+
+<style>
+  .about { max-width: 1240px; margin: 0 auto; padding: 0 32px 80px; }
+</style>
