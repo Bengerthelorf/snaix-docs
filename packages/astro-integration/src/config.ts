@@ -95,6 +95,8 @@ export interface ProductIntegration {
   version?: string;
   releaseDate?: string;
   githubUrl?: string;
+  /** `owner/repo` slug — used by build-time helpers that hit the github api. */
+  repo?: string;
   /** No trailing slash. Pages live at `${productRoot}/*`. */
   productRoot: string;
   /** CSS color var (e.g. `var(--yellow)`) used in the docs-page topbar logo + docs-nav section heading. */

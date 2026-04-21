@@ -1,0 +1,36 @@
+---
+import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
+import TopBar from '@snaix/docs-theme/components/TopBar.astro';
+import Footer from '@snaix/docs-theme/components/Footer.astro';
+import ReleasesList from '../../components/ReleasesList.astro';
+import { fetchReleases } from '../../data/fetch-github.ts';
+import { product } from '../../lib/product.ts';
+
+const pikpaktui = product('pikpaktui');
+const releases = await fetchReleases(pikpaktui.repo, 30);
+---
+<DefaultLayout title={`${pikpaktui.title} · changelog`}>
+  <div class="page changelog">
+    <TopBar
+      brand={pikpaktui.title}
+      version={pikpaktui.version}
+      current="changelog"
+      showStatus={false}
+      githubHref={pikpaktui.githubUrl}
+      nav={pikpaktui.nav()}
+    />
+
+    <section class="log-hero">
+      <div class="t-small" style="color: var(--yellow);">§ changelog</div>
+      <h1 class="install-title lower" style="margin-top: 8px;">what changed.</h1>
+      <p class="t-body" style="margin-top: 16px; max-width: 640px;">
+        every release published on github, mirrored here verbatim from the
+        release notes. newest first.
+      </p>
+    </section>
+
+    <ReleasesList releases={releases} repo={pikpaktui.repo} />
+
+    <Footer product={pikpaktui} locale="en" languages={pikpaktui.pageLanguages('en', '/changelog', ['en'])} />
+  </div>
+</DefaultLayout>

@@ -1,0 +1,35 @@
+---
+import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
+import TopBar from '@snaix/docs-theme/components/TopBar.astro';
+import Footer from '@snaix/docs-theme/components/Footer.astro';
+import ReleasesList from '../../components/ReleasesList.astro';
+import { fetchReleases } from '../../data/fetch-github.ts';
+import { product } from '../../lib/product.ts';
+
+const iconchanger = product('iconchanger');
+const releases = await fetchReleases(iconchanger.repo, 30);
+---
+<DefaultLayout title={`${iconchanger.title} · changelog`}>
+  <div class="page changelog">
+    <TopBar
+      brand={iconchanger.title}
+      version={iconchanger.version}
+      current="changelog"
+      githubHref={iconchanger.githubUrl}
+      nav={iconchanger.nav()}
+    />
+
+    <section class="log-hero">
+      <div class="t-small" style="color: var(--red);">§ changelog</div>
+      <h1 class="install-title lower" style="margin-top: 8px;">what changed.</h1>
+      <p class="t-body" style="margin-top: 16px; max-width: 640px;">
+        every release published on github, mirrored here verbatim from the
+        release notes. newest first.
+      </p>
+    </section>
+
+    <ReleasesList releases={releases} repo={iconchanger.repo} />
+
+    <Footer product={iconchanger} locale="en" languages={iconchanger.pageLanguages('en', '/changelog', ['en'])} />
+  </div>
+</DefaultLayout>

@@ -1,0 +1,63 @@
+---
+import { Marked } from 'marked';
+import type { ReleaseEntry } from '../data/fetch-github.ts';
+
+interface Props {
+  releases: ReleaseEntry[];
+  repo: string;
+}
+
+const { releases, repo } = Astro.props;
+
+const md = new Marked({ gfm: true, breaks: false });
+md.use({
+  renderer: {
+    link({ href, title, text }: { href: string; title?: string | null; text: string }) {
+      const isAbs = /^[a-z]+:\/\//i.test(href) || href.startsWith('#');
+      const resolved = isAbs ? href : `https://github.com/${repo}/${href.replace(/^\//, '')}`;
+      const titleAttr = title ? ` title="${title}"` : '';
+      return `<a href="${resolved}"${titleAttr} rel="noopener" target="_blank">${text}</a>`;
+    },
+  },
+});
+
+const formatDate = (iso: string) => {
+  if (!iso) return '';
+  const d = new Date(iso);
+  return `${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, '0')}.${String(d.getDate()).padStart(2, '0')}`;
+};
+
+const rendered = await Promise.all(
+  releases.map(async (r) => ({
+    ...r,
+    bodyHtml: r.bodyMarkdown.trim() ? await md.parse(r.bodyMarkdown) : '',
+    dateLabel: formatDate(r.date),
+  })),
+);
+---
+{rendered.length === 0 ? (
+  <p class="t-body" style="margin: 32px 0; color: var(--steel-7);">
+    no releases published yet · check back later or visit the{' '}
+    <a href={`https://github.com/${repo}/releases`} class="link-u" target="_blank" rel="noopener">github releases page ↗</a>.
+  </p>
+) : (
+  <div class="log-list">
+    {rendered.map((r) => (
+      <article class="log-entry" id={r.tag}>
+        <aside class="log-side">
+          <div class="log-version">{r.tag}</div>
+          <div class="log-date">{r.dateLabel}</div>
+          {r.prerelease && (
+            <div class="log-chip"><span class="chip is-yellow"><span class="dot"/>pre-release</span></div>
+          )}
+          <div style="margin-top: 14px;">
+            <a class="t-mono-sm" href={r.htmlUrl} target="_blank" rel="noopener" style="color: var(--steel-5);">
+              view on github ↗
+            </a>
+          </div>
+        </aside>
+        <div class="log-body" set:html={r.bodyHtml || '<p style="color: var(--steel-5);">no release notes.</p>'} />
+      </article>
+    ))}
+  </div>
+)}

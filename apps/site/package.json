@@ -12,12 +12,13 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@snaix/docs": "workspace:*",
-    "@snaix/docs-theme": "workspace:*",
     "@astrojs/mdx": "^4.0.0",
     "@astrojs/react": "^4.0.0",
+    "@snaix/docs": "workspace:*",
+    "@snaix/docs-theme": "workspace:*",
     "@types/hast": "^3.0.4",
     "astro": "^5.0.0",
+    "marked": "^18.0.2",
     "mermaid": "^11.14.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

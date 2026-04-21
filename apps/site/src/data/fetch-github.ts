@@ -47,6 +47,32 @@ export async function fetchProductMeta(repo: string): Promise<ProductMeta> {
   };
 }
 
+export interface ReleaseEntry {
+  repo: string;
+  tag: string;
+  name: string;
+  date: string;
+  bodyMarkdown: string;
+  htmlUrl: string;
+  prerelease: boolean;
+}
+
+export async function fetchReleases(repo: string, limit = 20): Promise<ReleaseEntry[]> {
+  const data = await ghJson(`repos/${repo}/releases?per_page=${limit}`);
+  if (!Array.isArray(data)) return [];
+  return data
+    .filter((r: any) => !r.draft)
+    .map((r: any) => ({
+      repo,
+      tag: String(r.tag_name ?? ''),
+      name: String(r.name ?? r.tag_name ?? ''),
+      date: r.published_at ?? r.created_at ?? '',
+      bodyMarkdown: String(r.body ?? ''),
+      htmlUrl: String(r.html_url ?? ''),
+      prerelease: Boolean(r.prerelease),
+    }));
+}
+
 export interface RecentCommit {
   repo: string;
   sha: string;
