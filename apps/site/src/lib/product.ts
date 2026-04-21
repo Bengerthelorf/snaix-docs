@@ -30,13 +30,19 @@ export function product(slug: string) {
       docsSubpath,
     });
 
-  const pageLanguages = (currentCode: string, tail = '/') =>
-    LOCALES.map((l) => ({
-      code: l.code,
-      label: l.label,
-      href: href(`${l.default ? '' : `/${l.code}`}${tail}`),
-      active: l.code === currentCode,
-    }));
+  /** Emit switcher entries only for the locales the caller has pages at. Docs
+   *  pages auto-filter via buildLanguageOptions; landings/install/commands
+   *  don't have per-entry content to introspect, so callers pass the set
+   *  explicitly. */
+  const pageLanguages = (currentCode: string, tail: string, codes: string[]) =>
+    LOCALES
+      .filter((l) => codes.includes(l.code))
+      .map((l) => ({
+        code: l.code,
+        label: l.label,
+        href: href(`${l.default ? '' : `/${l.code}`}${tail}`),
+        active: l.code === currentCode,
+      }));
 
   return { ...p, href, nav, docsLanguages, pageLanguages };
 }
