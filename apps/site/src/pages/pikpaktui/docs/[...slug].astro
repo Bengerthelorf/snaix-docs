@@ -10,6 +10,7 @@ import {
   navFor,
 } from '../../../lib/docs.ts';
 import { product } from '../../../lib/product.ts';
+import { mdxComponents } from '@snaix/docs-theme/mdx-components';
 
 const pikpaktui = product('pikpaktui');
 
@@ -58,5 +59,5 @@ const docsLabel = DEFAULT_LOCALE.ui?.docsLabel ?? 'docs';
   topNav={pikpaktui.nav()}
   currentTab={sectionKey === 'cli' ? 'commands' : 'docs'}
 >
-  <Content />
+  <Content components={mdxComponents} />
 </DocsLayout>

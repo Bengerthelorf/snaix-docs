@@ -1,0 +1,26 @@
+---
+type Kind = 'info' | 'warn' | 'danger' | 'tip' | 'note';
+
+interface Props {
+  kind?: Kind;
+  title?: string;
+}
+
+const KINDS: Record<Kind, { color: string; label: string }> = {
+  info:   { color: 'var(--blue)', label: 'info' },
+  warn:   { color: 'var(--ink)',  label: 'watch out' },
+  danger: { color: 'var(--red)',  label: 'never' },
+  tip:    { color: 'var(--blue)', label: 'tip' },
+  note:   { color: 'var(--ink)',  label: 'note' },
+};
+
+const { kind = 'info', title } = Astro.props;
+const { color, label: defaultLabel } = KINDS[kind];
+const label = title ?? defaultLabel;
+---
+<div class:list={['docs-callout', `is-${kind}`]}>
+  <div>
+    <div class="docs-callout-title" style={`color: ${color};`}>{label}</div>
+    <div><slot /></div>
+  </div>
+</div>

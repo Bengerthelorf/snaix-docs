@@ -95,6 +95,8 @@ export interface ProductIntegration {
   githubUrl?: string;
   /** No trailing slash. Pages live at `${productRoot}/*`. */
   productRoot: string;
+  /** CSS color var (e.g. `var(--yellow)`) used in the docs-page topbar logo + docs-nav section heading. */
+  accent: string;
   install: InstallOptions;
   sections: NavSection[];
   tabs: TopNavTab[];

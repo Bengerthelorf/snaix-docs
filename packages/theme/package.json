@@ -9,8 +9,10 @@
     "./styles/*": "./src/styles/*",
     "./components/*": "./src/components/*",
     "./components/*.astro": "./src/components/*.astro",
+    "./components/docs/*.astro": "./src/components/docs/*.astro",
     "./motion/*": "./src/motion/*",
     "./layouts/*.astro": "./src/layouts/*.astro",
+    "./mdx-components": "./src/mdx-components.ts",
     "./tokens.css": "./src/styles/tokens.css",
     "./base.css": "./src/styles/base.css"
   },

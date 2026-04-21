@@ -12,6 +12,7 @@ import {
   slugPrefix,
 } from '../../../../lib/docs.ts';
 import { product } from '../../../../lib/product.ts';
+import { mdxComponents } from '@snaix/docs-theme/mdx-components';
 
 const iconchanger = product('iconchanger');
 
@@ -71,5 +72,5 @@ const docsLabel = locale.ui?.docsLabel ?? 'docs';
   topNav={iconchanger.nav()}
   currentTab="docs"
 >
-  <Content />
+  <Content components={mdxComponents} />
 </DocsLayout>

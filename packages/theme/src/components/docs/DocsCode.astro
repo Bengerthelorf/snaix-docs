@@ -1,0 +1,19 @@
+---
+interface Props {
+  filename?: string;
+  badge?: string;
+  class?: string;
+}
+
+const { filename, badge, class: className } = Astro.props;
+const lang = badge ?? className?.match(/language-([\w+-]+)/)?.[1];
+---
+<div class="docs-code-block">
+  {(filename || lang) && (
+    <div class="docs-code-head">
+      <span>{filename}</span>
+      <span>{lang}</span>
+    </div>
+  )}
+  <pre class:list={['docs-code-body', className]}><slot /></pre>
+</div>

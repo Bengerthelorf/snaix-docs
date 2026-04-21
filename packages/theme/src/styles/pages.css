@@ -89,33 +89,6 @@
   gap: 40px;
   padding: 32px 0 80px;
 }
-/* markdown-rendered prose inside docs — inherit the typography of docs-p/h2/h3 */
-.snx-md h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.01em; margin: 48px 0 16px; padding-top: 24px; border-top: 3px solid var(--ink); line-height: 1.1; text-transform: lowercase; }
-.snx-md h3 { font-size: 19px; font-weight: 600; margin: 32px 0 10px; text-transform: lowercase; }
-.snx-md p { font-size: 15px; line-height: 1.65; margin: 0 0 14px; max-width: 64ch; }
-.snx-md p code, .snx-md li code { font-family: var(--mono); font-size: 0.88em; background: var(--steel-1); padding: 1px 6px; border: 1px solid var(--steel-3); }
-.snx-md ul, .snx-md ol { padding-left: 18px; }
-.snx-md ul li, .snx-md ol li { margin-bottom: 6px; line-height: 1.55; }
-.snx-md pre {
-  border: 1px solid var(--ink); background: var(--paper-pure);
-  padding: 18px 20px; margin: 20px 0;
-  font-family: var(--mono); font-size: 13px; line-height: 1.6;
-  overflow-x: auto;
-}
-.snx-md img, .snx-md svg {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  margin: 24px auto;
-}
-.snx-md p > img, .snx-md p > a > img {
-  margin: 0 auto;
-}
-.snx-md p:has(> img), .snx-md p:has(> a > img) {
-  margin: 24px 0;
-  max-width: none;
-  text-align: center;
-}
 .docs-nav {
   position: sticky; top: 90px;
   align-self: start;
@@ -138,12 +111,56 @@
 .docs-title { font-size: 52px; font-weight: 700; letter-spacing: -0.02em; line-height: 0.95; margin: 0 0 8px; }
 .docs-subtitle { color: var(--steel-7); font-size: 17px; margin-bottom: 36px; max-width: 56ch; }
 
-.docs-h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.01em; margin: 48px 0 16px; padding-top: 24px; border-top: 3px solid var(--ink); line-height: 1.1; }
-.docs-h3 { font-size: 19px; font-weight: 600; margin: 32px 0 10px; }
-.docs-p { font-size: 15px; line-height: 1.65; margin: 0 0 14px; max-width: 64ch; }
-.docs-p code { font-family: var(--mono); font-size: 0.88em; background: var(--steel-1); padding: 1px 6px; border: 1px solid var(--steel-3); }
-.docs-ul { padding-left: 18px; }
-.docs-ul li { margin-bottom: 6px; line-height: 1.55; }
+.docs-h2,
+.docs-content h2 { font-size: 28px; font-weight: 700; letter-spacing: -0.01em; margin: 48px 0 16px; padding-top: 24px; border-top: 3px solid var(--ink); line-height: 1.1; text-transform: lowercase; }
+.docs-h3,
+.docs-content h3 { font-size: 19px; font-weight: 600; margin: 32px 0 10px; }
+.docs-p,
+.docs-content p { font-size: 15px; line-height: 1.65; margin: 0 0 14px; max-width: 64ch; }
+.docs-p code,
+.docs-content p code,
+.docs-content li code { font-family: var(--mono); font-size: 0.88em; background: var(--steel-1); padding: 1px 6px; border: 1px solid var(--steel-3); }
+.docs-ul,
+.docs-content ul,
+.docs-content ol { padding-left: 18px; }
+.docs-ul li,
+.docs-content ul li,
+.docs-content ol li { margin-bottom: 6px; line-height: 1.55; }
+
+.docs-content table {
+  width: 100%; border-collapse: collapse; font-size: 13px;
+  margin: 18px 0 22px; border: 1px solid var(--ink); background: var(--paper-pure);
+}
+.docs-content thead th { text-align: left; padding: 10px 14px; background: var(--steel-1); font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--steel-7); font-weight: 600; border-bottom: 1px solid var(--steel-3); }
+.docs-content tbody td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--steel-3); vertical-align: top; }
+.docs-content tbody tr:last-child td { border-bottom: 0; }
+.docs-content table code { font-family: var(--mono); font-size: 12px; background: var(--steel-1); padding: 1px 6px; border: 1px solid var(--steel-3); }
+.docs-content kbd {
+  display: inline-block; min-width: 22px; text-align: center;
+  padding: 2px 8px; font-family: var(--mono); font-size: 11px; font-weight: 600;
+  background: var(--paper-pure); border: 1px solid var(--ink);
+  box-shadow: 0 1px 0 var(--ink);
+  color: var(--ink);
+  margin: 0 2px;
+}
+.docs-content pre {
+  border: 1px solid var(--ink);
+  background: var(--paper-pure);
+  padding: 18px 20px; margin: 20px 0;
+  font-family: var(--mono); font-size: 13px; line-height: 1.6;
+  overflow-x: auto;
+}
+/* Shiki inlines `background-color` on <pre class="astro-code">, beating any
+   non-`!important` rule. Override to match paper bg; drop if Shiki ever
+   switches to a css-variables theme. */
+.docs-content pre.astro-code { background: var(--paper-pure) !important; }
+[data-theme="dark"] .docs-content pre.astro-code { background: var(--paper) !important; }
+.docs-content img, .docs-content svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 24px auto;
+}
 
 .docs-callout {
   border: 1px solid var(--ink);
@@ -202,6 +219,22 @@
 .docs-pager .pager-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--steel-5); }
 .docs-pager .pager-title { font-size: 18px; font-weight: 600; margin-top: 4px; }
 .docs-pager .is-next { text-align: right; }
+
+.docs-table-wrap { margin: 18px 0 22px; border: 1px solid var(--ink); background: var(--paper-pure); overflow-x: auto; }
+.docs-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.docs-table th, .docs-table td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--steel-3); vertical-align: top; }
+.docs-table th { background: var(--steel-1); font-family: var(--mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--steel-7); font-weight: 600; }
+.docs-table tr:last-child td { border-bottom: 0; }
+.docs-table code { font-family: var(--mono); font-size: 12px; background: var(--steel-1); padding: 1px 6px; border: 1px solid var(--steel-3); }
+
+.docs-kbd {
+  display: inline-block; min-width: 22px; text-align: center;
+  padding: 2px 8px; font-family: var(--mono); font-size: 11px; font-weight: 600;
+  background: var(--paper-pure); border: 1px solid var(--ink);
+  box-shadow: 0 1px 0 var(--ink);
+  color: var(--ink);
+  margin: 0 2px;
+}
 
 /* ── install page ── */
 .install-hero { padding: 40px 0 32px; border-bottom: 3px solid var(--ink); }

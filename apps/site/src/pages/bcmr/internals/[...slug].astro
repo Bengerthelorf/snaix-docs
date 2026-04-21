@@ -7,6 +7,7 @@ import {
   navFor,
 } from '../../../lib/docs.ts';
 import { product } from '../../../lib/product.ts';
+import { mdxComponents } from '@snaix/docs-theme/mdx-components';
 
 const bcmrProduct = product('bcmr');
 
@@ -55,5 +56,5 @@ const docsLabel = DEFAULT_LOCALE.ui?.docsLabel ?? 'docs';
   topNav={bcmrProduct.nav()}
   currentTab="internals"
 >
-  <Content />
+  <Content components={mdxComponents} />
 </DocsLayout>

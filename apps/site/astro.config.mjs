@@ -59,6 +59,7 @@ const bcmrProduct = {
   releaseDate: bcmrMeta.releaseDate,
   githubUrl: 'https://github.com/Bengerthelorf/bcmr',
   productRoot: '/bcmr',
+  accent: 'var(--ink)',
   install: bcmrDocsConfig.install,
   sections: bcmrDocsConfig.sections,
   tabs: [
@@ -84,6 +85,7 @@ const clauditProduct = {
   releaseDate: clauditMeta.releaseDate,
   githubUrl: 'https://github.com/Bengerthelorf/Claudit',
   productRoot: '/claudit',
+  accent: 'var(--blue)',
   install: clauditDocsConfig.install,
   sections: clauditDocsConfig.sections,
   tabs: [
@@ -104,6 +106,7 @@ const pikpaktuiProduct = {
   releaseDate: pikpaktuiMeta.releaseDate,
   githubUrl: 'https://github.com/Bengerthelorf/pikpaktui',
   productRoot: '/pikpaktui',
+  accent: 'var(--yellow)',
   install: pikpaktuiDocsConfig.install,
   sections: pikpaktuiDocsConfig.sections,
   tabs: [
@@ -125,6 +128,7 @@ const iconchangerProduct = {
   releaseDate: iconchangerMeta.releaseDate,
   githubUrl: 'https://github.com/Bengerthelorf/macIconChanger',
   productRoot: '/iconchanger',
+  accent: 'var(--red)',
   install: iconchangerDocsConfig.install,
   sections: iconchangerDocsConfig.sections,
   tabs: [
