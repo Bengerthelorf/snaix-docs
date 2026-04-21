@@ -8,7 +8,6 @@ import pikpaktuiDocsConfig from '../../content/pikpaktui/docs/docs.config.ts';
 import iconchangerDocsConfig from '../../content/iconchanger/docs/docs.config.ts';
 import { fetchProductMeta, fetchRecentCommits, readBuildInfo, readLocalCommits } from './src/data/fetch-github.ts';
 import {
-  edition,
   manualStats,
   tickerStatic,
   activity as fallbackActivity,
@@ -200,15 +199,7 @@ const iconchangerProduct = {
   contentDir: 'src/content/iconchanger/',
 };
 
-export default defineConfig({
-  site: 'https://app.snaix.homes',
-  trailingSlash: 'ignore',
-  integrations: [
-    snaixDocs({
-      products: [bcmrProduct, clauditProduct, pikpaktuiProduct, iconchangerProduct],
-      buildStamp: buildInfo,
-      markdown: { math: true, mermaid: true },
-      locales: [
+const locales = [
         { code: 'en',      label: 'English',         default: true,
           ui: { tocLabel: 'on this page',   sections: { guide: 'guide',    cli: 'cli', internals: 'internals' } } },
         { code: 'zh',      label: '简体中文',
@@ -242,14 +233,24 @@ export default defineConfig({
         { code: 'th',      label: 'ไทย',             lang: 'th' },
         { code: 'hi',      label: 'हिन्दी',            lang: 'hi' },
         { code: 'ar',      label: 'العربية',          lang: 'ar', dir: 'rtl' },
-      ],
+];
+
+export default defineConfig({
+  site: 'https://app.snaix.homes',
+  trailingSlash: 'ignore',
+  integrations: [
+    snaixDocs({
+      products: [bcmrProduct, clauditProduct, pikpaktuiProduct, iconchangerProduct],
+      buildStamp: buildInfo,
+      markdown: { math: true, mermaid: true },
+      locales,
       siteData: {
-        edition,
+        edition: `edition ${String(productPresentations.length).padStart(2, '0')}`,
         build: buildInfo,
         stats: {
           shippingTools: productPresentations.length,
           githubStars: totalStars,
-          locales: 30,
+          locales: locales.length,
           telemetry: manualStats.telemetry,
         },
         ticker,

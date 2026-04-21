@@ -1,6 +1,5 @@
 import type { ActivityRow, TileVariant } from '@snaix/docs';
 
-export const edition = 'edition 04';
 
 export const manualStats = {
   telemetry: 0,
