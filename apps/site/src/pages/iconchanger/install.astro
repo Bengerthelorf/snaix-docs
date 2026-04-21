@@ -3,27 +3,9 @@ import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
 import TopBar from '@snaix/docs-theme/components/TopBar.astro';
 import Footer from '@snaix/docs-theme/components/Footer.astro';
 import { BlockReveal, InstallTabs } from '@snaix/docs-theme';
-import type { CmdLine } from '@snaix/docs-theme';
 import { product } from '../../lib/product.ts';
 
 const iconchanger = product('iconchanger');
-const versionBare = iconchanger.version.replace(/^v/, '');
-
-const verifyScript: CmdLine[] = [
-  { type: 'prompt', text: 'open -a IconChanger' },
-  { type: 'out',    text: 'main window opens', pause: 160 },
-  { type: 'blank' },
-  { type: 'prompt', text: 'defaults read cc.lcandy2.IconChanger CFBundleShortVersionString', pause: 220 },
-  { type: 'out',    text: versionBare, pause: 120 },
-  { type: 'ok',     text: 'installed · ready to swap icons', pause: 160 },
-];
-
-const firstUseScript: CmdLine[] = [
-  { type: 'prompt', text: 'drag an app onto the IconChanger window' },
-  { type: 'out',    text: 'searching macosicons.com …… 42 results', pause: 180 },
-  { type: 'out',    text: 'select an icon · click apply',            pause: 160 },
-  { type: 'ok',     text: 'Dock updated · favorites saved',          pause: 180 },
-];
 ---
 <DefaultLayout title={`${iconchanger.title} · install`}>
   <div class="page install">
@@ -47,8 +29,29 @@ const firstUseScript: CmdLine[] = [
       </p>
     </section>
 
-    <InstallTabs client:load options={iconchanger.install} verifyScript={verifyScript} firstCopyScript={firstUseScript} />
+    <InstallTabs client:load options={iconchanger.install} />
+
+    <section class="install-after">
+      <div class="install-after-grid">
+        <div>
+          <div class="t-small" style="color: var(--red);">§ next</div>
+          <h2 class="t-h2 lower" style="margin-top: 8px;">launch &amp;<br/>swap an icon.</h2>
+        </div>
+        <div>
+          <ol class="install-after-steps">
+            <li><span class="step-key">open</span><span class="step-desc">iconchanger from Spotlight or your Applications folder.</span></li>
+            <li><span class="step-key">drag</span><span class="step-desc">any app from <code>/Applications</code> into the window.</span></li>
+            <li><span class="step-key">pick</span><span class="step-desc">an icon — search macosicons.com, or drop a .png / .icns / .svg.</span></li>
+            <li><span class="step-key">apply</span><span class="step-desc">the Dock refreshes live. revert per-app from the same row.</span></li>
+          </ol>
+          <p style="margin-top: 18px;">
+            prefer the cli? see the <a class="link-u" href="/iconchanger/commands">command reference</a>.
+          </p>
+        </div>
+      </div>
+    </section>
 
     <Footer product={iconchanger} locale="en" />
   </div>
 </DefaultLayout>
+

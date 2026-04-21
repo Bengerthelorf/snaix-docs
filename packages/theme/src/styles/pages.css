@@ -241,6 +241,21 @@
 
 /* ── install page ── */
 .install-hero { padding: 40px 0 32px; border-bottom: 3px solid var(--ink); }
+.install-after { padding: 56px 0 32px; border-top: 1px solid var(--steel-3); margin-top: 40px; }
+.install-after-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 60px; }
+.install-after-steps { padding-left: 0; list-style: none; counter-reset: step; margin: 0; }
+.install-after-steps li { counter-increment: step; padding: 14px 0; border-top: 1px solid var(--steel-3); display: grid; grid-template-columns: 32px 110px 1fr; gap: 12px; align-items: baseline; font-size: 15px; line-height: 1.55; }
+.install-after-steps li:first-child { border-top: 0; }
+.install-after-steps li::before { content: '0' counter(step); font-family: var(--mono); font-size: 11px; color: var(--steel-5); letter-spacing: 0.06em; }
+.install-after-steps .step-key { font-weight: 600; }
+.install-after-steps .step-desc { min-width: 0; }
+.install-after-steps code { font-family: var(--mono); font-size: 0.88em; padding: 1px 6px; background: var(--steel-1); border: 1px solid var(--steel-3); white-space: nowrap; }
+@media (max-width: 720px) {
+  .install-after-grid { grid-template-columns: 1fr; gap: 24px; }
+  .install-after-steps li { grid-template-columns: 28px 1fr; }
+  .install-after-steps .step-key { grid-column: 2; margin-bottom: 4px; }
+  .install-after-steps .step-desc { grid-column: 2; }
+}
 .install-title { font-size: clamp(56px, 8vw, 120px); font-weight: 700; letter-spacing: -0.03em; line-height: 0.9; margin: 16px 0 0; }
 .install-title .accent-r { color: var(--red); }
 .install-title .accent-b { color: var(--blue); }

@@ -3,7 +3,7 @@ import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
 import TopBar from '@snaix/docs-theme/components/TopBar.astro';
 import Footer from '@snaix/docs-theme/components/Footer.astro';
 import { BlockReveal, InstallTabs } from '@snaix/docs-theme';
-import type { CmdLine } from '@snaix/docs-theme';
+import type { InstallStep } from '@snaix/docs-theme';
 import { snaixConfig } from 'virtual:snaix-config';
 import { product } from '../../lib/product.ts';
 
@@ -13,22 +13,29 @@ const buildSha = snaixConfig.siteData.build.sha;
 const versionBare = bcmrProduct.version.replace(/^v/, '');
 const releaseIso = bcmrProduct.releaseDate.replaceAll('.', '-');
 
-const verifyScript: CmdLine[] = [
-  { type: 'prompt', text: `${bcmrProduct.title} --version` },
-  { type: 'out',    text: `${bcmrProduct.title} ${versionBare} (${buildSha} · ${releaseIso})`, pause: 160 },
-  { type: 'blank' },
-  { type: 'prompt', text: `${bcmrProduct.title} doctor`, pause: 220 },
-  { type: 'out',    text: 'fs apfs       reflink: yes', pause: 120 },
-  { type: 'out',    text: 'ssh agent     ok (3 keys)',   pause: 120 },
-  { type: 'ok',     text: 'environment looks healthy',    pause: 160 },
-];
-
-const firstCopyScript: CmdLine[] = [
-  { type: 'prompt', text: 'bcmr copy ./photos ~/Backup/' },
-  { type: 'out',    text: 'scanning……  1,204 files · 2.3 gb', pause: 160 },
-  { type: 'ok',     text: 'complete · all blake3 verified',    pause: 180 },
-  { type: 'prompt', text: 'bcmr manifest ~/Backup/photos',     pause: 240 },
-  { type: 'out',    text: 'signed · ed25519:2c…9a · 1,204 files', pause: 160 },
+const steps: InstallStep[] = [
+  {
+    title: 'verify',
+    description: 'confirm the binary is on your $PATH and matches the published version.',
+    panelLabel: 'verification',
+    script: [
+      { type: 'prompt', text: `${bcmrProduct.title} --version` },
+      { type: 'out',    text: `${bcmrProduct.title} ${versionBare} (${buildSha} · ${releaseIso})`, pause: 160 },
+    ],
+  },
+  {
+    title: 'first copy',
+    description: 'move some bytes and verify the integrity of the destination. your first loop.',
+    panelLabel: 'first-copy',
+    script: [
+      { type: 'prompt', text: 'bcmr copy ./photos ~/Backup/' },
+      { type: 'out',    text: 'scanning……  1,204 files · 2.3 gb', pause: 160 },
+      { type: 'ok',     text: 'complete · all blake3 verified',    pause: 180 },
+      { type: 'prompt', text: 'bcmr check ~/Backup/photos',         pause: 240 },
+      { type: 'ok',     text: '1,204 files · all hashes match',     pause: 160 },
+    ],
+    footer: { href: '/bcmr/docs/getting-started', label: 'read the full walkthrough →' },
+  },
 ];
 ---
 <DefaultLayout title="bcmr · install">
@@ -54,7 +61,7 @@ const firstCopyScript: CmdLine[] = [
       </p>
     </section>
 
-    <InstallTabs client:load options={bcmrProduct.install} verifyScript={verifyScript} firstCopyScript={firstCopyScript} />
+    <InstallTabs client:load options={bcmrProduct.install} steps={steps} />
 
     <Footer product={bcmrProduct} locale="en" languages={bcmrProduct.pageLanguages('en', '/', ['en'])} />
   </div>

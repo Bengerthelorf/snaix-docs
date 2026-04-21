@@ -14,5 +14,6 @@ export { CliReference } from './components/cli/CliReference.tsx';
 export type { CliCommand, CliGroup, CliFlag, CliSpec } from './components/cli/CliReference.tsx';
 
 export { InstallTabs } from './components/install/InstallTabs.tsx';
+export type { InstallStep } from './components/install/InstallTabs.tsx';
 
 export { withBase, productHref } from './utils/href.ts';

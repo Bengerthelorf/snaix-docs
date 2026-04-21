@@ -3,27 +3,48 @@ import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
 import TopBar from '@snaix/docs-theme/components/TopBar.astro';
 import Footer from '@snaix/docs-theme/components/Footer.astro';
 import { BlockReveal, InstallTabs } from '@snaix/docs-theme';
-import type { CmdLine } from '@snaix/docs-theme';
+import type { InstallStep } from '@snaix/docs-theme';
 import { product } from '../../lib/product.ts';
 
 const pikpaktui = product('pikpaktui');
 const versionBare = pikpaktui.version.replace(/^v/, '');
 
-const verifyScript: CmdLine[] = [
-  { type: 'prompt', text: 'pikpaktui --version' },
-  { type: 'out',    text: `pikpaktui ${versionBare}`, pause: 160 },
-  { type: 'blank' },
-  { type: 'prompt', text: 'pikpaktui ls /', pause: 220 },
-  { type: 'out',    text: 'drwxr-xr-x   Downloads/', pause: 120 },
-  { type: 'out',    text: 'drwxr-xr-x   Movies/',    pause: 80 },
-  { type: 'ok',     text: 'connected',               pause: 160 },
-];
-
-const firstRunScript: CmdLine[] = [
-  { type: 'prompt', text: 'pikpaktui' },
-  { type: 'out',    text: 'login · pikpak email + password', pause: 180 },
-  { type: 'ok',     text: 'session saved to ~/.config/pikpaktui/',  pause: 180 },
-  { type: 'out',    text: 'entering tui · press h for help',         pause: 160 },
+const steps: InstallStep[] = [
+  {
+    title: 'verify',
+    description: 'confirm the binary is on your $PATH.',
+    panelLabel: 'verification',
+    script: [
+      { type: 'prompt', text: 'pikpaktui --version' },
+      { type: 'out',    text: `pikpaktui ${versionBare}`, pause: 160 },
+    ],
+  },
+  {
+    title: 'log in',
+    description: 'authenticate once. credentials live at ~/.config/pikpaktui/login.yaml — never sent anywhere except PikPak.',
+    panelLabel: 'login',
+    script: [
+      { type: 'prompt', text: 'pikpaktui login' },
+      { type: 'out',    text: 'email: you@example.com',                       pause: 220 },
+      { type: 'out',    text: 'password: ********',                            pause: 220 },
+      { type: 'ok',     text: 'session saved to ~/.config/pikpaktui/login.yaml', pause: 180 },
+    ],
+  },
+  {
+    title: 'first browse',
+    description: 'list your drive root, or launch the tui. you\'re online.',
+    panelLabel: 'first-browse',
+    script: [
+      { type: 'prompt', text: 'pikpaktui ls /', pause: 160 },
+      { type: 'out',    text: 'Downloads/', pause: 80 },
+      { type: 'out',    text: 'Movies/',    pause: 80 },
+      { type: 'out',    text: 'My Pack/',   pause: 80 },
+      { type: 'blank' },
+      { type: 'prompt', text: 'pikpaktui',   pause: 220 },
+      { type: 'out',    text: 'entering tui · press ? for help', pause: 160 },
+    ],
+    footer: { href: '/pikpaktui/docs/getting-started', label: 'read the full walkthrough →' },
+  },
 ];
 ---
 <DefaultLayout title={`${pikpaktui.title} · install`}>
@@ -37,7 +58,7 @@ const firstRunScript: CmdLine[] = [
     />
 
     <section class="install-hero">
-      <div class="t-small" style="color: var(--red);">§ install</div>
+      <div class="t-small" style="color: var(--yellow);">§ install</div>
       <h1 class="install-title lower">
         <BlockReveal client:load>four</BlockReveal> <BlockReveal client:load color="var(--red)" delay={300}>ways</BlockReveal><br/>
         <BlockReveal client:load color="var(--blue)" delay={600}>in.</BlockReveal>
@@ -48,7 +69,7 @@ const firstRunScript: CmdLine[] = [
       </p>
     </section>
 
-    <InstallTabs client:load options={pikpaktui.install} verifyScript={verifyScript} firstCopyScript={firstRunScript} />
+    <InstallTabs client:load options={pikpaktui.install} steps={steps} />
 
     <Footer product={pikpaktui} locale="en" />
   </div>

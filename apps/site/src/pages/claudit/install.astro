@@ -3,26 +3,9 @@ import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
 import TopBar from '@snaix/docs-theme/components/TopBar.astro';
 import Footer from '@snaix/docs-theme/components/Footer.astro';
 import { BlockReveal, InstallTabs } from '@snaix/docs-theme';
-import type { CmdLine } from '@snaix/docs-theme';
 import { product } from '../../lib/product.ts';
 
 const claudit = product('claudit');
-const versionBare = claudit.version.replace(/^v/, '');
-
-const verifyScript: CmdLine[] = [
-  { type: 'prompt', text: 'open -a Claudit' },
-  { type: 'out',    text: 'menu bar icon appears', pause: 160 },
-  { type: 'blank' },
-  { type: 'prompt', text: 'defaults read cc.ffitch.Claudit CFBundleShortVersionString', pause: 220 },
-  { type: 'out',    text: versionBare, pause: 120 },
-  { type: 'ok',     text: 'installed and running', pause: 160 },
-];
-
-const firstUseScript: CmdLine[] = [
-  { type: 'prompt', text: 'click menu bar icon' },
-  { type: 'out',    text: 'usage · today $0.00 · 0% quota', pause: 160 },
-  { type: 'ok',     text: 'parsing ~/.claude/**/*.jsonl',   pause: 180 },
-];
 ---
 <DefaultLayout title={`${claudit.title} · install`}>
   <div class="page install">
@@ -35,19 +18,42 @@ const firstUseScript: CmdLine[] = [
     />
 
     <section class="install-hero">
-      <div class="t-small" style="color: var(--red);">§ install</div>
+      <div class="t-small" style="color: var(--blue);">§ install</div>
       <h1 class="install-title lower">
         <BlockReveal client:load>two</BlockReveal> <BlockReveal client:load color="var(--red)" delay={300}>ways</BlockReveal><br/>
         <BlockReveal client:load color="var(--blue)" delay={600}>in.</BlockReveal>
       </h1>
       <p class="t-body" style="margin-top: 24px; max-width: 560px;">
         claudit is a native macOS menu bar app. homebrew or DMG — pick
-        one, under a minute either way. no account, no server.
+        one, under a minute either way. no account, no server, nothing
+        leaves <code>~/.claude</code>.
       </p>
     </section>
 
-    <InstallTabs client:load options={claudit.install} verifyScript={verifyScript} firstCopyScript={firstUseScript} />
+    <InstallTabs client:load options={claudit.install} />
+
+    <section class="install-after">
+      <div class="install-after-grid">
+        <div>
+          <div class="t-small" style="color: var(--blue);">§ next</div>
+          <h2 class="t-h2 lower" style="margin-top: 8px;">launch &amp;<br/>read the dashboard.</h2>
+        </div>
+        <div>
+          <ol class="install-after-steps">
+            <li><span class="step-key">open</span><span class="step-desc">claudit from Spotlight or Applications. it docks into the menu bar.</span></li>
+            <li><span class="step-key">click</span><span class="step-desc">the menu-bar icon — today's spend appears.</span></li>
+            <li><span class="step-key">dashboard</span><span class="step-desc">opens heatmaps, sessions, and per-project views.</span></li>
+            <li><span class="step-key">that's it</span><span class="step-desc">claudit indexes <code>~/.claude</code> on launch and re-indexes on file change.</span></li>
+          </ol>
+          <p style="margin-top: 18px;">
+            see the <a class="link-u" href="/claudit/docs/getting-started">getting started guide</a> for
+            keyboard shortcuts and remote-machine aggregation.
+          </p>
+        </div>
+      </div>
+    </section>
 
     <Footer product={claudit} locale="en" />
   </div>
 </DefaultLayout>
+

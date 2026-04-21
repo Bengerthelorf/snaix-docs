@@ -9,13 +9,21 @@ interface OsEntry {
   note: string;
 }
 
-interface Props {
-  options: Record<string, OsEntry>;
-  verifyScript: CmdLine[];
-  firstCopyScript: CmdLine[];
+export interface InstallStep {
+  title: string;
+  description: string;
+  panelLabel?: string;
+  script: CmdLine[];
+  /** Optional rich link rendered below the terminal. */
+  footer?: { href: string; label: string };
 }
 
-export function InstallTabs({ options, verifyScript, firstCopyScript }: Props) {
+interface Props {
+  options: Record<string, OsEntry>;
+  steps?: InstallStep[];
+}
+
+export function InstallTabs({ options, steps = [] }: Props) {
   const keys = Object.keys(options);
   const [os, setOs] = useState(keys[0] ?? 'macos');
   const current = options[os] ?? options[keys[0] ?? ''];
@@ -57,38 +65,29 @@ export function InstallTabs({ options, verifyScript, firstCopyScript }: Props) {
             <p className="t-mono-sm" style={{ color: 'var(--steel-5)', marginTop: 10 }}>{current!.note}</p>
           </div>
 
-          <div className="install-step-n">02</div>
-          <div className="install-step-body">
-            <h3 className="lower">verify</h3>
-            <p>confirm the binary works and matches the signature published on the release page.</p>
-            <div className="terminal-shell" style={{ maxWidth: 720 }}>
-              <div className="terminal-chrome">
-                <div className="terminal-lights"><span /><span /><span /></div>
-                <div className="t-mono-sm">verification</div>
+          {steps.map((step, i) => (
+            <>
+              <div className="install-step-n">{String(i + 2).padStart(2, '0')}</div>
+              <div className="install-step-body">
+                <h3 className="lower">{step.title}</h3>
+                <p>{step.description}</p>
+                <div className="terminal-shell" style={{ maxWidth: 720 }}>
+                  <div className="terminal-chrome">
+                    <div className="terminal-lights"><span /><span /><span /></div>
+                    <div className="t-mono-sm">{step.panelLabel ?? step.title}</div>
+                  </div>
+                  <div className="terminal-body" style={{ minHeight: 0, padding: '18px 22px' }}>
+                    <CommandStream lines={step.script} />
+                  </div>
+                </div>
+                {step.footer && (
+                  <p style={{ marginTop: 14 }}>
+                    <a href={step.footer.href} className="link-u">{step.footer.label}</a>
+                  </p>
+                )}
               </div>
-              <div className="terminal-body" style={{ minHeight: 0, padding: '18px 22px' }}>
-                <CommandStream lines={verifyScript} />
-              </div>
-            </div>
-          </div>
-
-          <div className="install-step-n">03</div>
-          <div className="install-step-body">
-            <h3 className="lower">first copy</h3>
-            <p>move some bytes, verify them, see the manifest. your first loop.</p>
-            <div className="terminal-shell" style={{ maxWidth: 720 }}>
-              <div className="terminal-chrome">
-                <div className="terminal-lights"><span /><span /><span /></div>
-                <div className="t-mono-sm">first-copy</div>
-              </div>
-              <div className="terminal-body" style={{ minHeight: 0, padding: '18px 22px' }}>
-                <CommandStream lines={firstCopyScript} />
-              </div>
-            </div>
-            <p style={{ marginTop: 14 }}>
-              <a href="/docs" className="link-u">read the full walkthrough →</a>
-            </p>
-          </div>
+            </>
+          ))}
         </div>
       </section>
     </>
