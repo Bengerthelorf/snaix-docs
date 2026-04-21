@@ -1,0 +1,107 @@
+---
+import { Tally } from '../index.ts';
+
+const bars = [45, 62, 38, 78, 92, 54, 71, 88, 60, 44, 82, 95, 68, 52];
+
+const sessions = [
+  { t: '14:22', p: 'snaix-homes', m: 'sonnet 4.5', b: 85, c: '$4.12', cls: '' },
+  { t: '13:01', p: 'bcmr',        m: 'opus 4',     b: 62, c: '$8.40', cls: 'is-red' },
+  { t: '11:40', p: 'pikpaktui',   m: 'sonnet 4.5', b: 45, c: '$2.10', cls: '' },
+  { t: '10:15', p: 'snaix-homes', m: 'haiku 4.5',  b: 28, c: '$0.42', cls: 'is-yellow' },
+  { t: '09:12', p: 'claudit',     m: 'sonnet 4.5', b: 72, c: '$3.80', cls: '' },
+  { t: 'yday',  p: 'iconchanger', m: 'sonnet 4.5', b: 38, c: '$1.90', cls: '' },
+];
+---
+<div class="cl-dash">
+  <div class="cl-dash-chrome">
+    <span class="dot" />
+    <span class="title">claudit · audit</span>
+    <span class="status">~/.claude · <span class="live">● live</span></span>
+  </div>
+  <div class="cl-dash-body">
+    <div class="cl-cell">
+      <div class="ch"><span class="t">spend · 30d</span><span class="m">usd</span></div>
+      <div class="cl-big is-blue">
+        $<Tally client:load to={184} duration={1100} /><span class="sfx">.42</span>
+      </div>
+      <div class="cl-sub">+18% vs previous 30 days · 1.2k requests</div>
+      <div class="cl-spark">
+        <div class="cl-spark-line" />
+        <div class="cl-spark-line top" />
+      </div>
+    </div>
+
+    <div class="cl-cell">
+      <div class="ch"><span class="t">tokens · 30d</span><span class="m">in · out</span></div>
+      <div class="cl-big">
+        <Tally client:load to={4.7} duration={1100} format={(v: number) => v.toFixed(1)} /><span class="sfx">m</span>
+      </div>
+      <div class="cl-sub">3.1m in · 1.6m out · 0.3m cache hits</div>
+      <div class="cl-bars">
+        {bars.map((h, i) => (
+          <div class:list={['bar', { 'is-red': i % 5 === 4, 'is-yellow': i % 7 === 0 }]} style={`height: ${h}%;`} />
+        ))}
+      </div>
+      <div class="cl-bars-x"><span>apr 01</span><span>apr 14</span></div>
+    </div>
+
+    <div class="cl-cell">
+      <div class="ch"><span class="t">by model</span><span class="m">share</span></div>
+      <div class="cl-mdl">
+        <div class="cl-mdl-row">
+          <div class="n">sonnet 4.5</div>
+          <div class="tr"><div class="tr-f" style="width: 62%;" /></div>
+          <div class="v">62%</div>
+        </div>
+        <div class="cl-mdl-row">
+          <div class="n">opus 4</div>
+          <div class="tr"><div class="tr-f" style="width: 22%;" /></div>
+          <div class="v">22%</div>
+        </div>
+        <div class="cl-mdl-row">
+          <div class="n">haiku 4.5</div>
+          <div class="tr"><div class="tr-f" style="width: 12%;" /></div>
+          <div class="v">12%</div>
+        </div>
+        <div class="cl-mdl-row">
+          <div class="n">sonnet 3.7</div>
+          <div class="tr"><div class="tr-f" style="width: 4%;" /></div>
+          <div class="v">4%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cl-cell">
+      <div class="ch"><span class="t">by project</span><span class="m">cost share</span></div>
+      <div class="cl-donut-wrap">
+        <div class="cl-donut">
+          <div class="cl-donut-label">
+            <div class="tot">$184</div>
+            <div class="cap">30d total</div>
+          </div>
+        </div>
+        <div class="cl-legend">
+          <div class="cl-legend-row"><span class="sw" style="background: var(--blue);" /><span class="n">snaix-homes</span><span class="v">$71.20</span></div>
+          <div class="cl-legend-row"><span class="sw" style="background: var(--red);" /><span class="n">bcmr</span><span class="v">$52.10</span></div>
+          <div class="cl-legend-row"><span class="sw" style="background: var(--yellow);" /><span class="n">pikpaktui</span><span class="v">$36.40</span></div>
+          <div class="cl-legend-row"><span class="sw" style="background: var(--ink);" /><span class="n">other</span><span class="v">$24.72</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cl-cell col-span-2">
+      <div class="ch"><span class="t">recent sessions</span><span class="m">last 10</span></div>
+      <div class="cl-sess">
+        {sessions.map((r) => (
+          <div class:list={['cl-sess-row', r.cls]}>
+            <span class="t">{r.t}</span>
+            <span class="p">{r.p}</span>
+            <span class="m">{r.m}</span>
+            <span class="bar" style={`width: ${r.b}%;`} />
+            <span class="cost">{r.c}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>

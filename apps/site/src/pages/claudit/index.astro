@@ -2,173 +2,221 @@
 import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
 import TopBar from '@snaix/docs-theme/components/TopBar.astro';
 import Footer from '@snaix/docs-theme/components/Footer.astro';
-import { BlockReveal, Scramble, Typewriter } from '@snaix/docs-theme';
+import ClDashMock from '@snaix/docs-theme/components/ClDashMock.astro';
+import { BlockReveal, Scramble, Tally, Typewriter } from '@snaix/docs-theme';
+import '@snaix/docs-theme/styles/claudit.css';
 import { product } from '../../lib/product.ts';
 
 const claudit = product('claudit');
 
-const highlights = [
-  { n: '01', t: 'menu-bar cost',     d: 'today\'s spend visible at a glance. click for a full usage breakdown.' },
-  { n: '02', t: 'rich dashboard',    d: 'heatmaps, trend charts, model breakdowns, session browser, project analytics.' },
-  { n: '03', t: 'quota alerts',      d: 'system notification when the 5-hour window nears the limit. configurable.' },
-  { n: '04', t: 'multi-device',      d: 'aggregate usage from remote machines over ssh — fingerprint-cached, non-invasive.' },
-  { n: '05', t: 'session reader',    d: 'browse conversations with search, syntax highlighting, and tool-call expansion.' },
-  { n: '06', t: 'fully local',       d: 'parses ~/.claude jsonl logs on disk. no telemetry, no network calls for your data.' },
-  { n: '07', t: 'native swift',      d: 'swiftui + appkit with c-level i/o for large logs. opens multi-gigabyte histories fast.' },
-  { n: '08', t: 'zero setup',        d: 'install, grant access to ~/.claude, done. no api keys, no config file needed.' },
+const nav = [
+  { id: 'home',    label: 'overview', href: claudit.href('/') },
+  { id: 'audit',   label: 'audit',    href: '#audit' },
+  { id: 'local',   label: 'local',    href: '#local' },
+  { id: 'docs',    label: 'docs',     href: claudit.href('/docs/getting-started') },
+  { id: 'install', label: 'install',  href: '#install' },
 ];
 ---
 <DefaultLayout title={`${claudit.title} — ${claudit.tagline}`}>
-  <div class="page home">
+  <div class="page cl-body">
     <TopBar
       brand={claudit.title}
       version={claudit.version}
       current="home"
-      showStatus={false}
       githubHref={claudit.githubUrl}
-      nav={claudit.nav()}
-    />
+      nav={nav}
+      showStatus={false}
+    >
+      <Fragment slot="logo">
+        <circle cx="20" cy="20" r="18" fill="var(--blue)" />
+        <rect x="12" y="12" width="16" height="16" fill="var(--paper-pure)" />
+        <rect x="14" y="14" width="5" height="5" fill="var(--red)" />
+        <rect x="21" y="21" width="5" height="5" fill="var(--yellow)" />
+      </Fragment>
+    </TopBar>
 
-    <section class="hero">
-      <div class="hero-top rule-b">
-        <span class="t-mono-sm">claudit · {claudit.tagline}</span>
-        <span class="t-mono-sm">menu bar · macos native</span>
+    <section class="cl-hero">
+      <div class="cl-hero-top rule-b">
+        <span class="t-mono-sm">claudit / {claudit.tagline}</span>
+        <span class="t-mono-sm">menu bar · swiftui · macos</span>
         <span class="t-mono-sm">{claudit.version} · {claudit.releaseDate}</span>
       </div>
 
-      <div class="hero-grid grid12">
-        <div class="hero-headline">
-          <div class="hero-eyebrow">
+      <div class="cl-hero-grid">
+        <div class="cl-hero-left">
+          <div class="cl-hero-eyebrow">
             <span class="t-small">§ 01 · overview</span>
             <span class="t-mono-sm" style="color: var(--steel-5);">
-              <Typewriter client:load text="// claude api usage · at a glance." speed={24} delay={300} />
+              <Typewriter client:load text="// see what you actually spent." speed={24} delay={300} />
             </span>
           </div>
-          <h1 class="t-display lower">
-            <span class="hl-line"><BlockReveal client:load delay={400} duration={520}>today.</BlockReveal></span>
-            <span class="hl-line"><BlockReveal client:load delay={760} duration={520} color="var(--red)">this week.</BlockReveal></span>
-            <span class="hl-line"><BlockReveal client:load delay={1120} duration={520} color="var(--blue)">every session.</BlockReveal></span>
+          <h1 class="cl-hero-title lower">
+            <span class="hl-line"><BlockReveal client:load delay={300} color="var(--blue)">audit</BlockReveal></span>
+            <span class="hl-line"><BlockReveal client:load delay={700} color="var(--red)">every</BlockReveal></span>
+            <span class="hl-line"><BlockReveal client:load delay={1100} color="var(--yellow)">token.</BlockReveal></span>
           </h1>
-
-          <p class="hero-lede">
-            a lightweight macos menu-bar app that tracks your claude api
-            usage — cost, tokens, quota, and session analytics. parses
-            <code class="inline-code">~/.claude</code> jsonl logs directly,
-            so nothing leaves your machine.
+          <p class="cl-lede">
+            claudit is a macos menu-bar app that reads your local claude
+            session logs and shows you the truth: today's spend at a
+            glance, heatmaps and sessions in the dashboard, quota alerts
+            before the 5-hour window lapses. parses <code>~/.claude</code>
+            jsonl directly — no api key, no upload, no dashboard-in-the-cloud.
           </p>
-
-          <div class="hero-cta">
-            <a class="btn-block" href={claudit.href('/install')}>↳ install {claudit.version}</a>
-            <a class="btn-block is-ghost" href={claudit.href('/docs/getting-started')}>read the docs</a>
-            <span class="hero-cta-meta t-mono-sm">
+          <div class="cl-cta">
+            <a class="btn-block" href="#install">↳ install {claudit.version}</a>
+            <a class="btn-block is-ghost" href="#audit">what it shows</a>
+            <span class="cl-cta-meta">
               ⌘ <span>brew install Bengerthelorf/tap/claudit</span>
             </span>
           </div>
         </div>
 
-        <aside class="hero-device">
-          <div class="device-head">
-            <div class="t-small">menu-bar preview</div>
-            <div class="chip is-ghost">example values</div>
-          </div>
-          <div style="padding: 16px; background: var(--ink); color: var(--paper-pure); font-family: var(--mono); font-size: 12px; line-height: 1.7;">
-            <div style="color: var(--steel-5);"># today · sonnet + opus</div>
-            <div>tokens <b style="color: var(--paper-pure);">2.1M in</b> / <b style="color: var(--paper-pure);">312K out</b></div>
-            <div>cost  <span style="color: var(--yellow);">$8.42</span> <span style="color: var(--steel-5);">/ today</span></div>
-            <div style="margin: 10px 0; color: var(--steel-3);">────────────────</div>
-            <div>5-hour quota <span style="color: var(--yellow);">62%</span></div>
-            <div>7-day quota <span style="color: var(--blue);">38%</span></div>
-            <div style="margin-top: 10px; background: var(--steel-9); height: 6px; position: relative; overflow: hidden;">
-              <div style="position: absolute; inset: 0; right: 38%; background: var(--blue);" />
-            </div>
-          </div>
-          <div class="device-footline">
-            <span class="t-mono-sm">swiftui + appkit · macos 15+</span>
-            <span class="t-mono-sm" style="color: var(--steel-5);">schematic</span>
-          </div>
+        <aside class="cl-hero-right">
+          <ClDashMock />
         </aside>
       </div>
 
-      <div class="hero-ribbon rule-t">
-        <div class="ribbon-item">
-          <div class="ribbon-head">
-            <span class="t-small">01</span>
-            <span class="ribbon-label"><Scramble client:load text="live cost in menu bar" delay={200} /></span>
-          </div>
-          <div class="ribbon-sub">today's spend always visible. click for the full dashboard — six tabs, one pane.</div>
+      <div class="cl-ribbon">
+        <div class="item">
+          <span class="t-small">01</span>
+          <div class="lbl"><Scramble client:load text="local-first" delay={200} /></div>
+          <div class="sub">reads <code>~/.claude</code> directly. nothing leaves the disk.</div>
         </div>
-        <div class="ribbon-item">
-          <div class="ribbon-head">
-            <span class="t-small">02</span>
-            <span class="ribbon-label"><Scramble client:load text="parses ~/.claude directly" delay={350} /></span>
-          </div>
-          <div class="ribbon-sub">no api key. no network. jsonl logs on disk are the source of truth.</div>
+        <div class="item">
+          <span class="t-small">02</span>
+          <div class="lbl"><Scramble client:load text="per-project" delay={320} /></div>
+          <div class="sub">group by cwd, by repo, by model, by day. filter to one project in one keystroke.</div>
         </div>
-        <div class="ribbon-item">
-          <div class="ribbon-head">
-            <span class="t-small">03</span>
-            <span class="ribbon-label"><Scramble client:load text="multi-device aggregation" delay={500} /></span>
-          </div>
-          <div class="ribbon-sub">add ssh hosts, claudit fetches and caches remote usage alongside local.</div>
+        <div class="item">
+          <span class="t-small">03</span>
+          <div class="lbl"><Scramble client:load text="session browser" delay={440} /></div>
+          <div class="sub">full transcripts — user, assistant, tool calls, diffs — rendered from the log on disk.</div>
         </div>
-        <div class="ribbon-item">
-          <div class="ribbon-head">
-            <span class="t-small">04</span>
-            <span class="ribbon-label"><Scramble client:load text="browse every session" delay={650} /></span>
-          </div>
-          <div class="ribbon-sub">search conversations, expand tool calls, follow a project across weeks.</div>
+        <div class="item">
+          <span class="t-small">04</span>
+          <div class="lbl"><Scramble client:load text="multi-device" delay={560} /></div>
+          <div class="sub">aggregate usage from remote machines over ssh. fingerprint-cached.</div>
         </div>
       </div>
     </section>
 
-    <section class="home-section home-principles">
-      <div class="section-head">
-        <div class="section-head-left">
-          <div class="t-small">§ 02 · features</div>
-          <h2 class="t-h1 lower">eight things<br/>it watches for you.</h2>
+    <section class="cl-section" id="audit">
+      <div class="cl-section-head">
+        <div class="lhs">
+          <div class="t-small">§ 02 · what it shows</div>
+          <h2 class="t-h1 lower">three<br />views of<br />the same data.</h2>
         </div>
-        <div class="section-head-right">
+        <div class="rhs">
           <p class="t-body">
-            claudit exists so you don't have to tail jsonl files to know what
-            you spent today. everything below is built into the app — no
-            add-ons, no plugins.
+            your sessions are already on disk — jsonl under
+            <code>~/.claude</code>. claudit indexes them into an in-memory
+            model and renders three views: spend, use, and sessions.
           </p>
         </div>
       </div>
-
-      <div class="principles-grid">
-        {highlights.map((it) => (
-          <div class="principle">
-            <div class="principle-n t-mono">{it.n}</div>
-            <div class="principle-title t-h3 lower">{it.t}</div>
-            <div class="principle-d">{it.d}</div>
-          </div>
-        ))}
+      <div class="cl-audit">
+        <div class="col">
+          <div class="n">01 · spend</div>
+          <h3 class="lower">where the money went.</h3>
+          <p>
+            price per model × tokens × time. group by project, model, or
+            day. tagged refunds for cache hits and cancelled streams.
+            export csv for bookkeeping.
+          </p>
+          <div class="mark" />
+        </div>
+        <div class="col">
+          <div class="n">02 · use</div>
+          <h3 class="lower">how you reached for it.</h3>
+          <p>
+            which model you picked for which kind of task. which projects
+            lean on opus. which messages got retried. per-day histograms
+            going back as far as your logs.
+          </p>
+          <div class="mark" />
+        </div>
+        <div class="col">
+          <div class="n">03 · sessions</div>
+          <h3 class="lower">read a session again.</h3>
+          <p>
+            pick any session, see the full transcript — user, assistant,
+            tool calls, diagnostics. no api call. rendered directly from
+            the log on disk.
+          </p>
+          <div class="mark" />
+        </div>
       </div>
     </section>
 
-    <section class="home-cta">
-      <div class="cta-inner">
-        <div class="t-small" style="color: var(--steel-3);">§ 03 · begin</div>
-        <h2 class="t-display lower" style="color: var(--paper-pure);">
-          <BlockReveal client:load delay={200} color="var(--yellow)">today.</BlockReveal><br/>
-          <BlockReveal client:load delay={700} color="var(--red)">this week.</BlockReveal><br/>
-          <BlockReveal client:load delay={1200} color="var(--blue)">at a glance.</BlockReveal>
+    <section class="cl-section" id="local">
+      <div class="cl-section-head">
+        <div class="lhs">
+          <div class="t-small">§ 03 · local-first</div>
+          <h2 class="t-h1 lower">your data<br />stays on<br />your disk.</h2>
+        </div>
+        <div class="rhs">
+          <p class="t-body">
+            claudit is a file-reader. there is no cloud, no account, no
+            optional "sync". if you delete the binary, nothing on the
+            network changes — because nothing on the network exists.
+          </p>
+        </div>
+      </div>
+      <div class="cl-local">
+        <h3 class="lower">read only.<br />no network.<br />no account.</h3>
+        <ul>
+          <li><b>source</b>reads <code>~/.claude</code> jsonl logs. never modifies them.</li>
+          <li><b>api</b>zero calls to anthropic or anywhere else.</li>
+          <li><b>telemetry</b>zero. no analytics, no crash pings.</li>
+          <li><b>remote</b>opt-in ssh aggregation. reads your logs on remote machines via your ssh config.</li>
+          <li><b>export</b>csv, json — to a path you choose.</li>
+          <li><b>audit</b>open-source. read the code, read the parser, read the log.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="cl-section">
+      <div class="cl-metrics">
+        <div class="cl-metric">
+          <div class="n">swift</div>
+          <div class="c">swiftui · appkit</div>
+        </div>
+        <div class="cl-metric">
+          <div class="n">mac 15+</div>
+          <div class="c">min · menu bar native</div>
+        </div>
+        <div class="cl-metric">
+          <div class="n"><Tally client:load to={3} duration={800} /></div>
+          <div class="c">views · spend · use · sessions</div>
+        </div>
+        <div class="cl-metric">
+          <div class="n"><Tally client:load to={0} duration={600} /></div>
+          <div class="c">network calls · forever</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cl-cta-full" id="install">
+      <div class="cl-cta-inner">
+        <div class="t-small" style="color: rgba(255,255,255,0.7);">§ 04 · install</div>
+        <h2 class="lower">
+          <BlockReveal client:load delay={200} color="var(--yellow)">audit.</BlockReveal><br />
+          <BlockReveal client:load delay={700} color="var(--red)">locally.</BlockReveal>
         </h2>
-        <div class="cta-buttons">
-          <a class="btn-block" style="background: var(--paper-pure); color: var(--ink); border-color: var(--paper-pure);" href={claudit.href('/docs/getting-started')}>
-            get started ↳
+        <div class="buttons">
+          <a class="btn-block" style="background: var(--paper-pure); color: var(--ink); border-color: var(--paper-pure);" href={claudit.href('/install')}>
+            brew install claudit ↳
           </a>
-          <a class="btn-block" style="background: transparent; color: var(--paper-pure); border-color: var(--paper-pure);" href={claudit.href('/docs/remote-devices')}>
-            remote devices
+          <a class="btn-block" style="background: transparent; color: var(--paper-pure); border-color: var(--paper-pure);" href={`${claudit.githubUrl}/releases`}>
+            download dmg
           </a>
         </div>
-        <div class="cta-small t-mono-sm">
-          mit licensed · no telemetry · open source
+        <div class="t-mono-sm" style="margin-top: 28px; color: rgba(255,255,255,0.7);">
+          macos 15 or later · apple silicon & intel · reads only · zero network
         </div>
       </div>
     </section>
 
-    <Footer product={claudit} locale="en" />
+    <Footer product={claudit} locale="en" languages={claudit.pageLanguages('en', '/')} />
   </div>
 </DefaultLayout>
