@@ -91,24 +91,6 @@ export async function fetchRecentCommits(repo: string, limit = 10): Promise<Rece
   })).filter((c) => c.sha && c.date && c.message);
 }
 
-export function readLocalCommits(limit = 10): RecentCommit[] {
-  try {
-    const out = execSync(
-      `git log -n ${limit} --format='%H%x1f%aI%x1f%s' --no-merges`,
-      { stdio: ['ignore', 'pipe', 'ignore'] },
-    ).toString();
-    return out
-      .split('\n')
-      .filter(Boolean)
-      .map((line) => {
-        const [sha, date, message] = line.split('\x1f');
-        return { repo: 'local', sha: sha.slice(0, 7), date, message };
-      });
-  } catch {
-    return [];
-  }
-}
-
 export function readLastModifiedDate(paths: string[]): string {
   try {
     const root = execSync('git rev-parse --show-toplevel', {

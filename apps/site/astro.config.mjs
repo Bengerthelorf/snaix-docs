@@ -6,7 +6,9 @@ import bcmrDocsConfig from '../../content/bcmr/docs/docs.config.ts';
 import clauditDocsConfig from '../../content/claudit/docs/docs.config.ts';
 import pikpaktuiDocsConfig from '../../content/pikpaktui/docs/docs.config.ts';
 import iconchangerDocsConfig from '../../content/iconchanger/docs/docs.config.ts';
-import { fetchProductMeta, fetchRecentCommits, readBuildInfo, readLocalCommits } from './src/data/fetch-github.ts';
+import { fetchProductMeta, fetchRecentCommits, readBuildInfo } from './src/data/fetch-github.ts';
+
+const SITE_REPO = 'Bengerthelorf/snaix-docs';
 import {
   manualStats,
   tickerStatic,
@@ -89,12 +91,13 @@ const formatTime = (iso, now) => {
 };
 
 const PER_REPO_CAP = 2;
-const commitBatches = await Promise.all(
-  productPresentations.map((p) => fetchRecentCommits(p.repo, PER_REPO_CAP)),
-);
+const [productCommitBatches, siteCommits] = await Promise.all([
+  Promise.all(productPresentations.map((p) => fetchRecentCommits(p.repo, PER_REPO_CAP))),
+  fetchRecentCommits(SITE_REPO, PER_REPO_CAP),
+]);
 const allCommits = [
-  ...productPresentations.flatMap((p, i) => commitBatches[i].map((c) => ({ ...c, slug: p.slug }))),
-  ...readLocalCommits(PER_REPO_CAP).map((c) => ({ ...c, slug: 'site' })),
+  ...productPresentations.flatMap((p, i) => productCommitBatches[i].map((c) => ({ ...c, slug: p.slug }))),
+  ...siteCommits.map((c) => ({ ...c, slug: 'site' })),
 ];
 const now = new Date();
 const liveActivity = allCommits
