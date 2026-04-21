@@ -307,27 +307,6 @@
 .log-body ul li code { font-family: var(--mono); color: var(--ink); }
 
 /* ── about/manifesto page ── */
-.manifesto-hero {
-  padding: 80px 0 60px;
-  position: relative;
-  overflow: hidden;
-  border-bottom: 3px solid var(--ink);
-}
-.manifesto-shapes {
-  position: absolute; inset: 0;
-  pointer-events: none;
-}
-.mh-red { position: absolute; top: 20%; right: 10%; width: 180px; height: 180px; background: var(--red); }
-.mh-yellow { position: absolute; top: 50%; right: 30%; width: 120px; height: 120px; background: var(--yellow); border-radius: 50%; }
-.mh-blue { position: absolute; bottom: 0; right: 0; width: 0; height: 0;
-  border-left: 100px solid transparent; border-right: 100px solid transparent; border-bottom: 180px solid var(--blue); transform: translateX(40%); }
-.manifesto-title {
-  position: relative; z-index: 2;
-  font-size: clamp(64px, 11vw, 180px);
-  font-weight: 800; line-height: 0.85;
-  letter-spacing: -0.04em;
-}
-.manifesto-title em { font-style: normal; color: var(--red); }
 .manifesto-body {
   padding: 60px 0;
   display: grid;

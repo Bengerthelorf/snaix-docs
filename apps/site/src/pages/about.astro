@@ -1,44 +1,53 @@
 ---
 import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
-import { BlockReveal } from '@snaix/docs-theme';
+import { readLastModifiedDate } from '../data/fetch-github.ts';
+import '@snaix/docs-theme/styles/design-system.css';
+
+const lastUpdated = readLastModifiedDate(['apps/site/src/pages/about.astro']);
+const stamp = lastUpdated ? `living text · updated ${lastUpdated}` : 'living text';
+
+const navLinks = [
+  ['#position', 'position'],
+  ['#stance',   'stance'],
+  ['/design-system/', 'design language'],
+];
 ---
 <DefaultLayout title="snaix · manifesto">
-  <div class="page about">
+  <div class="page about ds-page">
     <nav class="ds-nav">
       <a href="/" class="ds-nav-home">← snaix.homes</a>
       <div class="ds-nav-links">
-        <a href="/design-system/">design language</a>
-        <a href="#stance">stance</a>
+        {navLinks.map(([href, label]) => <a href={href}>{label}</a>)}
       </div>
     </nav>
 
-    <section class="manifesto-hero">
-      <div class="manifesto-shapes" aria-hidden="true">
-        <div class="mh-red" />
-        <div class="mh-yellow" />
-        <div class="mh-blue" />
+    <header class="ds-mast">
+      <div class="ds-mast-row">
+        <span class="t-mono-sm">snaix \ manifesto</span>
+        <span class="t-mono-sm">{stamp}</span>
+        <span class="t-mono-sm">open source</span>
       </div>
-      <div class="t-small" style="color: var(--red); position: relative; z-index: 2;">§ manifesto</div>
-      <h1 class="manifesto-title lower">
-        <BlockReveal client:visible>small tools,</BlockReveal><br />
-        <BlockReveal client:visible delay={300} color="var(--red)">readable,</BlockReveal><br />
-        <BlockReveal client:visible delay={600} color="var(--blue)">in your hands.</BlockReveal>
+      <h1 class="ds-mast-title t-display lower">
+        small <span style="color: var(--red);">tools</span>,<br />
+        in your <span style="color: var(--blue);">hands</span>.
       </h1>
-    </section>
+      <p class="ds-mast-sub">
+        snaix is where i put the tools i build for myself and decide are
+        worth sharing. cli, tui, macos-native — written to be read
+        end-to-end, not black-boxed behind sdks.
+      </p>
+      <div class="ds-mast-shapes" aria-hidden="true">
+        <div class="s1" /><div class="s2" /><div class="s3" />
+      </div>
+    </header>
 
-    <section class="manifesto-body">
+    <section class="manifesto-body" id="position">
       <div class="mb-side">
         <div>§ 01 · position</div>
         <div>no telemetry</div>
         <div>no account</div>
       </div>
       <div>
-        <p>
-          snaix is where i put the tools i build for myself and decide are
-          worth sharing. cli, tui, macos-native. apache-2.0 or mit,
-          permissively. written to be read end-to-end, not black-boxed
-          behind sdks.
-        </p>
         <p>
           four principles run through every tool here. <span class="highlight">
           software you can read. tools that don't phone home. interfaces
