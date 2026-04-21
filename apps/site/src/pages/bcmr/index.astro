@@ -28,14 +28,12 @@ const terminalScript: CmdLine[] = [
 ];
 
 const features = [
-  { n: '01', t: 'integrity by default',   d: 'every copy streams through blake3 during the write. --verify promotes that to a full 2-pass checksum round-trip — not an opt-in rescan like rsync\'s --checksum.',      mark: 'sq', color: 'var(--ink)' },
-  { n: '02', t: 'crash-safe resume',      d: 'interrupt a bcmr copy and run the same command again — session file, tail-block verify, continue where it stopped. no --partial --append-verify incantation.',         mark: 'ci', color: 'var(--red)' },
-  { n: '03', t: 'one cli, local or ssh',  d: 'bcmr copy a.txt /b/ and bcmr copy a.txt user@host:/b/ are the same command with the same flags. no cp/scp/rsync context switch.',                                      mark: 'tr', color: 'var(--blue)' },
-  { n: '04', t: 'direct-tcp fast path',   d: 'optional aes-256-gcm data plane over direct tcp bypasses ssh\'s single-stream crypto ceiling on lan. keys negotiated via the ssh control channel.',                    mark: 'sq', color: 'var(--yellow)' },
-  { n: '05', t: 'fast by default',        d: 'reflink (copy-on-write), copy_file_range on linux, sparse file detection, and pipeline scan+copy for immediate start.',                                                mark: 'ci', color: 'var(--ink)' },
-  { n: '06', t: 'safe by default',        d: 'atomic writes via temp file + rename, durable fsync (F_FULLFSYNC on macos), dry-run preview, and regex exclusions.',                                                   mark: 'tr', color: 'var(--red)' },
-  { n: '07', t: 'built for humans + agents', d: 'tui with per-file progress for humans. --json detaches to a background job streaming ndjson; bcmr status <id> returns state. survives terminal close.',             mark: 'sq', color: 'var(--blue)' },
-  { n: '08', t: 'wire compression + dedup',  d: 'per-block lz4/zstd negotiated in the serve handshake (~5× on source text), plus content-addressed dedup for repeat uploads ≥ 16 mib.',                              mark: 'ci', color: 'var(--yellow)' },
+  { n: '01', t: 'blake3 everywhere',  d: 'every chunk is hashed on both ends. a verified transfer is the only kind of transfer bcmr will tell you succeeded.',                                    mark: 'sq', color: 'var(--ink)' },
+  { n: '02', t: 'crash · resume',     d: 'kill the process, pull the cable, lose the ssh session. run the same command again and bcmr picks up at the last verified byte.',                      mark: 'ci', color: 'var(--red)' },
+  { n: '03', t: 'local + ssh',        d: 'one verb, two universes. paths look like cp. remote paths look like scp. no mental tax for which tool to reach for.',                                  mark: 'tr', color: 'var(--blue)' },
+  { n: '04', t: 'reflink · sparse',   d: 'on apfs, btrfs, xfs and zfs, bcmr uses clone_file / reflink / copy_file_range. a 100 gb copy takes milliseconds if the fs supports it.',                mark: 'sq', color: 'var(--yellow)' },
+  { n: '05', t: 'lz4 · zstd · dedup', d: 'optional on-the-wire compression with lz4 or zstd. content-addressed dedup avoids sending bytes you already have.',                                     mark: 'ci', color: 'var(--ink)' },
+  { n: '06', t: 'json + tui',         d: 'use it in a script with --json. use it in a terminal with --tui. same binary. same commands. different skins.',                                         mark: 'tr', color: 'var(--red)' },
 ] as const;
 ---
 <DefaultLayout title="bcmr — better copy move remove">
@@ -175,7 +173,7 @@ const features = [
       <div class="section-head">
         <div class="section-head-left">
           <div class="t-small">§ 03 · features</div>
-          <h2 class="t-h1 lower">eight things<br/>it does right.</h2>
+          <h2 class="t-h1 lower">six things<br/>it does right.</h2>
         </div>
         <div class="section-head-right">
           <p class="t-body">
@@ -201,24 +199,45 @@ const features = [
       </div>
     </section>
 
+    <section class="home-section home-metrics">
+      <div class="metrics-strip">
+        <div class="metric">
+          <div class="metric-num t-display"><Tally client:load to={412} suffix=" mb/s" duration={1100} /></div>
+          <div class="metric-cap t-small">direct-tcp · peak</div>
+        </div>
+        <div class="metric">
+          <div class="metric-num t-display"><Tally client:load to={100} suffix="%" duration={1000} /></div>
+          <div class="metric-cap t-small">blake3 coverage</div>
+        </div>
+        <div class="metric">
+          <div class="metric-num t-display"><Tally client:load to={4} duration={800} /></div>
+          <div class="metric-cap t-small">platforms supported</div>
+        </div>
+        <div class="metric">
+          <div class="metric-num t-display"><Tally client:load to={0} duration={600} /><span style="font-size: 0.5em; vertical-align: super; margin-left: 6px;">kb</span></div>
+          <div class="metric-cap t-small">telemetry · forever</div>
+        </div>
+      </div>
+    </section>
+
     <section class="home-cta">
       <div class="cta-inner">
         <div class="t-small" style="color: var(--steel-3);">§ 04 · begin</div>
         <h2 class="t-display lower" style="color: var(--paper-pure);">
-          <BlockReveal client:load delay={200} color="var(--yellow)">one cli.</BlockReveal><br/>
+          <BlockReveal client:load delay={200} color="var(--yellow)">one verb.</BlockReveal><br/>
           <BlockReveal client:load delay={700} color="var(--red)">verified.</BlockReveal><br/>
           <BlockReveal client:load delay={1200} color="var(--blue)">resumable.</BlockReveal>
         </h2>
         <div class="cta-buttons">
-          <a class="btn-block" style="background: var(--paper-pure); color: var(--ink); border-color: var(--paper-pure);" href={bcmrProduct.href('/docs/getting-started')}>
-            get started ↳
+          <a class="btn-block" style="background: var(--paper-pure); color: var(--ink); border-color: var(--paper-pure);" href={bcmrProduct.href('/install')}>
+            install bcmr ↳
           </a>
-          <a class="btn-block" style="background: transparent; color: var(--paper-pure); border-color: var(--paper-pure);" href={bcmrProduct.href('/docs/cli/commands')}>
-            cli reference
+          <a class="btn-block" style="background: transparent; color: var(--paper-pure); border-color: var(--paper-pure);" href={bcmrProduct.href('/docs/getting-started')}>
+            read docs
           </a>
         </div>
         <div class="cta-small t-mono-sm">
-          apache-2.0 licensed · no telemetry · open source
+          mit licensed · no telemetry · open source since 2024
         </div>
       </div>
     </section>
