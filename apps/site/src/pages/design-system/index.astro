@@ -1,0 +1,326 @@
+---
+import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
+import BauhausMark from '@snaix/docs-theme/components/BauhausMark.astro';
+import Panel from '@snaix/docs-theme/components/Panel.astro';
+import MarginNote from '@snaix/docs-theme/components/MarginNote.astro';
+import { DsMotionDemo } from '../../components/DsMotionDemo.tsx';
+import '@snaix/docs-theme/styles/design-system.css';
+
+const surfaces = [
+  ['--bg',         'page background'],
+  ['--bg-raised',  'raised surface (cards, panels)'],
+  ['--bg-inverse', 'inverse surface (dark blocks)'],
+];
+const text = [
+  ['--fg',         'primary text'],
+  ['--fg-muted',   'secondary text'],
+  ['--fg-faint',   'tertiary, captions'],
+  ['--fg-inverse', 'text on inverse surface'],
+];
+const primary = [
+  ['--red',    'red',    'error · recording · critical'],
+  ['--yellow', 'yellow', 'warning · focus · running'],
+  ['--blue',   'blue',   'link · success · actionable'],
+];
+const steel = ['--steel-1','--steel-3','--steel-5','--steel-7','--steel-9','--ink'];
+
+const typeSamples = [
+  { cls: 't-display lower', label: 't-display', sample: 'four tools / one hand' },
+  { cls: 't-h1 lower',      label: 't-h1',      sample: 'shipping out loud' },
+  { cls: 't-h2 lower',      label: 't-h2',      sample: 'why blake3' },
+  { cls: 't-h3',            label: 't-h3',      sample: 'chunked hashing' },
+  { cls: 't-body',          label: 't-body',    sample: 'bcmr splits every file into 1 mib chunks. each chunk produces a leaf hash; leaves combine into a tree; the root is the blob id.' },
+  { cls: 't-small',         label: 't-small',   sample: 'section label · 01' },
+  { cls: 't-mono',          label: 't-mono',    sample: '$ bcmr cp ./data host:/srv/' },
+  { cls: 't-mono-sm',       label: 't-mono-sm', sample: 'rev a3f109c · built 2026.04.14 14:22 utc' },
+];
+
+const files = [
+  ['tokens.css',      'design tokens, reset, type scale, responsive breakpoints, dark theme'],
+  ['theme.css',       'theme toggle, persistence, data-theme attribute'],
+  ['motion.{css,ts}', 'text motion primitives: Typewriter · Scramble · Tally · BlockReveal · CommandStream · GridFlip · TickerRow'],
+  ['layout.css',      'TopBar · Footer · Panel · MarginNote · BauhausMark'],
+  ['portal.css',      'portal page (snaix.homes landing)'],
+  ['home.css',        'bcmr landing'],
+  ['pikpak.css',      'pikpaktui landing'],
+  ['iconchanger.css', 'iconchanger landing'],
+  ['claudit.css',     'claudit landing'],
+  ['pages.css',       'docs · install · changelog · about · cli'],
+  ['design-system.css', 'this page'],
+];
+
+const principles = [
+  ['01', 'text first',       'type does the heavy lifting. every page should read well with all images disabled.'],
+  ['02', 'state as color',   'red · yellow · blue only communicate state. decoration uses neutrals.'],
+  ['03', 'motion is meaning', 'animation directs attention. if it is not pointing at something, remove it.'],
+  ['04', 'lowercase default', 'titles are lowercase. capitalization is reserved for product proper nouns.'],
+  ['05', 'no emoji',         'shapes, not pictograms. the bauhaus mark carries what an emoji would.'],
+  ['06', 'tokens, never values', 'colors and sizes come from vars. new components must accept both themes.'],
+];
+
+const navLinks = [
+  ['#s1', 'colors'], ['#s2', 'type'], ['#s3', 'motion'],
+  ['#s4', 'components'], ['#s5', 'shapes'], ['#s6', 'files'], ['#s7', 'principles'],
+];
+---
+<DefaultLayout title="snaix · design language">
+  <div class="ds-page">
+    <nav class="ds-nav">
+      <a href="/" class="ds-nav-home">← snaix.homes</a>
+      <div class="ds-nav-links">
+        {navLinks.map(([href, label]) => <a href={href}>{label}</a>)}
+      </div>
+    </nav>
+
+    <header class="ds-mast">
+      <div class="ds-mast-row">
+        <span class="t-mono-sm">snaix \ design language</span>
+        <span class="t-mono-sm">v0.4 · 2026.04.20</span>
+        <span class="t-mono-sm">living document</span>
+      </div>
+      <h1 class="ds-mast-title t-display lower">
+        the <span style="color: var(--red);">rules</span><br />
+        of <span style="color: var(--blue);">the house</span>.
+      </h1>
+      <p class="ds-mast-sub">
+        every page under snaix.homes is built from the pieces on this page.
+        colors, types, motion, components. reference it when you extend the
+        system; when in doubt, reach for what is already here.
+      </p>
+      <div class="ds-mast-shapes" aria-hidden="true">
+        <div class="s1" /><div class="s2" /><div class="s3" />
+      </div>
+    </header>
+
+    <section id="s1" class="ds-section">
+      <header class="ds-section-head">
+        <span class="ds-n t-mono-sm">§ 01</span>
+        <h2 class="ds-title t-h1 lower">colors</h2>
+      </header>
+      <p class="ds-lead">
+        three primaries on a warm paper ground. primaries are used as
+        <i>state</i>: red for critical, yellow for focus, blue for action.
+        neutrals do the rest of the work.
+      </p>
+
+      <h3 class="ds-h3">surfaces</h3>
+      <div class="ds-swatch-grid">
+        {surfaces.map(([v, desc]) => (
+          <div class="ds-swatch">
+            <div class="ds-swatch-chip" style={`background: var(${v}); border: 1px solid var(--border-faint);`} />
+            <div class="ds-swatch-meta">
+              <code>{v}</code>
+              <span class="t-mono-sm">{desc}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <h3 class="ds-h3">text</h3>
+      <div class="ds-swatch-grid">
+        {text.map(([v, desc]) => (
+          <div class="ds-swatch">
+            <div class="ds-swatch-chip" style={`background: var(${v}); border: 1px solid var(--border-faint);`} />
+            <div class="ds-swatch-meta">
+              <code>{v}</code>
+              <span class="t-mono-sm">{desc}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <h3 class="ds-h3">primaries</h3>
+      <div class="ds-primary-grid">
+        {primary.map(([v, name, use]) => (
+          <div
+            class="ds-primary"
+            style={`background: var(${v}); color: ${v === '--yellow' ? 'var(--c-ink-0)' : '#fafaf7'};`}
+          >
+            <div class="t-h2 lower">{name}</div>
+            <div><code>{v}</code></div>
+            <div class="t-mono-sm" style="margin-top: auto; opacity: 0.85;">{use}</div>
+          </div>
+        ))}
+      </div>
+
+      <h3 class="ds-h3">neutral scale</h3>
+      <div class="ds-steel-row">
+        {steel.map((v) => (
+          <div class="ds-steel" style={`background: var(${v});`}><code>{v}</code></div>
+        ))}
+      </div>
+    </section>
+
+    <section id="s2" class="ds-section">
+      <header class="ds-section-head">
+        <span class="ds-n t-mono-sm">§ 02</span>
+        <h2 class="ds-title t-h1 lower">typography</h2>
+      </header>
+      <p class="ds-lead">
+        two families. <b>archivo</b> for ui & display — geometric, humanist,
+        with ss01 enabled. <b>jetbrains mono</b> for code & chrome. lowercase
+        is the default for headings; it signals informality and system-level
+        thinking.
+      </p>
+      <div class="ds-type-grid">
+        {typeSamples.map((s) => (
+          <div class="ds-type-row">
+            <div class="ds-type-label"><code>.{s.label}</code></div>
+            <div class:list={['ds-type-sample', ...s.cls.split(' ')]}>{s.sample}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section id="s3" class="ds-section">
+      <header class="ds-section-head">
+        <span class="ds-n t-mono-sm">§ 03</span>
+        <h2 class="ds-title t-h1 lower">text motion</h2>
+      </header>
+      <DsMotionDemo client:load />
+    </section>
+
+    <section id="s4" class="ds-section">
+      <header class="ds-section-head">
+        <span class="ds-n t-mono-sm">§ 04</span>
+        <h2 class="ds-title t-h1 lower">components</h2>
+      </header>
+      <p class="ds-lead">
+        the working pieces. every one is small, composable, and uses tokens —
+        never hard-coded colors or sizes.
+      </p>
+
+      <h3 class="ds-h3">chips</h3>
+      <div class="ds-inline-row">
+        <span class="chip"><span class="dot" />default</span>
+        <span class="chip is-red"><span class="dot" />recording</span>
+        <span class="chip is-yellow"><span class="dot" />running</span>
+        <span class="chip is-blue"><span class="dot" />shipped</span>
+      </div>
+
+      <h3 class="ds-h3">buttons</h3>
+      <div class="ds-inline-row">
+        <button class="btn-block">primary action</button>
+        <button class="btn-block is-ghost">ghost action</button>
+      </div>
+
+      <h3 class="ds-h3">panels</h3>
+      <div class="ds-panel-row">
+        <Panel eyebrow="eyebrow" title="default panel">
+          <p class="t-body">a bordered paper-raised surface. use for content groups, docs callouts, summary cards.</p>
+        </Panel>
+        <Panel eyebrow="inverse" title="dark panel" tone="dark">
+          <p class="t-body">same shape, ink surface. use for emphasized statements, terminal-adjacent content.</p>
+        </Panel>
+      </div>
+
+      <h3 class="ds-h3">callouts (docs)</h3>
+      <div class="ds-callout-row">
+        <div class="docs-callout is-info">
+          <div>
+            <div class="docs-callout-title" style="color: var(--blue);">info</div>
+            <div>side note, build-up knowledge. blue bar on the left.</div>
+          </div>
+        </div>
+        <div class="docs-callout is-warn">
+          <div>
+            <div class="docs-callout-title" style="color: var(--fg);">watch out</div>
+            <div>ambient warning. yellow bar. read before proceeding.</div>
+          </div>
+        </div>
+        <div class="docs-callout is-danger">
+          <div>
+            <div class="docs-callout-title" style="color: var(--red);">never</div>
+            <div>irreversible. red bar. do not do this.</div>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="ds-h3">margin note</h3>
+      <div style="max-width: 520px;">
+        <MarginNote num={1}>
+          footnote-style annotation. use at section boundaries to tag the reader's attention without stealing it from the main column.
+        </MarginNote>
+      </div>
+
+      <h3 class="ds-h3">bauhaus shape mark</h3>
+      <div class="ds-inline-row" style="align-items: center;">
+        <BauhausMark />
+        <div class="t-mono-sm" style="color: var(--fg-muted);">
+          decorative composition. red-square + blue-circle + yellow-triangle. scale via the wrapper element.
+        </div>
+      </div>
+    </section>
+
+    <section id="s5" class="ds-section">
+      <header class="ds-section-head">
+        <span class="ds-n t-mono-sm">§ 05</span>
+        <h2 class="ds-title t-h1 lower">shapes</h2>
+      </header>
+      <p class="ds-lead">
+        three geometric primitives, three primary colors. almost every
+        decorative element on the site is one of these, rotated and cropped.
+      </p>
+      <div class="ds-shape-grid">
+        <div class="ds-shape">
+          <div class="ds-shape-art"><div style="width: 96px; height: 96px; background: var(--red);" /></div>
+          <div class="ds-shape-label"><code>square</code> · red</div>
+          <div class="ds-shape-note">stability · blocks of text · the ground plane</div>
+        </div>
+        <div class="ds-shape">
+          <div class="ds-shape-art"><div style="width: 96px; height: 96px; background: var(--blue); border-radius: 50%;" /></div>
+          <div class="ds-shape-label"><code>circle</code> · blue</div>
+          <div class="ds-shape-note">links · state dots · actionable</div>
+        </div>
+        <div class="ds-shape">
+          <div class="ds-shape-art">
+            <div style="width: 0; height: 0; border-left: 48px solid transparent; border-right: 48px solid transparent; border-bottom: 96px solid var(--yellow);" />
+          </div>
+          <div class="ds-shape-label"><code>triangle</code> · yellow</div>
+          <div class="ds-shape-note">focus · warning · directionality</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="s6" class="ds-section">
+      <header class="ds-section-head">
+        <span class="ds-n t-mono-sm">§ 06</span>
+        <h2 class="ds-title t-h1 lower">files</h2>
+      </header>
+      <p class="ds-lead">
+        the on-disk layout under <code>packages/theme/src/styles/</code>. keep
+        new work aligned to this shape — don't start new css files for
+        component-scoped rules unless the component is itself a new page.
+      </p>
+      <div class="ds-files">
+        {files.map(([name, desc]) => (
+          <div class="ds-file-row">
+            <code class="ds-file-name">{name}</code>
+            <span class="ds-file-desc">{desc}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section id="s7" class="ds-section">
+      <header class="ds-section-head">
+        <span class="ds-n t-mono-sm">§ 07</span>
+        <h2 class="ds-title t-h1 lower">principles</h2>
+      </header>
+      <div class="ds-principles">
+        {principles.map(([n, t, body]) => (
+          <div class="ds-principle">
+            <span class="t-mono-sm" style="color: var(--red);">{n}</span>
+            <h3 class="ds-h3 lower">{t}</h3>
+            <p>{body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <footer class="ds-foot">
+      <span class="t-mono-sm">snaix \ design language · v0.4 · 2026.04.20</span>
+      <span class="t-mono-sm">living document · edit in design-system.css + tokens.css</span>
+    </footer>
+  </div>
+</DefaultLayout>

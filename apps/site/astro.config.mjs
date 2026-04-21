@@ -13,30 +13,34 @@ import {
   tickerStatic,
   activity,
   productPresentations,
+  internalTiles,
 } from './src/data/site-static.ts';
 
 const productMetas = await Promise.all(
   productPresentations.map((p) => fetchProductMeta(p.repo)),
 );
 
-const productsData = productPresentations.map((pres, i) => {
-  const m = productMetas[i];
-  return {
-    slug: pres.slug,
-    name: pres.name,
-    variant: pres.variant,
-    eyebrow: pres.eyebrow,
-    tag: pres.tag,
-    description: pres.descriptionOverride ?? m.description ?? '',
-    metaLeft: m.version
-      ? `${m.version}${m.releaseDate ? ` · ${m.releaseDate}` : ''}`
-      : '',
-    metaRight: m.license || '',
-    href: pres.href,
-    repo: pres.repo,
-    stars: m.stars,
-  };
-});
+const productsData = [
+  ...productPresentations.map((pres, i) => {
+    const m = productMetas[i];
+    return {
+      slug: pres.slug,
+      name: pres.name,
+      variant: pres.variant,
+      eyebrow: pres.eyebrow,
+      tag: pres.tag,
+      description: pres.descriptionOverride ?? m.description ?? '',
+      metaLeft: m.version
+        ? `${m.version}${m.releaseDate ? ` · ${m.releaseDate}` : ''}`
+        : '',
+      metaRight: m.license || '',
+      href: pres.href,
+      repo: pres.repo,
+      stars: m.stars,
+    };
+  }),
+  ...internalTiles,
+];
 
 const bcmrMeta = productMetas[0];
 const totalStars = productMetas.reduce((s, m) => s + (m.stars ?? 0), 0);

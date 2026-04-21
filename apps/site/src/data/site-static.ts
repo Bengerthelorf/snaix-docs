@@ -34,6 +34,33 @@ export interface ProductPresentation {
   descriptionOverride?: string;
 }
 
+export interface InternalTile {
+  slug: string;
+  name: string;
+  variant: string;
+  eyebrow: string;
+  tag: string;
+  description: string;
+  metaLeft: string;
+  metaRight: string;
+  href: string;
+}
+
+export const internalTiles: InternalTile[] = [
+  {
+    slug: 'design-system',
+    name: 'design language',
+    variant: 'ds',
+    eyebrow: '05 / the rules of the house',
+    tag: 'tokens · motion · components',
+    description:
+      'the single source of visual truth. colors, type, motion primitives, components and principles — every page is built from these pieces.',
+    metaLeft: 'v0.4 · living doc',
+    metaRight: 'internal',
+    href: '/design-system/',
+  },
+];
+
 export const productPresentations: ProductPresentation[] = [
   {
     repo: 'Bengerthelorf/bcmr',
