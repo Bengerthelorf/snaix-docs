@@ -1,5 +1,3 @@
-/* ── pikpaktui page ── */
-
 .pk-hero {
   padding: 40px 0 56px;
 }
@@ -53,7 +51,6 @@
 }
 .pk-cta-meta span { background: var(--steel-1); padding: 4px 8px; border: 1px solid var(--steel-3); }
 
-/* hero TUI — full terminal rebuilt in DOM */
 .pk-tui {
   background: #0e1013;
   color: #d4d7dc;
@@ -155,7 +152,6 @@
   margin-right: 4px;
 }
 
-/* ribbon */
 .pk-ribbon {
   display: grid; grid-template-columns: repeat(4, 1fr);
   margin-top: 56px;
@@ -175,7 +171,6 @@
   max-width: 28ch;
 }
 
-/* sections */
 .pk-section { padding: 72px 0 40px; }
 .pk-section-head {
   display: grid; grid-template-columns: 1fr 1fr; gap: var(--gutter);
@@ -186,7 +181,6 @@
 .pk-section-head .lhs .t-small { color: var(--red); margin-bottom: 18px; display: block; }
 .pk-section-head .rhs { max-width: 520px; margin-left: auto; }
 
-/* keymap */
 .pk-keymap {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -223,7 +217,6 @@
   font-family: var(--mono); font-size: 10px; color: var(--steel-5);
 }
 
-/* flow composition */
 .pk-flow {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -260,7 +253,6 @@
 }
 .pk-flow .step:nth-child(3) .art { width: 30px; height: 30px; background: var(--blue); border-radius: 50%; }
 
-/* metrics strip reuse */
 .pk-metrics {
   display: grid; grid-template-columns: repeat(4, 1fr);
   border-top: 3px solid var(--ink);
@@ -288,7 +280,6 @@
 .pk-metric:nth-child(3) .n { color: var(--ink); }
 .pk-metric:nth-child(4) .n { color: var(--blue); }
 
-/* cta */
 .pk-cta-full {
   margin: 100px calc(-1 * var(--page-pad)) 0;
   background: var(--yellow);

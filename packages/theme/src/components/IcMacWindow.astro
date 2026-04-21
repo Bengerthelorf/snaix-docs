@@ -1,0 +1,84 @@
+---
+const apps = [
+  { n: 'FocusFlight',        c: 'ic-v14' },
+  { n: 'Folder Preview',     c: 'ic-v7'  },
+  { n: 'Folder Quick Look',  c: 'ic-v3'  },
+  { n: 'Font Book',          c: 'ic-v9'  },
+  { n: 'Freeform',           c: 'ic-v4'  },
+  { n: 'Ghostty',            c: 'ic-v2'  },
+  { n: 'Google Chrome',      c: 'ic-v1', active: true },
+  { n: 'Google Docs',        c: 'ic-v8'  },
+  { n: 'Google Drive',       c: 'ic-v12' },
+  { n: 'Google Sheets',      c: 'ic-v5'  },
+  { n: 'Google Slides',      c: 'ic-v4'  },
+  { n: 'GrandPerspective',   c: 'ic-v11' },
+  { n: 'Grapher',            c: 'ic-v6'  },
+  { n: 'HacKit',             c: 'ic-v2'  },
+];
+const dock = [
+  { n: 'LM', c: 'ic-v2',  dot: true },
+  { n: 'AR', c: 'ic-v4',  dot: true },
+  { n: 'SA', c: 'ic-v14', dot: false },
+  { n: 'ML', c: 'ic-v5',  dot: true },
+  { n: 'MS', c: 'ic-v6',  dot: true },
+  { n: 'CA', c: 'ic-v4',  dot: false },
+  { n: 'NT', c: 'ic-v7',  dot: false },
+  { n: 'GH', c: 'ic-v2',  dot: true, sel: true },
+  { n: 'iT', c: 'ic-v3',  dot: true },
+  { n: 'VS', c: 'ic-v1',  dot: true },
+  { n: 'ZD', c: 'ic-v11', dot: false },
+];
+const gallery = [
+  'ic-v1','ic-v2','ic-v3','ic-v4','ic-v5','ic-v6','ic-v7',
+  'ic-v8','ic-v9','ic-v10','ic-v11','ic-v12','ic-v13','ic-v14',
+];
+---
+<div class="ic-mac">
+  <div class="ic-mac-chrome">
+    <div class="ic-mac-lights"><span /><span /><span /></div>
+    <div class="ic-mac-title">IconChanger</div>
+    <div class="ic-mac-search">Search</div>
+  </div>
+  <div class="ic-mac-body">
+    <div class="ic-sidebar">
+      <div class="ic-sidebar-sect">Apps</div>
+      {apps.map((a) => (
+        <div class:list={['ic-sidebar-item', { 'is-active': a.active }]}>
+          <div class:list={['sq', 'ic-icon', a.c]} />
+          <span>{a.n}</span>
+        </div>
+      ))}
+    </div>
+    <div class="ic-main">
+      <div class="ic-dock-head">
+        <div class="lbl">Dock Preview</div>
+        <div class="rfr">↻ Refresh Dock</div>
+      </div>
+      <div class="ic-dock">
+        {dock.map((d) => (
+          <div class:list={['ic-dock-icon', 'ic-icon', d.c, { 'is-sel': d.sel, dot: d.dot }]}>
+            <span class="init">{d.n}</span>
+          </div>
+        ))}
+      </div>
+
+      <div class="ic-panel-head">
+        <h3>Google Chrome</h3>
+        <div class="btn-mini">↺ Restore Default</div>
+      </div>
+      <div class="ic-cur-wrap">
+        <div class="cur-label">local</div>
+        <div class="ic-cur-icon ic-icon ic-v1" />
+        <div style="margin-left: auto;" class="btn-mini">Choose a file</div>
+      </div>
+
+      <div class="ic-gallery-head">
+        <div class="src">macosicons.com</div>
+        <div class="n">44 / 50 · all icons</div>
+      </div>
+      <div class="ic-gallery">
+        {gallery.map((c) => <div class:list={['ic-icon', c]} />)}
+      </div>
+    </div>
+  </div>
+</div>
