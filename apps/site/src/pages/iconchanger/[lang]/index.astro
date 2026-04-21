@@ -7,9 +7,9 @@ import { LOCALES, DEFAULT_LOCALE, resolveLocale } from '../../../lib/docs.ts';
 import { product } from '../../../lib/product.ts';
 
 export async function getStaticPaths() {
-  return LOCALES
-    .filter((l) => l.code !== DEFAULT_LOCALE.code)
-    .map((l) => ({ params: { lang: l.code } }));
+  /* Only locales we have hero copy for. Docs appear in many more via
+     [lang]/docs/[...slug].astro — the home waits on translation. */
+  return ['zh', 'zh-Hant'].map((code) => ({ params: { lang: code } }));
 }
 
 const iconchanger = product('iconchanger');

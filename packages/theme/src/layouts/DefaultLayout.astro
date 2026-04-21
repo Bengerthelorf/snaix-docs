@@ -17,11 +17,15 @@ interface Props {
   description?: string;
   bodyClass?: string;
   lang?: string;
+  dir?: 'ltr' | 'rtl';
 }
-const { title, description, bodyClass, lang = 'en' } = Astro.props;
+const { title, description, bodyClass, lang = 'en', dir } = Astro.props;
+/* arabic, hebrew, persian, urdu — flip layout when explicit or when the
+   lang code is known rtl. */
+const resolvedDir = dir ?? (/^(ar|he|fa|ur)\b/i.test(lang) ? 'rtl' : undefined);
 ---
 <!doctype html>
-<html lang={lang}>
+<html lang={lang} dir={resolvedDir}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />

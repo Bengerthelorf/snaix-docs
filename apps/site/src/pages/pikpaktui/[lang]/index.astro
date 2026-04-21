@@ -7,9 +7,7 @@ import { LOCALES, DEFAULT_LOCALE, resolveLocale } from '../../../lib/docs.ts';
 import { product } from '../../../lib/product.ts';
 
 export async function getStaticPaths() {
-  return LOCALES
-    .filter((l) => l.code !== DEFAULT_LOCALE.code)
-    .map((l) => ({ params: { lang: l.code } }));
+  return ['zh', 'zh-Hant'].map((code) => ({ params: { lang: code } }));
 }
 
 const pikpaktui = product('pikpaktui');

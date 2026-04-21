@@ -6,7 +6,7 @@ const docsSchema = z.object({
   description: z.string().optional(),
   section: z.string().optional(),
   order: z.number().optional(),
-  locale: z.enum(['en', 'zh', 'zh-Hant']).default('en'),
+  locale: z.string().default('en'),
 });
 
 const bcmr        = defineCollection({ type: 'content', schema: docsSchema });
