@@ -56,8 +56,8 @@ const spec: CliSpec = { groups, shellLabel };
         <div class="cli-hero-left">
           <div class="t-small" style="color: var(--red);">§ commands</div>
           <h1 class="t-h1 lower">
-            <BlockReveal client:load delay={200}>{entries.length} verbs.</BlockReveal><br/>
-            <BlockReveal client:load delay={600} color="var(--blue)">zero magic.</BlockReveal>
+            <BlockReveal client:visible delay={200}>{entries.length} verbs.</BlockReveal><br/>
+            <BlockReveal client:visible delay={600} color="var(--blue)">zero magic.</BlockReveal>
           </h1>
         </div>
         <div class="cli-hero-right">
@@ -74,7 +74,7 @@ const spec: CliSpec = { groups, shellLabel };
       </div>
     </section>
 
-    <CliReference client:load spec={spec} />
+    <CliReference client:visible spec={spec} />
 
     <Footer product={bcmrProduct} locale="en" languages={bcmrProduct.pageLanguages('en', '/')} />
   </div>
