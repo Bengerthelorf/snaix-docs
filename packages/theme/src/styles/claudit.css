@@ -59,10 +59,12 @@
   overflow: hidden;
   box-shadow: 16px 16px 0 var(--blue);
 }
+/* dashboard chrome is a pinned-dark mock — stays dark in both themes
+   so the embedded dashboard keeps its "product UI preview" identity. */
 .cl-dash-chrome {
   display: flex; align-items: center; gap: 12px;
   padding: 10px 14px;
-  background: var(--ink); color: var(--paper-pure);
+  background: var(--c-ink-0); color: var(--c-paper-pure);
 }
 .cl-dash-chrome .dot {
   width: 10px; height: 10px; background: var(--yellow);
@@ -301,8 +303,10 @@
 }
 .cl-audit .col:nth-child(3) .mark { width: 16px; height: 16px; background: var(--red); border-radius: 50%; }
 
+/* pinned-dark statement slab. bg+fg use the raw palette so dark-mode
+   doesn't invert it into a light-on-light slab. */
 .cl-local {
-  background: var(--ink); color: var(--paper-pure);
+  background: var(--c-ink-0); color: var(--c-paper-pure);
   padding: 48px 32px;
   display: grid; grid-template-columns: 2fr 3fr;
   gap: 40px;
@@ -359,9 +363,10 @@
 }
 .cl-metric:nth-child(4) .n { color: var(--blue); }
 
+/* pinned-blue cta slab — text pinned to raw paper-pure */
 .cl-cta-full {
   margin: 100px calc(-1 * var(--page-pad)) 0;
-  background: var(--blue); color: var(--paper-pure);
+  background: var(--blue); color: var(--c-paper-pure);
   padding: 100px var(--page-pad);
   position: relative;
   overflow: hidden;

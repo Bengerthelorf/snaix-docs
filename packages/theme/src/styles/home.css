@@ -146,10 +146,10 @@
 .metric:nth-child(3) .metric-num { color: var(--ink); }
 .metric:nth-child(4) .metric-num { color: var(--blue); }
 
-/* cta */
+/* pinned-dark cta slab — raw palette so dark-mode doesn't flip it */
 .home-cta {
   margin: 100px calc(-1 * var(--page-pad)) 0;
-  background: var(--ink); color: var(--paper-pure);
+  background: var(--c-ink-0); color: var(--c-paper-pure);
   padding: 100px var(--page-pad);
   position: relative;
   overflow: hidden;

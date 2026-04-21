@@ -280,17 +280,19 @@
 .pk-metric:nth-child(3) .n { color: var(--ink); }
 .pk-metric:nth-child(4) .n { color: var(--blue); }
 
+/* pinned-yellow cta slab — text pinned to raw ink so dark-mode doesn't
+   invert it into low-contrast light-text-on-yellow. */
 .pk-cta-full {
   margin: 100px calc(-1 * var(--page-pad)) 0;
   background: var(--yellow);
   padding: 100px var(--page-pad);
-  color: var(--ink);
+  color: var(--c-ink-0);
   position: relative;
   overflow: hidden;
 }
 .pk-cta-full::before {
   content: ''; position: absolute; top: -80px; right: -80px;
-  width: 280px; height: 280px; background: var(--ink);
+  width: 280px; height: 280px; background: var(--c-ink-0);
   transform: rotate(18deg);
 }
 .pk-cta-full::after {

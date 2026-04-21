@@ -305,11 +305,11 @@
 }
 .p-tile--ds .ds-art-ci  { position: absolute; left: 0; bottom: 0; width: 72px; height: 72px; background: var(--c-blue); border-radius: 50%; }
 
-/* ── ticker — edition line ── */
+/* ticker — pinned-dark edition line */
 .p-ticker {
-  background: var(--ink);
-  color: var(--paper-pure);
-  border-bottom: 3px solid var(--ink);
+  background: var(--c-ink-0);
+  color: var(--c-paper-pure);
+  border-bottom: 3px solid var(--border);
   overflow: hidden;
   white-space: nowrap;
   padding: 14px 0;
@@ -451,11 +451,11 @@
   border-bottom: 12px solid var(--blue); }
 .p-stat:nth-child(4) .accent-mark { background: var(--yellow); transform: rotate(45deg); }
 
-/* ── manifesto band ── */
+/* manifesto band — pinned-dark slab */
 .p-manifest {
   padding: 100px var(--page-pad);
-  background: var(--ink);
-  color: var(--paper-pure);
+  background: var(--c-ink-0);
+  color: var(--c-paper-pure);
   position: relative;
   overflow: hidden;
 }
@@ -469,7 +469,7 @@
   max-width: 22ch;
   position: relative; z-index: 2;
 }
-.p-manifest-lines .hl-y { background: var(--yellow); color: var(--ink); padding: 0 8px; }
+.p-manifest-lines .hl-y { background: var(--yellow); color: var(--c-ink-0); padding: 0 8px; }
 .p-manifest-lines .hl-r { color: var(--red); }
 .p-manifest-lines .hl-b { color: var(--blue); }
 .p-manifest-sig {
@@ -477,7 +477,7 @@
   margin-top: 40px;
   font-family: var(--mono); font-size: 11px;
   letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--steel-3);
+  color: var(--c-steel-3);
 }
 .p-manifest-shapes {
   position: absolute; inset: 0; pointer-events: none;
