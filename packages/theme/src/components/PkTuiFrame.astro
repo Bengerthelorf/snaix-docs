@@ -1,0 +1,75 @@
+---
+const rootItems = ['ANIME', 'BACKUP', 'GENERAL', 'MEDIA', 'PODCAST', 'SERIES', 'Temp', 'VENDORS'];
+const dirs = [
+  'a-quiet-archive',
+  'blue-period-2024',
+  'cinder-house',
+  'gradient-logs',
+  'halcyon-cuts',
+  'june-landscapes',
+  'long-form-notes',
+  'morning-drafts',
+  'no-input-2025',
+  'october-study',
+];
+const files = [
+  { n: 'alpha-draft.mp4',      s: '12.4 GB', sel: true  },
+  { n: 'beta-session.mkv',     s:  '7.9 GB', sel: false },
+  { n: 'cascade-test.mp4',     s:  '3.1 GB', sel: false },
+  { n: 'corridor-loop.mkv',    s:  '9.8 GB', sel: false },
+  { n: 'daybreak-take-02.mp4', s: '18.6 GB', sel: false },
+  { n: 'emberlight-final.mkv', s: '14.5 GB', sel: false },
+  { n: 'field-recording.mov',  s:  '2.2 GB', sel: false },
+  { n: 'fold-composite.mp4',   s: '27.1 GB', sel: false },
+  { n: 'gradient-study.mp4',   s:  '6.7 GB', sel: false },
+  { n: 'harbor-slow.mkv',      s: '20.3 GB', sel: false },
+];
+---
+<div class="pk-tui">
+  <div class="pk-tui-chrome">
+    <div class="lights"><span /><span /><span /></div>
+    <div class="title">./target/release/pikpaktui</div>
+  </div>
+  <div class="pk-tui-panes">
+    <div class="pk-tui-pane">
+      <div class="pane-head">/Drive</div>
+      {rootItems.map((r) => (
+        <div class:list={['row', 'kind-dir', { 'is-sel': r === 'MEDIA' }]}>
+          <span class="ic" />{r}
+        </div>
+      ))}
+    </div>
+    <div class="pk-tui-pane">
+      <div class="pane-head">/Drive/MEDIA</div>
+      {dirs.map((d) => (
+        <div class="row kind-dir"><span class="ic" />{d}</div>
+      ))}
+      {files.map((f) => (
+        <div class:list={['row', f.sel ? 'kind-dl is-cur is-sel' : 'kind-file']}>
+          <span class="ic" />{f.n}<span class="sz">{f.s}</span>
+        </div>
+      ))}
+    </div>
+    <div class="pk-tui-pane">
+      <div class="pane-head">preview</div>
+      <div class="pk-tui-preview">
+        <div class="label">alpha-draft.mp4</div>
+        <div class="shape" />
+      </div>
+      <div class="pk-tui-meta">
+        <div><span class="k">name:</span><span class="v is-yellow">alpha-draft.mp4</span></div>
+        <div><span class="k">size:</span><span class="v">12.4 GB</span></div>
+        <div><span class="k">type:</span><span class="v">video/mp4</span></div>
+        <div><span class="k">hash:</span><span class="v is-blue">blake3 ✓</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="pk-tui-foot">
+    <span><kbd>j/k</kbd>nav</span>
+    <span><kbd>Enter</kbd>open</span>
+    <span><kbd>d</kbd>download</span>
+    <span><kbd>r</kbd>refresh</span>
+    <span><kbd>h</kbd>help</span>
+    <span><kbd>q</kbd>quit</span>
+  </div>
+</div>

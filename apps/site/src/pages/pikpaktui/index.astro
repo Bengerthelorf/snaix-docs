@@ -2,164 +2,211 @@
 import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
 import TopBar from '@snaix/docs-theme/components/TopBar.astro';
 import Footer from '@snaix/docs-theme/components/Footer.astro';
-import { BlockReveal, Scramble, Typewriter } from '@snaix/docs-theme';
+import PkTuiFrame from '@snaix/docs-theme/components/PkTuiFrame.astro';
+import { BlockReveal, Scramble, Tally, Typewriter } from '@snaix/docs-theme';
+import '@snaix/docs-theme/styles/pikpak.css';
 import { product } from '../../lib/product.ts';
 
 const pikpaktui = product('pikpaktui');
 
-const highlights = [
-  { n: '01', t: 'three-column tui',   d: 'yazi-style miller layout with live thumbnails, syntax highlighting, and keyboard-driven navigation.' },
-  { n: '02', t: '28 subcommands',     d: 'ls · mv · cp · rm · download · upload · share · update. colored output, --json mode, --dry-run.' },
-  { n: '03', t: 'stream to iina/mpv', d: 'press enter on a video, pick quality, play straight from pikpak — never touches disk.' },
-  { n: '04', t: 'offline downloads',  d: 'queue magnet links and URLs to pikpak servers. monitor tasks from the tui.' },
-  { n: '05', t: 'zsh completions',    d: 'tab-complete cloud paths, not just commands — walks your pikpak tree in-line.' },
-  { n: '06', t: 'pure rust, no c',    d: 'ratatui · crossterm · reqwest (rustls-tls). no openssl, no c deps, single binary.' },
-  { n: '07', t: 'share links',        d: 'create, list, save, delete — plain or password-protected, right from the cart view.' },
-  { n: '08', t: 'agent-friendly',     d: 'non-interactive login, --json output, clear exit codes. openclaw skill included.' },
+const nav = [
+  { id: 'home',    label: 'overview', href: pikpaktui.href('/') },
+  { id: 'keys',    label: 'keymap',   href: '#keys' },
+  { id: 'flow',    label: 'flow',     href: '#flow' },
+  { id: 'docs',    label: 'docs',     href: pikpaktui.href('/docs/getting-started') },
+  { id: 'install', label: 'install',  href: '#install' },
+];
+
+const keys = [
+  { n: '01', k: ['j','k'], v: 'move',      d: 'down / up by one row. vim habits transfer.' },
+  { n: '02', k: ['h','l'], v: 'back · in', d: 'pop to parent pane, push into folder.' },
+  { n: '03', k: ['Enter'], v: 'open',      d: 'descend into a dir or select a file for ops.' },
+  { n: '04', k: ['d'],     v: 'download',  d: 'queue current file or selection. resumable.' },
+  { n: '05', k: ['space'], v: 'mark',      d: 'multi-select. works across pages.' },
+  { n: '06', k: ['/'],     v: 'filter',    d: 'incremental regex filter on the current pane.' },
+  { n: '07', k: ['r'],     v: 'refresh',   d: 'refetch the current directory.' },
+  { n: '08', k: ['q'],     v: 'quit',      d: 'exit cleanly. queue persists to disk.' },
 ];
 ---
 <DefaultLayout title={`${pikpaktui.title} — ${pikpaktui.tagline}`}>
-  <div class="page home">
+  <div class="page">
     <TopBar
       brand={pikpaktui.title}
       version={pikpaktui.version}
       current="home"
-      logoVariant="product"
-      showStatus={false}
       githubHref={pikpaktui.githubUrl}
-      nav={pikpaktui.nav()}
-    />
+      nav={nav}
+    >
+      <Fragment slot="logo">
+        <rect x="0"  y="0"  width="20" height="20" fill="var(--yellow)" />
+        <rect x="20" y="0"  width="20" height="20" fill="var(--ink)" />
+        <rect x="0"  y="20" width="20" height="20" fill="var(--ink)" />
+        <rect x="20" y="20" width="20" height="20" fill="var(--red)" />
+      </Fragment>
+    </TopBar>
 
-    <section class="hero">
-      <div class="hero-top rule-b">
-        <span class="t-mono-sm">pikpaktui · {pikpaktui.tagline}</span>
-        <span class="t-mono-sm">tui + cli · pure rust</span>
+    <section class="pk-hero">
+      <div class="pk-hero-top rule-b">
+        <span class="t-mono-sm">pikpaktui / pikpak in your terminal</span>
+        <span class="t-mono-sm">tui · cli · ratatui</span>
         <span class="t-mono-sm">{pikpaktui.version} · {pikpaktui.releaseDate}</span>
       </div>
 
-      <div class="hero-grid grid12">
-        <div class="hero-headline">
-          <div class="hero-eyebrow">
+      <div class="pk-hero-grid">
+        <div class="pk-hero-left">
+          <div class="pk-hero-eyebrow">
             <span class="t-small">§ 01 · overview</span>
             <span class="t-mono-sm" style="color: var(--steel-5);">
-              <Typewriter client:load text="// pikpak · in your terminal." speed={24} delay={300} />
+              <Typewriter client:load text="// tui · keyboard-first" speed={24} delay={300} />
             </span>
           </div>
-          <h1 class="t-display lower">
-            <span class="hl-line"><BlockReveal client:load delay={400} duration={520}>browse.</BlockReveal></span>
-            <span class="hl-line"><BlockReveal client:load delay={760} duration={520} color="var(--red)">stream.</BlockReveal></span>
-            <span class="hl-line"><BlockReveal client:load delay={1120} duration={520} color="var(--blue)">script.</BlockReveal></span>
+          <h1 class="pk-hero-title lower">
+            <span class="hl-line"><BlockReveal client:load delay={300} duration={520} color="var(--yellow)">pikpak.</BlockReveal></span>
+            <span class="hl-line r2"><BlockReveal client:load delay={700} duration={520}>in the<em>tui</em></BlockReveal></span>
           </h1>
-
-          <p class="hero-lede">
-            a tui and cli client for pikpak cloud storage. three-column miller
-            layout with thumbnails, 28 subcommands for shell and automation,
-            video streaming to iina/mpv/vlc, shell completions, offline downloads —
-            all in pure rust.
+          <p class="pk-lede">
+            the browser is a lie. pikpaktui brings your cloud drive into the
+            terminal — three panes, ratatui, miller-column navigation, inline
+            preview. j/k to move, <code>enter</code> to open, <code>d</code>
+            to download. no mouse. no modal. no tabs.
           </p>
-
-          <div class="hero-cta">
-            <a class="btn-block" href={pikpaktui.href('/install')}>↳ install {pikpaktui.version}</a>
-            <a class="btn-block is-ghost" href={pikpaktui.href('/docs/getting-started')}>read the docs</a>
-            <span class="hero-cta-meta t-mono-sm">
-              ⌘ <span>brew install Bengerthelorf/tap/pikpaktui</span>
+          <div class="pk-cta">
+            <a class="btn-block" href="#install">↳ install {pikpaktui.version}</a>
+            <a class="btn-block is-ghost" href="#keys">read keymap</a>
+            <span class="pk-cta-meta">
+              ⌘ <span>cargo install pikpaktui</span>
             </span>
           </div>
         </div>
 
-        <aside class="hero-device hero-device--image">
-          <div class="device-head">
-            <div class="t-small">tui.live</div>
-            <div class="chip is-blue"><span class="dot"/>interactive</div>
-          </div>
-          <img
-            src={pikpaktui.href('/images/main.jpeg')}
-            alt="pikpaktui three-column tui with thumbnails"
-            loading="eager"
-            decoding="async"
-          />
-          <div class="device-footline">
-            <span class="t-mono-sm">miller layout · ratatui</span>
-            <span class="t-mono-sm" style="color: var(--blue);">● live</span>
-          </div>
+        <aside class="pk-hero-right">
+          <PkTuiFrame />
         </aside>
       </div>
 
-      <div class="hero-ribbon rule-t">
-        <div class="ribbon-item">
-          <div class="ribbon-head">
-            <span class="t-small">01</span>
-            <span class="ribbon-label"><Scramble client:load text="browse with j/k" delay={200} /></span>
-          </div>
-          <div class="ribbon-sub">three panes: parent, current, preview. thumbnails for images and video.</div>
+      <div class="pk-ribbon">
+        <div class="item">
+          <span class="t-small">01</span>
+          <div class="lbl"><Scramble client:load text="three panes" delay={200} /></div>
+          <div class="sub">miller columns: roots, current directory, live preview of the focused item.</div>
         </div>
-        <div class="ribbon-item">
-          <div class="ribbon-head">
-            <span class="t-small">02</span>
-            <span class="ribbon-label"><Scramble client:load text="stream any video" delay={350} /></span>
-          </div>
-          <div class="ribbon-sub">press enter on a video file. pick quality. iina / mpv / vlc — configurable player.</div>
+        <div class="item">
+          <span class="t-small">02</span>
+          <div class="lbl"><Scramble client:load text="keyboard only" delay={320} /></div>
+          <div class="sub">vim-style motion. j/k, h/l, enter, q. 26 keys do everything.</div>
         </div>
-        <div class="ribbon-item">
-          <div class="ribbon-head">
-            <span class="t-small">03</span>
-            <span class="ribbon-label"><Scramble client:load text="28 subcommands" delay={500} /></span>
-          </div>
-          <div class="ribbon-sub">ls, mv, cp, rm, download, upload, share, update. --json for pipelines, --dry-run for safety.</div>
+        <div class="item">
+          <span class="t-small">03</span>
+          <div class="lbl"><Scramble client:load text="kitty graphics" delay={440} /></div>
+          <div class="sub">inline jpeg/png/mkv thumbs in terminals that speak the kitty graphics protocol.</div>
         </div>
-        <div class="ribbon-item">
-          <div class="ribbon-head">
-            <span class="t-small">04</span>
-            <span class="ribbon-label"><Scramble client:load text="pure rust binary" delay={650} /></span>
-          </div>
-          <div class="ribbon-sub">rustls-tls. no openssl, no c dependencies. single static binary, updates itself in-place.</div>
+        <div class="item">
+          <span class="t-small">04</span>
+          <div class="lbl"><Scramble client:load text="resumable dl" delay={560} /></div>
+          <div class="sub">download queue lives on disk. kill the process, restart, pick up.</div>
         </div>
       </div>
     </section>
 
-    <section class="home-section home-principles">
-      <div class="section-head">
-        <div class="section-head-left">
-          <div class="t-small">§ 02 · features</div>
-          <h2 class="t-h1 lower">eight things<br/>it actually does.</h2>
+    <section class="pk-section" id="keys">
+      <div class="pk-section-head">
+        <div class="lhs">
+          <div class="t-small">§ 02 · keymap</div>
+          <h2 class="t-h1 lower">26 keys,<br />everything.</h2>
         </div>
-        <div class="section-head-right">
+        <div class="rhs">
           <p class="t-body">
-            pikpaktui is a real client, not a wrapper around the web ui. every
-            action below is implemented end-to-end against the pikpak api.
+            the whole tui is a finite state machine on top of a keymap. there
+            are no hidden gestures, no mouse-only corners, no right-click
+            menus. read this card, you can drive pikpaktui.
           </p>
         </div>
       </div>
-
-      <div class="principles-grid">
-        {highlights.map((it) => (
-          <div class="principle">
-            <div class="principle-n t-mono">{it.n}</div>
-            <div class="principle-title t-h3 lower">{it.t}</div>
-            <div class="principle-d">{it.d}</div>
+      <div class="pk-keymap">
+        {keys.map((k) => (
+          <div class="pk-keymap-cell">
+            <div class="idx">{k.n}</div>
+            <div class="keys">{k.k.map((kk) => <kbd>{kk}</kbd>)}</div>
+            <div class="verb lower">{k.v}</div>
+            <div class="desc">{k.d}</div>
           </div>
         ))}
       </div>
     </section>
 
-    <section class="home-cta">
-      <div class="cta-inner">
-        <div class="t-small" style="color: var(--steel-3);">§ 03 · begin</div>
-        <h2 class="t-display lower" style="color: var(--paper-pure);">
-          <BlockReveal client:load delay={200} color="var(--yellow)">browse.</BlockReveal><br/>
-          <BlockReveal client:load delay={700} color="var(--red)">stream.</BlockReveal><br/>
-          <BlockReveal client:load delay={1200} color="var(--blue)">script.</BlockReveal>
+    <section class="pk-section" id="flow">
+      <div class="pk-section-head">
+        <div class="lhs">
+          <div class="t-small">§ 03 · flow</div>
+          <h2 class="t-h1 lower">open.<br />pick.<br />pull.</h2>
+        </div>
+        <div class="rhs">
+          <p class="t-body">
+            the whole round-trip takes three keys for small files and four
+            for big ones. the fourth is <code>q</code> when you are done.
+          </p>
+        </div>
+      </div>
+      <div class="pk-flow">
+        <div class="step">
+          <div class="n">01 · open</div>
+          <div class="h lower">launch the tui.</div>
+          <div class="p"><code>pikpaktui</code> in any terminal. three panes appear. roots on the left.</div>
+          <div class="art" />
+        </div>
+        <div class="step">
+          <div class="n">02 · pick</div>
+          <div class="h lower">navigate, mark.</div>
+          <div class="p">j/k down a directory, l to descend, space to multi-select across pages.</div>
+          <div class="art" />
+        </div>
+        <div class="step">
+          <div class="n">03 · pull</div>
+          <div class="h lower">queue the download.</div>
+          <div class="p"><code>d</code> queues. the queue lives on disk. kill the process, restart, resume.</div>
+          <div class="art" />
+        </div>
+      </div>
+    </section>
+
+    <section class="pk-section">
+      <div class="pk-metrics">
+        <div class="pk-metric">
+          <div class="n"><Tally client:load to={26} duration={900} /></div>
+          <div class="c">keys · complete</div>
+        </div>
+        <div class="pk-metric">
+          <div class="n"><Tally client:load to={3} duration={700} /></div>
+          <div class="c">panes · miller</div>
+        </div>
+        <div class="pk-metric">
+          <div class="n">ratatui</div>
+          <div class="c">render · crossterm</div>
+        </div>
+        <div class="pk-metric">
+          <div class="n"><Tally client:load to={0} duration={600} /></div>
+          <div class="c">telemetry · forever</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pk-cta-full" id="install">
+      <div class="pk-cta-inner">
+        <div class="t-small" style="color: rgba(10,10,11,0.6);">§ 04 · install</div>
+        <h2 class="lower">
+          <BlockReveal client:load delay={200} color="var(--ink)">one binary.</BlockReveal><br />
+          <BlockReveal client:load delay={700} color="var(--red)">zero config.</BlockReveal>
         </h2>
-        <div class="cta-buttons">
-          <a class="btn-block" style="background: var(--paper-pure); color: var(--ink); border-color: var(--paper-pure);" href={pikpaktui.href('/docs/getting-started')}>
-            get started ↳
+        <div class="buttons">
+          <a class="btn-block" style="background: var(--ink); color: var(--yellow); border-color: var(--ink);" href={pikpaktui.href('/install')}>
+            cargo install pikpaktui ↳
           </a>
-          <a class="btn-block" style="background: transparent; color: var(--paper-pure); border-color: var(--paper-pure);" href={pikpaktui.href('/docs/cli/commands')}>
-            cli reference
+          <a class="btn-block" style="background: transparent; color: var(--ink); border-color: var(--ink);" href={`${pikpaktui.githubUrl}/releases`}>
+            prebuilt · releases
           </a>
         </div>
-        <div class="cta-small t-mono-sm">
-          apache-2.0 licensed · no telemetry · open source
+        <div class="t-mono-sm" style="margin-top: 28px; color: rgba(10,10,11,0.6);">
+          mit · apache-2.0 · nothing phones home
         </div>
       </div>
     </section>
@@ -167,17 +214,3 @@ const highlights = [
     <Footer product={pikpaktui} locale="en" languages={pikpaktui.pageLanguages('en', '/')} />
   </div>
 </DefaultLayout>
-
-<style>
-  .hero-device--image {
-    padding: 0;
-    background: var(--paper);
-  }
-  .hero-device--image img {
-    display: block;
-    width: 100%;
-    height: auto;
-    border-top: 1px solid var(--steel-3);
-    border-bottom: 1px solid var(--steel-3);
-  }
-</style>

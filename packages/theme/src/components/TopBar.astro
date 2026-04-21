@@ -15,7 +15,6 @@ interface Props {
   current?: string;
   portalHref?: string;
   githubHref?: string;
-  logoVariant?: 'portal' | 'product';
   showStatus?: boolean;
 }
 
@@ -34,7 +33,6 @@ const {
   current = 'home',
   portalHref = '/',
   githubHref = '#',
-  logoVariant = 'portal',
   showStatus = true,
   nav = DEFAULT_NAV,
 } = Astro.props;
@@ -42,21 +40,12 @@ const {
 <header class="topbar">
   <a href={portalHref} class="topbar-brand" title="back to snaix.homes">
     <svg class="topbar-logo" viewBox="0 0 40 40" aria-hidden="true">
-      {logoVariant === 'product' ? (
-        <Fragment>
-          <rect x="0"  y="0"  width="20" height="20" fill="var(--ink)" />
-          <rect x="20" y="0"  width="20" height="20" fill="var(--red)" />
-          <rect x="0"  y="20" width="20" height="20" fill="var(--yellow)" />
-          <rect x="20" y="20" width="20" height="20" fill="var(--blue)" />
-        </Fragment>
-      ) : (
-        <Fragment>
-          <rect x="0" y="0" width="20" height="20" fill="var(--red)" />
-          <rect x="20" y="0" width="20" height="20" fill="var(--paper-pure)" stroke="var(--ink)" />
-          <circle cx="10" cy="30" r="10" fill="var(--blue)" />
-          <polygon points="20,40 40,40 40,20" fill="var(--yellow)" />
-        </Fragment>
-      )}
+      <slot name="logo">
+        <rect x="0" y="0" width="20" height="20" fill="var(--red)" />
+        <rect x="20" y="0" width="20" height="20" fill="var(--paper-pure)" stroke="var(--ink)" />
+        <circle cx="10" cy="30" r="10" fill="var(--blue)" />
+        <polygon points="20,40 40,40 40,20" fill="var(--yellow)" />
+      </slot>
     </svg>
     <span class="topbar-wordmark">{brand}</span>
     <span class="topbar-version">{version}</span>
