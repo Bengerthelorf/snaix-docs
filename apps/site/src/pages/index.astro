@@ -8,13 +8,7 @@ import {
 } from '@snaix/docs-theme';
 import { snaixConfig } from 'virtual:snaix-config';
 
-const siteData = snaixConfig.siteData ?? {};
-const stats = siteData.stats ?? {};
-const build = siteData.build ?? {};
-const ticker = siteData.ticker ?? [];
-const activity = siteData.activity ?? [];
-const edition = siteData.edition ?? '';
-const products = siteData.products ?? [];
+const { stats, build, ticker, activity, edition, products } = snaixConfig.siteData!;
 
 const year = new Date().getFullYear();
 ---
@@ -22,7 +16,7 @@ const year = new Date().getFullYear();
   <div class="portal">
     <header class="p-mast">
       <div class="p-mast-top">
-        <div class="mast-brand">snaix <b>//</b> tools</div>
+        <div class="mast-brand">snaix <b>//</b> personal index</div>
         <div>{edition} · {build.date}</div>
         <div>open source</div>
       </div>
@@ -38,7 +32,7 @@ const year = new Date().getFullYear();
       <h1 class="p-mast-title">
         <span class="w1"><BlockReveal client:load delay={100} duration={520}>four</BlockReveal></span>
         <span class="w2"><BlockReveal client:load delay={400} duration={520} color="var(--red)">tools</BlockReveal></span>
-        <span class="w3"><BlockReveal client:load delay={700} duration={520} color="var(--blue)">in the open</BlockReveal><span class="slash">/</span></span>
+        <span class="w3"><BlockReveal client:load delay={700} duration={520} color="var(--blue)">one hand</BlockReveal><span class="slash">/</span></span>
       </h1>
 
       <div class="p-mast-sub">
@@ -75,7 +69,7 @@ const year = new Date().getFullYear();
 
     <section class="p-wall" id="wall">
       <div class="p-wall-head">
-        <h2>products.</h2>
+        <h2>the <em>wall</em>.</h2>
         <div class="t-mono-sm" style="color: var(--steel-5);">§ 01 · products</div>
       </div>
 
@@ -99,8 +93,8 @@ const year = new Date().getFullYear();
       <div class="p-activity-left">
         <div class="t-small" style="color: var(--red); margin-bottom: 12px; display: block;">§ 02 · activity</div>
         <h2 class="lower">
-          <BlockReveal client:load>what's</BlockReveal><br/>
-          <BlockReveal client:load delay={200} color="var(--blue)">shipping.</BlockReveal>
+          <BlockReveal client:load>shipping</BlockReveal><br/>
+          <BlockReveal client:load delay={200} color="var(--blue)">out loud.</BlockReveal>
         </h2>
         <p>
           no roadmap theatre. changes go in as they land. below is a
@@ -168,11 +162,11 @@ const year = new Date().getFullYear();
       <div class="p-manifest-lines">
         <span class="hl-y">software</span> you can read.<br/>
         tools that <span class="hl-r">don't phone home.</span><br/>
-        interfaces<br/>
-        <span class="hl-b">built for keyboards.</span>
+        interfaces that<br/>
+        <span class="hl-b">respect your hands.</span>
       </div>
       <div class="p-manifest-sig">
-        open source · 2023 →
+        § snaix.homes · 2023→
       </div>
     </section>
 

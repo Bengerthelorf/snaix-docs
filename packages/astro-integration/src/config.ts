@@ -73,12 +73,12 @@ export interface ProductCard {
 }
 
 export interface SiteData {
-  edition?: string;
-  build?: BuildStamp;
-  stats?: SiteStats;
-  ticker?: string[];
-  activity?: ActivityRow[];
-  products?: ProductCard[];
+  edition: string;
+  build: BuildStamp;
+  stats: SiteStats;
+  ticker: string[];
+  activity: ActivityRow[];
+  products: ProductCard[];
 }
 
 export interface NavSection {
