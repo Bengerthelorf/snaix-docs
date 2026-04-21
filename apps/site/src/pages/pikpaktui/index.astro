@@ -10,11 +10,13 @@ import { product } from '../../lib/product.ts';
 const pikpaktui = product('pikpaktui');
 
 const nav = [
-  { id: 'home',    label: 'overview', href: pikpaktui.href('/') },
-  { id: 'keys',    label: 'keymap',   href: '#keys' },
-  { id: 'flow',    label: 'flow',     href: '#flow' },
-  { id: 'docs',    label: 'docs',     href: pikpaktui.href('/docs/getting-started') },
-  { id: 'install', label: 'install',  href: '#install' },
+  { id: 'home',      label: 'overview',  href: pikpaktui.href('/') },
+  { id: 'keys',      label: 'keymap',    href: '#keys' },
+  { id: 'flow',      label: 'flow',      href: '#flow' },
+  { id: 'docs',      label: 'docs',      href: pikpaktui.href('/docs/getting-started') },
+  { id: 'commands',  label: 'cli',       href: pikpaktui.href('/commands') },
+  { id: 'install',   label: 'install',   href: pikpaktui.href('/install') },
+  { id: 'changelog', label: 'changelog', href: pikpaktui.href('/changelog') },
 ];
 
 const keys = [

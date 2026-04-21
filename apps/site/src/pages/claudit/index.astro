@@ -10,11 +10,12 @@ import { product } from '../../lib/product.ts';
 const claudit = product('claudit');
 
 const nav = [
-  { id: 'home',    label: 'overview', href: claudit.href('/') },
-  { id: 'audit',   label: 'audit',    href: '#audit' },
-  { id: 'local',   label: 'local',    href: '#local' },
-  { id: 'docs',    label: 'docs',     href: claudit.href('/docs/getting-started') },
-  { id: 'install', label: 'install',  href: '#install' },
+  { id: 'home',      label: 'overview',  href: claudit.href('/') },
+  { id: 'audit',     label: 'audit',     href: '#audit' },
+  { id: 'local',     label: 'local',     href: '#local' },
+  { id: 'docs',      label: 'docs',      href: claudit.href('/docs/getting-started') },
+  { id: 'install',   label: 'install',   href: claudit.href('/install') },
+  { id: 'changelog', label: 'changelog', href: claudit.href('/changelog') },
 ];
 ---
 <DefaultLayout title={`${claudit.title} — ${claudit.tagline}`}>
