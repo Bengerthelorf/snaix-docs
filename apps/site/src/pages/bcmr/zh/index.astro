@@ -48,13 +48,13 @@ const terminalScript: CmdLine[] = [
           <div class="hero-eyebrow">
             <span class="t-small">§ 01 · 概览</span>
             <span class="t-mono-sm" style="color: var(--steel-5);">
-              <Typewriter client:load text="// cp + mv + scp —— 但是诚实的那种。" speed={24} delay={300} />
+              <Typewriter client:visible text="// cp + mv + scp —— 但是诚实的那种。" speed={24} delay={300} />
             </span>
           </div>
           <h1 class="t-display lower">
-            <span class="hl-line"><BlockReveal client:load delay={400} duration={520}>复制.</BlockReveal></span>
-            <span class="hl-line"><BlockReveal client:load delay={760} duration={520} color="var(--red)">移动.</BlockReveal></span>
-            <span class="hl-line"><BlockReveal client:load delay={1120} duration={520} color="var(--blue)">删除.</BlockReveal></span>
+            <span class="hl-line"><BlockReveal client:visible delay={400} duration={520}>复制.</BlockReveal></span>
+            <span class="hl-line"><BlockReveal client:visible delay={760} duration={520} color="var(--red)">移动.</BlockReveal></span>
+            <span class="hl-line"><BlockReveal client:visible delay={1120} duration={520} color="var(--blue)">删除.</BlockReveal></span>
           </h1>
 
           <p class="hero-lede">
@@ -82,7 +82,7 @@ const terminalScript: CmdLine[] = [
             <div>源  <b style="color: var(--paper-pure);">./dataset/</b></div>
             <div>目标 <b style="color: var(--paper-pure);">node-04:/srv/</b></div>
             <div style="margin: 10px 0; color: var(--steel-3);">────────────────</div>
-            <div>速率 <span style="color: var(--yellow);"><Tally client:load to={412} duration={900} suffix=" mb/s" /></span></div>
+            <div>速率 <span style="color: var(--yellow);"><Tally client:visible to={412} duration={900} suffix=" mb/s" /></span></div>
             <div>剩余 <span style="color: var(--yellow);">00:00:12</span></div>
             <div>校验 <span style="color: var(--blue);">blake3</span> ok</div>
           </div>
@@ -111,7 +111,7 @@ const terminalScript: CmdLine[] = [
           <div class="t-mono-sm">zsh · {bcmrProduct.title} {String(bcmrProduct.version ?? "").replace(/^v/, "")}</div>
         </div>
         <div class="terminal-body">
-          <CommandStream client:load lines={terminalScript} />
+          <CommandStream client:visible lines={terminalScript} />
         </div>
       </div>
     </section>

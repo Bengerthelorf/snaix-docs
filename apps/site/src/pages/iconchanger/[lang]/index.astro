@@ -103,13 +103,13 @@ const t = copy[locale.code as 'zh' | 'zh-Hant'];
           <div class="hero-eyebrow">
             <span class="t-small">{t.overview}</span>
             <span class="t-mono-sm" style="color: var(--steel-5);">
-              <Typewriter client:load text={`// ${t.eyebrow}`} speed={24} delay={300} />
+              <Typewriter client:visible text={`// ${t.eyebrow}`} speed={24} delay={300} />
             </span>
           </div>
           <h1 class="t-display lower">
-            <span class="hl-line"><BlockReveal client:load delay={400} duration={520}>{t.headline[0]}</BlockReveal></span>
-            <span class="hl-line"><BlockReveal client:load delay={760} duration={520} color="var(--red)">{t.headline[1]}</BlockReveal></span>
-            <span class="hl-line"><BlockReveal client:load delay={1120} duration={520} color="var(--blue)">{t.headline[2]}</BlockReveal></span>
+            <span class="hl-line"><BlockReveal client:visible delay={400} duration={520}>{t.headline[0]}</BlockReveal></span>
+            <span class="hl-line"><BlockReveal client:visible delay={760} duration={520} color="var(--red)">{t.headline[1]}</BlockReveal></span>
+            <span class="hl-line"><BlockReveal client:visible delay={1120} duration={520} color="var(--blue)">{t.headline[2]}</BlockReveal></span>
           </h1>
 
           <p class="hero-lede">{t.lede}</p>
@@ -168,9 +168,9 @@ const t = copy[locale.code as 'zh' | 'zh-Hant'];
       <div class="cta-inner">
         <div class="t-small" style="color: var(--steel-3);">{t.sec3}</div>
         <h2 class="t-display lower" style="color: var(--paper-pure);">
-          <BlockReveal client:load delay={200} color="var(--yellow)">{t.sec3Headline[0]}</BlockReveal><br/>
-          <BlockReveal client:load delay={700} color="var(--red)">{t.sec3Headline[1]}</BlockReveal><br/>
-          <BlockReveal client:load delay={1200} color="var(--blue)">{t.sec3Headline[2]}</BlockReveal>
+          <BlockReveal client:visible delay={200} color="var(--yellow)">{t.sec3Headline[0]}</BlockReveal><br/>
+          <BlockReveal client:visible delay={700} color="var(--red)">{t.sec3Headline[1]}</BlockReveal><br/>
+          <BlockReveal client:visible delay={1200} color="var(--blue)">{t.sec3Headline[2]}</BlockReveal>
         </h2>
         <div class="cta-buttons">
           <a class="btn-block" style="background: var(--paper-pure); color: var(--ink); border-color: var(--paper-pure);" href={iconchanger.href(`/${locale.code}/docs/getting-started`)}>
