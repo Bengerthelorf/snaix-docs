@@ -1,0 +1,16 @@
+repos:
+  - repo: Bengerthelorf/bcmr
+    paths:
+      - 'docs/**'
+      - 'commands/**'
+  - repo: Bengerthelorf/pikpaktui
+    paths:
+      - 'docs/**'
+  - repo: Bengerthelorf/macIconChanger
+    paths:
+      - 'docs/**'
+  - repo: Bengerthelorf/Claudit
+    paths:
+      - 'docs/**'
+      - 'Claudit/Resources/sparkle.xml'
+    dispatchTypes: [redeploy-docs]

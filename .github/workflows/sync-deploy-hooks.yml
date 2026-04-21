@@ -1,0 +1,22 @@
+name: Sync deploy hooks
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/repos.yml'
+      - 'scripts/sync-deploy-hooks.ts'
+      - '.github/workflows/sync-deploy-hooks.yml'
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - run: bun scripts/sync-deploy-hooks.ts
+        env:
+          CROSS_REPO_TOKEN: ${{ secrets.CROSS_REPO_TOKEN }}
+          SNAIX_DOCS_DEPLOY_HOOK: ${{ secrets.SNAIX_DOCS_DEPLOY_HOOK }}
