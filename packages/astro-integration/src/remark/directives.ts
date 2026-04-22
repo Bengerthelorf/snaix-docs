@@ -4,6 +4,24 @@ import { visit } from 'unist-util-visit';
 
 export { remarkDirective };
 
+/* Rewrite root-relative image paths (/images/...) to include the product
+   slug derived from the source file location. Markdown in the product
+   submodules uses /images/... assuming their doc site is the root, but
+   we serve every product under /{slug}/, so /images/foo.png needs to
+   become /{slug}/images/foo.png. */
+export function remarkProductImagePrefix() {
+  return (tree: Root, file: any) => {
+    const path = String(file?.path ?? file?.history?.[0] ?? '');
+    const slug = path.match(/content\/([^/]+)\//)?.[1];
+    if (!slug) return;
+    visit(tree, 'image', (node: any) => {
+      if (typeof node.url === 'string' && node.url.startsWith('/images/')) {
+        node.url = `/${slug}${node.url}`;
+      }
+    });
+  };
+}
+
 type DirectiveNode = {
   type: 'containerDirective' | 'leafDirective' | 'textDirective';
   name: string;
@@ -170,4 +188,8 @@ export function remarkSnaixDirectives() {
   };
 }
 
-export const snaixRemarkPlugins = [remarkDirective, remarkSnaixDirectives];
+export const snaixRemarkPlugins = [
+  remarkDirective,
+  remarkSnaixDirectives,
+  remarkProductImagePrefix,
+];
