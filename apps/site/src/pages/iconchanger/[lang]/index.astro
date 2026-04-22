@@ -2,13 +2,13 @@
 import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
 import TopBar from '@snaix/docs-theme/components/TopBar.astro';
 import Footer from '@snaix/docs-theme/components/Footer.astro';
-import { BlockReveal, Scramble, Typewriter } from '@snaix/docs-theme';
-import { LOCALES, DEFAULT_LOCALE, resolveLocale } from '../../../lib/docs.ts';
+import IcMacWindow from '@snaix/docs-theme/components/IcMacWindow.astro';
+import { BlockReveal, Scramble, Tally, Typewriter } from '@snaix/docs-theme';
+import '@snaix/docs-theme/styles/iconchanger.css';
+import { resolveLocale } from '../../../lib/docs.ts';
 import { product } from '../../../lib/product.ts';
 
 export async function getStaticPaths() {
-  /* Only locales we have hero copy for. Docs appear in many more via
-     [lang]/docs/[...slug].astro — the home waits on translation. */
   return ['zh', 'zh-Hant'].map((code) => ({ params: { lang: code } }));
 }
 
@@ -17,183 +17,273 @@ const locale = resolveLocale(Astro.params.lang!);
 
 const copy = {
   zh: {
-    tagline: '一次一个图标',
-    eyebrow: '任意 macOS 图标，随手换。',
+    title: '一次一个图标',
+    topLine: 'iconchanger / macos 原生',
+    topMid: 'swift · appkit · 已签名',
     overview: '§ 01 · 概览',
-    headline: ['拖拽.', '放下.', '搞定.'],
-    lede: '自定义任意 macOS 应用或文件夹图标。美观的 GUI 带 Dock 实时预览，可脚本化的 CLI，内嵌 macosicons.com 的约 7 万张图标，以及在系统更新后自动恢复图标的后台服务。',
-    install: '↳ 安装',
-    docs: '阅读文档',
-    topLine: 'iconchanger · 一次一个图标',
-    topMid: 'gui + cli · macos 原生',
-    footerTail: 'swiftui + appkit · macos 13+',
-    features: [
-      { n: '01', t: '任意 macOS 图标', d: 'app、文件夹、系统卷。拖拽替换、拖拽复原，不用开终端。' },
-      { n: '02', t: 'macosicons.com 搜索', d: '应用内直接搜 ~70k 社区图标。预览、应用、收藏 —— 无需手动下载。' },
-      { n: '03', t: 'Dock 预览', d: '换前先看 Dock 效果 —— 是真实渲染，不是示意图。' },
-      { n: '04', t: '后台服务', d: 'macOS 更新会覆盖图标，launchd agent 按计划恢复它们。默认关闭。' },
-      { n: '05', t: '完整 CLI', d: 'ic set / ic reset / ic export —— 可与 dotfiles、chezmoi、ansible 组合。' },
-      { n: '06', t: '别名与收藏', d: '保存「图标 - 应用」配对。重装系统后一键重新应用。' },
-      { n: '07', t: '30 种语言', d: '端到端本地化：界面、帮助、错误提示。不只是字符串。' },
-      { n: '08', t: '原生 Swift', d: 'SwiftUI + AppKit，不是 Electron。约 20 MB，默认不留后台守护进程。' },
+    eyebrow: '// 你的 dock，你说了算。',
+    headline: ['换掉', '每一个', '图标。'],
+    ledePre: '随手替换任意 macOS 应用图标。浏览 ',
+    ledeLink: 'macosicons.com',
+    ledeMid: ' 上精选的数千个图标变体，从你自己的 ',
+    ledeCodeIcns: '.icns',
+    ledeMid2: ' 文件里挑，或者扔一张 png。dock 实时刷新。每个应用可一键还原。不用重启、不改系统、完全沙盒化。',
+    cta: '↳ 下载 macOS 版',
+    ctaGhost: '了解更多',
+    cmdMeta: '需要 macOS 13+',
+    ribbon: [
+      { t: 'macosicons.com', d: '直接浏览社区图标库。搜索、筛选、预览。' },
+      { t: '实时 dock', d: '换之前就能在真实 dock 里看效果 —— 不是示意图。' },
+      { t: '按应用还原', d: '每个更改都可撤销。任意应用一键恢复默认。' },
+      { t: '沙盒化', d: '已签名、已公证、沙盒化。不改系统、不重启、不用 SIP 技巧。' },
     ],
     sec2: '§ 02 · 特性',
-    sec2Title: ['八件事', '都做到位。'],
-    sec2Lede: 'iconchanger 只做一件事：换图标，并让它们留在那里。下面的特性存在，是因为图标定制真的需要它们。',
-    sec3: '§ 03 · 开始',
-    sec3Headline: ['拖拽.', '放下.', '搞定.'],
-    getStarted: '开始使用 ↳',
-    cliRef: 'CLI 参考',
-    license: 'mit 授权 · 无遥测 · 开源',
+    sec2Title: ['它', '做什么。'],
+    sec2Lede: 'iconchanger 是 macos 原生 GUI，不是脚本。它真读取你的应用文件夹，写 CFBundleIconFile 条目，原地刷新 dock。三列能力，每一项都可还原。',
+    features: [
+      { n: '01 · 浏览', h: '从几千个里挑。', p: '来自 macosicons.com 的实时 feed。按应用搜索，按风格筛选（扁平、aqua、单色、手绘、像素风）。提交前在真实 dock 里预览。' },
+      { n: '02 · 本地', h: '扔你自己的。', p: '把 .icns、.png 或 .jpg 拖到任意应用上。iconchanger 自动生成所需尺寸（16、32、128、256、512、1024）。' },
+      { n: '03 · 还原', h: '按应用撤销。', p: '每次更改都有记录。任意应用点还原默认，或一键全部还原。原图标从不删除 —— 和自定义图标并存。' },
+    ],
+    sec3: '§ 03 · 来源',
+    sec3Title: ['任意', '输入', '格式。'],
+    sec3Lede: '你不应该因为 iconchanger 是否支持而选择图标来源。扔任何合理格式进来，iconchanger 负责转换。',
+    sources: [
+      { k: '01', h: 'macosicons.com', d: '庞大的图标库。数千个社区图标，按应用和风格搜索。' },
+      { k: '02', h: '.icns 文件',     d: 'apple 的原生格式。扔下文件，iconchanger 读取所有分辨率。' },
+      { k: '03', h: 'png / jpg',      d: 'iconchanger 降采样为所需的六种尺寸，并生成 retina 配对。' },
+      { k: '04', h: 'svg',            d: '矢量输入在首次使用时栅格化并缓存。每个尺寸都清晰。' },
+      { k: '05', h: 'emoji',          d: '输入任意 emoji，立刻得到系统字体的圆角方形 dock 图标。' },
+      { k: '06', h: '字母标记',       d: '选一个字母和背景色。适合没有明显图标的应用。' },
+    ],
+    metrics: [
+      { cap: 'appkit · 原生' },
+      { cap: '种输入格式' },
+      { cap: '最低 · 签名 · 公证' },
+      { cap: '重启需求' },
+    ],
+    sec4: '§ 04 · 安装',
+    sec4Headline: ['你的 dock。', '你说了算。'],
+    downloadDmg: '下载 dmg ↳',
+    brewCask: 'brew · cask',
+    license: 'macos 13 ventura 或更新 · Apple Silicon & Intel · ~12 MB',
   },
   'zh-Hant': {
-    tagline: '一次一個圖示',
-    eyebrow: '任意 macOS 圖示，隨手換。',
+    title: '一次一個圖示',
+    topLine: 'iconchanger / macos 原生',
+    topMid: 'swift · appkit · 已簽署',
     overview: '§ 01 · 概覽',
-    headline: ['拖曳.', '放下.', '完成.'],
-    lede: '自訂任意 macOS 應用程式或資料夾圖示。美觀的 GUI 帶 Dock 即時預覽、可腳本化的 CLI、內嵌 macosicons.com 的約 7 萬張圖示，以及系統更新後自動還原圖示的背景服務。',
-    install: '↳ 安裝',
-    docs: '閱讀文件',
-    topLine: 'iconchanger · 一次一個圖示',
-    topMid: 'gui + cli · macos 原生',
-    footerTail: 'swiftui + appkit · macos 13+',
-    features: [
-      { n: '01', t: '任意 macOS 圖示', d: 'app、資料夾、系統卷宗。拖曳替換、拖曳還原，不必開終端機。' },
-      { n: '02', t: 'macosicons.com 搜尋', d: '程式內直接搜 ~70k 社群圖示。預覽、套用、收藏 —— 無需手動下載。' },
-      { n: '03', t: 'Dock 預覽', d: '換前先看 Dock 效果 —— 是真實渲染，不是示意圖。' },
-      { n: '04', t: '背景服務', d: 'macOS 更新會覆蓋圖示，launchd agent 按排程還原它們。預設關閉。' },
-      { n: '05', t: '完整 CLI', d: 'ic set / ic reset / ic export —— 可與 dotfiles、chezmoi、ansible 搭配。' },
-      { n: '06', t: '別名與收藏', d: '儲存「圖示 - 應用」配對。重裝系統後一鍵重新套用。' },
-      { n: '07', t: '30 種語言', d: '端到端在地化：介面、說明、錯誤提示。不只是字串。' },
-      { n: '08', t: '原生 Swift', d: 'SwiftUI + AppKit，不是 Electron。約 20 MB，預設不留背景守護程式。' },
+    eyebrow: '// 你的 dock，你說了算。',
+    headline: ['換掉', '每一個', '圖示。'],
+    ledePre: '隨手替換任何 macOS 應用圖示。瀏覽 ',
+    ledeLink: 'macosicons.com',
+    ledeMid: ' 上精選的數千個圖示變體，從你自己的 ',
+    ledeCodeIcns: '.icns',
+    ledeMid2: ' 檔案裡挑，或者丟一張 png。dock 即時重新整理。每個應用可一鍵還原。不必重啟、不改系統、完全沙箱化。',
+    cta: '↳ 下載 macOS 版',
+    ctaGhost: '了解更多',
+    cmdMeta: '需要 macOS 13+',
+    ribbon: [
+      { t: 'macosicons.com', d: '直接瀏覽社群圖示庫。搜尋、篩選、預覽。' },
+      { t: '即時 dock', d: '提交前就能在真實 dock 裡看效果 —— 不是示意圖。' },
+      { t: '按應用還原', d: '每次更改都可撤銷。任何應用一鍵恢復預設。' },
+      { t: '沙箱化', d: '已簽署、已公證、沙箱化。不改系統、不重啟、不用 SIP 技巧。' },
     ],
     sec2: '§ 02 · 特性',
-    sec2Title: ['八件事', '都做到位。'],
-    sec2Lede: 'iconchanger 只做一件事：換圖示，並讓它們留在那裡。下面的特性存在，是因為圖示自訂真的需要它們。',
-    sec3: '§ 03 · 開始',
-    sec3Headline: ['拖曳.', '放下.', '完成.'],
-    getStarted: '開始使用 ↳',
-    cliRef: 'CLI 參考',
-    license: 'mit 授權 · 無遙測 · 開源',
+    sec2Title: ['它', '做什麼。'],
+    sec2Lede: 'iconchanger 是 macos 原生 GUI，不是腳本。它真讀取你的應用資料夾，寫 CFBundleIconFile 欄位，原地重載 dock。三欄能力，每一項都可還原。',
+    features: [
+      { n: '01 · 瀏覽', h: '從數千個裡挑。', p: '來自 macosicons.com 的即時 feed。按應用搜尋，按風格篩選（扁平、aqua、單色、手繪、像素）。提交前在真實 dock 裡預覽。' },
+      { n: '02 · 本機', h: '丟你自己的。', p: '把 .icns、.png 或 .jpg 拖到任意應用上。iconchanger 自動產生所需尺寸（16、32、128、256、512、1024）。' },
+      { n: '03 · 還原', h: '按應用撤銷。', p: '每次更改都有記錄。任意應用點還原預設，或一鍵全部還原。原圖示從不刪除 —— 和自訂圖示並存。' },
+    ],
+    sec3: '§ 03 · 來源',
+    sec3Title: ['任何', '輸入', '格式。'],
+    sec3Lede: '你不該因為 iconchanger 是否支援而選擇圖示來源。丟任何合理格式進來，iconchanger 負責轉換。',
+    sources: [
+      { k: '01', h: 'macosicons.com', d: '龐大的圖示庫。數千個社群圖示，按應用和風格搜尋。' },
+      { k: '02', h: '.icns 檔案',     d: 'apple 的原生格式。丟下檔案，iconchanger 讀取所有解析度。' },
+      { k: '03', h: 'png / jpg',      d: 'iconchanger 降取樣為所需的六種尺寸，並產生 retina 對。' },
+      { k: '04', h: 'svg',            d: '向量輸入在首次使用時點陣化並快取。每個尺寸都銳利。' },
+      { k: '05', h: 'emoji',          d: '輸入任何 emoji，立刻得到系統字體的圓角方形 dock 圖示。' },
+      { k: '06', h: '字母標記',       d: '選一個字母和背景色。適合沒有明顯圖示的應用。' },
+    ],
+    metrics: [
+      { cap: 'appkit · 原生' },
+      { cap: '種輸入格式' },
+      { cap: '最低 · 簽署 · 公證' },
+      { cap: '重啟需求' },
+    ],
+    sec4: '§ 04 · 安裝',
+    sec4Headline: ['你的 dock。', '你說了算。'],
+    downloadDmg: '下載 dmg ↳',
+    brewCask: 'brew · cask',
+    license: 'macos 13 ventura 或更新 · Apple Silicon & Intel · ~12 MB',
   },
 } as const;
 
 const t = copy[locale.code as 'zh' | 'zh-Hant'];
+
+const nav = [
+  { id: 'home',      label: 'overview',  href: iconchanger.href(`/${locale.code}/`) },
+  { id: 'feat',      label: 'features',  href: '#features' },
+  { id: 'sources',   label: 'sources',   href: '#sources' },
+  { id: 'docs',      label: 'docs',      href: iconchanger.href(`/${locale.code}/docs/getting-started`) },
+  { id: 'commands',  label: 'cli',       href: iconchanger.href(`/${locale.code}/commands`) },
+  { id: 'install',   label: 'install',   href: iconchanger.href(`/${locale.code}/install`) },
+  { id: 'changelog', label: 'changelog', href: iconchanger.href(`/${locale.code}/changelog`) },
+];
 ---
-<DefaultLayout title={`${iconchanger.title} — ${t.tagline}`} lang={locale.lang ?? locale.code}>
-  <div class="page home">
+<DefaultLayout title={`${iconchanger.title} — ${t.title}`} lang={locale.lang ?? locale.code}>
+  <div class="page ic-body">
     <TopBar
       brand={iconchanger.title}
       version={iconchanger.version}
       current="home"
       githubHref={iconchanger.githubUrl}
-      nav={iconchanger.nav()}
-    />
+      nav={nav}
+    >
+      <Fragment slot="logo">
+        <rect x="2"  y="2"  width="17" height="17" rx="4" fill="var(--red)" />
+        <rect x="21" y="2"  width="17" height="17" rx="4" fill="var(--yellow)" />
+        <rect x="2"  y="21" width="17" height="17" rx="4" fill="var(--blue)" />
+        <rect x="21" y="21" width="17" height="17" rx="4" fill="var(--ink)" />
+      </Fragment>
+    </TopBar>
 
-    <section class="hero">
-      <div class="hero-top rule-b">
+    <section class="ic-hero">
+      <div class="ic-hero-top rule-b">
         <span class="t-mono-sm">{t.topLine}</span>
         <span class="t-mono-sm">{t.topMid}</span>
         <span class="t-mono-sm">{iconchanger.version} · {iconchanger.releaseDate}</span>
       </div>
 
-      <div class="hero-grid grid12">
-        <div class="hero-headline">
-          <div class="hero-eyebrow">
+      <div class="ic-hero-grid">
+        <div class="ic-hero-left">
+          <div class="ic-hero-eyebrow">
             <span class="t-small">{t.overview}</span>
             <span class="t-mono-sm" style="color: var(--steel-5);">
-              <Typewriter client:visible text={`// ${t.eyebrow}`} speed={24} delay={300} />
+              <Typewriter client:visible text={t.eyebrow} speed={24} delay={300} />
             </span>
           </div>
-          <h1 class="t-display lower">
-            <span class="hl-line"><BlockReveal client:visible delay={400} duration={520}>{t.headline[0]}</BlockReveal></span>
-            <span class="hl-line"><BlockReveal client:visible delay={760} duration={520} color="var(--red)">{t.headline[1]}</BlockReveal></span>
-            <span class="hl-line"><BlockReveal client:visible delay={1120} duration={520} color="var(--blue)">{t.headline[2]}</BlockReveal></span>
+          <h1 class="ic-hero-title lower">
+            <span class="hl-line"><BlockReveal client:visible delay={300} duration={520} color="var(--red)">{t.headline[0]}</BlockReveal></span>
+            <span class="hl-line"><BlockReveal client:visible delay={700} duration={520} color="var(--yellow)">{t.headline[1]}</BlockReveal></span>
+            <span class="hl-line em-red"><BlockReveal client:visible delay={1100} duration={520} color="var(--blue)">{t.headline[2]}</BlockReveal></span>
           </h1>
-
-          <p class="hero-lede">{t.lede}</p>
-
-          <div class="hero-cta">
-            <a class="btn-block" href={iconchanger.href(`/${locale.code}/install`)}>{t.install} {iconchanger.version}</a>
-            <a class="btn-block is-ghost" href={iconchanger.href(`/${locale.code}/docs/getting-started`)}>{t.docs}</a>
-            <span class="hero-cta-meta t-mono-sm">
-              ⌘ <span>brew install Bengerthelorf/tap/iconchanger</span>
+          <p class="ic-lede">
+            {t.ledePre}<a class="link-u" href="https://macosicons.com">{t.ledeLink}</a>{t.ledeMid}<code>{t.ledeCodeIcns}</code>{t.ledeMid2}
+          </p>
+          <div class="ic-cta">
+            <a class="btn-block" href="#install">{t.cta}</a>
+            <a class="btn-block is-ghost" href="#features">{t.ctaGhost}</a>
+            <span class="ic-cta-meta">
+              ⌘ <span>{t.cmdMeta}</span>
             </span>
           </div>
         </div>
 
-        <aside class="hero-device hero-device--image">
-          <div class="device-head">
-            <div class="t-small">app.live</div>
-            <div class="chip is-blue"><span class="dot"/>swiftui</div>
-          </div>
-          <img
-            src={iconchanger.href('/images/hero-screenshot-light.png')}
-            alt="iconchanger"
-            loading="eager"
-            decoding="async"
-          />
-          <div class="device-footline">
-            <span class="t-mono-sm">{t.footerTail}</span>
-            <span class="t-mono-sm" style="color: var(--blue);">● native</span>
-          </div>
+        <aside class="ic-hero-right">
+          <IcMacWindow />
         </aside>
       </div>
-    </section>
 
-    <section class="home-section home-principles">
-      <div class="section-head">
-        <div class="section-head-left">
-          <div class="t-small">{t.sec2}</div>
-          <h2 class="t-h1 lower">{t.sec2Title[0]}<br/>{t.sec2Title[1]}</h2>
-        </div>
-        <div class="section-head-right">
-          <p class="t-body">{t.sec2Lede}</p>
-        </div>
-      </div>
-
-      <div class="principles-grid">
-        {t.features.map((it) => (
-          <div class="principle">
-            <div class="principle-n t-mono">{it.n}</div>
-            <div class="principle-title t-h3 lower">{it.t}</div>
-            <div class="principle-d">{it.d}</div>
+      <div class="ic-ribbon">
+        {t.ribbon.map((r, i) => (
+          <div class="item">
+            <span class="t-small">{String(i + 1).padStart(2, '0')}</span>
+            <div class="lbl"><Scramble client:visible text={r.t} delay={200 + i * 120} /></div>
+            <div class="sub">{r.d}</div>
           </div>
         ))}
       </div>
     </section>
 
-    <section class="home-cta">
-      <div class="cta-inner">
-        <div class="t-small" style="color: var(--c-steel-3);">{t.sec3}</div>
-        <h2 class="t-display lower" style="color: var(--c-paper-pure);">
-          <BlockReveal client:visible delay={200} color="var(--yellow)">{t.sec3Headline[0]}</BlockReveal><br/>
-          <BlockReveal client:visible delay={700} color="var(--red)">{t.sec3Headline[1]}</BlockReveal><br/>
-          <BlockReveal client:visible delay={1200} color="var(--blue)">{t.sec3Headline[2]}</BlockReveal>
+    <section class="ic-section" id="features">
+      <div class="ic-section-head">
+        <div class="lhs">
+          <div class="t-small">{t.sec2}</div>
+          <h2 class="t-h1 lower">{t.sec2Title[0]}<br />{t.sec2Title[1]}</h2>
+        </div>
+        <div class="rhs">
+          <p class="t-body">{t.sec2Lede}</p>
+        </div>
+      </div>
+      <div class="ic-features">
+        {t.features.map((f) => (
+          <div class="col">
+            <div class="n">{f.n}</div>
+            <h3 class="lower">{f.h}</h3>
+            <p>{f.p}</p>
+            <div class="mark" />
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="ic-section" id="sources">
+      <div class="ic-section-head">
+        <div class="lhs">
+          <div class="t-small">{t.sec3}</div>
+          <h2 class="t-h1 lower">{t.sec3Title[0]}<br />{t.sec3Title[1]}<br />{t.sec3Title[2]}</h2>
+        </div>
+        <div class="rhs">
+          <p class="t-body">{t.sec3Lede}</p>
+        </div>
+      </div>
+      <div class="ic-sources">
+        {t.sources.map((s) => (
+          <div class="ic-src">
+            <div class="k">{s.k}</div>
+            <div class="h lower">{s.h}</div>
+            <div class="d">{s.d}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="ic-section">
+      <div class="ic-metrics">
+        <div class="ic-metric">
+          <div class="n">swift</div>
+          <div class="c">{t.metrics[0].cap}</div>
+        </div>
+        <div class="ic-metric">
+          <div class="n"><Tally client:visible to={6} duration={800} /></div>
+          <div class="c">{t.metrics[1].cap}</div>
+        </div>
+        <div class="ic-metric">
+          <div class="n">mac 13+</div>
+          <div class="c">{t.metrics[2].cap}</div>
+        </div>
+        <div class="ic-metric">
+          <div class="n"><Tally client:visible to={0} duration={600} /></div>
+          <div class="c">{t.metrics[3].cap}</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ic-cta-full" id="install">
+      <div class="ic-cta-inner">
+        <div class="t-small" style="color: rgba(255,255,255,0.7);">{t.sec4}</div>
+        <h2 class="lower">
+          <BlockReveal client:visible delay={200} color="var(--yellow)">{t.sec4Headline[0]}</BlockReveal><br />
+          <BlockReveal client:visible delay={700} color="var(--ink)">{t.sec4Headline[1]}</BlockReveal>
         </h2>
-        <div class="cta-buttons">
-          <a class="btn-block" style="background: var(--c-paper-pure); color: var(--c-ink-0); border-color: var(--c-paper-pure);" href={iconchanger.href(`/${locale.code}/docs/getting-started`)}>
-            {t.getStarted}
+        <div class="buttons">
+          <a class="btn-block" style="background: var(--c-paper-pure); color: var(--c-ink-0); border-color: var(--c-paper-pure);" href={iconchanger.href(`/${locale.code}/install`)}>
+            {t.downloadDmg}
           </a>
-          <a class="btn-block" style="background: transparent; color: var(--c-paper-pure); border-color: var(--c-paper-pure);" href={iconchanger.href(`/${locale.code}/docs/cli/commands`)}>
-            {t.cliRef}
+          <a class="btn-block" style="background: transparent; color: var(--c-paper-pure); border-color: var(--c-paper-pure);" href={`${iconchanger.githubUrl}/releases`}>
+            {t.brewCask}
           </a>
         </div>
-        <div class="cta-small t-mono-sm">{t.license}</div>
+        <div class="t-mono-sm" style="margin-top: 28px; color: rgba(255,255,255,0.7);">
+          {t.license}
+        </div>
       </div>
     </section>
 
     <Footer product={iconchanger} locale={locale.code} languages={iconchanger.pageLanguages(locale.code, '/', ['en', 'zh', 'zh-Hant'])} />
   </div>
 </DefaultLayout>
-
-<style>
-  .hero-device--image { padding: 0; background: var(--paper); }
-  .hero-device--image img {
-    display: block;
-    width: 100%;
-    height: auto;
-    border-top: 1px solid var(--steel-3);
-    border-bottom: 1px solid var(--steel-3);
-  }
-</style>

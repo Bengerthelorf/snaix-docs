@@ -2,8 +2,10 @@
 import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
 import TopBar from '@snaix/docs-theme/components/TopBar.astro';
 import Footer from '@snaix/docs-theme/components/Footer.astro';
-import { BlockReveal, Scramble, Typewriter } from '@snaix/docs-theme';
-import { LOCALES, DEFAULT_LOCALE, resolveLocale } from '../../../lib/docs.ts';
+import PkTuiFrame from '@snaix/docs-theme/components/PkTuiFrame.astro';
+import { BlockReveal, Scramble, Tally, Typewriter } from '@snaix/docs-theme';
+import '@snaix/docs-theme/styles/pikpak.css';
+import { resolveLocale } from '../../../lib/docs.ts';
 import { product } from '../../../lib/product.ts';
 
 export async function getStaticPaths() {
@@ -15,79 +17,131 @@ const locale = resolveLocale(Astro.params.lang!);
 
 const copy = {
   zh: {
-    tagline: 'pikpak 在你的终端里',
-    eyebrow: 'pikpak · 在你的终端里。',
+    title: 'pikpak 在你的终端里',
+    topLine: 'pikpaktui / pikpak 在你的终端里',
+    topMid: 'tui · cli · ratatui',
     overview: '§ 01 · 概览',
-    headline: ['浏览.', '播放.', '脚本化.'],
-    lede: '一个用于 PikPak 云存储的 TUI + CLI 客户端。三栏米勒布局、缩略图预览、28 条子命令、视频流播到 iina/mpv/vlc、Shell 补全、离线下载 —— 全部用纯 Rust 写成。',
+    eyebrow: '// tui · 键盘优先',
+    headline: ['pikpak.', '进终端。'],
+    ledePre: '浏览器是谎言。pikpaktui 把你的云端硬盘带进终端——三栏米勒分栏，ratatui 渲染，实时预览。j/k 移动，',
+    ledeMid: ' 打开，',
+    ledePost: ' 下载。没有鼠标、没有弹窗、没有标签页。',
     install: '↳ 安装',
-    docs: '阅读文档',
-    topLine: 'pikpaktui · pikpak 在你的终端里',
-    topMid: 'tui + cli · 纯 rust',
-    footerTail: '三栏 · ratatui',
-    interactiveChip: '互动',
-    features: [
-      { n: '01', t: '三栏 tui',         d: 'yazi 风格的米勒布局，支持实时缩略图、语法高亮和键盘导航。' },
-      { n: '02', t: '28 条子命令',      d: 'ls · mv · cp · rm · download · upload · share · update。彩色输出、--json、--dry-run。' },
-      { n: '03', t: '视频流播到播放器', d: '按 Enter 选择画质，直接流播到 iina / mpv / vlc —— 文件不落盘。' },
-      { n: '04', t: '离线下载',         d: '向 PikPak 服务器提交磁力链接或 URL，从 TUI 里查看任务状态。' },
-      { n: '05', t: 'zsh 补全',         d: '不仅补全命令，还会走你的云端目录树，路径也能按 Tab 补全。' },
-      { n: '06', t: '纯 rust 单文件',   d: 'ratatui · crossterm · reqwest (rustls-tls)。无 OpenSSL 与 C 依赖。' },
-      { n: '07', t: '分享链接',         d: '在购物车视图里直接创建、查看、保存、删除分享链接；可选密码保护。' },
-      { n: '08', t: '对 agent 友好',    d: '非交互式登录、--json 输出、清晰的退出码。已包含 openclaw skill。' },
+    readKeys: '阅读 keymap',
+    cmdMeta: 'cargo install pikpaktui',
+    ribbon: [
+      { t: '三栏', d: '米勒分栏：根、当前目录、焦点项的实时预览。' },
+      { t: '纯键盘', d: 'vim 式操作。j/k、h/l、enter、q。26 个键做全部事情。' },
+      { t: 'kitty graphics', d: '在支持 kitty graphics 协议的终端里内联显示 jpeg/png/mkv 缩略图。' },
+      { t: '可续传', d: '下载队列写在磁盘上。杀掉进程、重启、继续。' },
     ],
-    sec2: '§ 02 · 特性',
-    sec2Title: ['八件事', '都认真做了。'],
-    sec2Lede: 'pikpaktui 是真正的客户端，不是 Web 界面的套壳。下面每一项都是针对 PikPak API 端到端实现的。',
-    sec3: '§ 03 · 开始',
-    sec3Headline: ['浏览.', '播放.', '脚本化.'],
-    getStarted: '开始使用 ↳',
-    cliRef: 'CLI 参考',
-    license: 'apache-2.0 授权 · 无遥测 · 开源',
+    sec2: '§ 02 · keymap',
+    sec2Title: ['26 个键，', '干所有事。'],
+    sec2Lede: '整个 tui 就是 keymap 之上的有限状态机。没有隐藏手势、没有只能鼠标的角落、没有右键菜单。读这张卡片，你就能驾驭 pikpaktui。',
+    keys: [
+      { n: '01', k: ['j','k'],   v: '移动',    d: '按行上 / 下。vim 习惯通用。' },
+      { n: '02', k: ['h','l'],   v: '返回 · 进入', d: '回到上层 pane，或进入文件夹。' },
+      { n: '03', k: ['Enter'],   v: '打开',    d: '进入目录，或选中文件做后续操作。' },
+      { n: '04', k: ['d'],       v: '下载',    d: '把当前文件或选择加入队列。可续传。' },
+      { n: '05', k: ['space'],   v: '选中',    d: '多选。跨页生效。' },
+      { n: '06', k: ['/'],       v: '筛选',    d: '在当前 pane 上做增量正则筛选。' },
+      { n: '07', k: ['r'],       v: '刷新',    d: '重新拉取当前目录。' },
+      { n: '08', k: ['q'],       v: '退出',    d: '干净退出。队列写到磁盘。' },
+    ],
+    sec3: '§ 03 · 流程',
+    sec3Title: ['打开.', '挑选.', '拉取.'],
+    sec3Lede: '小文件三个按键完成整个来回，大文件四个——第四个是你搞定后的 q。',
+    flow: [
+      { n: '01 · 打开', h: '启动 tui。', p: '在任意终端里输入 pikpaktui。三栏出现，左边是根目录。' },
+      { n: '02 · 挑选', h: '导航、标记。', p: 'j/k 下移，l 进入，space 跨页多选。' },
+      { n: '03 · 拉取', h: '入队下载。', p: 'd 入队。队列在磁盘上。杀掉进程、重启、继续。' },
+    ],
+    metrics: [
+      { cap: '个键 · 完整' },
+      { cap: '栏 · 米勒' },
+      { cap: '渲染 · crossterm' },
+      { cap: '遥测 · 永远' },
+    ],
+    sec4: '§ 04 · 安装',
+    sec4Headline: ['一个二进制。', '零配置。'],
+    installBig: 'cargo install pikpaktui ↳',
+    prebuilt: '预编译 · releases',
+    license: 'mit · apache-2.0 · 没有任何回传',
   },
   'zh-Hant': {
-    tagline: 'pikpak 在你的終端機裡',
-    eyebrow: 'pikpak · 在你的終端機裡。',
+    title: 'pikpak 在你的終端機裡',
+    topLine: 'pikpaktui / pikpak 在你的終端機裡',
+    topMid: 'tui · cli · ratatui',
     overview: '§ 01 · 概覽',
-    headline: ['瀏覽.', '播放.', '腳本化.'],
-    lede: '一個用於 PikPak 雲端儲存的 TUI + CLI 客戶端。三欄米勒佈局、縮圖預覽、28 條子命令、影片串流至 iina/mpv/vlc、Shell 補全、離線下載 —— 全部以純 Rust 撰寫。',
+    eyebrow: '// tui · 鍵盤優先',
+    headline: ['pikpak.', '進終端機。'],
+    ledePre: '瀏覽器是謊言。pikpaktui 把你的雲端硬碟帶進終端機——三欄米勒分欄，ratatui 渲染，即時預覽。j/k 移動，',
+    ledeMid: ' 開啟，',
+    ledePost: ' 下載。沒有滑鼠、沒有彈窗、沒有分頁。',
     install: '↳ 安裝',
-    docs: '閱讀文件',
-    topLine: 'pikpaktui · pikpak 在你的終端機裡',
-    topMid: 'tui + cli · 純 rust',
-    footerTail: '三欄 · ratatui',
-    interactiveChip: '互動',
-    features: [
-      { n: '01', t: '三欄 tui',         d: 'yazi 風格的米勒佈局，支援即時縮圖、語法高亮與鍵盤導覽。' },
-      { n: '02', t: '28 條子命令',      d: 'ls · mv · cp · rm · download · upload · share · update。彩色輸出、--json、--dry-run。' },
-      { n: '03', t: '影片串流至播放器', d: '按 Enter 選擇畫質，直接串流至 iina / mpv / vlc —— 檔案不落地。' },
-      { n: '04', t: '離線下載',         d: '向 PikPak 伺服器提交磁力連結或 URL，從 TUI 裡查看任務狀態。' },
-      { n: '05', t: 'zsh 補全',         d: '不只補全命令，還會走雲端目錄樹，路徑也能按 Tab 補全。' },
-      { n: '06', t: '純 rust 單檔',     d: 'ratatui · crossterm · reqwest (rustls-tls)。無 OpenSSL 與 C 相依。' },
-      { n: '07', t: '分享連結',         d: '在購物車視圖裡直接建立、檢視、保存、刪除分享連結；可選密碼保護。' },
-      { n: '08', t: '對 agent 友善',    d: '非互動式登入、--json 輸出、清晰的結束碼。已內含 openclaw skill。' },
+    readKeys: '閱讀 keymap',
+    cmdMeta: 'cargo install pikpaktui',
+    ribbon: [
+      { t: '三欄', d: '米勒分欄：根、目前目錄、焦點項的即時預覽。' },
+      { t: '純鍵盤', d: 'vim 式操作。j/k、h/l、enter、q。26 個鍵做全部事情。' },
+      { t: 'kitty graphics', d: '在支援 kitty graphics 協定的終端機裡內嵌顯示 jpeg/png/mkv 縮圖。' },
+      { t: '可續傳', d: '下載佇列寫在磁碟上。砍掉行程、重啟、繼續。' },
     ],
-    sec2: '§ 02 · 特性',
-    sec2Title: ['八件事', '都認真做了。'],
-    sec2Lede: 'pikpaktui 是真正的客戶端，不是 Web 介面的套殼。下面每一項都是針對 PikPak API 端到端實作。',
-    sec3: '§ 03 · 開始',
-    sec3Headline: ['瀏覽.', '播放.', '腳本化.'],
-    getStarted: '開始使用 ↳',
-    cliRef: 'CLI 參考',
-    license: 'apache-2.0 授權 · 無遙測 · 開源',
+    sec2: '§ 02 · keymap',
+    sec2Title: ['26 個鍵，', '做所有事。'],
+    sec2Lede: '整個 tui 就是 keymap 上的有限狀態機。沒有隱藏手勢、沒有只能滑鼠的角落、沒有右鍵選單。讀這張卡片，你就能駕馭 pikpaktui。',
+    keys: [
+      { n: '01', k: ['j','k'],   v: '移動',    d: '按列上 / 下。vim 習慣通用。' },
+      { n: '02', k: ['h','l'],   v: '返回 · 進入', d: '回到上層 pane，或進入資料夾。' },
+      { n: '03', k: ['Enter'],   v: '開啟',    d: '進入目錄，或選中檔案做後續操作。' },
+      { n: '04', k: ['d'],       v: '下載',    d: '把目前檔案或選擇加入佇列。可續傳。' },
+      { n: '05', k: ['space'],   v: '選中',    d: '多選。跨頁生效。' },
+      { n: '06', k: ['/'],       v: '篩選',    d: '在目前 pane 上做增量正則篩選。' },
+      { n: '07', k: ['r'],       v: '重新整理',    d: '重新抓取目前目錄。' },
+      { n: '08', k: ['q'],       v: '離開',    d: '乾淨離開。佇列寫到磁碟。' },
+    ],
+    sec3: '§ 03 · 流程',
+    sec3Title: ['開啟.', '挑選.', '拉取.'],
+    sec3Lede: '小檔案三個按鍵完成整個來回，大檔案四個——第四個是你搞定後的 q。',
+    flow: [
+      { n: '01 · 開啟', h: '啟動 tui。', p: '在任何終端機裡輸入 pikpaktui。三欄出現，左邊是根目錄。' },
+      { n: '02 · 挑選', h: '導覽、標記。', p: 'j/k 下移，l 進入，space 跨頁多選。' },
+      { n: '03 · 拉取', h: '加入下載佇列。', p: 'd 加入佇列。佇列在磁碟上。砍掉行程、重啟、繼續。' },
+    ],
+    metrics: [
+      { cap: '個鍵 · 完整' },
+      { cap: '欄 · 米勒' },
+      { cap: '渲染 · crossterm' },
+      { cap: '遙測 · 永遠' },
+    ],
+    sec4: '§ 04 · 安裝',
+    sec4Headline: ['一個執行檔。', '零設定。'],
+    installBig: 'cargo install pikpaktui ↳',
+    prebuilt: '預編譯 · releases',
+    license: 'mit · apache-2.0 · 沒有任何回傳',
   },
 } as const;
 
 const t = copy[locale.code as 'zh' | 'zh-Hant'];
+
+const nav = [
+  { id: 'home',      label: 'overview',  href: pikpaktui.href(`/${locale.code}/`) },
+  { id: 'keys',      label: 'keymap',    href: '#keys' },
+  { id: 'flow',      label: 'flow',      href: '#flow' },
+  { id: 'docs',      label: 'docs',      href: pikpaktui.href(`/${locale.code}/docs/getting-started`) },
+  { id: 'commands',  label: 'cli',       href: pikpaktui.href(`/${locale.code}/commands`) },
+  { id: 'install',   label: 'install',   href: pikpaktui.href(`/${locale.code}/install`) },
+  { id: 'changelog', label: 'changelog', href: pikpaktui.href(`/${locale.code}/changelog`) },
+];
 ---
-<DefaultLayout title={`${pikpaktui.title} — ${t.tagline}`} lang={locale.lang ?? locale.code}>
-  <div class="page home">
+<DefaultLayout title={`${pikpaktui.title} — ${t.title}`} lang={locale.lang ?? locale.code}>
+  <div class="page">
     <TopBar
       brand={pikpaktui.title}
       version={pikpaktui.version}
       current="home"
       githubHref={pikpaktui.githubUrl}
-      nav={pikpaktui.nav()}
+      nav={nav}
     >
       <Fragment slot="logo">
         <rect x="0"  y="0"  width="20" height="20" fill="var(--yellow)" />
@@ -97,110 +151,139 @@ const t = copy[locale.code as 'zh' | 'zh-Hant'];
       </Fragment>
     </TopBar>
 
-    <section class="hero">
-      <div class="hero-top rule-b">
+    <section class="pk-hero">
+      <div class="pk-hero-top rule-b">
         <span class="t-mono-sm">{t.topLine}</span>
         <span class="t-mono-sm">{t.topMid}</span>
         <span class="t-mono-sm">{pikpaktui.version} · {pikpaktui.releaseDate}</span>
       </div>
 
-      <div class="hero-grid grid12">
-        <div class="hero-headline">
-          <div class="hero-eyebrow">
+      <div class="pk-hero-grid">
+        <div class="pk-hero-left">
+          <div class="pk-hero-eyebrow">
             <span class="t-small">{t.overview}</span>
             <span class="t-mono-sm" style="color: var(--steel-5);">
-              <Typewriter client:visible text={`// ${t.eyebrow}`} speed={24} delay={300} />
+              <Typewriter client:visible text={t.eyebrow} speed={24} delay={300} />
             </span>
           </div>
-          <h1 class="t-display lower">
-            <span class="hl-line"><BlockReveal client:visible delay={400} duration={520}>{t.headline[0]}</BlockReveal></span>
-            <span class="hl-line"><BlockReveal client:visible delay={760} duration={520} color="var(--red)">{t.headline[1]}</BlockReveal></span>
-            <span class="hl-line"><BlockReveal client:visible delay={1120} duration={520} color="var(--blue)">{t.headline[2]}</BlockReveal></span>
+          <h1 class="pk-hero-title lower">
+            <span class="hl-line"><BlockReveal client:visible delay={300} duration={520} color="var(--yellow)">{t.headline[0]}</BlockReveal></span>
+            <span class="hl-line r2"><BlockReveal client:visible delay={700} duration={520}>{t.headline[1]}</BlockReveal></span>
           </h1>
-
-          <p class="hero-lede">{t.lede}</p>
-
-          <div class="hero-cta">
-            <a class="btn-block" href={pikpaktui.href(`/${locale.code}/install`)}>{t.install} {pikpaktui.version}</a>
-            <a class="btn-block is-ghost" href={pikpaktui.href(`/${locale.code}/docs/getting-started`)}>{t.docs}</a>
-            <span class="hero-cta-meta t-mono-sm">
-              ⌘ <span>brew install Bengerthelorf/tap/pikpaktui</span>
+          <p class="pk-lede">
+            {t.ledePre}<code>enter</code>{t.ledeMid}<code>d</code>{t.ledePost}
+          </p>
+          <div class="pk-cta">
+            <a class="btn-block" href="#install">{t.install} {pikpaktui.version}</a>
+            <a class="btn-block is-ghost" href="#keys">{t.readKeys}</a>
+            <span class="pk-cta-meta">
+              ⌘ <span>{t.cmdMeta}</span>
             </span>
           </div>
         </div>
 
-        <aside class="hero-device hero-device--image">
-          <div class="device-head">
-            <div class="t-small">tui.live</div>
-            <div class="chip is-blue"><span class="dot"/>{t.interactiveChip}</div>
-          </div>
-          <img
-            src={pikpaktui.href('/images/main.jpeg')}
-            alt="pikpaktui tui"
-            loading="eager"
-            decoding="async"
-          />
-          <div class="device-footline">
-            <span class="t-mono-sm">{t.footerTail}</span>
-            <span class="t-mono-sm" style="color: var(--blue);">● live</span>
-          </div>
+        <aside class="pk-hero-right">
+          <PkTuiFrame />
         </aside>
       </div>
-    </section>
 
-    <section class="home-section home-principles">
-      <div class="section-head">
-        <div class="section-head-left">
-          <div class="t-small">{t.sec2}</div>
-          <h2 class="t-h1 lower">{t.sec2Title[0]}<br/>{t.sec2Title[1]}</h2>
-        </div>
-        <div class="section-head-right">
-          <p class="t-body">{t.sec2Lede}</p>
-        </div>
-      </div>
-
-      <div class="principles-grid">
-        {t.features.map((it) => (
-          <div class="principle">
-            <div class="principle-n t-mono">{it.n}</div>
-            <div class="principle-title t-h3 lower">{it.t}</div>
-            <div class="principle-d">{it.d}</div>
+      <div class="pk-ribbon">
+        {t.ribbon.map((r, i) => (
+          <div class="item">
+            <span class="t-small">{String(i + 1).padStart(2, '0')}</span>
+            <div class="lbl"><Scramble client:visible text={r.t} delay={200 + i * 120} /></div>
+            <div class="sub">{r.d}</div>
           </div>
         ))}
       </div>
     </section>
 
-    <section class="home-cta">
-      <div class="cta-inner">
-        <div class="t-small" style="color: var(--c-steel-3);">{t.sec3}</div>
-        <h2 class="t-display lower" style="color: var(--c-paper-pure);">
-          <BlockReveal client:visible delay={200} color="var(--yellow)">{t.sec3Headline[0]}</BlockReveal><br/>
-          <BlockReveal client:visible delay={700} color="var(--red)">{t.sec3Headline[1]}</BlockReveal><br/>
-          <BlockReveal client:visible delay={1200} color="var(--blue)">{t.sec3Headline[2]}</BlockReveal>
+    <section class="pk-section" id="keys">
+      <div class="pk-section-head">
+        <div class="lhs">
+          <div class="t-small">{t.sec2}</div>
+          <h2 class="t-h1 lower">{t.sec2Title[0]}<br />{t.sec2Title[1]}</h2>
+        </div>
+        <div class="rhs">
+          <p class="t-body">{t.sec2Lede}</p>
+        </div>
+      </div>
+      <div class="pk-keymap">
+        {t.keys.map((k) => (
+          <div class="pk-keymap-cell">
+            <div class="idx">{k.n}</div>
+            <div class="keys">{k.k.map((kk) => <kbd>{kk}</kbd>)}</div>
+            <div class="verb lower">{k.v}</div>
+            <div class="desc">{k.d}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="pk-section" id="flow">
+      <div class="pk-section-head">
+        <div class="lhs">
+          <div class="t-small">{t.sec3}</div>
+          <h2 class="t-h1 lower">{t.sec3Title[0]}<br/>{t.sec3Title[1]}<br/>{t.sec3Title[2]}</h2>
+        </div>
+        <div class="rhs">
+          <p class="t-body">{t.sec3Lede}</p>
+        </div>
+      </div>
+      <div class="pk-flow">
+        {t.flow.map((s) => (
+          <div class="step">
+            <div class="n">{s.n}</div>
+            <div class="h lower">{s.h}</div>
+            <div class="p">{s.p}</div>
+            <div class="art" />
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="pk-section">
+      <div class="pk-metrics">
+        <div class="pk-metric">
+          <div class="n"><Tally client:visible to={26} duration={900} /></div>
+          <div class="c">{t.metrics[0].cap}</div>
+        </div>
+        <div class="pk-metric">
+          <div class="n"><Tally client:visible to={3} duration={700} /></div>
+          <div class="c">{t.metrics[1].cap}</div>
+        </div>
+        <div class="pk-metric">
+          <div class="n">ratatui</div>
+          <div class="c">{t.metrics[2].cap}</div>
+        </div>
+        <div class="pk-metric">
+          <div class="n"><Tally client:visible to={0} duration={600} /></div>
+          <div class="c">{t.metrics[3].cap}</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="pk-cta-full" id="install">
+      <div class="pk-cta-inner">
+        <div class="t-small" style="color: rgba(10,10,11,0.6);">{t.sec4}</div>
+        <h2 class="lower">
+          <BlockReveal client:visible delay={200} color="var(--ink)">{t.sec4Headline[0]}</BlockReveal><br />
+          <BlockReveal client:visible delay={700} color="var(--red)">{t.sec4Headline[1]}</BlockReveal>
         </h2>
-        <div class="cta-buttons">
-          <a class="btn-block" style="background: var(--c-paper-pure); color: var(--c-ink-0); border-color: var(--c-paper-pure);" href={pikpaktui.href(`/${locale.code}/docs/getting-started`)}>
-            {t.getStarted}
+        <div class="buttons">
+          <a class="btn-block" style="background: var(--c-ink-0); color: var(--c-yellow); border-color: var(--c-ink-0);" href={pikpaktui.href(`/${locale.code}/install`)}>
+            {t.installBig}
           </a>
-          <a class="btn-block" style="background: transparent; color: var(--c-paper-pure); border-color: var(--c-paper-pure);" href={pikpaktui.href(`/${locale.code}/docs/cli/commands`)}>
-            {t.cliRef}
+          <a class="btn-block" style="background: transparent; color: var(--c-ink-0); border-color: var(--c-ink-0);" href={`${pikpaktui.githubUrl}/releases`}>
+            {t.prebuilt}
           </a>
         </div>
-        <div class="cta-small t-mono-sm">{t.license}</div>
+        <div class="t-mono-sm" style="margin-top: 28px; color: rgba(10,10,11,0.6);">
+          {t.license}
+        </div>
       </div>
     </section>
 
     <Footer product={pikpaktui} locale={locale.code} languages={pikpaktui.pageLanguages(locale.code, '/', ['en', 'zh', 'zh-Hant'])} />
   </div>
 </DefaultLayout>
-
-<style>
-  .hero-device--image { padding: 0; background: var(--paper); }
-  .hero-device--image img {
-    display: block;
-    width: 100%;
-    height: auto;
-    border-top: 1px solid var(--steel-3);
-    border-bottom: 1px solid var(--steel-3);
-  }
-</style>
