@@ -347,7 +347,7 @@
   background: var(--ink); color: var(--paper-pure);
   padding: 4px 10px 6px;
 }
-.manifesto-body .highlight { background: var(--yellow); padding: 0 4px; }
+.manifesto-body .highlight { background: var(--c-yellow); color: var(--c-ink-0); padding: 0 4px; }
 
 .credits { padding: 40px 0; border-top: 3px solid var(--ink); }
 .credits-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
