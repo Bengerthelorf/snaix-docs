@@ -541,13 +541,12 @@
   }
   .p-stream-head { padding: 10px 12px; }
 
-  .p-tile--ds .tile-art {
-    right: 18px; top: auto; bottom: 18px; transform: none;
-    width: 140px; height: 64px;
-  }
-  .p-tile--ds .ds-art-sq  { width: 52px; height: 52px; }
-  .p-tile--ds .ds-art-tri { left: 44px; top: 8px; border-left-width: 22px; border-right-width: 22px; border-bottom-width: 44px; }
-  .p-tile--ds .ds-art-ci  { width: 40px; height: 40px; }
+  .p-tile--ds .tile-n,
+  .p-tile--ds .tile-name,
+  .p-tile--ds .tile-tag,
+  .p-tile--ds .tile-desc,
+  .p-tile--ds .tile-meta { position: relative; z-index: 2; }
+  .p-tile--ds .tile-art { right: -30px; top: auto; bottom: -20px; transform: none; }
   .p-tile--ds .tile-desc { max-width: none; }
 }
 
