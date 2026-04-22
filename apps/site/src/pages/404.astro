@@ -1,0 +1,162 @@
+---
+import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
+import { snaixConfig } from 'virtual:snaix-config';
+
+const { products } = snaixConfig.siteData;
+---
+<DefaultLayout title="404 — not here · snaix.homes">
+  <div class="nf">
+    <div class="nf-shapes" aria-hidden="true">
+      <div class="nf-sq" />
+      <div class="nf-ci" />
+      <div class="nf-tr" />
+      <div class="nf-bar" />
+    </div>
+
+    <header class="nf-top">
+      <a href="/" class="nf-brand">
+        <svg viewBox="0 0 40 40" width="28" height="28" aria-hidden="true">
+          <rect width="40" height="40" fill="#0a0a0b"/>
+          <rect x="20" y="0" width="20" height="20" fill="#e1261c"/>
+          <rect x="20" y="20" width="20" height="20" fill="#f5c518"/>
+        </svg>
+        <span>snaix.homes</span>
+      </a>
+      <span class="nf-tag">§ not here · 404</span>
+    </header>
+
+    <main class="nf-main">
+      <h1 class="nf-code">404<span class="nf-dot">.</span></h1>
+      <p class="nf-lede">
+        this page doesn't exist — or it used to, and we moved it. no hard
+        feelings. the things that do exist are below.
+      </p>
+
+      <section class="nf-paths">
+        <a class="nf-path nf-path--portal" href="/">
+          <span class="nf-path-n">→</span>
+          <span class="nf-path-t">portal</span>
+          <span class="nf-path-sub">the four tools in one hand</span>
+        </a>
+        {products.map((p) => (
+          <a class="nf-path" href={p.href}>
+            <span class="nf-path-n">↳</span>
+            <span class="nf-path-t">{p.name}</span>
+            <span class="nf-path-sub">{p.tag}</span>
+          </a>
+        ))}
+      </section>
+
+      <div class="nf-foot">
+        <span>if you followed a link here and it used to work,</span>
+        <a class="link-u" href="https://github.com/Bengerthelorf/snaix-docs/issues">report it ↗︎</a>
+      </div>
+    </main>
+  </div>
+</DefaultLayout>
+
+<style>
+  .nf {
+    min-height: 100vh;
+    background: var(--paper);
+    color: var(--ink);
+    padding: 48px var(--page-pad) 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .nf-shapes { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+  .nf-sq  { position: absolute; right: -60px; top: 14%;  width: 260px; height: 260px; background: var(--red); transform: rotate(14deg); }
+  .nf-ci  { position: absolute; left: -40px;  bottom: 8%; width: 180px; height: 180px; background: var(--blue); border-radius: 50%; }
+  .nf-tr  {
+    position: absolute; right: 26%; bottom: -20px;
+    width: 0; height: 0;
+    border-left: 70px solid transparent; border-right: 70px solid transparent;
+    border-bottom: 120px solid var(--yellow);
+    transform: rotate(-8deg);
+  }
+  .nf-bar { position: absolute; left: 0; top: 22%; width: 40%; height: 8px; background: var(--ink); }
+
+  .nf-top {
+    position: relative; z-index: 2;
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--ink);
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--steel-7);
+  }
+  .nf-brand { display: inline-flex; gap: 10px; align-items: center; color: var(--ink); font-weight: 700; }
+  .nf-tag   { color: var(--red); }
+
+  .nf-main {
+    position: relative; z-index: 2;
+    max-width: 720px;
+    margin-top: 80px;
+  }
+  .nf-code {
+    font-size: clamp(160px, 28vw, 360px);
+    line-height: 0.82;
+    font-weight: 800;
+    letter-spacing: -0.06em;
+    margin: 0;
+    color: var(--ink);
+  }
+  .nf-code .nf-dot { color: var(--red); }
+  .nf-lede {
+    font-size: clamp(18px, 2.4vw, 22px);
+    line-height: 1.5;
+    margin: 30px 0 48px;
+    max-width: 48ch;
+    color: var(--steel-9);
+  }
+
+  .nf-paths {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 0;
+    border: 1px solid var(--ink);
+    background: var(--paper-pure);
+  }
+  .nf-path {
+    display: grid;
+    grid-template-columns: 28px auto 1fr;
+    gap: 10px;
+    align-items: baseline;
+    padding: 18px 20px;
+    border-right: 1px solid var(--steel-3);
+    border-bottom: 1px solid var(--steel-3);
+    text-decoration: none;
+    color: var(--ink);
+    transition: background var(--t-fast);
+  }
+  .nf-path:hover { background: var(--ink); color: var(--paper-pure); }
+  .nf-path:hover .nf-path-sub { color: var(--c-steel-3); }
+  .nf-path-n { font-family: var(--mono); color: var(--red); }
+  .nf-path-t { font-weight: 700; font-size: 17px; text-transform: lowercase; }
+  .nf-path-sub {
+    grid-column: 2 / -1;
+    font-family: var(--mono); font-size: 11px;
+    color: var(--steel-7);
+    margin-top: 4px;
+  }
+  .nf-path--portal {
+    background: var(--ink); color: var(--paper-pure);
+  }
+  .nf-path--portal .nf-path-n,
+  .nf-path--portal .nf-path-sub { color: var(--c-steel-3); }
+  .nf-path--portal:hover { background: var(--red); }
+
+  .nf-foot {
+    margin-top: 40px;
+    font-family: var(--mono); font-size: 12px;
+    color: var(--steel-7);
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+
+  @media (max-width: 720px) {
+    .nf-sq  { right: -80px; top: 18%; width: 180px; height: 180px; }
+    .nf-ci  { left: -60px; bottom: 12%; width: 130px; height: 130px; }
+    .nf-tr  { right: 6%; border-left-width: 44px; border-right-width: 44px; border-bottom-width: 76px; }
+    .nf-top { flex-direction: column; gap: 8px; align-items: flex-start; }
+  }
+</style>
