@@ -183,9 +183,14 @@
   .hero-headline, .hero-device { grid-column: 1 / -1; }
   .hero-device { position: static; margin-top: 24px; }
   .hero-ribbon { grid-template-columns: 1fr 1fr; }
+  .ribbon-item:nth-child(2n) { border-right: 0; }
+  .ribbon-item:not(:nth-last-child(-n+2)) { border-bottom: 1px solid var(--steel-3); padding-bottom: 14px; margin-bottom: 14px; }
   .section-head { grid-template-columns: 1fr; }
+  /* single-col: collapse the fixed min-height that was there for desktop
+     row-alignment — on mobile it just creates a 200px empty tail. */
   .principles-grid { grid-template-columns: 1fr; }
+  .principle { min-height: auto; padding: 26px 24px 54px; }
   .metrics-strip { grid-template-columns: 1fr 1fr; }
-  .metric { border-bottom: 1px solid var(--ink); }
-  .metric:nth-child(even) { border-right: 0; }
+  .metric:nth-child(2n) { border-right: 0; }
+  .metric:not(:nth-last-child(-n+2)) { border-bottom: 1px solid var(--ink); }
 }
