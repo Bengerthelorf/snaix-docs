@@ -371,6 +371,8 @@
   .log-body code, .log-body pre { word-break: break-all; white-space: pre-wrap; }
   .manifesto-body { grid-template-columns: minmax(0, 1fr); }
   .credits-grid { grid-template-columns: 1fr 1fr; }
+  .credit:nth-child(2n) { border-right: 0; }
+  .credit:not(:nth-last-child(-n+2)) { border-bottom: 1px solid var(--steel-3); }
 }
 
 @media (max-width: 720px) {
@@ -378,4 +380,7 @@
   .install-opt { border-right: 0; border-bottom: 1px solid var(--ink); }
   .install-opt:last-child { border-bottom: 0; }
   .install-opt-cmd { overflow-wrap: anywhere; }
+  .credits-grid { grid-template-columns: 1fr; }
+  .credit { border-right: 0; border-bottom: 1px solid var(--steel-3); }
+  .credit:last-child { border-bottom: 0; }
 }

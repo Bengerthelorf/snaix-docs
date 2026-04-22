@@ -401,7 +401,8 @@
   .cl-ribbon .item:nth-child(2n) { border-right: 0; }
   .cl-ribbon .item:not(:nth-last-child(-n+2)) { border-bottom: 1px solid var(--steel-3); padding-bottom: 14px; margin-bottom: 14px; }
   .cl-audit { grid-template-columns: 1fr; }
-  .cl-audit .col { border-right: 0; border-bottom: 1px solid var(--ink); }
+  .cl-audit .col { border-right: 0; border-bottom: 1px solid var(--ink); min-height: auto; }
+  .cl-audit .col:last-child { border-bottom: 0; }
   .cl-local { grid-template-columns: 1fr; }
   .cl-local ul { grid-template-columns: 1fr; }
   .cl-metrics { grid-template-columns: 1fr 1fr; }

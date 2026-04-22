@@ -321,7 +321,8 @@
   .pk-keymap-cell:nth-child(2n) { border-right: 0; }
   .pk-keymap-cell:not(:nth-last-child(-n+2)) { border-bottom: 1px solid var(--steel-3); }
   .pk-flow { grid-template-columns: 1fr; }
-  .pk-flow .step { border-right: 0; border-bottom: 1px solid var(--ink); }
+  .pk-flow .step { border-right: 0; border-bottom: 1px solid var(--ink); min-height: auto; }
+  .pk-flow .step:last-child { border-bottom: 0; }
   .pk-metrics { grid-template-columns: 1fr 1fr; }
   .pk-metric:nth-child(2n) { border-right: 0; }
   .pk-metric:not(:nth-last-child(-n+2)) { border-bottom: 1px solid var(--ink); }

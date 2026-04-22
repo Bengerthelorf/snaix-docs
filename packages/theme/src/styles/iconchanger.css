@@ -395,7 +395,8 @@
   .ic-ribbon .item:nth-child(2n) { border-right: 0; }
   .ic-ribbon .item:not(:nth-last-child(-n+2)) { border-bottom: 1px solid var(--steel-3); padding-bottom: 14px; margin-bottom: 14px; }
   .ic-features { grid-template-columns: 1fr; }
-  .ic-features .col { border-right: 0; border-bottom: 1px solid var(--ink); }
+  .ic-features .col { border-right: 0; border-bottom: 1px solid var(--ink); min-height: auto; }
+  .ic-features .col:last-child { border-bottom: 0; }
   .ic-sources { grid-template-columns: 1fr 1fr; }
   /* border rules above are keyed to 3-col layout; reset + re-key to 2-col */
   .ic-src:nth-child(3n)             { border-right: 1px solid var(--steel-3); }
