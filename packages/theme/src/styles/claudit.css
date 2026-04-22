@@ -398,10 +398,14 @@
   .cl-cell { border-right: 0; }
   .cl-cell.col-span-2 { grid-column: auto; }
   .cl-ribbon { grid-template-columns: 1fr 1fr; }
+  .cl-ribbon .item:nth-child(2n) { border-right: 0; }
+  .cl-ribbon .item:not(:nth-last-child(-n+2)) { border-bottom: 1px solid var(--steel-3); padding-bottom: 14px; margin-bottom: 14px; }
   .cl-audit { grid-template-columns: 1fr; }
   .cl-audit .col { border-right: 0; border-bottom: 1px solid var(--ink); }
   .cl-local { grid-template-columns: 1fr; }
   .cl-local ul { grid-template-columns: 1fr; }
   .cl-metrics { grid-template-columns: 1fr 1fr; }
+  .cl-metric:nth-child(2n) { border-right: 0; }
+  .cl-metric:not(:nth-last-child(-n+2)) { border-bottom: 1px solid var(--ink); }
   .cl-section-head { grid-template-columns: 1fr; }
 }

@@ -315,9 +315,15 @@
   .pk-tui-panes { grid-template-columns: 110px 1fr; }
   .pk-tui-pane:last-child { display: none; }
   .pk-ribbon { grid-template-columns: 1fr 1fr; }
+  .pk-ribbon .item:nth-child(2n) { border-right: 0; }
+  .pk-ribbon .item:not(:nth-last-child(-n+2)) { border-bottom: 1px solid var(--steel-3); padding-bottom: 14px; margin-bottom: 14px; }
   .pk-keymap { grid-template-columns: 1fr 1fr; }
+  .pk-keymap-cell:nth-child(2n) { border-right: 0; }
+  .pk-keymap-cell:not(:nth-last-child(-n+2)) { border-bottom: 1px solid var(--steel-3); }
   .pk-flow { grid-template-columns: 1fr; }
   .pk-flow .step { border-right: 0; border-bottom: 1px solid var(--ink); }
   .pk-metrics { grid-template-columns: 1fr 1fr; }
+  .pk-metric:nth-child(2n) { border-right: 0; }
+  .pk-metric:not(:nth-last-child(-n+2)) { border-bottom: 1px solid var(--ink); }
   .pk-section-head { grid-template-columns: 1fr; }
 }
