@@ -7,6 +7,16 @@
   padding: 10px 0;
   color: var(--steel-7);
 }
+@media (max-width: 720px) {
+  .hero-top,
+  .pk-hero-top,
+  .ic-hero-top,
+  .cl-hero-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+}
 .hero-grid { margin-top: 56px; align-items: start; }
 .hero-headline { grid-column: span 8; position: relative; }
 .hero-eyebrow { display: flex; gap: 24px; align-items: baseline; margin-bottom: 28px; }
