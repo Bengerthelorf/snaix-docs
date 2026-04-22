@@ -541,12 +541,39 @@
   }
   .p-stream-head { padding: 10px 12px; }
 
+  /* layer text above decorative art on overlapping tiles */
   .p-tile--ds .tile-n,
   .p-tile--ds .tile-name,
   .p-tile--ds .tile-tag,
   .p-tile--ds .tile-desc,
-  .p-tile--ds .tile-meta { position: relative; z-index: 2; }
-  .p-tile--ds .tile-art { right: -30px; top: auto; bottom: -20px; transform: none; }
+  .p-tile--ds .tile-meta,
+  .p-tile--pikpak .tile-n,
+  .p-tile--pikpak .tile-name,
+  .p-tile--pikpak .tile-tag,
+  .p-tile--pikpak .tile-desc,
+  .p-tile--pikpak .tile-meta,
+  .p-tile--icon .tile-n,
+  .p-tile--icon .tile-name,
+  .p-tile--icon .tile-tag,
+  .p-tile--icon .tile-desc,
+  .p-tile--icon .tile-meta,
+  .p-tile--claudit .tile-n,
+  .p-tile--claudit .tile-name,
+  .p-tile--claudit .tile-tag,
+  .p-tile--claudit .tile-desc,
+  .p-tile--claudit .tile-meta { position: relative; z-index: 2; }
+
+  /* ds tile shapes — larger, pushed up so they intrude through the middle */
+  .p-tile--ds .tile-art {
+    right: -40px; top: 42%; transform: translateY(-50%);
+    width: 320px; height: 150px;
+  }
+  .p-tile--ds .ds-art-sq  { width: 120px; height: 120px; }
+  .p-tile--ds .ds-art-tri {
+    left: 96px; top: 14px;
+    border-left-width: 50px; border-right-width: 50px; border-bottom-width: 100px;
+  }
+  .p-tile--ds .ds-art-ci  { width: 92px; height: 92px; }
   .p-tile--ds .tile-desc { max-width: none; }
 }
 
