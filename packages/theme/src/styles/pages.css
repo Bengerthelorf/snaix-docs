@@ -127,6 +127,17 @@
 .docs-content ul li,
 .docs-content ol li { margin-bottom: 6px; line-height: 1.55; }
 
+.docs-content a {
+  color: var(--red);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color var(--t-fast) var(--ease);
+}
+.docs-content a:hover { color: var(--ink); }
+.docs-content a[href^="http"]::after,
+.docs-content a[href^="//"]::after { content: ' ↗\FE0E'; color: var(--steel-5); }
+
 .docs-content table {
   width: 100%; border-collapse: collapse; font-size: 13px;
   margin: 18px 0 22px; border: 1px solid var(--ink); background: var(--paper-pure);
