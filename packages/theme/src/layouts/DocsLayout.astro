@@ -2,6 +2,7 @@
 import DefaultLayout from './DefaultLayout.astro';
 import TopBar from '../components/TopBar.astro';
 import Footer from '../components/Footer.astro';
+import Search from '../components/Search.astro';
 import MathStyles from '../components/MathStyles.astro';
 import MermaidLoader from '../components/MermaidLoader.astro';
 import type { LangOption } from '../components/LangSwitcher.astro';
@@ -102,6 +103,9 @@ function itemHref(item: NavItem) {
         <div style="margin-bottom: 20px;">
           <div class="t-small" style={`color: ${product.accent}; margin-bottom: 8px;`}>{brand} / docs</div>
           {version && <div class="t-mono-sm" style="color: var(--steel-5);">{version}</div>}
+        </div>
+        <div style="margin-bottom: 22px;">
+          <Search />
         </div>
         {nav.map((g) => (
           <div class="docs-nav-section">

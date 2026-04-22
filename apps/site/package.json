@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "astro dev --port 4321 --host",
     "prebuild": "./scripts/sync-images.sh",
-    "build": "astro build",
+    "build": "astro build && pagefind --site dist --glob \"{bcmr,pikpaktui,iconchanger,claudit}/**/*.{html,htm}\"",
     "predev": "./scripts/sync-images.sh",
     "preview": "astro preview",
     "astro": "astro"
@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.0.0"
+    "@types/react-dom": "^19.0.0",
+    "pagefind": "^1.5.2"
   }
 }
