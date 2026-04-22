@@ -19,15 +19,20 @@ interface Props {
   lang?: string;
   dir?: 'ltr' | 'rtl';
   favicon?: string;
+  ogImage?: string;
 }
-const { title, description, bodyClass, lang = 'en', dir, favicon } = Astro.props;
+const { title, description, bodyClass, lang = 'en', dir, favicon, ogImage } = Astro.props;
 /* arabic, hebrew, persian, urdu — flip layout when explicit or when the
    lang code is known rtl. */
 const resolvedDir = dir ?? (/^(ar|he|fa|ur)\b/i.test(lang) ? 'rtl' : undefined);
-/* Pick a per-product favicon by URL path. Portal / design-system / about /
-   404 all fall through to the universal snaix mark. */
+/* Pick a per-product favicon + og card by URL path. Portal / design-system /
+   about / 404 all fall through to the universal snaix mark. */
 const productSlug = Astro.url.pathname.match(/^\/(bcmr|pikpaktui|iconchanger|claudit)\//)?.[1];
 const faviconHref = favicon ?? (productSlug ? `/icons/${productSlug}.svg` : '/icons/snaix.svg');
+const ogImageHref = ogImage ?? (productSlug ? `/og/${productSlug}.png` : '/og/snaix.png');
+const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://app.snaix.homes').toString();
+const ogImageAbs = new URL(ogImageHref, Astro.site ?? 'https://app.snaix.homes').toString();
+const ogDescription = description ?? 'small tools, big years. four open-source tools — cli, tui, macos native — across one bench.';
 ---
 <!doctype html>
 <html lang={lang} dir={resolvedDir}>
@@ -37,6 +42,19 @@ const faviconHref = favicon ?? (productSlug ? `/icons/${productSlug}.svg` : '/ic
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
     <link rel="icon" type="image/svg+xml" href={faviconHref} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="snaix.homes" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={ogDescription} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageAbs} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={ogDescription} />
+    <meta name="twitter:image" content={ogImageAbs} />
     <ThemeInit />
     <FontLinks />
     <slot name="head" />
