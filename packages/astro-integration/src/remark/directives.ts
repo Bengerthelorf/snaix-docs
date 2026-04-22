@@ -86,31 +86,84 @@ export function remarkSnaixDirectives() {
       }
 
       if (name === 'code-group' || name === 'codegroup') {
-        setHProps(node, 'div', ['snx-code-group']);
         const children = Array.isArray(node.children) ? node.children : [];
-        const rewritten: any[] = [];
+        const items: { label: string; code: any }[] = [];
         for (const child of children) {
-          if (child.type === 'code') {
-            const meta: string = child.meta ?? '';
-            const match = meta.match(/\[([^\]]+)\]/);
-            if (match) {
-              const label = match[1];
-              rewritten.push({
-                type: 'paragraph',
-                data: {
-                  hName: 'h4',
-                  hProperties: { className: ['snx-code-group__label'] },
-                },
-                children: [{ type: 'text', value: label }],
-              });
-              child.meta = meta.replace(/\s*\[[^\]]+\]\s*/, '').trim() || null;
-            }
-            rewritten.push(child);
-          } else {
-            rewritten.push(child);
+          if (child.type !== 'code') continue;
+          const meta: string = child.meta ?? '';
+          const match = meta.match(/\[([^\]]+)\]/);
+          const label = match ? match[1] : (child.lang ?? 'snippet');
+          if (match) {
+            child.meta = meta.replace(/\s*\[[^\]]+\]\s*/, '').trim() || null;
           }
+          items.push({ label, code: child });
         }
-        node.children = rewritten;
+        if (items.length === 0) return;
+
+        const tabHead = {
+          type: 'paragraph',
+          data: {
+            hName: 'div',
+            hProperties: { className: ['snx-code-tabs__head'], role: 'tablist' },
+          },
+          children: items.map((it, i) => ({
+            type: 'paragraph',
+            data: {
+              hName: 'button',
+              hProperties: {
+                className: ['snx-code-tabs__tab'],
+                type: 'button',
+                role: 'tab',
+                'data-tab-label': it.label,
+                'data-tab-idx': String(i),
+                'aria-selected': i === 0 ? 'true' : 'false',
+                tabindex: i === 0 ? '0' : '-1',
+              },
+            },
+            children: [{ type: 'text', value: it.label }],
+          })),
+        };
+
+        const panels = items.map((it, i) => ({
+          type: 'paragraph',
+          data: {
+            hName: 'div',
+            hProperties: {
+              className: ['snx-code-tabs__panel'],
+              role: 'tabpanel',
+              'data-panel-idx': String(i),
+              ...(i === 0 ? {} : { hidden: true }),
+            },
+          },
+          children: [
+            it.code,
+            {
+              type: 'paragraph',
+              data: {
+                hName: 'button',
+                hProperties: {
+                  className: ['snx-code-tabs__copy'],
+                  type: 'button',
+                  'data-copy': '',
+                  'aria-label': 'copy',
+                },
+              },
+              children: [{ type: 'text', value: 'copy' }],
+            },
+          ],
+        }));
+
+        const panelsWrap = {
+          type: 'paragraph',
+          data: {
+            hName: 'div',
+            hProperties: { className: ['snx-code-tabs__panels'] },
+          },
+          children: panels,
+        };
+
+        setHProps(node, 'div', ['snx-code-tabs'], { 'data-code-tabs': '' });
+        node.children = [tabHead, panelsWrap];
         return;
       }
     });

@@ -38,5 +38,61 @@ const resolvedDir = dir ?? (/^(ar|he|fa|ur)\b/i.test(lang) ? 'rtl' : undefined);
   <body class={bodyClass}>
     <slot />
     <ThemeToggle client:load />
+    <script is:inline>
+      (() => {
+        const KEY = 'snx-code-tabs';
+        const readPref = () => {
+          try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; }
+        };
+        const writePref = (pref) => {
+          try { localStorage.setItem(KEY, JSON.stringify(pref)); } catch {}
+        };
+        const selectByLabel = (group, label) => {
+          const tabs = group.querySelectorAll('.snx-code-tabs__tab');
+          const panels = group.querySelectorAll('.snx-code-tabs__panel');
+          let idx = [...tabs].findIndex((t) => t.dataset.tabLabel === label);
+          if (idx < 0) idx = 0;
+          tabs.forEach((t, i) => {
+            const on = i === idx;
+            t.setAttribute('aria-selected', on ? 'true' : 'false');
+            t.setAttribute('tabindex', on ? '0' : '-1');
+          });
+          panels.forEach((p, i) => { if (i === idx) p.removeAttribute('hidden'); else p.setAttribute('hidden', ''); });
+        };
+        const sync = (label) => {
+          const pref = readPref();
+          pref._last = label;
+          writePref(pref);
+          document.querySelectorAll('[data-code-tabs]').forEach((g) => {
+            if ([...g.querySelectorAll('.snx-code-tabs__tab')].some((t) => t.dataset.tabLabel === label)) {
+              selectByLabel(g, label);
+            }
+          });
+        };
+        const init = () => {
+          const pref = readPref();
+          document.querySelectorAll('[data-code-tabs]').forEach((g) => {
+            if (pref._last) selectByLabel(g, pref._last);
+            g.querySelectorAll('.snx-code-tabs__tab').forEach((tab) => {
+              tab.addEventListener('click', () => sync(tab.dataset.tabLabel));
+            });
+            g.querySelectorAll('.snx-code-tabs__copy').forEach((btn) => {
+              btn.addEventListener('click', async () => {
+                const pre = btn.parentElement?.querySelector('pre');
+                if (!pre) return;
+                try {
+                  await navigator.clipboard.writeText(pre.innerText);
+                  btn.classList.add('is-copied');
+                  btn.textContent = 'copied';
+                  setTimeout(() => { btn.classList.remove('is-copied'); btn.textContent = 'copy'; }, 1400);
+                } catch {}
+              });
+            });
+          });
+        };
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+        else init();
+      })();
+    </script>
   </body>
 </html>
