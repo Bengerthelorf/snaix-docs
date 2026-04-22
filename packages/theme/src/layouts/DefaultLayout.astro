@@ -18,11 +18,16 @@ interface Props {
   bodyClass?: string;
   lang?: string;
   dir?: 'ltr' | 'rtl';
+  favicon?: string;
 }
-const { title, description, bodyClass, lang = 'en', dir } = Astro.props;
+const { title, description, bodyClass, lang = 'en', dir, favicon } = Astro.props;
 /* arabic, hebrew, persian, urdu — flip layout when explicit or when the
    lang code is known rtl. */
 const resolvedDir = dir ?? (/^(ar|he|fa|ur)\b/i.test(lang) ? 'rtl' : undefined);
+/* Pick a per-product favicon by URL path. Portal / design-system / about /
+   404 all fall through to the universal snaix mark. */
+const productSlug = Astro.url.pathname.match(/^\/(bcmr|pikpaktui|iconchanger|claudit)\//)?.[1];
+const faviconHref = favicon ?? (productSlug ? `/icons/${productSlug}.svg` : '/icons/snaix.svg');
 ---
 <!doctype html>
 <html lang={lang} dir={resolvedDir}>
@@ -31,6 +36,7 @@ const resolvedDir = dir ?? (/^(ar|he|fa|ur)\b/i.test(lang) ? 'rtl' : undefined);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     {description && <meta name="description" content={description} />}
+    <link rel="icon" type="image/svg+xml" href={faviconHref} />
     <ThemeInit />
     <FontLinks />
     <slot name="head" />
