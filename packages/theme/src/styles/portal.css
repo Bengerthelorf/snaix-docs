@@ -575,6 +575,17 @@
   }
   .p-tile--ds .ds-art-ci  { width: 92px; height: 92px; }
   .p-tile--ds .tile-desc { max-width: none; }
+
+  /* manifesto shapes — on narrow viewports the red text "phone home" and blue
+     text "respect your hands" land on top of the same-colored red square /
+     blue circle. move shapes below the text block and shrink so they read
+     as a signature, not a collision. */
+  .p-manifest-shapes .s1 { right: 6%; top: auto; bottom: 10%; width: 100px; height: 100px; }
+  .p-manifest-shapes .s2 { right: 28%; bottom: 4%; width: 72px; height: 72px; }
+  .p-manifest-shapes .s3 {
+    right: 48%; top: auto; bottom: 14%;
+    border-left-width: 26px; border-right-width: 26px; border-bottom-width: 46px;
+  }
 }
 
 @media (max-width: 480px) {
