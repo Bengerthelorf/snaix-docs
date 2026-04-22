@@ -35,9 +35,10 @@ const copy = {
     deviceComment: '# 14.2 gb · 本地 → ssh',
     deviceSrc: '源',
     deviceDst: '目标',
-    deviceRate: '速率',
-    deviceEta: '剩余',
-    deviceHash: '校验',
+    deviceHash: '哈希',
+    deviceMode: '模式',
+    deviceModeVal: '可续传',
+    deviceConn: '连接',
     deviceFootline: 'direct-tcp · 快速通道',
     ribbon: [
       { n: '01', t: 'blake3 流式校验', d: '每个字节写入时都在两端哈希，--verify 升级为完整的两遍重读。' },
@@ -60,8 +61,8 @@ const copy = {
       { n: '06', t: 'json + tui',           d: '脚本里用 --json，终端里用 --tui。同一个二进制、同一套命令 —— 只是外壳不同。' },
     ],
     metrics: [
-      { cap: 'direct-tcp · 峰值' },
-      { cap: 'blake3 覆盖率' },
+      { cap: '对比 rsync · 小文件' },
+      { cap: 'dedup · 最小块' },
       { cap: '支持的平台数' },
       { cap: '遥测 · 永远' },
     ],
@@ -85,9 +86,10 @@ const copy = {
     deviceComment: '# 14.2 gb · 本地 → ssh',
     deviceSrc: '來源',
     deviceDst: '目的',
-    deviceRate: '速率',
-    deviceEta: '剩餘',
-    deviceHash: '校驗',
+    deviceHash: '雜湊',
+    deviceMode: '模式',
+    deviceModeVal: '可續傳',
+    deviceConn: '連線',
     deviceFootline: 'direct-tcp · 快速通道',
     ribbon: [
       { n: '01', t: 'blake3 串流校驗', d: '每個位元組寫入時都在兩端雜湊，--verify 升級為完整的兩遍重讀。' },
@@ -110,8 +112,8 @@ const copy = {
       { n: '06', t: 'json + tui',           d: '腳本裡用 --json，終端裡用 --tui。同一個二進位檔、同一套指令 —— 只是外殼不同。' },
     ],
     metrics: [
-      { cap: 'direct-tcp · 峰值' },
-      { cap: 'blake3 覆蓋率' },
+      { cap: '對比 rsync · 小檔' },
+      { cap: 'dedup · 最小塊' },
       { cap: '支援的平台數' },
       { cap: '遙測 · 永遠' },
     ],
@@ -129,22 +131,22 @@ const terminalScript: CmdLine[] = locale.code === 'zh' ? [
   { type: 'prompt', text: 'bcmr copy ./dataset user@node-04:/srv/' },
   { type: 'out',    text: '扫描源 …… 2,481 个文件 · 14.2 gb', pause: 200 },
   { type: 'out',    text: 'ssh 握手 …… ok', pause: 140 },
-  { type: 'out',    text: 'direct-tcp 快速通道 …… 已协商', pause: 180 },
-  { type: 'ok',     text: '完成 · 34.5s · 412 mb/s · 全部 blake3 已校验', pause: 260 },
+  { type: 'out',    text: 'direct-tcp 快速通道 …… 6 worker 已协商', pause: 180 },
+  { type: 'ok',     text: '完成 · 全部 blake3 已校验', pause: 260 },
   { type: 'blank' },
   { type: 'prompt', text: 'bcmr copy -C ./big.iso user@node-04:/iso/', pause: 320 },
   { type: 'out',    text: '发现未完成传输 —— 从第 4,298,571,264 字节恢复', pause: 180 },
-  { type: 'ok',     text: '完成 · 12.1s · 哈希匹配', pause: 160 },
+  { type: 'ok',     text: '完成 · 尾块已校验 · 哈希匹配', pause: 160 },
 ] : [
   { type: 'prompt', text: 'bcmr copy ./dataset user@node-04:/srv/' },
   { type: 'out',    text: '掃描來源 …… 2,481 個檔案 · 14.2 gb', pause: 200 },
   { type: 'out',    text: 'ssh 握手 …… ok', pause: 140 },
-  { type: 'out',    text: 'direct-tcp 快速通道 …… 已協商', pause: 180 },
-  { type: 'ok',     text: '完成 · 34.5s · 412 mb/s · 全部 blake3 已校驗', pause: 260 },
+  { type: 'out',    text: 'direct-tcp 快速通道 …… 6 worker 已協商', pause: 180 },
+  { type: 'ok',     text: '完成 · 全部 blake3 已校驗', pause: 260 },
   { type: 'blank' },
   { type: 'prompt', text: 'bcmr copy -C ./big.iso user@node-04:/iso/', pause: 320 },
   { type: 'out',    text: '發現未完成傳輸 —— 從第 4,298,571,264 位元組繼續', pause: 180 },
-  { type: 'ok',     text: '完成 · 12.1s · 雜湊相符', pause: 160 },
+  { type: 'ok',     text: '完成 · 尾塊已校驗 · 雜湊相符', pause: 160 },
 ];
 ---
 <DefaultLayout title={t.title} lang={locale.lang ?? locale.code}>
@@ -199,9 +201,9 @@ const terminalScript: CmdLine[] = locale.code === 'zh' ? [
             <div>{t.deviceSrc}  <b style="color: var(--c-paper-pure);">./dataset/</b></div>
             <div>{t.deviceDst} <b style="color: var(--c-paper-pure);">node-04:/srv/</b></div>
             <div style="margin: 10px 0; color: var(--c-steel-3);">────────────────</div>
-            <div>{t.deviceRate} <span style="color: var(--c-yellow);"><Tally client:visible to={412} duration={900} suffix=" mb/s" /></span></div>
-            <div>{t.deviceEta} <span style="color: var(--c-yellow);">00:00:12</span></div>
-            <div>{t.deviceHash} <span style="color: var(--c-blue-dim);">blake3</span> ok</div>
+            <div>{t.deviceHash} <span style="color: var(--c-blue-dim);">blake3</span> · {t.deviceTagVerified}</div>
+            <div>{t.deviceMode} <span style="color: var(--c-yellow);">{t.deviceModeVal}</span> · zstd-3</div>
+            <div>{t.deviceConn} direct-tcp · <span style="color: var(--c-yellow);"><Tally client:visible to={6} duration={700} /></span> worker</div>
             <div style="margin-top: 10px; background: var(--c-steel-9); height: 6px; position: relative; overflow: hidden;">
               <div style="position: absolute; inset: 0; right: 18%; background: var(--c-blue-dim);" />
             </div>
@@ -288,11 +290,11 @@ const terminalScript: CmdLine[] = locale.code === 'zh' ? [
     <section class="home-section home-metrics">
       <div class="metrics-strip">
         <div class="metric">
-          <div class="metric-num t-display"><Tally client:visible to={412} suffix=" mb/s" duration={1100} /></div>
+          <div class="metric-num t-display"><Tally client:visible to={2} suffix="×" duration={900} /></div>
           <div class="metric-cap t-small">{t.metrics[0].cap}</div>
         </div>
         <div class="metric">
-          <div class="metric-num t-display"><Tally client:visible to={100} suffix="%" duration={1000} /></div>
+          <div class="metric-num t-display"><Tally client:visible to={16} duration={1000} /><span style="font-size: 0.5em; vertical-align: super; margin-left: 6px;">mib</span></div>
           <div class="metric-cap t-small">{t.metrics[1].cap}</div>
         </div>
         <div class="metric">
@@ -300,7 +302,7 @@ const terminalScript: CmdLine[] = locale.code === 'zh' ? [
           <div class="metric-cap t-small">{t.metrics[2].cap}</div>
         </div>
         <div class="metric">
-          <div class="metric-num t-display"><Tally client:visible to={0} duration={600} /><span style="font-size: 0.5em; vertical-align: super; margin-left: 6px;">kb</span></div>
+          <div class="metric-num t-display"><Tally client:visible to={0} duration={600} /></div>
           <div class="metric-cap t-small">{t.metrics[3].cap}</div>
         </div>
       </div>

@@ -19,12 +19,12 @@ const terminalScript: CmdLine[] = [
   { type: 'prompt', text: 'bcmr copy ./dataset user@node-04:/srv/' },
   { type: 'out',    text: 'scanning …… 2,481 files · 14.2 gb', pause: 200 },
   { type: 'out',    text: 'handshake (ssh) …… ok', pause: 140 },
-  { type: 'out',    text: 'direct-tcp fast path …… negotiated', pause: 180 },
-  { type: 'ok',     text: 'complete · 34.5s · 412 mb/s · all blake3 verified', pause: 260 },
+  { type: 'out',    text: 'direct-tcp fast path …… 6 workers negotiated', pause: 180 },
+  { type: 'ok',     text: 'complete · all blake3 verified', pause: 260 },
   { type: 'blank' },
   { type: 'prompt', text: 'bcmr copy -C ./big.iso user@node-04:/iso/', pause: 320 },
   { type: 'out',    text: 'found partial — resuming from byte 4,298,571,264', pause: 180 },
-  { type: 'ok',     text: 'complete · 12.1s · hashes match', pause: 160 },
+  { type: 'ok',     text: 'complete · tail-block verified · hashes match', pause: 160 },
 ];
 
 const features = [
@@ -91,9 +91,9 @@ const features = [
             <div>src  <b style="color: var(--c-paper-pure);">./dataset/</b></div>
             <div>dst  <b style="color: var(--c-paper-pure);">node-04:/srv/</b></div>
             <div style="margin: 10px 0; color: var(--c-steel-3);">────────────────</div>
-            <div>rate <span style="color: var(--c-yellow);"><Tally client:visible to={412} duration={900} suffix=" mb/s" /></span></div>
-            <div>eta  <span style="color: var(--c-yellow);">00:00:12</span></div>
-            <div>hash <span style="color: var(--c-blue-dim);">blake3</span> ok</div>
+            <div>hash <span style="color: var(--c-blue-dim);">blake3</span> · verified</div>
+            <div>mode <span style="color: var(--c-yellow);">resumable</span> · zstd-3</div>
+            <div>conn direct-tcp · <span style="color: var(--c-yellow);"><Tally client:visible to={6} duration={700} /></span> worker</div>
             <div style="margin-top: 10px; background: var(--c-steel-9); height: 6px; position: relative; overflow: hidden;">
               <div style="position: absolute; inset: 0; right: 18%; background: var(--c-blue-dim);" />
             </div>
@@ -201,19 +201,19 @@ const features = [
     <section class="home-section home-metrics">
       <div class="metrics-strip">
         <div class="metric">
-          <div class="metric-num t-display"><Tally client:visible to={412} suffix=" mb/s" duration={1100} /></div>
-          <div class="metric-cap t-small">direct-tcp · peak</div>
+          <div class="metric-num t-display"><Tally client:visible to={2} suffix="×" duration={900} /></div>
+          <div class="metric-cap t-small">vs rsync · small files</div>
         </div>
         <div class="metric">
-          <div class="metric-num t-display"><Tally client:visible to={100} suffix="%" duration={1000} /></div>
-          <div class="metric-cap t-small">blake3 coverage</div>
+          <div class="metric-num t-display"><Tally client:visible to={16} duration={1000} /><span style="font-size: 0.5em; vertical-align: super; margin-left: 6px;">mib</span></div>
+          <div class="metric-cap t-small">dedup · min block</div>
         </div>
         <div class="metric">
           <div class="metric-num t-display"><Tally client:visible to={4} duration={800} /></div>
           <div class="metric-cap t-small">platforms supported</div>
         </div>
         <div class="metric">
-          <div class="metric-num t-display"><Tally client:visible to={0} duration={600} /><span style="font-size: 0.5em; vertical-align: super; margin-left: 6px;">kb</span></div>
+          <div class="metric-num t-display"><Tally client:visible to={0} duration={600} /></div>
           <div class="metric-cap t-small">telemetry · forever</div>
         </div>
       </div>

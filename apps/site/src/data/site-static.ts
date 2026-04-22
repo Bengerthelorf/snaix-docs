@@ -12,14 +12,11 @@ export const tickerStatic: string[] = [
   'zero telemetry',
 ];
 
+/* Fallback activity — only renders if the GitHub commits fetch fails at
+   build time. Keep generic so it reads as a placeholder, not a specific
+   claim about any product. */
 export const activity: ActivityRow[] = [
-  { time: '14:22', proj: 'bcmr',    kind: 'is-bcmr',    msg: 'release · blake3 10% faster on arm64' },
-  { time: '11:40', proj: 'pikpak',  kind: 'is-pikpak',  msg: 'docs <code>/cli/rm.md</code> · added --trash flag' },
-  { time: '09:12', proj: 'claudit', kind: 'is-claudit', msg: 'beta push · session replay now lossless' },
-  { time: 'yday',  proj: 'icon',    kind: 'is-icon',    msg: '20 new locales · pl / hu / cs / ro / uk + 15 more' },
-  { time: '2d',    proj: 'bcmr',    kind: 'is-bcmr',    msg: 'fix · <code>--resume</code> across sparse-file transfers' },
-  { time: '3d',    proj: 'pikpak',  kind: 'is-pikpak',  msg: 'tui · kitty graphics protocol re-enabled' },
-  { time: '4d',    proj: 'claudit', kind: 'is-claudit', msg: 'first stable schema · <code>session.v1.json</code>' },
+  { time: '—', proj: 'site', kind: 'is-site', msg: 'live feed unavailable · retry on next build' },
 ];
 
 export interface ProductPresentation {
