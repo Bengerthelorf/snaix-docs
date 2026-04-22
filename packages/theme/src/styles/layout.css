@@ -130,10 +130,73 @@
 }
 .mn-num { color: var(--red); }
 
-/* ── responsive: collapse topbar nav on narrow ── */
-@media (max-width: 980px) {
+/* burger hidden by default (desktop); gh-link inside nav list is desktop-hidden
+   so the row 1 github button is the canonical control at wide viewports. */
+.topbar-burger { display: none; }
+.topbar-link--gh { display: none; }
+
+/* ── responsive ── */
+/* mid sizes keep the horizontal rail but tighten padding. */
+@media (max-width: 980px) and (min-width: 721px) {
   .topbar { grid-template-columns: 1fr auto; height: auto; padding: 12px var(--page-pad); }
   .topbar-nav { grid-column: 1 / -1; padding: 10px 0 0; border-top: 1px solid var(--steel-3); margin-top: 12px; overflow-x: auto; }
   .topbar-link { padding: 6px 12px 6px 0; }
   .topbar-right { border-left: 0; padding-left: 0; margin-left: 0; }
+}
+
+/* narrow: swap the rail for a burger + dropdown panel. */
+@media (max-width: 720px) {
+  .topbar {
+    grid-template-columns: 1fr auto;
+    height: auto;
+    padding: 10px var(--page-pad);
+    position: relative;
+  }
+  .topbar-right { display: none; }
+  .topbar-burger {
+    display: inline-flex; flex-direction: column; justify-content: center; gap: 4px;
+    width: 34px; height: 34px;
+    border: 1px solid var(--ink);
+    background: transparent;
+    padding: 8px;
+    cursor: pointer;
+    color: var(--ink);
+  }
+  .topbar-burger span {
+    display: block;
+    width: 100%; height: 2px;
+    background: currentColor;
+    transition: transform var(--t-fast) var(--ease), opacity var(--t-fast);
+  }
+  .topbar-burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .topbar-burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+  .topbar-burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+  .topbar-nav {
+    position: absolute;
+    left: 0; right: 0; top: 100%;
+    grid-column: 1 / -1;
+    display: flex; flex-direction: column; align-items: stretch;
+    background: var(--paper);
+    border-bottom: 1px solid var(--ink);
+    padding: 6px 0;
+    max-height: 0; opacity: 0; overflow: hidden;
+    transition: max-height var(--t) var(--ease), opacity var(--t-fast);
+  }
+  .topbar[data-open] .topbar-nav {
+    max-height: 600px; opacity: 1;
+  }
+  .topbar-link {
+    padding: 12px var(--page-pad);
+    font-size: 15px;
+    border-top: 1px solid var(--steel-1);
+  }
+  .topbar-link:first-child { border-top: 0; }
+  .topbar-link.is-active::after {
+    left: var(--page-pad); right: auto;
+    bottom: auto; top: 50%; transform: translateY(-50%);
+    width: 3px; height: 18px;
+  }
+  .topbar-link--gh { display: flex; color: var(--steel-7); }
+  .topbar-brand { border-right: 0; padding-right: 0; margin-right: 0; }
 }

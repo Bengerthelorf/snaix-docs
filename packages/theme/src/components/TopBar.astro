@@ -35,7 +35,7 @@ const {
   nav = DEFAULT_NAV,
 } = Astro.props;
 ---
-<header class="topbar">
+<header class="topbar" data-topbar>
   <a href={portalHref} class="topbar-brand" title="back to snaix.homes">
     <svg class="topbar-logo" viewBox="0 0 40 40" aria-hidden="true">
       <slot name="logo">
@@ -48,7 +48,7 @@ const {
     <span class="topbar-wordmark">{brand}</span>
     {version && <span class="topbar-version">{version}</span>}
   </a>
-  <nav class="topbar-nav">
+  <nav class="topbar-nav" id="topbar-nav">
     {nav.map((n) => (
       <a
         href={n.external ? n.href : withBase(n.href)}
@@ -59,8 +59,19 @@ const {
         {n.label}
       </a>
     ))}
+    <a class="topbar-link topbar-link--gh" href={githubHref}>github↗︎</a>
   </nav>
   <div class="topbar-right">
     <a class="topbar-gh" href={githubHref}>github↗︎</a>
   </div>
+  <button
+    type="button"
+    class="topbar-burger"
+    aria-label="menu"
+    aria-controls="topbar-nav"
+    aria-expanded="false"
+    data-burger
+  >
+    <span /><span /><span />
+  </button>
 </header>

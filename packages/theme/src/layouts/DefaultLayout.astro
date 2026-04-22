@@ -100,5 +100,35 @@ const faviconHref = favicon ?? (productSlug ? `/icons/${productSlug}.svg` : '/ic
         else init();
       })();
     </script>
+    <script is:inline>
+      (() => {
+        const bind = () => {
+          document.querySelectorAll('[data-topbar]').forEach((bar) => {
+            const btn = bar.querySelector('[data-burger]');
+            if (!btn) return;
+            const close = () => {
+              bar.removeAttribute('data-open');
+              btn.setAttribute('aria-expanded', 'false');
+            };
+            const open = () => {
+              bar.setAttribute('data-open', '');
+              btn.setAttribute('aria-expanded', 'true');
+            };
+            btn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              bar.hasAttribute('data-open') ? close() : open();
+            });
+            document.addEventListener('click', (e) => {
+              if (bar.hasAttribute('data-open') && !bar.contains(e.target)) close();
+            });
+            document.addEventListener('keydown', (e) => {
+              if (e.key === 'Escape' && bar.hasAttribute('data-open')) close();
+            });
+          });
+        };
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
+        else bind();
+      })();
+    </script>
   </body>
 </html>
