@@ -386,9 +386,10 @@
   .ds-page { padding: 0 20px 80px; }
   .ds-primary-grid { grid-template-columns: 1fr; }
   .ds-steel-row { grid-template-columns: repeat(3, 1fr); }
-  .ds-motion-grid { grid-template-columns: 1fr; }
+  .ds-motion-grid { grid-template-columns: minmax(0, 1fr); }
   .ds-motion-cell--wide { grid-column: auto; }
-  .ds-motion-cell { border-right: 0; }
+  .ds-motion-cell { border-right: 0; min-width: 0; }
+  .ds-motion-cell .ds-motion-stage { overflow-wrap: anywhere; word-break: break-word; }
   .ds-panel-row { grid-template-columns: 1fr; }
   .ds-callout-row { grid-template-columns: 1fr; }
   .ds-shape-grid { grid-template-columns: 1fr; }

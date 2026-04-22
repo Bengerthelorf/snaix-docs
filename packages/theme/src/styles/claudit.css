@@ -391,8 +391,10 @@
 }
 
 @media (max-width: 980px) {
-  .cl-hero-grid { grid-template-columns: 1fr; }
-  .cl-dash-body { grid-template-columns: 1fr; }
+  .cl-hero-grid { grid-template-columns: minmax(0, 1fr); }
+  .cl-hero-left { min-width: 0; }
+  .cl-hero-left .cl-lede { max-width: 100%; }
+  .cl-dash-body { grid-template-columns: minmax(0, 1fr); }
   .cl-cell { border-right: 0; }
   .cl-cell.col-span-2 { grid-column: auto; }
   .cl-ribbon { grid-template-columns: 1fr 1fr; }

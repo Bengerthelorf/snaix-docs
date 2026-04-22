@@ -385,8 +385,10 @@
 }
 
 @media (max-width: 980px) {
-  .ic-hero-grid { grid-template-columns: 1fr; }
-  .ic-mac-body { grid-template-columns: 1fr; }
+  .ic-hero-grid { grid-template-columns: minmax(0, 1fr); }
+  .ic-hero-left { padding-right: 0; min-width: 0; }
+  .ic-hero-left .ic-lede { max-width: 100%; }
+  .ic-mac-body { grid-template-columns: minmax(0, 1fr); }
   .ic-sidebar { display: none; }
   .ic-gallery { grid-template-columns: repeat(5, 1fr); }
   .ic-ribbon { grid-template-columns: 1fr 1fr; }

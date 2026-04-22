@@ -38,7 +38,7 @@ const rendered = await Promise.all(
 {rendered.length === 0 ? (
   <p class="t-body" style="margin: 32px 0; color: var(--steel-7);">
     no releases published yet · check back later or visit the{' '}
-    <a href={`https://github.com/${repo}/releases`} class="link-u" target="_blank" rel="noopener">github releases page ↗</a>.
+    <a href={`https://github.com/${repo}/releases`} class="link-u" target="_blank" rel="noopener">github releases page ↗︎</a>.
   </p>
 ) : (
   <div class="log-list">
@@ -52,7 +52,7 @@ const rendered = await Promise.all(
           )}
           <div style="margin-top: 14px;">
             <a class="t-mono-sm" href={r.htmlUrl} target="_blank" rel="noopener" style="color: var(--steel-5);">
-              view on github ↗
+              view on github ↗︎
             </a>
           </div>
         </aside>

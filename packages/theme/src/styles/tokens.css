@@ -109,6 +109,7 @@ body {
   line-height: 1.45;
   -webkit-font-smoothing: antialiased;
   font-feature-settings: "ss01", "cv11";
+  font-variant-emoji: text;
   transition: background var(--t) var(--ease), color var(--t) var(--ease);
 }
 

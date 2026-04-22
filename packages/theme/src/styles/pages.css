@@ -347,15 +347,24 @@
 .credit-loc { font-family: var(--mono); font-size: 11px; color: var(--steel-5); margin-top: 4px; }
 
 @media (max-width: 980px) {
-  .cli-body { grid-template-columns: 1fr; }
+  .cli-body { grid-template-columns: minmax(0, 1fr); }
   .cli-sidebar { position: static; border-right: 0; border-bottom: 1px solid var(--ink); max-height: none; }
   .cli-main { padding-left: 0; }
-  .cmd-detail-grid { grid-template-columns: 1fr; }
-  .docs-layout { grid-template-columns: 1fr; }
+  .cmd-detail-grid { grid-template-columns: minmax(0, 1fr); }
+  .docs-layout { grid-template-columns: minmax(0, 1fr); }
   .docs-nav, .docs-toc { position: static; border: 0; padding: 0; }
   .install-options { grid-template-columns: 1fr 1fr; }
-  .log-entry { grid-template-columns: 1fr; gap: 12px; }
+  .log-entry { grid-template-columns: minmax(0, 1fr); gap: 12px; }
   .log-side { position: static; }
-  .manifesto-body { grid-template-columns: 1fr; }
+  .log-body { min-width: 0; overflow-wrap: anywhere; }
+  .log-body code, .log-body pre { word-break: break-all; white-space: pre-wrap; }
+  .manifesto-body { grid-template-columns: minmax(0, 1fr); }
   .credits-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 720px) {
+  .install-options { grid-template-columns: minmax(0, 1fr); }
+  .install-opt { border-right: 0; border-bottom: 1px solid var(--ink); }
+  .install-opt:last-child { border-bottom: 0; }
+  .install-opt-cmd { overflow-wrap: anywhere; }
 }
