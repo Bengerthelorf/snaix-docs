@@ -257,7 +257,10 @@ export default defineConfig({
         stats: {
           shippingTools: productPresentations.length,
           githubStars: totalStars,
-          locales: locales.length,
+          /* Only count locales with fully-translated UI (ui.sections). Other
+             entries are language labels for doc routes that may or may not
+             be present — showing 31 here would overstate coverage. */
+          locales: locales.filter((l) => l.ui?.sections).length,
           telemetry: manualStats.telemetry,
         },
         ticker,

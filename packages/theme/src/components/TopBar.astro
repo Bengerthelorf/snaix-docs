@@ -28,7 +28,7 @@ const DEFAULT_NAV: NavItem[] = [
 
 const {
   brand = 'bcmr',
-  version = 'v0.9.1',
+  version = '',
   current = 'home',
   portalHref = '/',
   githubHref = '#',
@@ -46,7 +46,7 @@ const {
       </slot>
     </svg>
     <span class="topbar-wordmark">{brand}</span>
-    <span class="topbar-version">{version}</span>
+    {version && <span class="topbar-version">{version}</span>}
   </a>
   <nav class="topbar-nav">
     {nav.map((n) => (
