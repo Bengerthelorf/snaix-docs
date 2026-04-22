@@ -1,5 +1,28 @@
 /* ── motion styles ── */
 
+/* Perf: skip painting + layout for sections that are off-screen.
+   auto keeps measured size stable once laid out; the 700px fallback
+   is a rough guess used only before first measure. Sections above the
+   fold (hero, masthead, topbar) are excluded. */
+.p-activity,
+.p-stats,
+.p-manifest,
+.p-foot,
+.pk-section,
+.pk-cta-full,
+.ic-section,
+.ic-cta-full,
+.cl-section,
+.cl-cta-full,
+.home-section,
+.home-cta,
+.log-list,
+.credits,
+.footer {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 700px;
+}
+
 /* typewriter cursor */
 .tw-cursor {
   display: inline-block;
