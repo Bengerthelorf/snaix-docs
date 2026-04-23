@@ -64,7 +64,7 @@ const copy = {
       { cap: '对比 rsync · 小文件' },
       { cap: 'dedup · 最小块' },
       { cap: '支持的平台数' },
-      { cap: '遥测 · 永远' },
+      { cap: '每个分块 · 已哈希' },
     ],
     sec4: '§ 04 · 开始',
     sec4Headline: ['一个动词。', '已校验。', '可续传。'],
@@ -115,7 +115,7 @@ const copy = {
       { cap: '對比 rsync · 小檔' },
       { cap: 'dedup · 最小塊' },
       { cap: '支援的平台數' },
-      { cap: '遙測 · 永遠' },
+      { cap: '每個區塊 · 已雜湊' },
     ],
     sec4: '§ 04 · 開始',
     sec4Headline: ['一個動詞。', '已校驗。', '可續傳。'],
@@ -302,7 +302,7 @@ const terminalScript: CmdLine[] = locale.code === 'zh' ? [
           <div class="metric-cap t-small">{t.metrics[2].cap}</div>
         </div>
         <div class="metric">
-          <div class="metric-num t-display"><Tally client:visible to={0} duration={600} /></div>
+          <div class="metric-num t-display">blake3</div>
           <div class="metric-cap t-small">{t.metrics[3].cap}</div>
         </div>
       </div>

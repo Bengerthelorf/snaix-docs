@@ -27,7 +27,7 @@ const copy = {
     ledeLink: 'macosicons.com',
     ledeMid: ' 上精选的数千个图标变体，从你自己的 ',
     ledeCodeIcns: '.icns',
-    ledeMid2: ' 文件里挑，或者扔一张 png。dock 实时刷新。每个应用可一键还原。不用重启、不改系统、完全沙盒化。',
+    ledeMid2: ' 文件里挑，或者扔一张 png。dock 实时刷新。每个应用可一键还原。不改系统、完全沙盒化。',
     cta: '↳ 下载 macOS 版',
     ctaGhost: '了解更多',
     cmdMeta: '需要 macOS 13+',
@@ -35,7 +35,7 @@ const copy = {
       { t: 'macosicons.com', d: '直接浏览社区图标库。搜索、筛选、预览。' },
       { t: '实时 dock', d: '换之前就能在真实 dock 里看效果 —— 不是示意图。' },
       { t: '按应用还原', d: '每个更改都可撤销。任意应用一键恢复默认。' },
-      { t: '沙盒化', d: '已签名、已公证、沙盒化。不改系统、不重启、不用 SIP 技巧。' },
+      { t: '沙盒化', d: '已签名、已公证、沙盒化。不改系统、不用 SIP 技巧。' },
     ],
     sec2: '§ 02 · 特性',
     sec2Title: ['它', '做什么。'],
@@ -60,7 +60,7 @@ const copy = {
       { cap: 'appkit · 原生' },
       { cap: '来源 · 格式' },
       { cap: '最低 · 签名 · 公证' },
-      { cap: '重启需求' },
+      { cap: 'dock · 预览' },
     ],
     sec4: '§ 04 · 安装',
     sec4Headline: ['你的 dock。', '你说了算。'],
@@ -79,7 +79,7 @@ const copy = {
     ledeLink: 'macosicons.com',
     ledeMid: ' 上精選的數千個圖示變體，從你自己的 ',
     ledeCodeIcns: '.icns',
-    ledeMid2: ' 檔案裡挑，或者丟一張 png。dock 即時重新整理。每個應用可一鍵還原。不必重啟、不改系統、完全沙箱化。',
+    ledeMid2: ' 檔案裡挑，或者丟一張 png。dock 即時重新整理。每個應用可一鍵還原。不改系統、完全沙箱化。',
     cta: '↳ 下載 macOS 版',
     ctaGhost: '了解更多',
     cmdMeta: '需要 macOS 13+',
@@ -87,7 +87,7 @@ const copy = {
       { t: 'macosicons.com', d: '直接瀏覽社群圖示庫。搜尋、篩選、預覽。' },
       { t: '即時 dock', d: '提交前就能在真實 dock 裡看效果 —— 不是示意圖。' },
       { t: '按應用還原', d: '每次更改都可撤銷。任何應用一鍵恢復預設。' },
-      { t: '沙箱化', d: '已簽署、已公證、沙箱化。不改系統、不重啟、不用 SIP 技巧。' },
+      { t: '沙箱化', d: '已簽署、已公證、沙箱化。不改系統、不用 SIP 技巧。' },
     ],
     sec2: '§ 02 · 特性',
     sec2Title: ['它', '做什麼。'],
@@ -112,7 +112,7 @@ const copy = {
       { cap: 'appkit · 原生' },
       { cap: '來源 · 格式' },
       { cap: '最低 · 簽署 · 公證' },
-      { cap: '重啟需求' },
+      { cap: 'dock · 預覽' },
     ],
     sec4: '§ 04 · 安裝',
     sec4Headline: ['你的 dock。', '你說了算。'],
@@ -257,7 +257,7 @@ const nav = [
           <div class="c">{t.metrics[2].cap}</div>
         </div>
         <div class="ic-metric">
-          <div class="n"><Tally client:visible to={0} duration={600} /></div>
+          <div class="n">live</div>
           <div class="c">{t.metrics[3].cap}</div>
         </div>
       </div>
