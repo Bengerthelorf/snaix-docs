@@ -5,6 +5,8 @@ import {
   DEFAULT_LOCALE,
   docsBaseFor,
   navFor,
+  pagerFor,
+  pagerLabelsFor,
 } from '../../../lib/docs.ts';
 import { product } from '../../../lib/product.ts';
 import { mdxComponents } from '@snaix/docs-theme/mdx-components';
@@ -32,6 +34,8 @@ const toc = headings
 
 const bare = entry.slug.replace(/^ablation\/?/, '') || 'index';
 const docsLabel = DEFAULT_LOCALE.ui?.docsLabel ?? 'docs';
+const pager = pagerFor(nav, bare);
+const pagerLabels = pagerLabelsFor(DEFAULT_LOCALE);
 ---
 <DocsLayout
   product={bcmrProduct}
@@ -55,6 +59,8 @@ const docsLabel = DEFAULT_LOCALE.ui?.docsLabel ?? 'docs';
   mermaid={true}
   topNav={bcmrProduct.nav()}
   currentTab="internals"
+  pager={pager}
+  pagerLabels={pagerLabels}
 >
   <Content components={mdxComponents} />
 </DocsLayout>

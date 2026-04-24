@@ -18,6 +18,8 @@ export interface LocaleUI {
   tocLabel?: string;
   sections?: Record<string, string>;
   docsLabel?: string;
+  pagerPrev?: string;
+  pagerNext?: string;
 }
 
 export interface TopNavTab {

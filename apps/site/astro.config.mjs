@@ -208,11 +208,11 @@ const iconchangerProduct = {
 
 const locales = [
         { code: 'en',      label: 'English',         default: true,
-          ui: { tocLabel: 'on this page',   sections: { guide: 'guide',    cli: 'cli', internals: 'internals' } } },
+          ui: { tocLabel: 'on this page',   sections: { guide: 'guide',    cli: 'cli', internals: 'internals' }, pagerPrev: 'previous', pagerNext: 'next' } },
         { code: 'zh',      label: '简体中文',
-          ui: { tocLabel: '本页内容',       sections: { guide: '指南',     cli: 'CLI', internals: '技术内幕' } } },
+          ui: { tocLabel: '本页内容',       sections: { guide: '指南',     cli: 'CLI', internals: '技术内幕' }, pagerPrev: '上一页', pagerNext: '下一页' } },
         { code: 'zh-Hant', label: '正體中文',         lang: 'zh-Hant',
-          ui: { tocLabel: '本頁內容',       sections: { guide: '指南',     cli: 'CLI', internals: '技術內幕' } } },
+          ui: { tocLabel: '本頁內容',       sections: { guide: '指南',     cli: 'CLI', internals: '技術內幕' }, pagerPrev: '上一頁', pagerNext: '下一頁' } },
         { code: 'zh-HK',   label: '繁體中文 · 香港',   lang: 'zh-HK' },
         { code: 'ja',      label: '日本語',           lang: 'ja' },
         { code: 'ko',      label: '한국어',           lang: 'ko' },

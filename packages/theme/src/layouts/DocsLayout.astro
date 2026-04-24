@@ -51,6 +51,7 @@ interface Props {
   topNav?: { id: string; label: string; href: string; external?: boolean }[];
   currentTab?: string;
   pager?: { prev?: PagerLink; next?: PagerLink };
+  pagerLabels?: { prev: string; next: string };
 }
 
 const {
@@ -73,6 +74,7 @@ const {
   topNav,
   currentTab = 'docs',
   pager,
+  pagerLabels = { prev: 'previous', next: 'next' },
 } = Astro.props;
 
 function itemHref(item: NavItem) {
@@ -131,17 +133,17 @@ function itemHref(item: NavItem) {
 
         <slot />
 
-        {pager && (
+        {pager && (pager.prev || pager.next) && (
           <div class="docs-pager">
             {pager.prev ? (
               <a href={pager.prev.href} class="is-prev">
-                <div class="pager-label">← previous</div>
+                <div class="pager-label">← {pagerLabels.prev}</div>
                 <div class="pager-title">{pager.prev.title}</div>
               </a>
             ) : <span />}
             {pager.next ? (
               <a href={pager.next.href} class="is-next">
-                <div class="pager-label">next →</div>
+                <div class="pager-label">{pagerLabels.next} →</div>
                 <div class="pager-title">{pager.next.title}</div>
               </a>
             ) : <span />}

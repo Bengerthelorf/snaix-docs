@@ -230,9 +230,10 @@
   transition: background var(--t-fast), color var(--t-fast);
 }
 .docs-pager a:hover { background: var(--ink); color: var(--paper-pure); }
+.docs-pager a:hover .pager-label { color: var(--paper-pure); }
 .docs-pager .pager-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--steel-5); }
 .docs-pager .pager-title { font-size: 18px; font-weight: 600; margin-top: 4px; }
-.docs-pager .is-next { text-align: right; }
+.docs-pager .is-next { text-align: right; grid-column: 2; }
 
 .docs-table-wrap { margin: 18px 0 22px; border: 1px solid var(--ink); background: var(--paper-pure); overflow-x: auto; }
 .docs-table { width: 100%; border-collapse: collapse; font-size: 13px; }

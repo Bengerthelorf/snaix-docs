@@ -8,6 +8,8 @@ import {
   docsBaseFor,
   isDefaultLocaleEntry,
   navFor,
+  pagerFor,
+  pagerLabelsFor,
 } from '../../../lib/docs.ts';
 import { product } from '../../../lib/product.ts';
 import { mdxComponents } from '@snaix/docs-theme/mdx-components';
@@ -37,6 +39,8 @@ const bare = bareSlug(entry.slug);
 const sectionKey = entry.data.section ?? 'guide';
 const sectionLabel = DEFAULT_LOCALE.ui?.sections?.[sectionKey] ?? sectionKey;
 const docsLabel = DEFAULT_LOCALE.ui?.docsLabel ?? 'docs';
+const pager = pagerFor(nav, bare);
+const pagerLabels = pagerLabelsFor(DEFAULT_LOCALE);
 ---
 <DocsLayout
   product={iconchanger}
@@ -58,6 +62,8 @@ const docsLabel = DEFAULT_LOCALE.ui?.docsLabel ?? 'docs';
   tocLabel={DEFAULT_LOCALE.ui?.tocLabel ?? 'on this page'}
   topNav={iconchanger.nav()}
   currentTab={sectionKey === 'cli' ? 'commands' : 'docs'}
+  pager={pager}
+  pagerLabels={pagerLabels}
 >
   <Content components={mdxComponents} />
 </DocsLayout>
