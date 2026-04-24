@@ -8,6 +8,7 @@ import MermaidLoader from '../components/MermaidLoader.astro';
 import type { LangOption } from '../components/LangSwitcher.astro';
 import { withBase } from '../utils/href.ts';
 import type { ProductIntegration } from '@snaix/docs';
+import { pagerLabelsFor, type LocaleOption } from '@snaix/docs/docs-nav';
 
 interface NavItem {
   slug: string;
@@ -45,7 +46,7 @@ interface Props {
   mermaid?: boolean;
   topNav?: { id: string; label: string; href: string; external?: boolean }[];
   currentTab?: string;
-  pagerLabels?: { prev: string; next: string };
+  pagerLocale?: LocaleOption;
 }
 
 const {
@@ -67,8 +68,10 @@ const {
   mermaid = false,
   topNav,
   currentTab = 'docs',
-  pagerLabels,
+  pagerLocale,
 } = Astro.props;
+
+const pagerLabels = pagerLocale ? pagerLabelsFor(pagerLocale) : undefined;
 
 function itemHref(item: NavItem) {
   if (item.href) return withBase(item.href);

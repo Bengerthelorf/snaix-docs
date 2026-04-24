@@ -121,7 +121,14 @@ const ogDescription = description ?? 'small tools, big years. four open-source t
     <script is:inline>
       (() => {
         const bars = [];
+        document.addEventListener('keydown', (e) => {
+          if (e.key !== 'Escape') return;
+          bars.forEach(({ bar, close }) => {
+            if (bar.hasAttribute('data-open')) close();
+          });
+        });
         const bind = () => {
+          bars.length = 0;
           document.querySelectorAll('[data-topbar]').forEach((bar) => {
             const btn = bar.querySelector('[data-burger]');
             const drawer = bar.querySelector('[data-drawer]');
@@ -150,12 +157,6 @@ const ogDescription = description ?? 'small tools, big years. four open-source t
               if (e.target.closest('a')) close();
             });
             bars.push({ bar, close });
-          });
-          document.addEventListener('keydown', (e) => {
-            if (e.key !== 'Escape') return;
-            bars.forEach(({ bar, close }) => {
-              if (bar.hasAttribute('data-open')) close();
-            });
           });
         };
         if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);

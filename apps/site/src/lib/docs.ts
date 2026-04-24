@@ -58,10 +58,4 @@ export function docsBaseFor(locale: LocaleOption, root: string): string {
   return `${localePrefix(locale, LOCALES)}${root}`;
 }
 
-export function pagerLabelsFor(locale: LocaleOption) {
-  const { pagerPrev, pagerNext } = locale.ui ?? {};
-  if (!pagerPrev || !pagerNext) return undefined;
-  return { prev: pagerPrev, next: pagerNext };
-}
-
 export { slugPrefix, localePrefix };

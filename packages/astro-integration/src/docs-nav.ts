@@ -12,6 +12,12 @@ export interface DocEntryLike {
   };
 }
 
+export function pagerLabelsFor(locale: LocaleOption) {
+  const { pagerPrev, pagerNext } = locale.ui ?? {};
+  if (!pagerPrev || !pagerNext) return undefined;
+  return { prev: pagerPrev, next: pagerNext };
+}
+
 export interface NavItem {
   slug: string;
   title: string;

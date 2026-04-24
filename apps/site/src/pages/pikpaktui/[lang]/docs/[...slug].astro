@@ -8,7 +8,6 @@ import {
   bareSlug,
   docsBaseFor,
   navFor,
-  pagerLabelsFor,
   resolveLocale,
   slugPrefix,
 } from '../../../../lib/docs.ts';
@@ -51,7 +50,6 @@ const bare = bareSlug(entry.slug);
 const sectionKey = entry.data.section ?? 'guide';
 const sectionLabel = locale.ui?.sections?.[sectionKey] ?? sectionKey;
 const docsLabel = locale.ui?.docsLabel ?? 'docs';
-const pagerLabels = pagerLabelsFor(locale);
 ---
 <DocsLayout
   product={pikpaktui}
@@ -73,7 +71,7 @@ const pagerLabels = pagerLabelsFor(locale);
   tocLabel={locale.ui?.tocLabel ?? 'on this page'}
   topNav={pikpaktui.nav()}
   currentTab="docs"
-  pagerLabels={pagerLabels}
+  pagerLocale={locale}
 >
   <Content components={mdxComponents} />
 </DocsLayout>
