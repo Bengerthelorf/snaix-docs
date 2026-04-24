@@ -143,10 +143,9 @@
 }
 .mn-num { color: var(--red); }
 
-/* burger hidden by default (desktop); gh-link inside nav list is desktop-hidden
-   so the row 1 github button is the canonical control at wide viewports. */
+/* burger + drawer are hidden on desktop; the horizontal rail is the canonical nav. */
 .topbar-burger { display: none; }
-.topbar-link--gh { display: none; }
+.mobile-drawer { display: none; }
 
 /* ── responsive ── */
 /* mid sizes keep the horizontal rail but tighten padding. */
@@ -157,59 +156,121 @@
   .topbar-right { border-left: 0; padding-left: 0; margin-left: 0; }
 }
 
-/* narrow: swap the rail for a burger + dropdown panel. */
+/* narrow: swap the rail for a burger + full-height drawer. */
 @media (max-width: 720px) {
   .topbar {
     grid-template-columns: 1fr auto;
-    height: auto;
-    padding: 10px var(--page-pad);
-    position: relative;
+    height: 64px;
+    padding: 0 var(--page-pad);
+    align-items: center;
   }
-  .topbar-right { display: none; }
-  .topbar-burger {
-    display: inline-flex; flex-direction: column; justify-content: center; gap: 4px;
-    width: 34px; height: 34px;
-    border: 1px solid var(--ink);
-    background: transparent;
-    padding: 8px;
-    cursor: pointer;
-    color: var(--ink);
-  }
-  .topbar-burger span {
-    display: block;
-    width: 100%; height: 2px;
-    background: currentColor;
-    transition: transform var(--t-fast) var(--ease), opacity var(--t-fast);
-  }
-  .topbar-burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
-  .topbar-burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
-  .topbar-burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
-
-  .topbar-nav {
-    position: absolute;
-    left: 0; right: 0; top: 100%;
-    grid-column: 1 / -1;
-    display: flex; flex-direction: column; align-items: stretch;
-    background: var(--paper);
-    border-bottom: 1px solid var(--ink);
-    padding: 6px 0;
-    max-height: 0; opacity: 0; overflow: hidden;
-    transition: max-height var(--t) var(--ease), opacity var(--t-fast);
-  }
-  .topbar[data-open] .topbar-nav {
-    max-height: 600px; opacity: 1;
-  }
-  .topbar-link {
-    padding: 12px var(--page-pad);
-    font-size: 15px;
-    border-top: 1px solid var(--steel-1);
-  }
-  .topbar-link:first-child { border-top: 0; }
-  .topbar-link.is-active::after {
-    left: var(--page-pad); right: auto;
-    bottom: auto; top: 50%; transform: translateY(-50%);
-    width: 3px; height: 18px;
-  }
-  .topbar-link--gh { display: flex; color: var(--steel-7); }
   .topbar-brand { border-right: 0; padding-right: 0; margin-right: 0; }
+  .topbar-nav { display: none; }
+  .topbar-right { display: none; }
+
+  .topbar-burger {
+    display: block;
+    width: 48px; height: 48px;
+    background: transparent;
+    border: 1px solid var(--ink);
+    cursor: pointer;
+    position: relative;
+    padding: 0;
+    justify-self: end;
+    transition: background var(--t-fast);
+  }
+  .topbar-burger:hover { background: var(--paper-pure); }
+  .topbar-burger[aria-expanded="true"] { background: var(--ink); }
+  .burger-bar {
+    position: absolute; left: 10px; right: 10px;
+    height: 2px; background: var(--ink);
+    transition: transform var(--t-med) var(--ease), opacity var(--t-fast), top var(--t-med) var(--ease), background var(--t-fast);
+  }
+  .burger-bar.b1 { top: 15px; }
+  .burger-bar.b2 { top: 23px; }
+  .burger-bar.b3 { top: 31px; }
+  .topbar-burger[aria-expanded="true"] .burger-bar { background: var(--paper-pure); }
+  .topbar-burger[aria-expanded="true"] .burger-bar.b1 { top: 23px; transform: rotate(45deg); }
+  .topbar-burger[aria-expanded="true"] .burger-bar.b2 { opacity: 0; }
+  .topbar-burger[aria-expanded="true"] .burger-bar.b3 { top: 23px; transform: rotate(-45deg); }
+
+  .mobile-drawer {
+    display: block;
+    position: fixed;
+    inset: 64px 0 0 0;
+    background: var(--paper);
+    border-top: 1px solid var(--ink);
+    z-index: 49;
+    pointer-events: none;
+    visibility: hidden;
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path 360ms cubic-bezier(.2,.7,.1,1), visibility 0s linear 360ms;
+    overflow: hidden;
+  }
+  .mobile-drawer.is-open {
+    pointer-events: auto;
+    visibility: visible;
+    clip-path: inset(0 0 0 0);
+    transition: clip-path 360ms cubic-bezier(.2,.7,.1,1), visibility 0s linear 0s;
+  }
+  .mobile-drawer-inner {
+    height: 100%;
+    padding: 24px var(--page-pad) 32px;
+    display: flex; flex-direction: column;
+    overflow-y: auto;
+  }
+  .mobile-drawer-head { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+  .mobile-drawer-rule { height: 1px; background: var(--ink); }
+  .mobile-nav { display: flex; flex-direction: column; }
+  .mobile-nav-link {
+    display: grid;
+    grid-template-columns: 40px 1fr auto;
+    align-items: baseline;
+    padding: 16px 4px;
+    border-bottom: 1px solid var(--steel-3);
+    font-size: 19px;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 320ms ease var(--mn-delay, 0ms),
+                transform 320ms cubic-bezier(.2,.7,.1,1) var(--mn-delay, 0ms),
+                color var(--t-fast);
+  }
+  .mobile-drawer.is-open .mobile-nav-link { opacity: 1; transform: translateY(0); }
+  .mobile-nav-link:hover,
+  .mobile-nav-link.is-active { color: var(--red); }
+  .mobile-nav-num {
+    font-family: var(--mono); font-size: 11px;
+    color: var(--steel-5);
+    letter-spacing: 0.1em;
+  }
+  .mobile-nav-link.is-active .mobile-nav-num { color: var(--red); }
+  .mobile-nav-label { font-weight: 500; }
+  .mobile-nav-arrow {
+    font-family: var(--mono); font-size: 16px;
+    color: var(--steel-5);
+    transform: translateX(-4px);
+    transition: transform var(--t-fast), color var(--t-fast);
+  }
+  .mobile-nav-link:hover .mobile-nav-arrow { transform: translateX(0); color: var(--red); }
+  .mobile-drawer-foot {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--ink);
+    display: flex; align-items: center; justify-content: flex-end;
+    gap: 16px;
+  }
+  .mobile-drawer-marks {
+    display: flex; gap: 10px;
+    margin-top: 32px;
+  }
+  .mobile-drawer-marks .mk { width: 14px; height: 14px; display: block; }
+  .mobile-drawer-marks .mk-tr {
+    width: 0; height: 0;
+    background: transparent;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 12px solid var(--blue);
+  }
 }

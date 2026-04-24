@@ -59,7 +59,6 @@ const {
         {n.label}
       </a>
     ))}
-    <a class="topbar-link topbar-link--gh" href={githubHref}>github↗︎</a>
   </nav>
   <div class="topbar-right">
     <a class="topbar-gh" href={githubHref}>github↗︎</a>
@@ -68,10 +67,42 @@ const {
     type="button"
     class="topbar-burger"
     aria-label="menu"
-    aria-controls="topbar-nav"
+    aria-controls="mobile-drawer"
     aria-expanded="false"
     data-burger
   >
-    <span /><span /><span />
+    <span class="burger-bar b1" /><span class="burger-bar b2" /><span class="burger-bar b3" />
   </button>
+
+  <div id="mobile-drawer" class="mobile-drawer" aria-hidden="true" data-drawer>
+    <div class="mobile-drawer-inner">
+      <div class="mobile-drawer-head">
+        <div class="t-small" style="color: var(--steel-5);">navigate</div>
+        <div class="mobile-drawer-rule" />
+      </div>
+      <nav class="mobile-nav">
+        {nav.map((n, i) => (
+          <a
+            href={n.external ? n.href : withBase(n.href)}
+            target={n.external ? '_blank' : undefined}
+            rel={n.external ? 'noopener' : undefined}
+            class:list={['mobile-nav-link', { 'is-active': current === n.id }]}
+            style={`--mn-delay: ${80 + i * 40}ms`}
+          >
+            <span class="mobile-nav-num">{String(i + 1).padStart(2, '0')}</span>
+            <span class="mobile-nav-label">{n.label}</span>
+            <span class="mobile-nav-arrow">→</span>
+          </a>
+        ))}
+      </nav>
+      <div class="mobile-drawer-foot">
+        <a class="topbar-gh" href={githubHref}>github↗︎</a>
+      </div>
+      <div class="mobile-drawer-marks" aria-hidden="true">
+        <span class="mk" style="background: var(--red);" />
+        <span class="mk" style="background: var(--yellow); border-radius: 50%;" />
+        <span class="mk mk-tr" />
+      </div>
+    </div>
+  </div>
 </header>

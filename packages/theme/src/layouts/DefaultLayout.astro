@@ -123,21 +123,30 @@ const ogDescription = description ?? 'small tools, big years. four open-source t
         const bind = () => {
           document.querySelectorAll('[data-topbar]').forEach((bar) => {
             const btn = bar.querySelector('[data-burger]');
-            if (!btn) return;
+            const drawer = bar.querySelector('[data-drawer]');
+            if (!btn || !drawer) return;
+            let prevOverflow = '';
             const close = () => {
               bar.removeAttribute('data-open');
+              drawer.classList.remove('is-open');
+              drawer.setAttribute('aria-hidden', 'true');
               btn.setAttribute('aria-expanded', 'false');
+              document.body.style.overflow = prevOverflow;
             };
             const open = () => {
               bar.setAttribute('data-open', '');
+              drawer.classList.add('is-open');
+              drawer.setAttribute('aria-hidden', 'false');
               btn.setAttribute('aria-expanded', 'true');
+              prevOverflow = document.body.style.overflow;
+              document.body.style.overflow = 'hidden';
             };
             btn.addEventListener('click', (e) => {
               e.stopPropagation();
               bar.hasAttribute('data-open') ? close() : open();
             });
-            document.addEventListener('click', (e) => {
-              if (bar.hasAttribute('data-open') && !bar.contains(e.target)) close();
+            drawer.addEventListener('click', (e) => {
+              if (e.target.closest('a')) close();
             });
             document.addEventListener('keydown', (e) => {
               if (e.key === 'Escape' && bar.hasAttribute('data-open')) close();
