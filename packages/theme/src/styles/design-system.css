@@ -540,8 +540,12 @@
   .ds-manifesto-mark .m-tr { border-left-width: 20px; border-right-width: 20px; border-bottom-width: 40px; }
   .ds-manifesto-mark .m-ci { width: 44px; height: 44px; }
   .ds-manifesto-lead { font-size: 22px !important; }
-  .ds-ref-grid { grid-template-columns: 1fr; }
+  .ds-ref-grid { grid-template-columns: repeat(2, 1fr); }
   .ds-voice-grid { grid-template-columns: 1fr; }
   .ds-anti { grid-template-columns: 1fr; gap: 0; }
   .ds-prov-row { grid-template-columns: 1fr; gap: 4px; padding: 14px 0; }
+}
+
+@media (max-width: 600px) {
+  .ds-ref-grid { grid-template-columns: 1fr; }
 }
