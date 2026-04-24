@@ -184,7 +184,7 @@
   .burger-bar {
     position: absolute; left: 10px; right: 10px;
     height: 2px; background: var(--ink);
-    transition: transform var(--t-med) var(--ease), opacity var(--t-fast), top var(--t-med) var(--ease), background var(--t-fast);
+    transition: transform var(--t) var(--ease), opacity var(--t-fast), top var(--t) var(--ease), background var(--t-fast);
   }
   .burger-bar.b1 { top: 15px; }
   .burger-bar.b2 { top: 23px; }
