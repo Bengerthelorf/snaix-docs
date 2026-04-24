@@ -66,8 +66,59 @@ const principles = [
 ];
 
 const navLinks = [
+  ['#s0', 'philosophy'],
   ['#s1', 'colors'], ['#s2', 'type'], ['#s3', 'motion'],
   ['#s4', 'components'], ['#s5', 'shapes'], ['#s6', 'files'], ['#s7', 'principles'],
+];
+
+const lineage = [
+  {
+    id: 'bauhaus',
+    era: '1919–1933 · dessau',
+    title: 'bauhaus',
+    body: "form follows function. red square, yellow triangle, blue circle — kandinsky's primitive-to-color mapping lives at the root of this system.",
+  },
+  {
+    id: 'swiss',
+    era: '1950s · zürich · basel',
+    title: 'swiss typographic style',
+    body: 'müller-brockmann grids, asymmetric composition, sans-serif, objective photography. information as a designed object — never decorated.',
+  },
+  {
+    id: 'constructivism',
+    era: '1915–1930s · moscow',
+    title: 'russian constructivism',
+    body: 'rodchenko, lissitzky, stepanova. diagonals, bold type as image, red-black-white propaganda mechanics. the portal page owes everything to this.',
+  },
+  {
+    id: 'terminal',
+    era: 'always · command line',
+    title: 'unix & the terminal',
+    body: 'commands stream. hashes truncate. timestamps flush right. the site speaks the same dialect as the tools it documents.',
+  },
+  {
+    id: 'prete',
+    era: '2024 · chenglou',
+    title: 'prete / popmotion',
+    body: 'motion that respects the reader. text animates once, on reveal, then rests. no endless loops, no distraction.',
+  },
+  {
+    id: 'jan',
+    era: '1928 · leipzig',
+    title: 'jan tschichold · die neue typographie',
+    body: 'asymmetric layouts. strong horizontals. economy of ink. rules over decoration — the grid is earned, not applied.',
+  },
+];
+
+const antiPatterns = [
+  'emoji as ornament (🚀 ✨ 🔥) — shapes and type carry the signal',
+  'purple-to-pink gradient backgrounds — this system has none',
+  'left-border colored callouts with rounded corners (the ai-slop tell)',
+  'inter, roboto, system-ui — beige by default, chosen by no one',
+  'glassmorphism, neumorphism, any -ism borrowed from 2020 dribbble',
+  'mid-title capitalization — lowercase until a proper noun demands otherwise',
+  'drop shadows as depth — paper has weight through position and border, not blur',
+  "stock illustrations, 3d blobs, isometric people — we don't have a mascot",
 ];
 ---
 <DefaultLayout title="snaix · design language">
@@ -98,6 +149,174 @@ const navLinks = [
         <div class="s1" /><div class="s2" /><div class="s3" />
       </div>
     </header>
+
+    <section id="s0" class="ds-section">
+      <header class="ds-section-head">
+        <span class="ds-n t-mono-sm">§ 00</span>
+        <h2 class="ds-title t-h1 lower">philosophy</h2>
+      </header>
+
+      <div class="ds-manifesto">
+        <div class="ds-manifesto-mark" aria-hidden="true">
+          <div class="m-sq" />
+          <div class="m-tr" />
+          <div class="m-ci" />
+        </div>
+        <div class="ds-manifesto-body">
+          <p class="ds-manifesto-lead">
+            a tool should feel <b>designed</b>, not <b>decorated</b>.
+          </p>
+          <p>
+            snaix.homes is four tightly-coupled tools with a shared face. the design is
+            built to make that face legible at a glance: you should know which tool you
+            are reading about in under a second, and you should never feel the site
+            trying to sell it to you.
+          </p>
+          <p>
+            the rules below are not a style guide. they are decisions already made,
+            written down so i do not re-litigate them on every new page.
+          </p>
+        </div>
+      </div>
+
+      <h3 class="ds-h3">lineage · what we are looking at</h3>
+      <p class="ds-lead" style="margin-bottom: 24px;">
+        honest about what i stole. six influences, one shared grammar — geometric
+        primitives, an opinion about the grid, and a respect for the reader's time.
+      </p>
+      <div class="ds-ref-grid">
+        {lineage.map((r) => (
+          <article class="ds-ref">
+            <div class="ds-ref-art">
+              {r.id === 'bauhaus' && (
+                <svg viewBox="0 0 120 80" preserveAspectRatio="xMidYMid meet">
+                  <rect x="8" y="12" width="40" height="40" fill="var(--red)" />
+                  <circle cx="78" cy="32" r="22" fill="var(--blue)" />
+                  <polygon points="64,68 88,24 112,68" fill="var(--yellow)" />
+                </svg>
+              )}
+              {r.id === 'swiss' && (
+                <svg viewBox="0 0 120 80" preserveAspectRatio="xMidYMid meet">
+                  {[0, 1, 2, 3, 4, 5].map((i) => (
+                    <line x1={8 + i * 20} y1={8} x2={8 + i * 20} y2={72} stroke="var(--border)" stroke-width="0.5" />
+                  ))}
+                  <rect x="8" y="12" width="60" height="4" fill="var(--ink)" />
+                  <rect x="8" y="22" width="40" height="2" fill="var(--ink)" />
+                  <rect x="8" y="28" width="48" height="2" fill="var(--ink)" />
+                  <rect x="8" y="48" width="30" height="2" fill="var(--fg-muted)" />
+                  <rect x="8" y="54" width="44" height="2" fill="var(--fg-muted)" />
+                  <rect x="8" y="60" width="24" height="2" fill="var(--fg-muted)" />
+                  <rect x="80" y="40" width="30" height="30" fill="var(--red)" />
+                </svg>
+              )}
+              {r.id === 'constructivism' && (
+                <svg viewBox="0 0 120 80" preserveAspectRatio="xMidYMid meet">
+                  <rect x="0" y="0" width="120" height="80" fill="var(--paper)" />
+                  <polygon points="0,80 120,0 120,30 0,80" fill="var(--red)" />
+                  <polygon points="20,80 80,20 80,35 35,80" fill="var(--ink)" />
+                  <circle cx="92" cy="22" r="10" fill="var(--yellow)" />
+                  <rect x="8" y="58" width="30" height="3" fill="var(--ink)" />
+                </svg>
+              )}
+              {r.id === 'terminal' && (
+                <svg viewBox="0 0 120 80" preserveAspectRatio="xMidYMid meet">
+                  <rect x="0" y="0" width="120" height="80" fill="var(--ink)" />
+                  <text x="8" y="22" font-family="var(--mono)" font-size="9" fill="var(--yellow)">$ bcmr send</text>
+                  <text x="8" y="36" font-family="var(--mono)" font-size="8" fill="#d8d4c8">scanning …</text>
+                  <text x="8" y="50" font-family="var(--mono)" font-size="8" fill="#d8d4c8">12.4 gib</text>
+                  <text x="8" y="64" font-family="var(--mono)" font-size="8" fill="var(--blue)">✓ verified</text>
+                  <rect x="62" y="16" width="5" height="8" fill="var(--yellow)" />
+                </svg>
+              )}
+              {r.id === 'prete' && (
+                <svg viewBox="0 0 120 80" preserveAspectRatio="xMidYMid meet">
+                  <rect x="10" y="30" width="22" height="20" fill="var(--fg-muted)" opacity="0.4" />
+                  <rect x="38" y="30" width="22" height="20" fill="var(--fg-muted)" opacity="0.7" />
+                  <rect x="66" y="30" width="22" height="20" fill="var(--fg)" />
+                  <path d="M 10 65 Q 60 65 94 65" stroke="var(--red)" stroke-width="1.5" fill="none" stroke-dasharray="3 2" />
+                  <circle cx="94" cy="65" r="2" fill="var(--red)" />
+                </svg>
+              )}
+              {r.id === 'jan' && (
+                <svg viewBox="0 0 120 80" preserveAspectRatio="xMidYMid meet">
+                  <rect x="10" y="10" width="100" height="5" fill="var(--ink)" />
+                  <rect x="10" y="22" width="45" height="3" fill="var(--ink)" />
+                  <rect x="10" y="30" width="60" height="2" fill="var(--fg-muted)" />
+                  <rect x="10" y="36" width="55" height="2" fill="var(--fg-muted)" />
+                  <rect x="10" y="42" width="62" height="2" fill="var(--fg-muted)" />
+                  <rect x="84" y="22" width="26" height="48" fill="var(--red)" />
+                </svg>
+              )}
+            </div>
+            <div class="ds-ref-meta">
+              <span class="t-mono-sm ds-ref-era">{r.era}</span>
+              <h4 class="ds-ref-title lower">{r.title}</h4>
+              <p class="ds-ref-body">{r.body}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <h3 class="ds-h3">voice · how i speak</h3>
+      <div class="ds-voice-grid">
+        <div class="ds-voice-col">
+          <div class="ds-voice-label" style="color: var(--blue);">do</div>
+          <ul>
+            <li>lowercase, short sentences, direct verbs.</li>
+            <li>name the tradeoff. every decision has a cost; say it out loud.</li>
+            <li>show the command, then the output. the page reads like a session.</li>
+            <li>italics for asides. <i>you are reading one now.</i></li>
+            <li>numbers are precise: <code>12.4 gib</code>, not "a lot".</li>
+          </ul>
+        </div>
+        <div class="ds-voice-col">
+          <div class="ds-voice-label" style="color: var(--red);">don't</div>
+          <ul>
+            <li>exclamation marks. the design already carries the energy.</li>
+            <li>marketing verbs: <i>revolutionize, unlock, empower, supercharge</i>.</li>
+            <li>vague benefits. "fast" is a claim; "12.4 gib / 8 s" is evidence.</li>
+            <li>second-person pep talk. the reader is a peer, not a student.</li>
+            <li>padding. if a section has nothing to say, delete it.</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="ds-h3">anti-patterns · what this system refuses</h3>
+      <ul class="ds-anti">
+        {antiPatterns.map((a) => (
+          <li>
+            <span class="ds-anti-mark" aria-hidden="true">×</span>
+            <span>{a}</span>
+          </li>
+        ))}
+      </ul>
+
+      <h3 class="ds-h3">provenance · credit where due</h3>
+      <div class="ds-provenance">
+        <div class="ds-prov-row">
+          <span class="ds-prov-key">typefaces</span>
+          <span class="ds-prov-val">
+            <b>archivo</b> by omnibus-type, open font license · <b>jetbrains mono</b> by jetbrains, open font license
+          </span>
+        </div>
+        <div class="ds-prov-row">
+          <span class="ds-prov-key">color system</span>
+          <span class="ds-prov-val">oklch-tuned derivations of bauhaus primaries on a warm paper ground (<code>#f4efe4</code>)</span>
+        </div>
+        <div class="ds-prov-row">
+          <span class="ds-prov-key">motion</span>
+          <span class="ds-prov-val">hand-rolled primitives in <code>motion.ts</code>; spiritual nod to chenglou/prete and matt perry's popmotion</span>
+        </div>
+        <div class="ds-prov-row">
+          <span class="ds-prov-key">icons</span>
+          <span class="ds-prov-val">none. shape marks do the work.</span>
+        </div>
+        <div class="ds-prov-row">
+          <span class="ds-prov-key">imagery</span>
+          <span class="ds-prov-val">none. diagrams only, built from the same tokens as the rest of the site.</span>
+        </div>
+      </div>
+    </section>
 
     <section id="s1" class="ds-section">
       <header class="ds-section-head">

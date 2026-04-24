@@ -382,6 +382,140 @@
   color: var(--fg-muted);
 }
 
+/* ── §00 philosophy ── */
+
+.ds-manifesto {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 40px;
+  padding: 32px 0 40px;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 56px;
+  align-items: start;
+}
+.ds-manifesto-mark { position: relative; width: 140px; height: 140px; flex-shrink: 0; }
+.ds-manifesto-mark .m-sq { position: absolute; left: 0; top: 0; width: 92px; height: 92px; background: var(--red); }
+.ds-manifesto-mark .m-tr {
+  position: absolute; right: 0; top: 10px;
+  width: 0; height: 0;
+  border-left: 28px solid transparent;
+  border-right: 28px solid transparent;
+  border-bottom: 56px solid var(--yellow);
+  transform: rotate(18deg);
+}
+.ds-manifesto-mark .m-ci { position: absolute; right: 6px; bottom: 0; width: 62px; height: 62px; border-radius: 50%; background: var(--blue); }
+.ds-manifesto-body { max-width: 640px; color: var(--fg-muted); }
+.ds-manifesto-body p { margin: 0 0 16px; font-size: 17px; line-height: 1.55; }
+.ds-manifesto-body p:last-child { margin-bottom: 0; }
+.ds-manifesto-lead {
+  font-family: var(--sans);
+  font-size: 28px !important;
+  line-height: 1.2 !important;
+  color: var(--fg) !important;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+  text-wrap: balance;
+}
+.ds-manifesto-lead b { font-weight: 700; }
+
+.ds-ref-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 8px;
+}
+.ds-ref {
+  border: 1px solid var(--border-faint);
+  background: var(--bg-raised);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  transition: border-color 160ms, transform 160ms, box-shadow 160ms;
+}
+.ds-ref:hover { border-color: var(--ink); transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--border); }
+.ds-ref-art {
+  aspect-ratio: 3 / 2;
+  background: var(--paper);
+  border-bottom: 1px solid var(--border-faint);
+  padding: 12px;
+  display: flex; align-items: center; justify-content: center;
+}
+.ds-ref-art svg { width: 100%; height: 100%; }
+.ds-ref-meta { padding: 16px 18px 20px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+.ds-ref-era { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg-faint); }
+.ds-ref-title { margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -0.01em; color: var(--fg); }
+.ds-ref-body { margin: 0; font-size: 13px; line-height: 1.5; color: var(--fg-muted); }
+
+.ds-voice-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+.ds-voice-col { border: 1px solid var(--border-faint); background: var(--bg-raised); padding: 24px; }
+.ds-voice-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-faint);
+}
+.ds-voice-col ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.ds-voice-col li { font-size: 14px; line-height: 1.5; color: var(--fg-muted); padding-left: 14px; position: relative; }
+.ds-voice-col li::before {
+  content: ''; position: absolute; left: 0; top: 0.65em;
+  width: 6px; height: 1px; background: var(--fg-faint);
+}
+.ds-voice-col code {
+  font-family: var(--mono); font-size: 12px;
+  background: var(--bg); padding: 1px 6px;
+  border: 1px solid var(--border-faint); color: var(--fg);
+}
+
+.ds-anti {
+  margin: 0 0 8px; padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 24px;
+  border-top: 1px solid var(--border-faint);
+}
+.ds-anti li {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border-faint);
+  font-size: 14px; line-height: 1.4;
+  color: var(--fg-muted);
+}
+.ds-anti-mark {
+  font-family: var(--mono); font-size: 18px; font-weight: 700;
+  color: var(--red); line-height: 1;
+  flex-shrink: 0; width: 14px; margin-top: 2px;
+}
+
+.ds-provenance { border-top: 1px solid var(--border-faint); }
+.ds-prov-row {
+  display: grid; grid-template-columns: 160px 1fr;
+  gap: 24px; padding: 12px 0;
+  border-bottom: 1px solid var(--border-faint);
+  align-items: baseline;
+}
+.ds-prov-key {
+  font-family: var(--mono); font-size: 11px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--fg-faint);
+}
+.ds-prov-val { font-size: 14px; color: var(--fg-muted); line-height: 1.5; }
+.ds-prov-val code {
+  font-family: var(--mono); font-size: 12px;
+  background: var(--bg); padding: 1px 6px;
+  border: 1px solid var(--border-faint); color: var(--fg);
+}
+.ds-prov-val b { color: var(--fg); font-weight: 600; }
+
 @media (max-width: 980px) {
   .ds-page { padding: 0 20px 80px; }
   .ds-primary-grid { grid-template-columns: 1fr; }
@@ -399,4 +533,15 @@
   .ds-mast-shapes .s1 { width: 72px; height: 72px; right: 4%; top: 20px; }
   .ds-mast-shapes .s2 { display: none; }
   .ds-mast-shapes .s3 { width: 48px; height: 48px; right: 20%; top: 30px; }
+
+  .ds-manifesto { grid-template-columns: 1fr; gap: 24px; }
+  .ds-manifesto-mark { width: 100px; height: 100px; }
+  .ds-manifesto-mark .m-sq { width: 66px; height: 66px; }
+  .ds-manifesto-mark .m-tr { border-left-width: 20px; border-right-width: 20px; border-bottom-width: 40px; }
+  .ds-manifesto-mark .m-ci { width: 44px; height: 44px; }
+  .ds-manifesto-lead { font-size: 22px !important; }
+  .ds-ref-grid { grid-template-columns: 1fr; }
+  .ds-voice-grid { grid-template-columns: 1fr; }
+  .ds-anti { grid-template-columns: 1fr; gap: 0; }
+  .ds-prov-row { grid-template-columns: 1fr; gap: 4px; padding: 14px 0; }
 }
