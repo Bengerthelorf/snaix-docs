@@ -26,11 +26,6 @@ interface TocItem {
   depth: number;
 }
 
-interface PagerLink {
-  title: string;
-  href: string;
-}
-
 interface Props {
   product: ProductIntegration;
   brand?: string;
@@ -50,7 +45,6 @@ interface Props {
   mermaid?: boolean;
   topNav?: { id: string; label: string; href: string; external?: boolean }[];
   currentTab?: string;
-  pager?: { prev?: PagerLink; next?: PagerLink };
   pagerLabels?: { prev: string; next: string };
 }
 
@@ -73,14 +67,18 @@ const {
   mermaid = false,
   topNav,
   currentTab = 'docs',
-  pager,
-  pagerLabels = { prev: 'previous', next: 'next' },
+  pagerLabels,
 } = Astro.props;
 
 function itemHref(item: NavItem) {
   if (item.href) return withBase(item.href);
   return withBase(`${docsBase}/${item.slug}`);
 }
+
+const flatNav = nav.flatMap((s) => s.items);
+const i = flatNav.findIndex((it) => it.slug === current);
+const prev = i > 0 ? flatNav[i - 1] : undefined;
+const next = i >= 0 && i < flatNav.length - 1 ? flatNav[i + 1] : undefined;
 ---
 <DefaultLayout title={`${brand} · ${title}`} description={description} lang={locale}>
   {math && <MathStyles slot="head" />}
@@ -133,20 +131,20 @@ function itemHref(item: NavItem) {
 
         <slot />
 
-        {pager && (pager.prev || pager.next) && (
+        {pagerLabels && (prev || next) && (
           <div class="docs-pager">
-            {pager.prev ? (
-              <a href={pager.prev.href} class="is-prev">
+            {prev && prev.href && (
+              <a href={prev.href} class="is-prev">
                 <div class="pager-label">← {pagerLabels.prev}</div>
-                <div class="pager-title">{pager.prev.title}</div>
+                <div class="pager-title">{prev.title}</div>
               </a>
-            ) : <span />}
-            {pager.next ? (
-              <a href={pager.next.href} class="is-next">
+            )}
+            {next && next.href && (
+              <a href={next.href} class="is-next">
                 <div class="pager-label">{pagerLabels.next} →</div>
-                <div class="pager-title">{pager.next.title}</div>
+                <div class="pager-title">{next.title}</div>
               </a>
-            ) : <span />}
+            )}
           </div>
         )}
       </article>

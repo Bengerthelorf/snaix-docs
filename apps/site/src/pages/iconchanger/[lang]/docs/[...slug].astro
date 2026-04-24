@@ -8,7 +8,6 @@ import {
   bareSlug,
   docsBaseFor,
   navFor,
-  pagerFor,
   pagerLabelsFor,
   resolveLocale,
   slugPrefix,
@@ -52,7 +51,6 @@ const bare = bareSlug(entry.slug);
 const sectionKey = entry.data.section ?? 'guide';
 const sectionLabel = locale.ui?.sections?.[sectionKey] ?? sectionKey;
 const docsLabel = locale.ui?.docsLabel ?? 'docs';
-const pager = pagerFor(nav, bare);
 const pagerLabels = pagerLabelsFor(locale);
 ---
 <DocsLayout
@@ -75,7 +73,6 @@ const pagerLabels = pagerLabelsFor(locale);
   tocLabel={locale.ui?.tocLabel ?? 'on this page'}
   topNav={iconchanger.nav()}
   currentTab="docs"
-  pager={pager}
   pagerLabels={pagerLabels}
 >
   <Content components={mdxComponents} />

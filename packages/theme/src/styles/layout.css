@@ -266,6 +266,8 @@
     margin-top: 32px;
   }
   .mobile-drawer-marks .mk { width: 14px; height: 14px; display: block; }
+  .mobile-drawer-marks .mk-sq { background: var(--red); }
+  .mobile-drawer-marks .mk-ci { background: var(--yellow); border-radius: 50%; }
   .mobile-drawer-marks .mk-tr {
     width: 0; height: 0;
     background: transparent;

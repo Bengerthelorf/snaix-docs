@@ -7,7 +7,6 @@ import {
   docsBaseFor,
   isDefaultLocaleEntry,
   navFor,
-  pagerFor,
   pagerLabelsFor,
 } from '../../../lib/docs.ts';
 import { product } from '../../../lib/product.ts';
@@ -34,7 +33,6 @@ const toc = headings
 const bare = bareSlug(entry.slug);
 const sectionLabel = DEFAULT_LOCALE.ui?.sections?.['guide'] ?? 'guide';
 const docsLabel = DEFAULT_LOCALE.ui?.docsLabel ?? 'docs';
-const pager = pagerFor(nav, bare);
 const pagerLabels = pagerLabelsFor(DEFAULT_LOCALE);
 ---
 <DocsLayout
@@ -57,7 +55,6 @@ const pagerLabels = pagerLabelsFor(DEFAULT_LOCALE);
   tocLabel={DEFAULT_LOCALE.ui?.tocLabel ?? 'on this page'}
   topNav={claudit.nav()}
   currentTab="docs"
-  pager={pager}
   pagerLabels={pagerLabels}
 >
   <Content components={mdxComponents} />

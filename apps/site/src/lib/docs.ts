@@ -58,23 +58,10 @@ export function docsBaseFor(locale: LocaleOption, root: string): string {
   return `${localePrefix(locale, LOCALES)}${root}`;
 }
 
-export function pagerFor(nav: NavSection[], currentSlug: string) {
-  const flat = nav.flatMap((s) => s.items);
-  const i = flat.findIndex((it) => it.slug === currentSlug);
-  if (i === -1) return undefined;
-  const toLink = (it: { title: string; href?: string; slug: string }) =>
-    it.href ? { title: it.title, href: it.href } : undefined;
-  return {
-    prev: i > 0 ? toLink(flat[i - 1]!) : undefined,
-    next: i < flat.length - 1 ? toLink(flat[i + 1]!) : undefined,
-  };
-}
-
 export function pagerLabelsFor(locale: LocaleOption) {
-  return {
-    prev: locale.ui?.pagerPrev ?? 'previous',
-    next: locale.ui?.pagerNext ?? 'next',
-  };
+  const { pagerPrev, pagerNext } = locale.ui ?? {};
+  if (!pagerPrev || !pagerNext) return undefined;
+  return { prev: pagerPrev, next: pagerNext };
 }
 
 export { slugPrefix, localePrefix };
