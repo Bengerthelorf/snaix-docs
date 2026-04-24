@@ -4,6 +4,7 @@ import { snaixRemarkPlugins } from './remark/directives.ts';
 import { remarkMermaid } from './remark/mermaid.ts';
 import { remarkUrlRewriter, type ProductRewriteSpec } from './remark/url-rewriter.ts';
 import { rehypeLinkRewriter } from './rehype/link-rewriter.ts';
+import { rehypeWrapTables } from './rehype/wrap-tables.ts';
 
 export type {
   SnaixDocsOptions,
@@ -62,6 +63,7 @@ export default function snaixDocs(opts: SnaixDocsOptions): AstroIntegration {
         });
         remark.push([remarkUrlRewriter, { products: productSpecs }]);
         rehype.push([rehypeLinkRewriter, { products: productSpecs }]);
+        rehype.push(rehypeWrapTables);
 
         updateConfig({
           markdown: {
