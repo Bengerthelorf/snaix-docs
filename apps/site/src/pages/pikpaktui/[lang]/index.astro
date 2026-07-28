@@ -3,7 +3,7 @@ import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
 import TopBar from '@snaix/docs-theme/components/TopBar.astro';
 import Footer from '@snaix/docs-theme/components/Footer.astro';
 import PkTuiFrame from '@snaix/docs-theme/components/PkTuiFrame.astro';
-import { BlockReveal, Scramble, Tally, Typewriter } from '@snaix/docs-theme';
+import { BlockReveal, Scramble, Typewriter } from '@snaix/docs-theme';
 import '@snaix/docs-theme/styles/pikpak.css';
 import { resolveLocale } from '../../../lib/docs.ts';
 import { product } from '../../../lib/product.ts';
@@ -21,46 +21,46 @@ const copy = {
     topLine: 'pikpaktui / pikpak 在你的终端里',
     topMid: 'tui · cli · ratatui',
     overview: '§ 01 · 概览',
-    eyebrow: '// tui · 键盘优先',
+    eyebrow: '// tui · 键盘优先 · 鼠标友好',
     headline: ['pikpak.', '进终端。'],
-    ledePre: '浏览器是谎言。pikpaktui 把你的云端硬盘带进终端——三栏米勒分栏，ratatui 渲染，实时预览。j/k 移动，',
+    ledePre: '浏览器是谎言。pikpaktui 把你的云端硬盘带进终端——自适应面板、ratatui 渲染、实时预览和可续传下载。使用 ',
     ledeMid: ' 打开，',
-    ledePost: ' 下载。没有鼠标、没有弹窗、没有标签页。',
+    ledePost: ' 收集文件；不知道快捷键时按 ',
     install: '↳ 安装',
     readKeys: '阅读 keymap',
     cmdMeta: 'cargo install pikpaktui',
     ribbon: [
-      { t: '三栏', d: '米勒分栏：根、当前目录、焦点项的实时预览。' },
-      { t: '纯键盘', d: 'vim 式操作。j/k、h/l、enter、q。26 个键做全部事情。' },
+      { t: '自适应面板', d: '根据终端空间自动显示一栏、两栏或三栏。' },
+      { t: '操作可发现', d: '按 ? 扫一眼全部快捷键，并直接执行选中的操作。' },
       { t: 'kitty graphics', d: '在支持 kitty graphics 协议的终端里内联显示 jpeg/png 缩略图。' },
-      { t: '可续传', d: '下载队列写在磁盘上。杀掉进程、重启、继续。' },
+      { t: '可续传', d: '服务端支持时，并行分段传输可从已有部分文件安全续传。' },
     ],
     sec2: '§ 02 · keymap',
-    sec2Title: ['26 个键，', '干所有事。'],
-    sec2Lede: '整个 tui 就是 keymap 之上的有限状态机。没有隐藏手势、没有只能鼠标的角落、没有右键菜单。读这张卡片，你就能驾驭 pikpaktui。',
+    sec2Title: ['快捷键要快，', '操作要可见。'],
+    sec2Lede: '键盘操作最快；文件面板和弹窗列表也支持单击、双击与滚轮。在浏览器中随时按 ? 即可发现其余操作。',
     keys: [
-      { n: '01', k: ['j','k'],   v: '移动',    d: '按行上 / 下。vim 习惯通用。' },
-      { n: '02', k: ['h','l'],   v: '返回 · 进入', d: '回到上层 pane，或进入文件夹。' },
-      { n: '03', k: ['Enter'],   v: '打开',    d: '进入目录，或选中文件做后续操作。' },
-      { n: '04', k: ['d'],       v: '下载',    d: '把当前文件或选择加入队列。可续传。' },
-      { n: '05', k: ['space'],   v: '选中',    d: '多选。跨页生效。' },
-      { n: '06', k: ['/'],       v: '筛选',    d: '在当前 pane 上做增量正则筛选。' },
-      { n: '07', k: ['r'],       v: '刷新',    d: '重新拉取当前目录。' },
-      { n: '08', k: ['q'],       v: '退出',    d: '干净退出。队列写到磁盘。' },
+      { n: '01', k: ['j','k'],     v: '移动',   d: '按行上 / 下，方向键同样可用。' },
+      { n: '02', k: ['Enter'],     v: '打开',   d: '进入文件夹或播放视频。' },
+      { n: '03', k: ['Backspace'], v: '返回',   d: '回到上级文件夹。' },
+      { n: '04', k: ['space'],     v: '查看',   d: '显示当前文件或文件夹的详细信息。' },
+      { n: '05', k: ['a'],         v: '购物车', d: '把当前条目加入购物车或从中移除。' },
+      { n: '06', k: ['A'],         v: '批量',   d: '打开购物车，执行下载和批量操作。' },
+      { n: '07', k: ['?'],         v: '操作',   d: '浏览所有可用操作及快捷键。' },
+      { n: '08', k: ['D'],         v: '下载',   d: '打开实时传输进度与控制。' },
     ],
     sec3: '§ 03 · 流程',
     sec3Title: ['打开.', '挑选.', '拉取.'],
-    sec3Lede: '小文件三个按键完成整个来回，大文件四个——第四个是你搞定后的 q。',
+    sec3Lede: '收集单个文件或整批内容都不会打断浏览。下载会在 TUI 中显示进度，并可从校验后的部分数据继续。',
     flow: [
-      { n: '01 · 打开', h: '启动 tui。', p: '在任意终端里输入 pikpaktui。三栏出现，左边是根目录。' },
-      { n: '02 · 挑选', h: '导航、标记。', p: 'j/k 下移，l 进入，space 跨页多选。' },
-      { n: '03 · 拉取', h: '入队下载。', p: 'd 入队。队列在磁盘上。杀掉进程、重启、继续。' },
+      { n: '01 · 打开', h: '启动 tui。', p: '在任意终端里输入 pikpaktui，浏览器会自动适配当前宽度。' },
+      { n: '02 · 挑选', h: '导航、收集。', p: '用 j/k 移动，enter 打开文件夹，a 把文件加入购物车。' },
+      { n: '03 · 拉取', h: '开始批量下载。', p: '按 A 后再按 enter，选择本地目标；按 D 查看下载进度。' },
     ],
     metrics: [
-      { cap: '个键 · 完整' },
-      { cap: '栏 · 米勒' },
+      { cap: '操作 · 可发现' },
+      { cap: '面板 · 自适应' },
       { cap: '渲染 · crossterm' },
-      { cap: '队列 · 写盘' },
+      { cap: '下载 · 可续传' },
     ],
     sec4: '§ 04 · 安装',
     sec4Headline: ['一个二进制。', '零配置。'],
@@ -73,46 +73,46 @@ const copy = {
     topLine: 'pikpaktui / pikpak 在你的終端機裡',
     topMid: 'tui · cli · ratatui',
     overview: '§ 01 · 概覽',
-    eyebrow: '// tui · 鍵盤優先',
+    eyebrow: '// tui · 鍵盤優先 · 滑鼠友好',
     headline: ['pikpak.', '進終端機。'],
-    ledePre: '瀏覽器是謊言。pikpaktui 把你的雲端硬碟帶進終端機——三欄米勒分欄，ratatui 渲染，即時預覽。j/k 移動，',
+    ledePre: '瀏覽器是謊言。pikpaktui 把你的雲端硬碟帶進終端機——自適應面板、ratatui 渲染、即時預覽和可續傳下載。使用 ',
     ledeMid: ' 開啟，',
-    ledePost: ' 下載。沒有滑鼠、沒有彈窗、沒有分頁。',
+    ledePost: ' 收集檔案；不知道快捷鍵時按 ',
     install: '↳ 安裝',
     readKeys: '閱讀 keymap',
     cmdMeta: 'cargo install pikpaktui',
     ribbon: [
-      { t: '三欄', d: '米勒分欄：根、目前目錄、焦點項的即時預覽。' },
-      { t: '純鍵盤', d: 'vim 式操作。j/k、h/l、enter、q。26 個鍵做全部事情。' },
+      { t: '自適應面板', d: '依終端機空間自動顯示一欄、兩欄或三欄。' },
+      { t: '操作可發現', d: '按 ? 掃一眼全部快捷鍵，並直接執行所選操作。' },
       { t: 'kitty graphics', d: '在支援 kitty graphics 協定的終端機裡內嵌顯示 jpeg/png 縮圖。' },
-      { t: '可續傳', d: '下載佇列寫在磁碟上。砍掉行程、重啟、繼續。' },
+      { t: '可續傳', d: '伺服器支援時，並行分段傳輸可從已有部分檔案安全續傳。' },
     ],
     sec2: '§ 02 · keymap',
-    sec2Title: ['26 個鍵，', '做所有事。'],
-    sec2Lede: '整個 tui 就是 keymap 上的有限狀態機。沒有隱藏手勢、沒有只能滑鼠的角落、沒有右鍵選單。讀這張卡片，你就能駕馭 pikpaktui。',
+    sec2Title: ['快捷鍵要快，', '操作要可見。'],
+    sec2Lede: '鍵盤操作最快；檔案面板和彈窗清單也支援單擊、雙擊與滾輪。在瀏覽器中隨時按 ? 即可發現其餘操作。',
     keys: [
-      { n: '01', k: ['j','k'],   v: '移動',    d: '按列上 / 下。vim 習慣通用。' },
-      { n: '02', k: ['h','l'],   v: '返回 · 進入', d: '回到上層 pane，或進入資料夾。' },
-      { n: '03', k: ['Enter'],   v: '開啟',    d: '進入目錄，或選中檔案做後續操作。' },
-      { n: '04', k: ['d'],       v: '下載',    d: '把目前檔案或選擇加入佇列。可續傳。' },
-      { n: '05', k: ['space'],   v: '選中',    d: '多選。跨頁生效。' },
-      { n: '06', k: ['/'],       v: '篩選',    d: '在目前 pane 上做增量正則篩選。' },
-      { n: '07', k: ['r'],       v: '重新整理',    d: '重新抓取目前目錄。' },
-      { n: '08', k: ['q'],       v: '離開',    d: '乾淨離開。佇列寫到磁碟。' },
+      { n: '01', k: ['j','k'],     v: '移動',   d: '按列上 / 下，方向鍵同樣可用。' },
+      { n: '02', k: ['Enter'],     v: '開啟',   d: '進入資料夾或播放影片。' },
+      { n: '03', k: ['Backspace'], v: '返回',   d: '回到上層資料夾。' },
+      { n: '04', k: ['space'],     v: '查看',   d: '顯示目前檔案或資料夾的詳細資訊。' },
+      { n: '05', k: ['a'],         v: '購物車', d: '把目前項目加入購物車或從中移除。' },
+      { n: '06', k: ['A'],         v: '批次',   d: '開啟購物車，執行下載和批次操作。' },
+      { n: '07', k: ['?'],         v: '操作',   d: '瀏覽所有可用操作及快捷鍵。' },
+      { n: '08', k: ['D'],         v: '下載',   d: '開啟即時傳輸進度與控制。' },
     ],
     sec3: '§ 03 · 流程',
     sec3Title: ['開啟.', '挑選.', '拉取.'],
-    sec3Lede: '小檔案三個按鍵完成整個來回，大檔案四個——第四個是你搞定後的 q。',
+    sec3Lede: '收集單一檔案或整批內容都不會打斷瀏覽。下載會在 TUI 中顯示進度，並可從驗證後的部分資料繼續。',
     flow: [
-      { n: '01 · 開啟', h: '啟動 tui。', p: '在任何終端機裡輸入 pikpaktui。三欄出現，左邊是根目錄。' },
-      { n: '02 · 挑選', h: '導覽、標記。', p: 'j/k 下移，l 進入，space 跨頁多選。' },
-      { n: '03 · 拉取', h: '加入下載佇列。', p: 'd 加入佇列。佇列在磁碟上。砍掉行程、重啟、繼續。' },
+      { n: '01 · 開啟', h: '啟動 tui。', p: '在任何終端機裡輸入 pikpaktui，瀏覽器會自動適配目前寬度。' },
+      { n: '02 · 挑選', h: '導覽、收集。', p: '用 j/k 移動，enter 開啟資料夾，a 把檔案加入購物車。' },
+      { n: '03 · 拉取', h: '開始批次下載。', p: '按 A 後再按 enter，選擇本機目標；按 D 查看下載進度。' },
     ],
     metrics: [
-      { cap: '個鍵 · 完整' },
-      { cap: '欄 · 米勒' },
+      { cap: '操作 · 可發現' },
+      { cap: '面板 · 自適應' },
       { cap: '渲染 · crossterm' },
-      { cap: '佇列 · 寫碟' },
+      { cap: '下載 · 可續傳' },
     ],
     sec4: '§ 04 · 安裝',
     sec4Headline: ['一個執行檔。', '零設定。'],
@@ -171,7 +171,7 @@ const nav = [
             <span class="hl-line r2"><BlockReveal client:visible delay={700} duration={520}>{t.headline[1]}</BlockReveal></span>
           </h1>
           <p class="pk-lede">
-            {t.ledePre}<code>enter</code>{t.ledeMid}<code>d</code>{t.ledePost}
+            {t.ledePre}<code>enter</code>{t.ledeMid}<code>a</code>{t.ledePost}<code>?</code>。
           </p>
           <div class="pk-cta">
             <a class="btn-block" href="#install">{t.install} {pikpaktui.version}</a>
@@ -245,11 +245,11 @@ const nav = [
     <section class="pk-section">
       <div class="pk-metrics">
         <div class="pk-metric">
-          <div class="n"><Tally client:visible to={26} duration={900} /></div>
+          <div class="n">?</div>
           <div class="c">{t.metrics[0].cap}</div>
         </div>
         <div class="pk-metric">
-          <div class="n"><Tally client:visible to={3} duration={700} /></div>
+          <div class="n">1–3</div>
           <div class="c">{t.metrics[1].cap}</div>
         </div>
         <div class="pk-metric">
