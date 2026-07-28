@@ -76,6 +76,7 @@ export interface BuildNavOptions {
   locale: LocaleOption;
   locales: LocaleOption[] | undefined;
   sectionOrder?: string[];
+  productRoot?: string;
   docsRoot?: string;
   defaultSection?: string;
   slugTransform?: (slug: string) => string;
@@ -89,6 +90,7 @@ export function buildDocsNav<T extends DocEntryLike>(
     locale,
     locales,
     sectionOrder,
+    productRoot = '',
     docsRoot = '/docs',
     defaultSection = 'guide',
   } = options;
@@ -121,7 +123,8 @@ export function buildDocsNav<T extends DocEntryLike>(
   });
 
   const sectionLabels = locale.ui?.sections ?? {};
-  const prefix = `${localePrefix(locale, locales)}${docsRoot}`;
+  const root = productRoot.replace(/\/$/, '');
+  const prefix = `${root}${localePrefix(locale, locales)}${docsRoot}`;
   const transform = options.slugTransform ?? ((s: string) => s);
 
   return labels.map((label) => ({

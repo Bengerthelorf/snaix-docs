@@ -40,7 +40,7 @@ export async function getStaticPaths() {
 const { entry, localeCode } = Astro.props;
 const locale = resolveLocale(localeCode);
 const all = await getCollection('bcmr');
-const nav = await navFor(locale, all, PRODUCT_DOCS_SECTIONS, '/bcmr/docs');
+const nav = await navFor(locale, all, PRODUCT_DOCS_SECTIONS, '/bcmr');
 const { Content, headings } = await entry.render();
 const toc = headings
   .filter((h) => h.depth >= 2 && h.depth <= 3)
@@ -67,7 +67,7 @@ const docsLabel = locale.ui?.docsLabel ?? 'docs';
   }}
   locale={locale.lang ?? locale.code}
   languages={bcmrProduct.docsLanguages(entry, all, locale)}
-  docsBase={docsBaseFor(locale, '/bcmr/docs')}
+  docsBase={docsBaseFor(locale, '/bcmr')}
   tocLabel={locale.ui?.tocLabel ?? 'on this page'}
   math={true}
   mermaid={true}

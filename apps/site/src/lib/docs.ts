@@ -41,7 +41,8 @@ export async function navFor(
   locale: LocaleOption,
   entries: DocEntry[],
   sections: readonly string[],
-  docsRoot: string,
+  productRoot: string,
+  docsRoot = '/docs',
 ): Promise<NavSection[]> {
   const filtered = entries.filter((e) => sections.includes(e.data.section ?? 'guide'));
   const isInternalsOnly = sections.length === 1 && sections[0] === 'internals';
@@ -49,13 +50,14 @@ export async function navFor(
     locale,
     locales: LOCALES,
     sectionOrder: ['guide', 'cli', 'internals'],
+    productRoot,
     docsRoot,
     slugTransform: isInternalsOnly ? (s) => s.replace(/^ablation\/?/, '') : undefined,
   });
 }
 
-export function docsBaseFor(locale: LocaleOption, root: string): string {
-  return `${localePrefix(locale, LOCALES)}${root}`;
+export function docsBaseFor(locale: LocaleOption, productRoot: string, docsRoot = '/docs'): string {
+  return `${productRoot}${localePrefix(locale, LOCALES)}${docsRoot}`;
 }
 
 export { slugPrefix, localePrefix };

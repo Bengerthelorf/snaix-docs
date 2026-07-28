@@ -40,7 +40,7 @@ export async function getStaticPaths() {
 const { entry, localeCode } = Astro.props;
 const locale = resolveLocale(localeCode);
 const all = await getCollection('pikpaktui');
-const nav = await navFor(locale, all, PRODUCT_DOCS_SECTIONS, '/pikpaktui/docs');
+const nav = await navFor(locale, all, PRODUCT_DOCS_SECTIONS, '/pikpaktui');
 const { Content, headings } = await entry.render();
 const toc = headings
   .filter((h) => h.depth >= 2 && h.depth <= 3)
@@ -67,7 +67,7 @@ const docsLabel = locale.ui?.docsLabel ?? 'docs';
   }}
   locale={locale.lang ?? locale.code}
   languages={pikpaktui.docsLanguages(entry, all, locale)}
-  docsBase={docsBaseFor(locale, '/pikpaktui/docs')}
+  docsBase={docsBaseFor(locale, '/pikpaktui')}
   tocLabel={locale.ui?.tocLabel ?? 'on this page'}
   topNav={pikpaktui.nav()}
   currentTab="docs"

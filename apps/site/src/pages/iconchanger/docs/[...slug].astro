@@ -27,7 +27,7 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const all = await getCollection('iconchanger');
-const nav = await navFor(DEFAULT_LOCALE, all, PRODUCT_DOCS_SECTIONS, '/iconchanger/docs');
+const nav = await navFor(DEFAULT_LOCALE, all, PRODUCT_DOCS_SECTIONS, '/iconchanger');
 const { Content, headings } = await entry.render();
 const toc = headings
   .filter((h) => h.depth >= 2 && h.depth <= 3)
@@ -54,7 +54,7 @@ const docsLabel = DEFAULT_LOCALE.ui?.docsLabel ?? 'docs';
   }}
   locale={DEFAULT_LOCALE.code}
   languages={iconchanger.docsLanguages(entry, all, DEFAULT_LOCALE)}
-  docsBase={docsBaseFor(DEFAULT_LOCALE, '/iconchanger/docs')}
+  docsBase={docsBaseFor(DEFAULT_LOCALE, '/iconchanger')}
   tocLabel={DEFAULT_LOCALE.ui?.tocLabel ?? 'on this page'}
   topNav={iconchanger.nav()}
   currentTab={sectionKey === 'cli' ? 'commands' : 'docs'}
