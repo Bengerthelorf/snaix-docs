@@ -1,0 +1,19 @@
+{
+  "$schema": "https://unpkg.com/wrangler/config-schema.json",
+  "name": "app",
+  "main": "index.js",
+  "account_id": "7dc451d670f90e12a108e6706a2e7349",
+  "compatibility_date": "2026-03-22",
+  "workers_dev": true,
+  "preview_urls": true,
+  "keep_vars": true,
+  "routes": [
+    { "pattern": "app.snaix.homes/bcmr/install.sh", "zone_name": "snaix.homes" },
+    { "pattern": "app.snaix.homes/bcmr/releases/*", "zone_name": "snaix.homes" },
+    { "pattern": "app.snaix.homes/pikpaktui/install.sh", "zone_name": "snaix.homes" },
+    { "pattern": "app.snaix.homes/pikpaktui/releases/*", "zone_name": "snaix.homes" }
+  ],
+  "analytics_engine_datasets": [{ "binding": "ANALYTICS", "dataset": "app_analytics" }],
+  "triggers": { "crons": ["*/30 * * * *"] },
+  "observability": { "enabled": true, "head_sampling_rate": 1 }
+}

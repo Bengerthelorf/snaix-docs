@@ -8,6 +8,7 @@
     "apps/*"
   ],
   "scripts": {
+    "content:setup": "bash scripts/setup-content.sh",
     "dev": "bun --filter './apps/site' dev",
     "build": "bun --filter './apps/site' build",
     "preview": "bun --filter './apps/site' preview"
