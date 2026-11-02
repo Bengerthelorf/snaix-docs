@@ -98,10 +98,10 @@ export default function CommandBuilder() {
 
         <section className="wb-panel command-result" aria-labelledby="command-output-heading">
           <div className="wb-row command-section-head">
-            <h2 id="command-output-heading">Ready for your terminal</h2>
+            <h2 id="command-output-heading">Your command</h2>
             <span className="wb-kicker">03 / review &amp; copy</span>
           </div>
-          <p className="wb-note">POSIX shell · macOS / Linux / FreeBSD · generates text only</p>
+          <p className="wb-note">Bash / Zsh</p>
           <label className="command-output-label" htmlFor="bcmr-generated-command">{preset ? commandPresets[preset].label : 'Custom command'}</label>
           <textarea ref={output} id="bcmr-generated-command" className="wb-output command-output" value={result.ok ? result.command : ''} placeholder="Fix the highlighted path to generate your command." readOnly rows={6} spellCheck={false} aria-describedby="command-shell-note" />
           <div className="wb-actions">
@@ -109,10 +109,10 @@ export default function CommandBuilder() {
             <a className="wb-button" href="/bcmr/commands">All bcmr flags</a>
           </div>
           <p className="command-copy-status wb-note" role="status" aria-live="polite">{copyStatus}</p>
-          <p className="wb-note" id="command-shell-note">Spaces, quotes and shell symbols are quoted for you. <code>~/</code> expands to your home; other variables stay literal. These commands are for a POSIX shell, such as Bash or Zsh.</p>
+          <p className="wb-note" id="command-shell-note">Enter literal paths. <code>~/</code> expands to your home directory.</p>
           {!result.ok && result.errors.operation && <p className="wb-error" role="alert">{result.errors.operation}</p>}
           {result.ok && <div className="command-notes">
-            <h3>What this command does</h3>
+            <h3>Options in this command</h3>
             <ul>{result.notes.map(note => <li key={note}>{note}</li>)}</ul>
             {result.notes.length === 0 && <p>Copies the source to the destination using bcmr’s default behavior.</p>}
           </div>}

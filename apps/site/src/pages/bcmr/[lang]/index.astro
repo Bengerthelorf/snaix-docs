@@ -22,134 +22,108 @@ const locale = resolveLocale(Astro.params.lang!);
 
 const copy = {
   zh: {
-    title: 'bcmr — 更好的复制、移动、删除',
-    topLine: 'bcmr · 更好的 cp / mv / rm',
-    topMid: '本地与 ssh · 同一条命令',
+    title: 'bcmr — 复制、校验与续传',
+    topLine: 'bcmr · 复制 · 移动 · 删除',
+    topMid: '本地文件 + SSH 传输',
     overview: '§ 01 · 概览',
-    eyebrow: '// cp + mv + scp —— 但是诚实的那种。',
+    eyebrow: '// BLAKE3 校验 · 断点续传',
     headline: ['复制.', '移动.', '删除.'],
-    lede: 'bcmr 是 cp / mv / scp 的现代替代品。每次写入流式 blake3 校验，崩溃后可续传，本地路径和 ssh 路径在同一条命令里 —— 一个命令，两端都校验过。',
+    lede: '在本地或通过 SSH 复制文件。用 BLAKE3 校验内容，续传未完成的文件，并查看传输进度。',
     install: '↳ 安装',
     docs: '阅读文档',
-    deviceTagVerified: '已校验',
-    deviceComment: '# 14.2 gb · 本地 → ssh',
+    deviceTagVerified: '--verify',
+    deviceComment: '# 14.2 gb · 本地 → SSH',
     deviceSrc: '源',
     deviceDst: '目标',
     deviceHash: '哈希',
     deviceMode: '模式',
-    deviceModeVal: '可续传',
+    deviceModeVal: '--resume',
     deviceConn: '连接',
-    deviceFootline: 'direct-tcp · 快速通道',
+    deviceFootline: 'SSH · 并行连接',
     ribbon: [
-      { n: '01', t: 'blake3 流式校验', d: '每个字节写入时都在两端哈希，--verify 升级为完整的两遍重读。' },
-      { n: '02', t: '崩溃后可续传',     d: '杀进程、拔网线，重新执行同一条命令，从上一个已校验的分块继续。' },
-      { n: '03', t: '本地 + ssh 一条命令', d: 'bcmr copy a.txt user@host:/b/ 和 bcmr copy a.txt /b/ 是同一个动词。相同的参数，相同的保证。' },
-      { n: '04', t: 'reflink · 稀疏 · dedup', d: 'linux 上用 copy_file_range，apfs 上用 clone_file，稀疏文件检测，≥ 16 mib 的内容寻址去重。' },
+      { n: '01', t: '内容校验', d: '用哈希比较复制前后的文件。' },
+      { n: '02', t: '断点续传', d: '复用未完成传输中已有的数据。' },
+      { n: '03', t: '本地 + SSH', d: '用 user@host:/path/ 上传或下载。' },
+      { n: '04', t: '预览操作', d: '--dry-run 列出计划执行的操作。' },
     ],
-    sec2: '§ 02 · 同一条命令',
-    sec2Title: ['本地 ssh,', '同一条命令。'],
-    sec2Lede: 'cp 和 scp 把本地和远程当成两个世界。bcmr 只当它们是两种路径。bcmr copy 在 3 mb 的本地拷贝和 300 gb 的跨机房传输里是同一条命令。',
-    sec3: '§ 03 · 特性',
-    sec3Title: ['六件事', '它都做对了。'],
-    sec3Lede: '这些是承诺，不是描述。如果你发现任何一条被违反了，那就是我们想听到的 bug。',
+    sec2: '§ 02 · 命令示例',
+    sec2Title: ['本地文件。', '远程路径。'],
+    sec2Lede: '将目标换成 user@host:/path/ 即可通过 SSH 上传。将远程路径放在前面即可下载。',
+    sec3: '§ 03 · 传输选项',
+    sec3Title: ['传输', '选项。'],
     features: [
-      { n: '01', t: 'blake3 无处不在',      d: '每个分块都在两端被哈希。只有校验通过的传输，bcmr 才会告诉你成功了。' },
-      { n: '02', t: '崩溃 · 续传',          d: '杀进程、拔线、丢 ssh 会话。重新执行同一条命令，bcmr 从上一个已校验的字节继续。' },
-      { n: '03', t: '本地 + ssh',           d: '一个动词，两个宇宙。本地路径像 cp，远程路径像 scp。你不必再想「该用哪一个」。' },
-      { n: '04', t: 'reflink · 稀疏',       d: 'apfs / btrfs / xfs / zfs 上使用 clone_file / reflink / copy_file_range。100 gb 的拷贝在支持的文件系统上只要毫秒。' },
-      { n: '05', t: 'lz4 · zstd · dedup',   d: '可选的线路压缩 lz4 / zstd。内容寻址去重避免发送你已经有过的字节。' },
-      { n: '06', t: 'json + tui',           d: '脚本里用 --json，终端里用 --tui。同一个二进制、同一套命令 —— 只是外壳不同。' },
+      { n: '01', t: 'BLAKE3 校验', d: '--verify 使用 BLAKE3 比较源文件和复制后的内容。' },
+      { n: '02', t: '校验后续传', d: '--resume 对照源和目标检查已保存的前缀，再复用匹配的数据。' },
+      { n: '03', t: '本地 + SSH', d: '本地复制、上传和下载使用相同的路径语法。' },
+      { n: '04', t: 'reflink + 稀疏文件', d: '在支持的文件系统上使用写时复制克隆和稀疏输出。' },
+      { n: '05', t: '压缩 + 去重', d: 'Zstd/LZ4 线路压缩；Linux/macOS 的 serve 缓存可复用 ≥16 MiB 上传中的分块。' },
+      { n: '06', t: 'JSON + 进度', d: '--json 输出 NDJSON 事件；--progress tui 在终端显示传输进度。' },
     ],
-    metrics: [
-      { cap: '对比 rsync · 小文件' },
-      { cap: 'dedup · 最小块' },
-      { cap: '支持的平台数' },
-      { cap: '每个分块 · 已哈希' },
-    ],
+    examples: '命令示例',
     sec4: '§ 04 · 开始',
-    sec4Headline: ['一个动词。', '已校验。', '可续传。'],
+    sec4Headline: ['复制。', '校验。', '续传。'],
     installBig: '安装 bcmr ↳',
     readDocs: '阅读文档',
-    license: 'mit 授权 · 无遥测 · 自 2024 年开源',
+    license: 'Apache-2.0',
   },
   'zh-Hant': {
-    title: 'bcmr — 更好的複製、移動、刪除',
-    topLine: 'bcmr · 更好的 cp / mv / rm',
-    topMid: '本地與 ssh · 同一條指令',
+    title: 'bcmr — 複製、驗證與續傳',
+    topLine: 'bcmr · 複製 · 移動 · 刪除',
+    topMid: '本機檔案 + SSH 傳輸',
     overview: '§ 01 · 概覽',
-    eyebrow: '// cp + mv + scp —— 但是誠實的那種。',
+    eyebrow: '// BLAKE3 驗證 · 斷點續傳',
     headline: ['複製.', '移動.', '刪除.'],
-    lede: 'bcmr 是 cp / mv / scp 的現代替代品。每次寫入串流式 blake3 校驗，崩潰後可續傳，本地路徑和 ssh 路徑在同一條指令裡 —— 一個指令，兩端都校驗過。',
+    lede: '在本機或透過 SSH 複製檔案。用 BLAKE3 驗證內容，續傳未完成的檔案，並查看傳輸進度。',
     install: '↳ 安裝',
     docs: '閱讀文件',
-    deviceTagVerified: '已校驗',
-    deviceComment: '# 14.2 gb · 本地 → ssh',
+    deviceTagVerified: '--verify',
+    deviceComment: '# 14.2 gb · 本機 → SSH',
     deviceSrc: '來源',
-    deviceDst: '目的',
+    deviceDst: '目標',
     deviceHash: '雜湊',
     deviceMode: '模式',
-    deviceModeVal: '可續傳',
+    deviceModeVal: '--resume',
     deviceConn: '連線',
-    deviceFootline: 'direct-tcp · 快速通道',
+    deviceFootline: 'SSH · 平行連線',
     ribbon: [
-      { n: '01', t: 'blake3 串流校驗', d: '每個位元組寫入時都在兩端雜湊，--verify 升級為完整的兩遍重讀。' },
-      { n: '02', t: '崩潰後可續傳',     d: '砍行程、拔網線，再執行同一條指令，從上一個已校驗的區塊繼續。' },
-      { n: '03', t: '本地 + ssh 一條指令', d: 'bcmr copy a.txt user@host:/b/ 和 bcmr copy a.txt /b/ 是同一個動詞。相同的參數，相同的保證。' },
-      { n: '04', t: 'reflink · 稀疏 · dedup', d: 'linux 上使用 copy_file_range，apfs 上使用 clone_file，稀疏檔案偵測，≥ 16 mib 的內容定址去重。' },
+      { n: '01', t: '內容驗證', d: '用雜湊比較複製前後的檔案。' },
+      { n: '02', t: '斷點續傳', d: '重用未完成傳輸中已有的資料。' },
+      { n: '03', t: '本機 + SSH', d: '用 user@host:/path/ 上傳或下載。' },
+      { n: '04', t: '預覽操作', d: '--dry-run 列出預計執行的操作。' },
     ],
-    sec2: '§ 02 · 同一條指令',
-    sec2Title: ['本地 ssh,', '同一條指令。'],
-    sec2Lede: 'cp 和 scp 把本地與遠端當成兩個世界。bcmr 只當它們是兩種路徑。bcmr copy 在 3 mb 的本地拷貝和 300 gb 的跨機房傳輸裡是同一條指令。',
-    sec3: '§ 03 · 特性',
-    sec3Title: ['六件事', '它都做對了。'],
-    sec3Lede: '這些是承諾，不是描述。如果你發現任何一條被違反了，那就是我們想聽到的 bug。',
+    sec2: '§ 02 · 指令範例',
+    sec2Title: ['本機檔案。', '遠端路徑。'],
+    sec2Lede: '將目標換成 user@host:/path/ 即可透過 SSH 上傳。將遠端路徑放在前面即可下載。',
+    sec3: '§ 03 · 傳輸選項',
+    sec3Title: ['傳輸', '選項。'],
     features: [
-      { n: '01', t: 'blake3 無處不在',      d: '每個區塊都在兩端被雜湊。只有校驗通過的傳輸，bcmr 才會告訴你成功了。' },
-      { n: '02', t: '崩潰 · 續傳',          d: '砍行程、拔線、掉 ssh 連線。再執行同一條指令，bcmr 從上一個已校驗的位元組繼續。' },
-      { n: '03', t: '本地 + ssh',           d: '一個動詞，兩個宇宙。本地路徑像 cp，遠端路徑像 scp。你不必再想「該用哪一個」。' },
-      { n: '04', t: 'reflink · 稀疏',       d: 'apfs / btrfs / xfs / zfs 上使用 clone_file / reflink / copy_file_range。100 gb 的拷貝在支援的檔案系統上只要毫秒。' },
-      { n: '05', t: 'lz4 · zstd · dedup',   d: '可選的線路壓縮 lz4 / zstd。內容定址去重避免傳送你已經有過的位元組。' },
-      { n: '06', t: 'json + tui',           d: '腳本裡用 --json，終端裡用 --tui。同一個二進位檔、同一套指令 —— 只是外殼不同。' },
+      { n: '01', t: 'BLAKE3 驗證', d: '--verify 使用 BLAKE3 比較來源檔案和複製後的內容。' },
+      { n: '02', t: '驗證後續傳', d: '--resume 對照來源和目標檢查已儲存的前綴，再重用相符的資料。' },
+      { n: '03', t: '本機 + SSH', d: '本機複製、上傳與下載使用相同的路徑語法。' },
+      { n: '04', t: 'reflink + 稀疏檔案', d: '在支援的檔案系統上使用寫入時複製複本和稀疏輸出。' },
+      { n: '05', t: '壓縮 + 去重', d: 'Zstd/LZ4 線路壓縮；Linux/macOS 的 serve 快取可重用 ≥16 MiB 上傳中的區塊。' },
+      { n: '06', t: 'JSON + 進度', d: '--json 輸出 NDJSON 事件；--progress tui 在終端顯示傳輸進度。' },
     ],
-    metrics: [
-      { cap: '對比 rsync · 小檔' },
-      { cap: 'dedup · 最小塊' },
-      { cap: '支援的平台數' },
-      { cap: '每個區塊 · 已雜湊' },
-    ],
+    examples: '指令範例',
     sec4: '§ 04 · 開始',
-    sec4Headline: ['一個動詞。', '已校驗。', '可續傳。'],
+    sec4Headline: ['複製。', '驗證。', '續傳。'],
     installBig: '安裝 bcmr ↳',
     readDocs: '閱讀文件',
-    license: 'mit 授權 · 無遙測 · 自 2024 年開源',
+    license: 'Apache-2.0',
   },
 } as const;
 
 const t = copy[locale.code as 'zh' | 'zh-Hant'];
 
-const terminalScript: CmdLine[] = locale.code === 'zh' ? [
-  { type: 'prompt', text: 'bcmr copy ./dataset user@node-04:/srv/' },
-  { type: 'out',    text: '扫描源 …… 2,481 个文件 · 14.2 gb', pause: 200 },
-  { type: 'out',    text: 'ssh 握手 …… ok', pause: 140 },
-  { type: 'out',    text: 'direct-tcp 快速通道 …… 6 worker 已协商', pause: 180 },
-  { type: 'ok',     text: '完成 · 全部 blake3 已校验', pause: 260 },
+const terminalScript: CmdLine[] = [
+  { type: 'prompt', text: 'bcmr copy -r -V ./dataset/ ~/Backup/' },
   { type: 'blank' },
-  { type: 'prompt', text: 'bcmr copy -C ./big.iso user@node-04:/iso/', pause: 320 },
-  { type: 'out',    text: '发现未完成传输 —— 从第 4,298,571,264 字节恢复', pause: 180 },
-  { type: 'ok',     text: '完成 · 尾块已校验 · 哈希匹配', pause: 160 },
-] : [
-  { type: 'prompt', text: 'bcmr copy ./dataset user@node-04:/srv/' },
-  { type: 'out',    text: '掃描來源 …… 2,481 個檔案 · 14.2 gb', pause: 200 },
-  { type: 'out',    text: 'ssh 握手 …… ok', pause: 140 },
-  { type: 'out',    text: 'direct-tcp 快速通道 …… 6 worker 已協商', pause: 180 },
-  { type: 'ok',     text: '完成 · 全部 blake3 已校驗', pause: 260 },
+  { type: 'prompt', text: 'bcmr copy -r -V ./dataset/ user@node-04:/srv/' },
   { type: 'blank' },
-  { type: 'prompt', text: 'bcmr copy -C ./big.iso user@node-04:/iso/', pause: 320 },
-  { type: 'out',    text: '發現未完成傳輸 —— 從第 4,298,571,264 位元組繼續', pause: 180 },
-  { type: 'ok',     text: '完成 · 尾塊已校驗 · 雜湊相符', pause: 160 },
+  { type: 'prompt', text: 'bcmr copy -C -V ./big.iso user@node-04:/iso/' },
 ];
 ---
-<DefaultLayout title={t.title} lang={locale.lang ?? locale.code}>
+<DefaultLayout title={t.title} description={t.lede} lang={locale.lang ?? locale.code}>
   <div class="page home">
     <TopBar
       brand={bcmrProduct.title}
@@ -199,11 +173,11 @@ const terminalScript: CmdLine[] = locale.code === 'zh' ? [
           <div style="padding: 16px; background: var(--c-ink-0); color: var(--c-paper-pure); font-family: var(--mono); font-size: 12px; line-height: 1.7;">
             <div style="color: var(--c-steel-5);">{t.deviceComment}</div>
             <div>{t.deviceSrc}  <b style="color: var(--c-paper-pure);">./dataset/</b></div>
-            <div>{t.deviceDst} <b style="color: var(--c-paper-pure);">node-04:/srv/</b></div>
+            <div>{t.deviceDst} <b style="color: var(--c-paper-pure);">user@node-04:/srv/</b></div>
             <div style="margin: 10px 0; color: var(--c-steel-3);">────────────────</div>
-            <div>{t.deviceHash} <span style="color: var(--c-blue-dim);">blake3</span> · {t.deviceTagVerified}</div>
-            <div>{t.deviceMode} <span style="color: var(--c-yellow);">{t.deviceModeVal}</span> · zstd-3</div>
-            <div>{t.deviceConn} direct-tcp · <span style="color: var(--c-yellow);"><Tally client:visible to={6} duration={700} /></span> worker</div>
+            <div>{t.deviceHash} <span style="color: var(--c-blue-dim);">BLAKE3</span> · {t.deviceTagVerified}</div>
+            <div>{t.deviceMode} <span style="color: var(--c-yellow);">{t.deviceModeVal}</span></div>
+            <div>{t.deviceConn} SSH · <span style="color: var(--c-yellow);"><Tally client:visible to={4} duration={700} /></span> workers</div>
             <div style="margin-top: 10px; background: var(--c-steel-9); height: 6px; position: relative; overflow: hidden;">
               <div style="position: absolute; inset: 0; right: 18%; background: var(--c-blue-dim);" />
             </div>
@@ -246,7 +220,7 @@ const terminalScript: CmdLine[] = locale.code === 'zh' ? [
         <div class="terminal-chrome">
           <div class="terminal-lights"><span/><span/><span/></div>
           <div class="t-mono-sm">zsh · {bcmrProduct.title} {String(bcmrProduct.version ?? '').replace(/^v/, '')}</div>
-          <div class="t-mono-sm" style="color: var(--steel-5);">~/work</div>
+          <div class="t-mono-sm" style="color: var(--steel-5);">{t.examples}</div>
         </div>
         <div class="terminal-body">
           <CommandStream client:visible lines={terminalScript} />
@@ -259,9 +233,6 @@ const terminalScript: CmdLine[] = locale.code === 'zh' ? [
         <div class="section-head-left">
           <div class="t-small">{t.sec3}</div>
           <h2 class="t-h1 lower">{t.sec3Title[0]}<br/>{t.sec3Title[1]}</h2>
-        </div>
-        <div class="section-head-right">
-          <p class="t-body">{t.sec3Lede}</p>
         </div>
       </div>
 
@@ -284,27 +255,6 @@ const terminalScript: CmdLine[] = locale.code === 'zh' ? [
             </div>
           );
         })}
-      </div>
-    </section>
-
-    <section class="home-section home-metrics">
-      <div class="metrics-strip">
-        <div class="metric">
-          <div class="metric-num t-display"><Tally client:visible to={2} suffix="×" duration={900} /></div>
-          <div class="metric-cap t-small">{t.metrics[0].cap}</div>
-        </div>
-        <div class="metric">
-          <div class="metric-num t-display"><Tally client:visible to={16} duration={1000} /><span style="font-size: 0.5em; vertical-align: super; margin-left: 6px;">mib</span></div>
-          <div class="metric-cap t-small">{t.metrics[1].cap}</div>
-        </div>
-        <div class="metric">
-          <div class="metric-num t-display"><Tally client:visible to={4} duration={800} /></div>
-          <div class="metric-cap t-small">{t.metrics[2].cap}</div>
-        </div>
-        <div class="metric">
-          <div class="metric-num t-display">blake3</div>
-          <div class="metric-cap t-small">{t.metrics[3].cap}</div>
-        </div>
       </div>
     </section>
 

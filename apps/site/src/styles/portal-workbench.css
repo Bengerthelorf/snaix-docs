@@ -89,3 +89,44 @@
  .pw-stream-row { grid-template-columns: 64px 48px minmax(0, 1fr); gap: 8px; font-size: 12px; }
 }
 @media (max-width: 360px) { .pw-terminal-content { padding: 20px; } .pw-terminal code { font-size: 12px; } .pw-facts { font-size: 10px; } .pw-hero h1 { font-size: 52px; } .pw-stream-row { grid-template-columns: 1fr 3fr; } .pw-time { grid-column: 1 / -1; } }
+
+/* Match the usable physical panel, rather than the width of both displays. */
+:root[data-display-panel] .portal-workshop { container: portal-panel / inline-size; }
+@container portal-panel (max-width: 980px) {
+  :root[data-display-panel] .pw-hero { gap: 32px; }
+  :root[data-display-panel] .pw-hero h1 { font-size: 8.7cqw; }
+  :root[data-display-panel] .pw-activity { gap: 32px; }
+  :root[data-display-panel] .pw-facts { gap: 8px 14px; }
+  :root[data-display-panel] .pw-experience-grid > a { padding-inline: 20px; }
+}
+@container portal-panel (max-width: 720px) {
+  :root[data-display-panel] .pw-header { padding-block: 22px; gap: 20px; }
+  :root[data-display-panel] .pw-brand { font-size: 20px; }
+  :root[data-display-panel] .pw-header nav { gap: 14px 20px; font-size: 12px; }
+  :root[data-display-panel] .pw-hero { grid-template-columns: minmax(0, 1fr); padding-block: 40px; gap: 36px; }
+  :root[data-display-panel] .pw-hero h1 { font-size: clamp(56px, 13.5cqw, 96px); }
+  :root[data-display-panel] .pw-terminal-content { padding: 26px; }
+  :root[data-display-panel] .pw-terminal code { font-size: 15px; }
+  :root[data-display-panel] .p-wall { padding-top: 28px; }
+  :root[data-display-panel] .p-tile { padding: 22px; }
+  :root[data-display-panel] .p-tile .tile-name { font-size: 30px; }
+  :root[data-display-panel] .p-tile .tile-art { display: none; }
+  :root[data-display-panel] .pw-section-head { align-items: start; }
+  :root[data-display-panel] .pw-experiences { padding-block: 56px; }
+  :root[data-display-panel] :is(.pw-experience-grid, .pw-activity) { grid-template-columns: minmax(0, 1fr); }
+  :root[data-display-panel] .pw-experience-grid > a { padding: 24px 0 48px; }
+  :root[data-display-panel] .pw-experience-grid > a + a { border-left: 0; border-top: 1px solid var(--border-faint); }
+  :root[data-display-panel] .pw-experience-top { margin-bottom: 16px; }
+  :root[data-display-panel] .pw-activity { gap: 28px; padding-bottom: 56px; }
+  :root[data-display-panel] .pw-footer { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 24px; }
+  :root[data-display-panel] .pw-footer > div:first-child { grid-column: 1 / -1; }
+  :root[data-display-panel] .pw-stream-row { grid-template-columns: 64px 48px minmax(0, 1fr); gap: 8px; font-size: 12px; }
+}
+@container portal-panel (max-width: 360px) {
+  :root[data-display-panel] .pw-terminal-content { padding: 20px; }
+  :root[data-display-panel] .pw-terminal code { font-size: 12px; }
+  :root[data-display-panel] .pw-facts { font-size: 10px; }
+  :root[data-display-panel] .pw-hero h1 { font-size: 52px; }
+  :root[data-display-panel] .pw-stream-row { grid-template-columns: minmax(0, 1fr) minmax(0, 3fr); }
+  :root[data-display-panel] .pw-time { grid-column: 1 / -1; }
+}

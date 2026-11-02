@@ -52,23 +52,21 @@ const spec: CliSpec = { groups, shellLabel };
       nav={bcmrProduct.nav()}
     />
 
-    <WorkbenchEntry href="/workbench/commands/" label="Build a bcmr command" description="Choose paths and copy options before heading to the terminal." />
+    <WorkbenchEntry href="/workbench/commands/" label="Build a bcmr command" description="Set paths and flags, then copy the command." />
 
     <section class="cli-hero rule-b">
       <div class="cli-hero-grid grid12">
         <div class="cli-hero-left">
           <div class="t-small" style="color: var(--red);">§ commands</div>
           <h1 class="t-h1 lower">
-            <BlockReveal client:visible delay={200}>{entries.length} verbs.</BlockReveal><br/>
-            <BlockReveal client:visible delay={600} color="var(--blue)">zero magic.</BlockReveal>
+            <BlockReveal client:visible delay={200}>{entries.length} commands.</BlockReveal><br/>
+            <BlockReveal client:visible delay={600} color="var(--blue)">flags &amp; examples.</BlockReveal>
           </h1>
         </div>
         <div class="cli-hero-right">
           <p class="t-body">
-            every action in bcmr is a command you can type, pipe, alias,
-            and commit to your shell history. below is the full surface —
-            grouped, searchable, each entry self-introspectable via{' '}
-            <code class="inline-code">--help</code> or <code class="inline-code">--json</code>.
+            Search commands, inspect flags and copy examples.
+            Use <code class="inline-code">bcmr &lt;command&gt; --help</code> in your terminal.
           </p>
           <p class="t-mono-sm" style="color: var(--steel-5); margin-top: 12px;">
             press <code>/</code> to search · <code>j</code>/<code>k</code> or arrows to move

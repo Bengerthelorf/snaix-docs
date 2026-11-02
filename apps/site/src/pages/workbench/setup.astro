@@ -2,7 +2,7 @@
 import WorkbenchLayout from '../../layouts/WorkbenchLayout.astro';
 import InstallGuide from '../../components/workbench/InstallGuide.tsx';
 ---
-<WorkbenchLayout title="From download to first run." description="Choose a product and your machine. Get the right installation steps, a version check and help for common symptoms." current="setup" eyebrow="setup / guided installation">
+<WorkbenchLayout title="Install a tool." description="Choose your tool, operating system and installation method." current="setup" eyebrow="setup / guided installation">
   <InstallGuide client:load />
   <noscript><p class="wb-note">Enable JavaScript to choose your installation steps. Direct guides: <a href="/bcmr/install">bcmr</a>, <a href="/pikpaktui/install">pikpaktui</a>, <a href="/iconchanger/install">IconChanger</a>, <a href="/claudit/install">Claudit</a>.</p></noscript>
 </WorkbenchLayout>
@@ -10,7 +10,7 @@ import InstallGuide from '../../components/workbench/InstallGuide.tsx';
   :global(.install-guide h2) { margin: 0; font: 650 22px/1.25 var(--sans); letter-spacing: -.6px; }
   :global(.setup-section-head) { margin-bottom: 22px; gap: 16px; flex-wrap: wrap; }
   :global(.setup-products) { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--steel-3); margin-bottom: 36px; }
-  :global(.setup-product) { appearance: none; border: 0; border-right: 1px solid var(--steel-3); border-top: 4px solid transparent; color: var(--ink); background: var(--paper); padding: 23px; font: 650 20px/1.2 var(--sans); letter-spacing: -.5px; display: flex; justify-content: space-between; gap: 8px; cursor: pointer; }
+  :global(.setup-product) { appearance: none; border: 0; border-right: 1px solid var(--steel-3); border-top: 4px solid transparent; color: var(--ink); background: var(--paper); padding: 23px; font: 650 20px/1.2 var(--sans); letter-spacing: -.5px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; cursor: pointer; }
   :global(.setup-product:last-child) { border-right: 0; }
   :global(.setup-product.is-selected) { border-top-color: var(--blue); background: var(--paper-pure); }
   :global(.setup-product:hover) { background: var(--paper-pure); }
@@ -43,5 +43,6 @@ import InstallGuide from '../../components/workbench/InstallGuide.tsx';
   :global(.setup-symptoms details > div) { max-width: 740px; padding: 0 0 24px; }
   :global(.setup-symptoms p) { font: 15px/1.75 var(--sans); color: var(--fg-muted); margin: 0; }
   @media (max-width: 760px) { :global(.setup-grid) { grid-template-columns: minmax(0, 1fr); } :global(.setup-products) { grid-template-columns: repeat(2, minmax(0, 1fr)); } :global(.setup-product) { padding: 18px; border-bottom: 1px solid var(--steel-3); } :global(.setup-product:nth-child(even)) { border-right: 0; } :global(.setup-steps > li) { grid-template-columns: 24px minmax(0, 1fr); gap: 8px; } :global(.setup-verification) { padding: 16px; } }
+  @media (max-width: 360px) { :global(.setup-products) { grid-template-columns: minmax(0, 1fr); } :global(.setup-product) { border-right: 0; } }
   @media (prefers-reduced-motion: reduce) { :global(.setup-symptoms summary span) { transition: none; } }
 </style>

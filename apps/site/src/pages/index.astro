@@ -9,12 +9,12 @@ const { stats, build, activity, products } = snaixConfig.siteData;
 const tools = products.filter(p => p.variant !== 'ds');
 const year = new Date().getFullYear();
 const experiences = [
-  { name: 'Build a command', product: 'bcmr', href: '/workbench/commands/', description: 'Your paths. Your options. A command ready to copy.', symbol: '>_' },
-  { name: 'Try an icon', product: 'IconChanger', href: '/workbench/icons/', description: 'Bring an image. See it on an app, a folder and the Dock.', symbol: '◈' },
-  { name: 'Explore usage', product: 'Claudit', href: '/workbench/usage/', description: 'Follow the cost and tokens through example sessions.', symbol: '▥' },
+  { name: 'Build a command', product: 'bcmr', href: '/workbench/commands/', description: 'Local and SSH copy commands with verification and resume options.', symbol: '>_' },
+  { name: 'Try an icon', product: 'IconChanger', href: '/workbench/icons/', description: 'Preview an image as an app, folder or Dock icon.', symbol: '◈' },
+  { name: 'Explore usage', product: 'Claudit', href: '/workbench/usage/', description: 'Filter example sessions by model, project and date.', symbol: '▥' },
 ];
 ---
-<DefaultLayout title="snaix.homes — small tools, real work" description="Open-source tools for file transfers, cloud storage, macOS icons and Claude usage. Try a tool in the workbench, find your setup and read the docs.">
+<DefaultLayout title="snaix.homes — files, icons and Claude usage" description="Open-source tools for file transfer, PikPak storage, macOS icons and Claude Code usage.">
   <div class="portal portal-workshop">
     <a class="portal-skip" href="#main">Skip to content</a>
     <header class="pw-header">
@@ -24,33 +24,33 @@ const experiences = [
     <main id="main" tabindex="-1">
       <section class="pw-hero">
         <div class="pw-hero-main">
-          <p class="pw-intro">Independent software. Open by design.</p>
-          <h1>small tools.<br />real work<span class="pw-period">.</span></h1>
-          <p class="pw-lead">Move files with confidence. Bring your cloud to the terminal. Make your Mac your own. Know where your tokens go.</p>
+          <p class="pw-intro">Open-source utilities</p>
+          <h1>Files. Icons.<br />Claude usage<span class="pw-period">.</span></h1>
+          <p class="pw-lead">Verified copies, PikPak in the terminal, custom Mac icons, and Claude Code token costs.</p>
           <div class="pw-actions"><a class="pw-primary" href="/workbench/">Open the workbench <span aria-hidden="true"><ArrowUpRight /></span></a><a class="pw-secondary" href="#tools">Find your tool <span aria-hidden="true">↓</span></a></div>
           <div class="pw-facts"><span><strong>{stats.shippingTools}</strong> open-source tools</span>{stats.githubStars !== undefined && <span><strong>{stats.githubStars.toLocaleString('en-US')}</strong> GitHub stars</span>}<span>CLI · TUI · macOS</span></div>
         </div>
         <a class="pw-terminal" href="/workbench/commands/" aria-label="Open the bcmr command builder">
           <div class="pw-terminal-bar"><span class="pw-terminal-dot"></span><span>bcmr / command builder</span><span aria-hidden="true"><ArrowUpRight /></span></div>
-          <div class="pw-terminal-content"><span class="pw-terminal-comment">A backup, with a check on every byte.</span><code><span class="pw-prompt">$</span> bcmr copy \
+          <div class="pw-terminal-content"><span class="pw-terminal-comment">Copy a directory with BLAKE3 readback verification.</span><code><span class="pw-prompt">$</span> bcmr copy \
     --recursive \
     --verify \
-    -- './photos/' './backup/'</code><div class="pw-terminal-rule"></div><div class="pw-terminal-meta"><span>Source → destination</span><strong>You set the options.</strong></div></div>
+    -- './photos/' './backup/'</code><div class="pw-terminal-rule"></div><div class="pw-terminal-meta"><span>Source → destination</span><strong>--verify</strong></div></div>
           <div class="pw-terminal-bottom"><span>Build your own command</span><span aria-hidden="true">→</span></div>
         </a>
       </section>
       <section class="p-wall" id="tools" aria-labelledby="tools-title">
-        <div class="pw-section-head"><div><p class="pw-intro">The collection</p><h2 id="tools-title">Four tools. A common thread.</h2></div><p>Built for everyday work.<br />Source you can read, interfaces you can learn.</p></div>
+        <div class="pw-section-head"><div><p class="pw-intro">The collection</p><h2 id="tools-title">Choose a tool.</h2></div></div>
         <div class="p-wall-grid">{tools.map(p => <PortalTile variant={p.variant} n={p.eyebrow} name={p.name} tag={p.tag} description={p.description} metaLeft={p.metaLeft} metaRight={p.metaRight} href={p.href} />)}</div>
         <div class="pw-tools-foot"><span>Not sure where to start?</span><a href="/workbench/setup/">Find the right installation steps →</a></div>
       </section>
       <section class="pw-experiences" aria-labelledby="experience-title">
-        <div class="pw-section-head"><div><p class="pw-intro">The workbench</p><h2 id="experience-title">Get a feel for it.</h2></div><a class="pw-text-link" href="/workbench/">Explore the workbench <ArrowUpRight /></a></div>
+        <div class="pw-section-head"><div><p class="pw-intro">The workbench</p><h2 id="experience-title">Try a tool.</h2></div><a class="pw-text-link" href="/workbench/">Explore the workbench <ArrowUpRight /></a></div>
         <div class="pw-experience-grid">{experiences.map(e => <a href={e.href}><div class="pw-experience-top"><span class="pw-experience-symbol" aria-hidden="true">{e.symbol}</span><span>{e.product}</span></div><h3>{e.name}</h3><p>{e.description}</p><span class="pw-experience-arrow" aria-hidden="true"><ArrowUpRight /></span></a>)}</div>
       </section>
-      <section class="pw-activity" aria-labelledby="activity-title"><div><p class="pw-intro">From the repositories</p><h2 id="activity-title">Work in the open.</h2><p>Recent commits across the tools and this site. Captured at build time.</p><a class="pw-text-link" href="/workbench/status/">Versions, docs & sources <ArrowUpRight /></a></div><div class="pw-stream"><div class="pw-stream-head"><span>Latest activity</span><span>Built {build.date}</span></div>{activity.map(r => <div class="pw-stream-row"><span class="pw-time">{r.time}</span><span class={`pw-project ${r.kind}`}>{r.proj}</span><span class="pw-message" set:html={r.msg} /></div>)}</div></section>
+      <section class="pw-activity" aria-labelledby="activity-title"><div><p class="pw-intro">From the repositories</p><h2 id="activity-title">Recent commits.</h2><p>Updates from the four product repositories and this site.</p><a class="pw-text-link" href="/workbench/status/">Versions, docs & sources <ArrowUpRight /></a></div><div class="pw-stream"><div class="pw-stream-head"><span>Latest activity</span><span>Built {build.date}</span></div>{activity.map(r => <div class="pw-stream-row"><span class="pw-time">{r.time}</span><span class={`pw-project ${r.kind}`}>{r.proj}</span><span class="pw-message" set:html={r.msg} /></div>)}</div></section>
     </main>
-    <footer class="pw-footer"><div><a class="pw-footer-brand" href="/">snaix.homes</a><p>Small tools. In your hands.</p></div><div><span class="pw-footer-label">Tools</span>{tools.map(p => <a href={p.href}>{p.name}</a>)}</div><div><span class="pw-footer-label">Explore</span><a href="/workbench/">Workbench</a><a href="/workbench/setup/">Setup guide</a><a href="/workbench/status/">Project overview</a><a href="/design-system/">Design language</a></div><div><span class="pw-footer-label">Elsewhere</span><a href="/about/">Manifesto</a><a href="https://github.com/Bengerthelorf">GitHub <ArrowUpRight /></a></div></footer>
-    <div class="pw-colophon"><span>© 2023–{year} snaix · open source</span><span>Built {build.date} · {build.sha}</span></div>
+    <footer class="pw-footer"><div><a class="pw-footer-brand" href="/">snaix.homes</a></div><div><span class="pw-footer-label">Tools</span>{tools.map(p => <a href={p.href}>{p.name}</a>)}</div><div><span class="pw-footer-label">Explore</span><a href="/workbench/">Workbench</a><a href="/workbench/setup/">Setup guide</a><a href="/workbench/status/">Project overview</a><a href="/design-system/">Design language</a></div><div><span class="pw-footer-label">Elsewhere</span><a href="/about/">About</a><a href="https://github.com/Bengerthelorf">GitHub <ArrowUpRight /></a></div></footer>
+    <div class="pw-colophon"><span>© {year} snaix · open source</span><span>Built {build.date} · {build.sha}</span></div>
   </div>
 </DefaultLayout>

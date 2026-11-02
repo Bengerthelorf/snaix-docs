@@ -1,107 +1,31 @@
 ---
 import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
-import { readLastModifiedDate } from '../data/fetch-github.ts';
+import { productPresentations } from '../data/site-static.ts';
 import '@snaix/docs-theme/styles/design-system.css';
-
-const lastUpdated = readLastModifiedDate(['apps/site/src/pages/about.astro']);
-const stamp = lastUpdated ? `living text · updated ${lastUpdated}` : 'living text';
-
-const navLinks = [
-  ['#position', 'position'],
-  ['#stance',   'stance'],
-  ['/design-system/', 'design language'],
-];
 ---
-<DefaultLayout title="snaix · manifesto">
+<DefaultLayout title="About · snaix.homes" description="Four open-source projects: bcmr, pikpaktui, IconChanger and Claudit.">
   <div class="page about ds-page">
     <nav class="ds-nav">
       <a href="/" class="ds-nav-home">← snaix.homes</a>
-      <div class="ds-nav-links">
-        {navLinks.map(([href, label]) => <a href={href}>{label}</a>)}
-      </div>
+      <div class="ds-nav-links"><a href="/workbench/">Workbench</a><a href="/design-system/">Design language</a></div>
     </nav>
-
     <header class="ds-mast">
-      <div class="ds-mast-row">
-        <span class="t-mono-sm">snaix \ manifesto</span>
-        <span class="t-mono-sm">{stamp}</span>
-        <span class="t-mono-sm">open source</span>
-      </div>
-      <h1 class="ds-mast-title t-display lower">
-        small <span style="color: var(--red);">tools</span>,<br />
-        in your <span style="color: var(--blue);">hands</span>.
-      </h1>
-      <p class="ds-mast-sub">
-        under snaix i ship the tools i build for myself and decide are
-        worth sharing. cli, tui, macos-native — written to be read
-        end-to-end, not black-boxed behind sdks.
-      </p>
-      <div class="ds-mast-shapes" aria-hidden="true">
-        <div class="s1" /><div class="s2" /><div class="s3" />
-      </div>
+      <h1 class="ds-mast-title t-display">About the tools.</h1>
+      <p class="ds-mast-sub">Installation, documentation and interactive examples for four open-source projects.</p>
     </header>
-
-    <section class="manifesto-body" id="position">
-      <div class="mb-side">
-        <div>§ 01 · position</div>
-        <div>no telemetry</div>
-        <div>no account</div>
-      </div>
-      <div>
-        <p>
-          four principles run through every tool here. <span class="highlight">
-          software you can read. tools that don't phone home. interfaces
-          that respect your hands. defaults that are the right answer.</span>
-        </p>
-        <p>
-          bcmr treats transfers as a promise you keep — every byte hashed on
-          both ends, or the transfer didn't succeed. pikpaktui puts a cloud
-          drive under 26 keyboard shortcuts. iconchanger swaps macos icons
-          with a live dock preview. claudit reads your <code>~/.claude</code>
-          logs so you can see what you actually spent. no cloud for any of
-          them. no account. no phone-home.
-        </p>
-        <p>
-          every tool on this site is open source. nothing is served from an
-          api you can't inspect. every release is built from a commit you
-          can check out, diff, and compile. the whole point is that you can
-          read the code and know exactly what your machine is doing to your
-          files, your keystrokes, your logs.
-        </p>
-      </div>
-    </section>
-
-    <section class="credits" id="stance">
-      <div style="margin-bottom: 20px;">
-        <div class="t-small" style="color: var(--red);">§ stance</div>
-        <h2 class="t-h1 lower" style="margin-top: 8px;">open source.<br />zero telemetry.</h2>
-      </div>
-      <div class="credits-grid">
-        <div class="credit">
-          <div class="credit-role">license</div>
-          <div class="credit-name">mit · apache-2.0</div>
-          <div class="credit-loc">no strings attached</div>
-        </div>
-        <div class="credit">
-          <div class="credit-role">telemetry</div>
-          <div class="credit-name">none</div>
-          <div class="credit-loc">no account · no ping</div>
-        </div>
-        <div class="credit">
-          <div class="credit-role">source</div>
-          <div class="credit-name">readable</div>
-          <div class="credit-loc">one afternoon, end-to-end</div>
-        </div>
-        <div class="credit">
-          <div class="credit-role">built with</div>
-          <div class="credit-name">rust · swift · astro</div>
-          <div class="credit-loc">native where it matters</div>
-        </div>
-      </div>
+    <section class="credits-grid" aria-label="Projects">
+      {productPresentations.map(p => <article class="credit">
+        <h2 class="credit-name"><a href={p.href}>{p.name}</a></h2>
+        <p>{p.descriptionOverride}</p>
+        <div class="about-links"><a href={`${p.href}install`}>Install</a><a href={`${p.href}docs/getting-started`}>Docs</a><a href={`https://github.com/${p.repo}`}>Source</a></div>
+      </article>)}
     </section>
   </div>
 </DefaultLayout>
-
 <style>
   .about { padding-block-end: 80px; }
+  .credit h2 { margin-top: 0; }
+  .credit p { font-size: 15px; line-height: 1.7; color: var(--fg-muted); }
+  .about-links { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 24px; font-size: 13px; }
+  .about-links a { text-decoration: underline; text-underline-offset: 3px; }
 </style>

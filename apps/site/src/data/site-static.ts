@@ -7,9 +7,7 @@ export const manualStats = {
 
 export const tickerStatic: string[] = [
   'all open source',
-  'built to be read',
   'mit · apache-2.0',
-  'zero telemetry',
 ];
 
 /* Fallback activity — only renders if the GitHub commits fetch fails at
@@ -50,7 +48,7 @@ export const internalTiles: InternalTile[] = [
     eyebrow: '05 / the rules of the house',
     tag: 'tokens · motion · components',
     description:
-      'the single source of visual truth. colors, type, motion primitives, components and principles — every page is built from these pieces.',
+      'Colors, typography, motion and shared components.',
     metaLeft: 'living doc',
     metaRight: 'internal',
     href: '/design-system/',
@@ -64,7 +62,8 @@ export const productPresentations: ProductPresentation[] = [
     name: 'bcmr',
     variant: 'bcmr',
     eyebrow: '01 / copy · move · remove',
-    tag: 'cli · rust · cross-platform',
+    tag: 'local + ssh · BLAKE3 · resume',
+    descriptionOverride: 'Copy files locally or over SSH. Verify content with BLAKE3 and resume interrupted transfers.',
     href: '/bcmr/',
   },
   {
@@ -73,25 +72,28 @@ export const productPresentations: ProductPresentation[] = [
     name: 'pikpaktui',
     variant: 'pikpak',
     eyebrow: '02 / pikpak in your terminal',
-    tag: 'tui + cli · ratatui · miller layout',
+    tag: 'PikPak · TUI + CLI · batch operations',
+    descriptionOverride: 'Browse folders side by side, collect files across folders, and download or share a batch.',
     href: '/pikpaktui/',
   },
   {
     repo: 'Bengerthelorf/macIconChanger',
     slug: 'iconchanger',
-    name: 'iconchanger',
+    name: 'IconChanger',
     variant: 'icon',
     eyebrow: '03 / macos icons',
-    tag: 'gui · swift · macos native',
+    tag: 'macOS · icons · auto-restore',
+    descriptionOverride: 'Change app and folder icons, then reapply saved icons after app updates.',
     href: '/iconchanger/',
   },
   {
     repo: 'Bengerthelorf/Claudit',
     slug: 'claudit',
-    name: 'claudit',
+    name: 'Claudit',
     variant: 'claudit',
     eyebrow: '04 / claude audit',
-    tag: 'gui · swift · macos native',
+    tag: 'Claude Code · tokens · project costs',
+    descriptionOverride: 'Read Claude Code sessions, inspect token costs by project, and collect usage from SSH devices.',
     href: '/claudit/',
   },
 ];

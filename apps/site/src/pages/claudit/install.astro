@@ -18,7 +18,7 @@ const claudit = product('claudit');
       nav={claudit.nav()}
     />
 
-    <WorkbenchEntry href="/workbench/setup/?tool=claudit" label="Get a guided setup" description="Choose your system, find installation steps and troubleshoot common problems." />
+    <WorkbenchEntry href="/workbench/setup/?tool=claudit" label="Get a guided setup" description="Installation, usage logs and quota sign-in." />
 
     <section class="install-hero">
       <div class="t-small" style="color: var(--blue);">§ install</div>
@@ -27,9 +27,9 @@ const claudit = product('claudit');
         <BlockReveal client:load color="var(--blue)" delay={600}>in.</BlockReveal>
       </h1>
       <p class="t-body" style="margin-top: 24px; max-width: 560px;">
-        claudit is a native macOS menu bar app. homebrew or DMG — pick
-        one, under a minute either way. no account, no server, nothing
-        leaves <code>~/.claude</code>.
+        Install with Homebrew or the DMG on macOS 15 or later. Claudit
+        reads Claude Code and OpenClaw logs; account quota uses
+        authenticated Claude access.
       </p>
     </section>
 
@@ -43,14 +43,14 @@ const claudit = product('claudit');
         </div>
         <div>
           <ol class="install-after-steps">
-            <li><span class="step-key">open</span><span class="step-desc">claudit from Spotlight or Applications. it docks into the menu bar.</span></li>
-            <li><span class="step-key">click</span><span class="step-desc">the menu-bar icon — today's spend appears.</span></li>
-            <li><span class="step-key">dashboard</span><span class="step-desc">opens heatmaps, sessions, and per-project views.</span></li>
-            <li><span class="step-key">that's it</span><span class="step-desc">claudit indexes <code>~/.claude</code> on launch and re-indexes on file change.</span></li>
+            <li><span class="step-key">open</span><span class="step-desc">launch Claudit from Spotlight or Applications. Its icon appears in the menu bar.</span></li>
+            <li><span class="step-key">usage</span><span class="step-desc">click the menu-bar icon for token totals and estimated cost from your session logs.</span></li>
+            <li><span class="step-key">quota</span><span class="step-desc">run <code>claude auth login</code> or connect your Claude session in Settings for quota utilization and reset timers.</span></li>
+            <li><span class="step-key">dashboard</span><span class="step-desc">inspect heatmaps, project and model breakdowns, and searchable conversations.</span></li>
           </ol>
           <p style="margin-top: 18px;">
             see the <a class="link-u" href="/claudit/docs/getting-started">getting started guide</a> for
-            keyboard shortcuts and remote-machine aggregation.
+            dashboard navigation and remote-machine setup.
           </p>
         </div>
       </div>

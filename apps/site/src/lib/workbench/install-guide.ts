@@ -19,14 +19,14 @@ export const installationProducts: InstallationProduct[] = [
     { title: 'Icons or image previews look wrong', detail: 'Use a Nerd Font before enabling nerd_font. Image rendering depends on your terminal; review image_protocols and thumbnail_mode in the configuration guide.', href: '/pikpaktui/docs/configuration' },
     { title: 'I need CLI help instead of the TUI', detail: 'Run pikpaktui --help, then the individual subcommand with --help. The full reference documents login, downloads, uploads and file operations.', href: '/pikpaktui/docs/cli/commands' },
   ] },
-  { id: 'iconchanger', title: 'IconChanger', requirement: 'macOS 13.0 (Ventura) or later. Initial setup and icon changes require administrator privileges.', troubleshooting: [
+  { id: 'iconchanger', title: 'IconChanger', requirement: 'macOS 13.0 (Ventura) or later. Administrator access for initial setup.', troubleshooting: [
     { title: 'Setup keeps asking for permission', detail: 'Complete the app’s one-time Setup prompt, then use … → Check Setup Status. The setup guide explains the helper installation and permissions.', href: '/iconchanger/docs/setup' },
     { title: 'Online icon search has no results', detail: 'Add a macosicons.com API key in Settings → Advanced and use Test Connection. Local images work without an API key.', href: '/iconchanger/docs/api-key' },
     { title: 'The iconchanger command is missing', detail: 'Install the command-line tool from Settings → Advanced → Command Line Tool, then run iconchanger --version.', href: '/iconchanger/docs/cli' },
   ] },
-  { id: 'claudit', title: 'Claudit', requirement: 'macOS 15.0 or later, with Claude Code usage logs in ~/.claude. Quota tracking needs claude auth login.', troubleshooting: [
+  { id: 'claudit', title: 'Claudit', requirement: 'macOS 15.0 or later. Reads Claude Code usage logs from ~/.claude.', troubleshooting: [
     { title: 'The dashboard has no usage yet', detail: 'Confirm Claude Code has produced usage logs in ~/.claude. Open Claudit from Applications and select its menu bar icon to inspect usage and the dashboard.', href: '/claudit/docs/getting-started' },
-    { title: 'Usage appears, but quota is missing', detail: 'Sign in to Claude Code with claude auth login. Local usage logs and account quota are separate inputs.', href: '/claudit/docs/getting-started' },
+    { title: 'Usage appears, but quota is missing', detail: 'Choose a quota source in Settings. Sign in through Claude Code or Claude.ai.', href: '/claudit/docs/getting-started' },
     { title: 'A remote machine is missing', detail: 'Add the host in Settings → Devices → Add Device. Test the SSH connection there before saving; check the remote-device guide for configuration.', href: '/claudit/docs/remote-devices' },
   ] },
 ];
@@ -88,6 +88,6 @@ export function getInstallPlan(selection: InstallSelection): InstallPlanResult {
   }
   return { ok: true, requirement: entry.requirement, asset, steps, releaseUrl, docsHref: `/${product}/docs/getting-started`, verification: {
     command: app ? `defaults read '/Applications/${entry.title}.app/Contents/Info' CFBundleShortVersionString` : `${product} --version`,
-    detail: app ? 'Reads the version installed in /Applications. Adjust the path if you installed the app elsewhere; compare it with the published release.' : 'Confirm the command resolves and compare its reported version with the published release. This page does not inspect your machine.',
+    detail: app ? 'Reads the version installed in /Applications. Adjust the path if you installed the app elsewhere; compare it with the published release.' : 'Compare the installed version with the latest release.',
   } };
 }

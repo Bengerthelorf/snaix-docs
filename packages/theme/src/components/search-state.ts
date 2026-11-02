@@ -24,6 +24,12 @@ export interface SearchScope {
   product?: string;
 }
 
+/** IME confirmation keys belong to the input method, including engines that
+ * report legacy keyCode 229 before updating isComposing. */
+export function isSearchComposing(event: { isComposing?: boolean; keyCode?: number }, compositionInProgress = false): boolean {
+  return compositionInProgress || event.isComposing === true || event.keyCode === 229;
+}
+
 /** Coalesce index loading and discard responses superseded by a new input. */
 export function createSearchRunner(load: () => Promise<SearchEngine>, update: (state: SearchState) => void) {
   let index: Promise<SearchEngine> | undefined;
