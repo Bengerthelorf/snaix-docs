@@ -48,7 +48,7 @@ verification, and its check example provides both source and destination.
 
 The original 98-test baseline passed before implementation. The completed
 suite passes 129 tests with 489 assertions. All four TypeScript projects pass.
-The main production build contains 383 pages; its 27,134 internal link
+The main production build contains 383 pages; its 27,137 internal link
 occurrences and 122 local assets pass the offline checker. The standalone
 example builds 12 pages and passes its 302-link / 72-asset check.
 
@@ -82,3 +82,22 @@ The preview source checkout is `.cache/sites-workbench-20261103/`; its
 `.openai/hosting.json` retains this identity. Recover repository access for that
 same Site if the local cache is absent; do not register a duplicate Site.
 No source credentials are stored in the repository.
+
+## Publication evidence
+
+- Feature implementation: `cfdb4937d26fbb9a1a66259e39a92de2d9f169a8`.
+- Reviewable change: https://github.com/Bengerthelorf/snaix-docs/pull/1.
+- Cloudflare Pages check for the feature implementation: **SUCCESS**.
+- Immutable Pages preview: https://adfa75b7.snaix-homes.pages.dev.
+- Owner-private Sites preview: https://snaix-workbench-20261103.breezyfrond1.chatgpt.site.
+- Sites saved version: `appgprj_6ae8c4e16e78819180e90c07b9e03def~appgver_1e64ece2944081919b1e84e345de57c5`.
+- Sites deployment: `appgdep_6ae8c7f8aac48191b69b1075111dfe24`, terminal status **succeeded**.
+- Sites static source: `06ebb73b010520ddd9b57332ac6b018e287694fe`, with original Astro provenance recorded in `source-provenance.json`.
+- Final focused geometry rerun: 14 changed/representative routes × 2 widths,
+  28 samples; zero overflow, clipping, out-of-bounds controls/fixed elements or
+  page errors. Keyboard skip links remain visible on focus and focus the main
+  content. Dark-theme and 200px-high search-window checks passed.
+
+The original `main` branch and canonical domain continue to serve the existing
+production version. The completed implementation is committed on
+`codex/product-workbench`, with both hosted previews available for review.

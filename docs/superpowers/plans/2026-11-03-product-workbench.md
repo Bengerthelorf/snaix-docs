@@ -27,7 +27,7 @@
 - [x] 4. Shared theme: localized/product-filtered search and configurable brand/product metadata.
 - [x] 5. Integrate: shared workbench shell, landing page, honest maintenance overview, homepage and product entry links; polish responsive interaction design.
 - [x] 6. Validate: focused tests, typechecks, builds, built-site link check, browser interaction/geometry/accessibility smoke checks and independent code review; repair findings.
-- [ ] 7. Deliver: commit, push feature branch and reviewable PR when available; package a private Sites preview and verify terminal deployment status.
+- [x] 7. Deliver: commit, push feature branch and reviewable PR when available; package a private Sites preview and verify terminal deployment status.
 
 ## Review focus
 
