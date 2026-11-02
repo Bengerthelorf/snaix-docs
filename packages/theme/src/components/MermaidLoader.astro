@@ -14,7 +14,12 @@
         requested = false;
         const nodes = Array.from(document.querySelectorAll<HTMLElement>('pre.mermaid[data-source="snaix-mermaid"]'));
         if (!nodes.length) continue;
-        for (const node of nodes) node.dataset.src ??= node.textContent ?? '';
+        for (const node of nodes) {
+          node.dataset.src ??= node.textContent ?? '';
+          node.tabIndex = 0;
+          node.setAttribute('role', 'region');
+          node.setAttribute('aria-label', 'Diagram source');
+        }
         engine ??= import('mermaid').catch((error) => { engine = undefined; throw error; });
         const { default: mermaid } = await engine;
         const theme = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'default';
@@ -25,7 +30,22 @@
         }
         try {
           await mermaid.run({ nodes });
-          nodes.forEach((node) => { node.dataset.rendered = 'true'; });
+          nodes.forEach((node) => {
+            const svg = node.querySelector('svg');
+            if (svg) {
+              const width = svg.viewBox.baseVal.width;
+              if (Number.isFinite(width) && width > 0) {
+                // Preserve the diagram's intended text size. The surrounding
+                // region scrolls instead of shrinking labels to phone width.
+                svg.style.width = `${width}px`;
+                svg.style.maxWidth = 'none';
+                svg.style.height = 'auto';
+                svg.style.display = 'block';
+              }
+            }
+            node.setAttribute('aria-label', 'Diagram, scroll horizontally to view');
+            node.dataset.rendered = 'true';
+          });
         } catch (error) {
           // Keep the original diagram readable when a document has bad syntax.
           nodes.forEach((node) => {

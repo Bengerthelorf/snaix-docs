@@ -35,6 +35,8 @@
   margin: 20px 0;
   overflow-x: auto;
   white-space: pre-wrap;
+  direction: ltr;
+  text-align: left;
 }
 
 .snx-panel {
@@ -58,6 +60,8 @@
   border: 0;
   background: transparent;
   padding: 10px 16px;
+  min-width: 0;
+  overflow-wrap: anywhere;
   font-family: var(--mono);
   font-size: 11px;
   letter-spacing: 0.08em;
@@ -116,3 +120,19 @@
 .snx-code-tabs__copy:focus-visible { opacity: 1; }
 .snx-code-tabs__copy:hover { color: var(--ink); border-color: var(--ink); }
 .snx-code-tabs__copy.is-copied { color: var(--blue); border-color: var(--blue); }
+
+@media (pointer: coarse) {
+  .snx-code-tabs__tab { min-height: 44px; }
+  .snx-code-tabs__copy { min-height: 36px; opacity: 1; }
+  .snx-code-tabs__panel pre { padding-block-start: 52px; }
+}
+
+/* The original source must remain readable while diagrams load or fail. */
+pre.mermaid {
+  min-width: 0;
+  max-width: 100%;
+  overflow: auto;
+}
+/* Diagram dimensions must settle immediately, including under the global
+   reduced-motion transition override. */
+pre.mermaid svg { transition: none !important; }

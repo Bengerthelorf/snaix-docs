@@ -8,13 +8,14 @@
 }
 .pk-hero-grid {
   margin-top: 40px;
-  display: grid; grid-template-columns: 5fr 7fr;
+  display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
   gap: 40px;
   align-items: start;
 }
 .pk-hero-left { position: relative; }
+.pk-hero-left, .pk-hero-right { min-width: 0; }
 .pk-hero-eyebrow {
-  display: flex; gap: 18px; align-items: baseline;
+  display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: baseline;
   margin-bottom: 24px;
 }
 .pk-hero-eyebrow .t-small { color: var(--yellow-deep, #b08a00); }
@@ -78,8 +79,10 @@
 
 .pk-tui-panes {
   display: grid;
-  grid-template-columns: 140px 1fr 220px;
+  grid-template-columns: 140px minmax(260px, 1fr) 220px;
   min-height: 440px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
 }
 .pk-tui-pane {
   border-right: 1px solid #2a2e34;
@@ -311,9 +314,6 @@
 }
 
 @media (max-width: 980px) {
-  .pk-hero-grid { grid-template-columns: 1fr; }
-  .pk-tui-panes { grid-template-columns: 110px 1fr; }
-  .pk-tui-pane:last-child { display: none; }
   .pk-ribbon { grid-template-columns: 1fr 1fr; }
   .pk-ribbon .item:nth-child(2n) { border-right: 0; }
   .pk-ribbon .item:not(:nth-last-child(-n+2)) { border-bottom: 1px solid var(--steel-3); padding-bottom: 14px; margin-bottom: 14px; }
@@ -327,4 +327,18 @@
   .pk-metric:nth-child(2n) { border-right: 0; }
   .pk-metric:not(:nth-last-child(-n+2)) { border-bottom: 1px solid var(--ink); }
   .pk-section-head { grid-template-columns: 1fr; }
+}
+
+/* A device-sized preview can be narrower than the page's own breakpoint. */
+.pk-tui-chrome { flex-wrap: wrap; }
+.pk-tui-chrome .lights { flex-shrink: 0; }
+.pk-tui-chrome .title { min-width: 0; overflow-wrap: anywhere; }
+.pk-ribbon > *, .pk-keymap-cell, .pk-metric { min-width: 0; overflow-wrap: anywhere; }
+@media (max-width: 1180px) {
+  .pk-hero-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 480px) {
+  .pk-ribbon, .pk-keymap, .pk-metrics { grid-template-columns: minmax(0, 1fr); }
+  .pk-ribbon .item, .pk-keymap-cell, .pk-metric { border-right: 0; }
+  .pk-ribbon .item, .pk-keymap-cell:not(:last-child), .pk-metric:not(:last-child) { border-bottom: 1px solid var(--steel-3); }
 }

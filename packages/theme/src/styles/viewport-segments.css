@@ -1,0 +1,113 @@
+/* Progressive fallback for an opaque hardware gap. A continuous folding
+   display keeps the normal responsive layout; no device names are detected.
+   The selected complete panel scrolls independently so a horizontal hinge
+   cannot cover the middle of an article or its fixed controls. */
+:root[data-display-panel] {
+  overflow: hidden;
+  background: var(--bg);
+  --page-pad: max(20px, var(--safe-area-left), var(--safe-area-right));
+  --gutter: 16px;
+}
+:root[data-display-panel] body {
+  position: fixed;
+  inset: var(--display-panel-y) auto auto var(--display-panel-x);
+  width: var(--display-panel-width);
+  height: var(--display-panel-height);
+  overflow: auto;
+  overflow-wrap: anywhere;
+  overscroll-behavior: contain;
+}
+:root[data-display-panel] :is(.page, .portal, .nf) {
+  min-height: calc(var(--display-panel-height) - var(--safe-area-top) - var(--safe-area-bottom));
+}
+:root[data-display-panel] .theme-toggle {
+  right: calc(100vw - var(--display-panel-x) - var(--display-panel-width) + max(14px, var(--safe-area-right)));
+  bottom: calc(100dvh - var(--display-panel-y) - var(--display-panel-height) + 14px + var(--safe-area-bottom));
+}
+:root[data-display-panel] .mobile-drawer {
+  inset: calc(var(--display-panel-y) + 64px + var(--safe-area-top)) auto auto var(--display-panel-x);
+  width: var(--display-panel-width);
+  height: calc(var(--display-panel-height) - 64px - var(--safe-area-top));
+}
+:root[data-display-panel] .lang-dd__menu {
+  position: fixed;
+  inset: auto auto calc(100dvh - var(--display-panel-y) - var(--display-panel-height) + 64px + var(--safe-area-bottom)) calc(var(--display-panel-x) + var(--page-pad));
+  width: min(560px, calc(var(--display-panel-width) - 2 * var(--page-pad)));
+  min-width: 0;
+  max-width: calc(var(--display-panel-width) - 2 * var(--page-pad));
+  max-height: min(calc(var(--display-panel-height) * .6), calc(var(--display-panel-height) - 96px - var(--safe-area-top) - var(--safe-area-bottom)));
+}
+:root[data-display-panel] .snx-search__panel {
+  max-height: min(calc(var(--display-panel-height) * .6), max(0px, calc(var(--display-panel-height) - 220px - var(--safe-area-top) - var(--safe-area-bottom))));
+}
+
+/* These are the existing reading/mobile layouts, selected by the usable
+   panel rather than the width of both displays plus the invisible hinge. */
+:root[data-display-panel] :is(.docs-layout, .cli-body, .cmd-detail-grid, .install-options, .install-after-grid, .log-entry, .manifesto-body, .credits-grid,
+  .hero-grid, .section-head, .principles-grid, .pk-hero-grid, .pk-section-head, .pk-flow, .ic-hero-grid, .ic-section-head, .ic-features, .cl-hero-grid, .cl-section-head, .cl-audit, .cl-local, .cl-local ul,
+  .p-mast-sub, .p-activity, .p-foot, .ds-primary-grid, .ds-motion-grid, .ds-panel-row, .ds-callout-row, .ds-shape-grid, .ds-principles, .ds-type-row, .ds-file-row, .ds-manifesto, .ds-ref-grid, .ds-voice-grid, .ds-anti, .ds-prov-row) {
+  grid-template-columns: minmax(0, 1fr);
+}
+:root[data-display-panel] :is(.grid12 > *, .hero-headline, .hero-device, .docs-toc, .ds-motion-cell--wide) { grid-column: 1 / -1 !important; }
+:root[data-display-panel] :is(.docs-nav, .docs-toc, .cli-sidebar, .log-side, .hero-device, .ds-nav) {
+  position: static; max-height: none; overflow: visible;
+}
+:root[data-display-panel] :is(.docs-nav, .docs-toc) { border: 0; padding: 0; }
+:root[data-display-panel] .cli-sidebar { border-inline-end: 0; border-bottom: 1px solid var(--ink); }
+:root[data-display-panel] .cli-main { padding-inline-start: 0; }
+:root[data-display-panel] .hero-device { margin-top: 24px; }
+:root[data-display-panel] .install-after-grid { gap: 24px; }
+:root[data-display-panel] .install-after-steps li { grid-template-columns: 28px minmax(0, 1fr); }
+:root[data-display-panel] .install-after-steps :is(.step-key, .step-desc) { grid-column: 2; }
+:root[data-display-panel] :is(.hero-ribbon, .metrics-strip, .pk-ribbon, .pk-keymap, .pk-metrics, .ic-ribbon, .ic-sources, .ic-metrics, .cl-ribbon, .cl-metrics, .p-stats-grid) {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+:root[data-display-panel] .p-wall-grid { grid-template-columns: minmax(0, 1fr); grid-auto-rows: auto; }
+:root[data-display-panel] .p-tile { grid-column: 1 / -1; grid-row: auto; min-height: 300px; }
+:root[data-display-panel] .p-mast-title { font-size: clamp(48px, calc(var(--display-panel-width) * .14), 240px); }
+:root[data-display-panel] .p-mast-title .w2 { margin-left: 8%; }
+:root[data-display-panel] .p-mast-title .w3 { margin-left: 14%; }
+:root[data-display-panel] .t-display { font-size: clamp(44px, calc(var(--display-panel-width) * .09), 148px); }
+:root[data-display-panel] .t-h1 { font-size: clamp(34px, calc(var(--display-panel-width) * .05), 72px); }
+:root[data-display-panel] :is(.pk-hero-title, .ic-hero-title, .cl-hero-title, .ds-mast-title) { font-size: clamp(48px, calc(var(--display-panel-width) * .09), 132px); }
+:root[data-display-panel] .docs-title { font-size: clamp(32px, calc(var(--display-panel-width) * .041), 52px); }
+:root[data-display-panel] .nf-code { font-size: clamp(112px, calc(var(--display-panel-width) * .42), 360px); }
+:root[data-display-panel] :is(.pk-cta-inner h2, .ic-cta-inner h2, .cl-cta-inner h2) { font-size: clamp(40px, calc(var(--display-panel-width) * .065), 110px); }
+
+:root[data-display-panel-compact] .topbar {
+  grid-template-columns: minmax(0, 1fr) auto;
+  height: 64px; padding: 0 var(--page-pad); align-items: center;
+}
+:root[data-display-panel-compact] .topbar-brand { border-inline-end: 0; padding-inline-end: 0; margin-inline-end: 0; }
+:root[data-display-panel-compact] :is(.topbar-nav, .topbar-right) { display: none; }
+:root[data-display-panel-compact] :is(.topbar-burger, .mobile-drawer) { display: block; }
+:root[data-display-panel-compact] .tt-label { display: none; }
+:root[data-display-panel-compact] .lang-dd__menu.is-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+:root[data-display-panel-compact] .lang-dd__menu .lang-dd__item { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+:root[data-display-panel-compact] :is(.hero-top, .pk-hero-top, .ic-hero-top, .cl-hero-top) { flex-direction: column; align-items: flex-start; gap: 6px; }
+:root[data-display-panel-compact] .footer-grid { grid-template-columns: minmax(0, 1fr); }
+:root[data-display-panel-compact] .ds-page { padding-inline: var(--page-pad); }
+/* Give decorative art its own space when the physical panel is narrow. */
+:root[data-display-panel-compact] .p-tile > :not(.tile-art) { position: relative; z-index: 2; }
+:root[data-display-panel-compact] .p-tile .tile-arrow { position: absolute; }
+:root[data-display-panel-compact] .p-tile--ds .tile-art {
+  position: relative; inset: auto; transform: none;
+  width: min(260px, 100%); height: 120px; margin-block: 16px;
+  flex-shrink: 0;
+}
+:root[data-display-panel-compact] .p-manifest-shapes { position: relative; inset: auto; height: 140px; margin-top: 40px; }
+:root[data-display-panel-compact] .p-manifest-shapes .s1 { right: 6%; top: 0; bottom: auto; width: 100px; height: 100px; }
+:root[data-display-panel-compact] .p-manifest-shapes .s2 { right: 28%; bottom: 0; width: 72px; height: 72px; }
+:root[data-display-panel-compact] .p-manifest-shapes .s3 {
+  right: 48%; top: auto; bottom: 20px;
+  border-left-width: 26px; border-right-width: 26px; border-bottom-width: 46px;
+}
+:root[data-display-panel-small] { --page-pad: max(14px, var(--safe-area-left), var(--safe-area-right)); --gutter: 12px; }
+:root[data-display-panel-small] :is(.hero-ribbon, .metrics-strip, .pk-ribbon, .pk-keymap, .pk-metrics, .ic-ribbon, .ic-sources, .ic-metrics, .cl-ribbon, .cl-metrics, .p-stats-grid, .docs-pager) { grid-template-columns: minmax(0, 1fr); }
+:root[data-display-panel-small] .docs-pager .is-next { grid-column: auto; }
+:root[data-display-panel-small] .install-steps { grid-template-columns: 40px minmax(0, 1fr); }
+:root[data-display-panel-small] .install-step-body { padding-inline-start: 14px; }
+:root[data-display-panel-small] .p-stream-row { grid-template-columns: 52px minmax(0, 1fr); row-gap: 6px; }
+:root[data-display-panel-small] .p-stream-row .r-proj { grid-column: 2; }
+:root[data-display-panel-small] .p-stream-row .r-msg { grid-column: 1 / -1; }
+:root[data-display-panel-short] :is(.topbar, .ds-nav) { position: relative; top: auto; }

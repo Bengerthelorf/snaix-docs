@@ -3,7 +3,7 @@
   background: var(--paper);
   color: var(--ink);
   min-height: 100vh;
-  overflow-x: hidden;
+  overflow-wrap: anywhere;
 }
 
 /* the masthead — a constructivist poster */
@@ -124,11 +124,13 @@
 .p-wall-grid {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  grid-auto-rows: 120px;
+  grid-auto-rows: minmax(120px, auto);
   gap: 0;
 }
 
 .p-tile {
+  min-width: 0;
+  overflow-wrap: anywhere;
   border: 1px solid var(--ink);
   margin: -1px 0 0 -1px;
   position: relative;
@@ -595,4 +597,14 @@
   }
   .p-stream-row .r-proj { grid-column: 2; justify-self: start; }
   .p-stream-row .r-msg  { grid-column: 1 / -1; }
+}
+
+/* Let metadata wrap instead of hiding it at phone and split-window widths. */
+.p-mast-top, .p-wall-head, .p-stream-head, .p-foot-base { flex-wrap: wrap; gap: 8px 16px; }
+.p-mast-sub > *, .p-foot > *, .p-stat { min-width: 0; }
+.p-stat .cap { overflow-wrap: anywhere; }
+@media (max-width: 480px) {
+  .p-stats-grid { grid-template-columns: minmax(0, 1fr); }
+  .p-stat { border-right: 0; }
+  .p-stat:last-child { border-bottom: 0; }
 }

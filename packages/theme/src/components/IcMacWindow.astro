@@ -54,7 +54,7 @@ const gallery = [
         <div class="lbl">Dock Preview</div>
         <div class="rfr">↻ Refresh Dock</div>
       </div>
-      <div class="ic-dock">
+      <div class="ic-dock" tabindex="0" role="region" aria-label="Dock icon preview">
         {dock.map((d) => (
           <div class:list={['ic-dock-icon', 'ic-icon', d.c, { 'is-sel': d.sel, dot: d.dot }]}>
             <span class="init">{d.n}</span>

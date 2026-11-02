@@ -61,3 +61,6 @@ for source provenance, backup checksums, and validation status.
 
 The [component and performance audit](docs/operations/site-quality-2026-11-02.md)
 records browser coverage, changes, and the limits of local performance results.
+
+The [whole-site responsive audit](docs/operations/responsive-coverage-2026-11-02.md)
+documents the route/viewport matrix, iPhone Duo profiles and reproducible checks.

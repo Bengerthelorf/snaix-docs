@@ -1,4 +1,5 @@
 import { nextTabIndex, readCodeTabLabel } from './layout-state';
+import { displayPanel } from './viewport-segments';
 
 const preferenceKey = 'snx-code-tabs';
 
@@ -61,6 +62,7 @@ for (const bar of document.querySelectorAll<HTMLElement>('[data-topbar]')) {
   const drawer = bar.querySelector<HTMLElement>('[data-drawer]');
   if (!button || !drawer) continue;
   const mobile = matchMedia('(max-width: 720px)');
+  const compact = () => mobile.matches || (displayPanel()?.width ?? Infinity) <= 720;
   let previousOverflow = '';
   const blocked = new Map<HTMLElement, boolean>();
   const isOpen = () => bar.hasAttribute('data-open');
@@ -80,7 +82,7 @@ for (const bar of document.querySelectorAll<HTMLElement>('[data-topbar]')) {
   };
 
   const open = () => {
-    if (!mobile.matches || isOpen()) return;
+    if (!compact() || isOpen()) return;
     previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     bar.setAttribute('data-open', '');
@@ -119,5 +121,7 @@ for (const bar of document.querySelectorAll<HTMLElement>('[data-topbar]')) {
       }
     }
   });
-  mobile.addEventListener('change', () => { if (!mobile.matches) close(); });
+  const resize = () => { if (!compact()) close(); };
+  mobile.addEventListener('change', resize);
+  document.addEventListener('snx:display-panel-change', resize);
 }

@@ -1,8 +1,8 @@
 /* ── theme toggle — floating corner switch ── */
 .theme-toggle {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: calc(20px + var(--safe-area-bottom));
+  right: max(20px, var(--safe-area-right));
   z-index: 1000;
   display: inline-flex;
   align-items: center;
@@ -45,6 +45,10 @@
 .tt-label { min-width: 32px; text-align: left; }
 
 @media (max-width: 720px) {
-  .theme-toggle { bottom: 14px; right: 14px; padding: 7px 10px; }
+  .theme-toggle { bottom: calc(14px + var(--safe-area-bottom)); right: max(14px, var(--safe-area-right)); padding: 7px 10px; }
   .tt-label { display: none; }
+}
+
+@media (pointer: coarse) {
+  .theme-toggle { min-height: 44px; min-width: 44px; justify-content: center; }
 }

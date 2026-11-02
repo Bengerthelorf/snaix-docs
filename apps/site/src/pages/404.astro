@@ -117,6 +117,7 @@ const { products } = snaixConfig.siteData;
     letter-spacing: -0.06em;
     margin: 0;
     color: var(--ink);
+    overflow-wrap: anywhere;
   }
   .nf-code .nf-dot { color: var(--red); }
   .nf-lede {
@@ -157,7 +158,7 @@ const { products } = snaixConfig.siteData;
 
   .nf-paths {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr));
     gap: 0;
     border: 1px solid var(--ink);
     background: var(--paper-pure);
@@ -174,6 +175,8 @@ const { products } = snaixConfig.siteData;
     text-decoration: none;
     color: var(--ink);
     transition: background var(--t-fast);
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
   .nf-path:hover { background: var(--ink); color: var(--paper-pure); }
   .nf-path:hover .nf-path-sub { color: var(--c-steel-3); }
@@ -204,5 +207,10 @@ const { products } = snaixConfig.siteData;
     .nf-ci  { left: -60px; bottom: 12%; width: 130px; height: 130px; }
     .nf-tr  { right: 6%; border-left-width: 44px; border-right-width: 44px; border-bottom-width: 76px; }
     .nf-top { flex-direction: column; gap: 8px; align-items: flex-start; }
+  }
+
+  @media (max-width: 480px) {
+    .nf-code { font-size: clamp(112px, 42vw, 160px); }
+    .nf-path { grid-template-columns: 22px minmax(0, 1fr); padding: 16px; }
   }
 </style>

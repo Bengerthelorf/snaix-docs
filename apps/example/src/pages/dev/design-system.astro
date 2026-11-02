@@ -64,7 +64,7 @@ const steel = ['--steel-1', '--steel-3', '--steel-5', '--steel-7', '--steel-9', 
       <div class="t-small" style="color: var(--red); margin-bottom: 14px;">§ 01 · colors</div>
 
       <h3 class="t-h3 lower" style="margin: 18px 0 10px;">surfaces</h3>
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+      <div class="demo-grid demo-colors">
         {surfaces.map(([v, desc]) => (
           <div style="display: flex; gap: 12px; align-items: center; border: 1px solid var(--border-faint); padding: 10px;">
             <div style={`width: 40px; height: 40px; background: var(${v}); border: 1px solid var(--border-faint);`} />
@@ -74,7 +74,7 @@ const steel = ['--steel-1', '--steel-3', '--steel-5', '--steel-7', '--steel-9', 
       </div>
 
       <h3 class="t-h3 lower" style="margin: 24px 0 10px;">text</h3>
-      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
+      <div class="demo-grid demo-colors">
         {text.map(([v, desc]) => (
           <div style="display: flex; gap: 12px; align-items: center; border: 1px solid var(--border-faint); padding: 10px;">
             <div style={`width: 40px; height: 40px; background: var(${v}); border: 1px solid var(--border-faint);`} />
@@ -84,7 +84,7 @@ const steel = ['--steel-1', '--steel-3', '--steel-5', '--steel-7', '--steel-9', 
       </div>
 
       <h3 class="t-h3 lower" style="margin: 24px 0 10px;">primaries</h3>
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;">
+      <div class="demo-grid demo-primaries">
         {primary.map(([v, name, use]) => (
           <div style={`background: var(${v}); color: ${v === '--yellow' ? 'var(--c-ink-0)' : '#fafaf7'}; padding: 24px; display: flex; flex-direction: column; gap: 6px; min-height: 160px;`}>
             <div class="t-h2 lower">{name}</div>
@@ -95,7 +95,7 @@ const steel = ['--steel-1', '--steel-3', '--steel-5', '--steel-7', '--steel-9', 
       </div>
 
       <h3 class="t-h3 lower" style="margin: 24px 0 10px;">neutral scale</h3>
-      <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 0;">
+      <div class="demo-grid demo-steel">
         {steel.map((v) => (
           <div style={`background: var(${v}); color: ${v === '--ink' || v === '--steel-9' || v === '--steel-7' ? 'var(--c-paper-pure)' : 'var(--c-ink-0)'}; padding: 24px 12px; min-height: 100px; display: flex; align-items: flex-end;`}>
             <code class="t-mono-sm">{v}</code>
@@ -118,7 +118,7 @@ const steel = ['--steel-1', '--steel-3', '--steel-5', '--steel-7', '--steel-9', 
 
     <section style="padding: 32px 0; border-top: 3px solid var(--ink);">
       <div class="t-small" style="color: var(--red); margin-bottom: 14px;">§ 03 · shapes</div>
-      <div style="display: flex; gap: 32px; align-items: flex-end;">
+      <div style="display: flex; flex-wrap: wrap; gap: 32px; align-items: flex-end;">
         <BauhausMark />
         <div style="display: flex; gap: 16px;">
           <div style="width: 64px; height: 64px; background: var(--red);" />
@@ -130,7 +130,7 @@ const steel = ['--steel-1', '--steel-3', '--steel-5', '--steel-7', '--steel-9', 
 
     <section style="padding: 32px 0; border-top: 3px solid var(--ink);">
       <div class="t-small" style="color: var(--red); margin-bottom: 14px;">§ 04 · motion primitives</div>
-      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px;">
+      <div class="demo-grid demo-motion">
         <Panel title="typewriter" eyebrow="text char-by-char">
           <Typewriter client:load text="bcmr cp ./src node-04:/dst" speed={28} cursor={true} />
         </Panel>
@@ -173,7 +173,7 @@ const steel = ['--steel-1', '--steel-3', '--steel-5', '--steel-7', '--steel-9', 
         <span class="chip is-yellow"><span class="dot"/>wip</span>
         <a class="link-u" href="#">link with underline</a>
       </div>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+      <div class="demo-grid demo-panels">
         <Panel title="paper panel" eyebrow="default tone">
           every card, every callout, every detail pane. paper-pure surface with
           a 1px hairline.
@@ -193,3 +193,18 @@ const steel = ['--steel-1', '--steel-3', '--steel-5', '--steel-7', '--steel-9', 
     <Footer product={product} />
   </div>
 </DefaultLayout>
+
+<style>
+  .demo-grid { display: grid; }
+  .demo-grid > :global(*) { min-width: 0; }
+  .demo-colors { grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 12px; }
+  .demo-primaries { grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr)); }
+  .demo-steel { grid-template-columns: repeat(auto-fit, minmax(min(100px, 100%), 1fr)); }
+  .demo-motion, .demo-panels { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .demo-motion { gap: 32px; }
+  .demo-panels { gap: 20px; }
+  @media (max-width: 720px) {
+    .demo-motion, .demo-panels { grid-template-columns: minmax(0, 1fr); }
+    .demo-motion :global(.demo-span2) { grid-column: auto !important; }
+  }
+</style>

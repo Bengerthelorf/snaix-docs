@@ -67,6 +67,8 @@
     left: 0; right: 0;
     max-height: 60vh;
     overflow-y: auto;
+    overscroll-behavior: contain;
+    overflow-wrap: anywhere;
     background: var(--paper-pure);
     border: 1px solid var(--ink);
     z-index: 20;
@@ -122,10 +124,19 @@
     letter-spacing: 0.06em;
   }
   .snx-search__empty { color: var(--red); }
+
+  @media (pointer: coarse) {
+    .snx-search__input { min-height: 44px; font-size: 16px; }
+  }
+  :global(:root[data-search-short] .topbar) { position: relative; top: auto; }
+  :global(:root[data-search-short]), :global(:root[data-search-short] body) {
+    scroll-padding-top: calc(8px + var(--safe-area-top));
+  }
 </style>
 
 <script>
   import { createSearchRunner, highlightExcerpt, type SearchItem } from './search-state';
+  import { displayPanel } from '../layouts/viewport-segments';
 
   for (const root of document.querySelectorAll<HTMLElement>('[data-search]')) {
     const input = root.querySelector<HTMLInputElement>('[data-search-input]');
@@ -136,12 +147,57 @@
     if (!input || !panel || !list || !empty || !hint) continue;
     let activeIdx = -1;
     let results: SearchItem[] = [];
-    const show = () => { panel.hidden = false; input.setAttribute('aria-expanded', 'true'); };
+    let positionFrame = 0;
+    let keepInputVisible = false;
+    const placePanel = (allowScroll = false) => {
+      if (panel.hidden) return;
+      const viewport = window.visualViewport;
+      const activePanel = displayPanel();
+      const bodyStyle = getComputedStyle(document.body);
+      const safeTop = Math.max(8, parseFloat(bodyStyle.paddingTop) || 0);
+      const safeBottom = Math.max(8, parseFloat(bodyStyle.paddingBottom) || 0);
+      const left = Math.max(viewport?.offsetLeft ?? 0, activePanel?.x ?? 0) + 8;
+      const top = Math.max(viewport?.offsetTop ?? 0, activePanel?.y ?? 0) + safeTop;
+      const right = Math.min((viewport?.offsetLeft ?? 0) + (viewport?.width ?? innerWidth), activePanel ? activePanel.x + activePanel.width : innerWidth) - 8;
+      const bottom = Math.min((viewport?.offsetTop ?? 0) + (viewport?.height ?? innerHeight), activePanel ? activePanel.y + activePanel.height : innerHeight) - safeBottom;
+      document.documentElement.toggleAttribute('data-search-short', bottom - top < 260);
+      let bounds = input.getBoundingClientRect();
+      if (allowScroll && (bounds.top < top || bounds.bottom > bottom || Math.max(bottom - bounds.bottom, bounds.top - top) < 50)) {
+        input.scrollIntoView({ block: 'start', behavior: 'instant' });
+        bounds = input.getBoundingClientRect();
+      }
+      if (bounds.bottom <= top || bounds.top >= bottom) { hide(); return; }
+      const below = Math.max(0, bottom - bounds.bottom - 6);
+      const above = Math.max(0, bounds.top - top - 6);
+      const openAbove = below < 44 && above > below;
+      const maxHeight = Math.min(openAbove ? above : below, (bottom - top) * .6);
+      const width = Math.min(bounds.width, right - left);
+      Object.assign(panel.style, {
+        position: 'fixed',
+        left: `${Math.max(left, Math.min(bounds.left, right - width))}px`,
+        right: 'auto',
+        width: `${width}px`,
+        top: openAbove ? 'auto' : `${bounds.bottom + 6}px`,
+        bottom: openAbove ? `${innerHeight - bounds.top + 6}px` : 'auto',
+        maxHeight: `${maxHeight}px`,
+      });
+    };
+    const schedulePosition = (allowScroll = false) => {
+      keepInputVisible ||= allowScroll;
+      cancelAnimationFrame(positionFrame);
+      positionFrame = requestAnimationFrame(() => {
+        const scroll = keepInputVisible;
+        keepInputVisible = false;
+        placePanel(scroll);
+      });
+    };
+    const show = () => { panel.hidden = false; input.setAttribute('aria-expanded', 'true'); placePanel(true); };
     const hide = () => {
       panel.hidden = true;
       activeIdx = -1;
       input.setAttribute('aria-expanded', 'false');
       input.removeAttribute('aria-activedescendant');
+      document.documentElement.removeAttribute('data-search-short');
     };
     const setActive = (index: number) => {
       activeIdx = index;
@@ -212,5 +268,10 @@
     document.addEventListener('click', (event) => {
       if (event.target instanceof Node && !root.contains(event.target)) hide();
     });
+    window.addEventListener('resize', () => schedulePosition(true));
+    window.addEventListener('scroll', () => schedulePosition(), { passive: true, capture: true });
+    window.visualViewport?.addEventListener('resize', () => schedulePosition(true));
+    window.visualViewport?.addEventListener('scroll', () => schedulePosition());
+    document.addEventListener('snx:display-panel-change', () => schedulePosition(true));
   }
 </script>
