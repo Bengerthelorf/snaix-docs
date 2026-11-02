@@ -3,8 +3,17 @@
    `pagefind --site dist`) and is loaded only on demand (first keystroke).
    desktop: a floating pill at top-right of docs content. mobile: full-
    width below the topbar. Cmd/Ctrl+K focuses it from anywhere. */
+import { labelsFor } from './ui-labels';
+
+interface Props {
+  locale?: string;
+  product?: { slug: string; title: string };
+}
+const { locale = 'en', product } = Astro.props;
+const labels = labelsFor(locale).search;
+const resultId = `docs-search-${product?.slug ?? 'all'}-results`;
 ---
-<div class="snx-search" data-search>
+<div class="snx-search" data-search data-locale={locale} data-product={product?.slug}>
   <label class="snx-search__label">
     <span class="snx-search__kbd" aria-hidden="true">⌘K</span>
     <input
@@ -12,19 +21,27 @@
       role="combobox"
       aria-autocomplete="list"
       aria-expanded="false"
-      aria-controls="docs-search-results"
+      aria-controls={resultId}
       class="snx-search__input"
-      placeholder="search docs"
-      aria-label="search docs"
+      placeholder={labels.placeholder}
+      aria-label={labels.placeholder}
       autocomplete="off"
       spellcheck="false"
       data-search-input
     />
   </label>
+  {product && <label class="snx-search__scope">
+    <span>{labels.scope}</span>
+    <select aria-label={labels.scope} data-search-scope>
+      <option value="product">{labels.currentProduct}: {product.title}</option>
+      <option value="all">{labels.allProducts}</option>
+    </select>
+  </label>}
   <div class="snx-search__panel" data-search-panel hidden>
-    <ul id="docs-search-results" class="snx-search__results" role="listbox" aria-label="search results" data-search-results></ul>
-    <div class="snx-search__empty" data-search-empty hidden>no matches.</div>
-    <div class="snx-search__hint" role="status" data-search-hint>type to search · esc to close</div>
+    <ul id={resultId} class="snx-search__results" role="listbox" aria-label={labels.results} data-search-results></ul>
+    <div class="snx-search__empty" data-search-empty hidden>{labels.empty}</div>
+    <div class="snx-search__hint" role="status" data-search-hint>{labels.hint}</div>
+    <div class="snx-search__hint" role="status" data-search-scope-note hidden>{labels.scopeFallback}</div>
   </div>
 </div>
 
@@ -60,6 +77,19 @@
   }
   .snx-search__input::placeholder { color: var(--steel-5); }
   .snx-search__input:focus { background: var(--paper); }
+  .snx-search__scope {
+    display: grid;
+    gap: 4px;
+    margin-top: 8px;
+    font-size: 10px;
+    color: var(--fg-muted);
+  }
+  .snx-search__scope select {
+    width: 100%; min-width: 0; max-width: 100%;
+    padding: 6px; border: 1px solid var(--steel-3);
+    background: var(--paper-pure); color: var(--ink); font: inherit;
+  }
+  .snx-search__scope select:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 
   .snx-search__panel {
     position: absolute;
@@ -127,6 +157,7 @@
 
   @media (pointer: coarse) {
     .snx-search__input { min-height: 44px; font-size: 16px; }
+    .snx-search__scope select { min-height: 44px; font-size: 16px; }
   }
   :global(:root[data-search-short] .topbar) { position: relative; top: auto; }
   :global(:root[data-search-short]), :global(:root[data-search-short] body) {
@@ -137,6 +168,7 @@
 <script>
   import { createSearchRunner, highlightExcerpt, type SearchItem } from './search-state';
   import { displayPanel } from '../layouts/viewport-segments';
+  import { labelsFor } from './ui-labels';
 
   for (const root of document.querySelectorAll<HTMLElement>('[data-search]')) {
     const input = root.querySelector<HTMLInputElement>('[data-search-input]');
@@ -144,6 +176,9 @@
     const list = root.querySelector<HTMLUListElement>('[data-search-results]');
     const empty = root.querySelector<HTMLElement>('[data-search-empty]');
     const hint = root.querySelector<HTMLElement>('[data-search-hint]');
+    const scopeControl = root.querySelector<HTMLSelectElement>('[data-search-scope]');
+    const scopeNote = root.querySelector<HTMLElement>('[data-search-scope-note]');
+    const labels = labelsFor(root.dataset.locale).search;
     if (!input || !panel || !list || !empty || !hint) continue;
     let activeIdx = -1;
     let results: SearchItem[] = [];
@@ -162,22 +197,24 @@
       const bottom = Math.min((viewport?.offsetTop ?? 0) + (viewport?.height ?? innerHeight), activePanel ? activePanel.y + activePanel.height : innerHeight) - safeBottom;
       document.documentElement.toggleAttribute('data-search-short', bottom - top < 260);
       let bounds = input.getBoundingClientRect();
-      if (allowScroll && (bounds.top < top || bounds.bottom > bottom || Math.max(bottom - bounds.bottom, bounds.top - top) < 50)) {
+      const initialAnchor = root.getBoundingClientRect();
+      if (allowScroll && (bounds.top < top || bounds.bottom > bottom || Math.max(bottom - initialAnchor.bottom, bounds.top - top) < 50)) {
         input.scrollIntoView({ block: 'start', behavior: 'instant' });
         bounds = input.getBoundingClientRect();
       }
       if (bounds.bottom <= top || bounds.top >= bottom) { hide(); return; }
-      const below = Math.max(0, bottom - bounds.bottom - 6);
+      const anchor = root.getBoundingClientRect();
+      const below = Math.max(0, bottom - anchor.bottom - 6);
       const above = Math.max(0, bounds.top - top - 6);
       const openAbove = below < 44 && above > below;
       const maxHeight = Math.min(openAbove ? above : below, (bottom - top) * .6);
-      const width = Math.min(bounds.width, right - left);
+      const width = Math.min(anchor.width, right - left);
       Object.assign(panel.style, {
         position: 'fixed',
-        left: `${Math.max(left, Math.min(bounds.left, right - width))}px`,
+        left: `${Math.max(left, Math.min(anchor.left, right - width))}px`,
         right: 'auto',
         width: `${width}px`,
-        top: openAbove ? 'auto' : `${bounds.bottom + 6}px`,
+        top: openAbove ? 'auto' : `${anchor.bottom + 6}px`,
         bottom: openAbove ? `${innerHeight - bounds.top + 6}px` : 'auto',
         maxHeight: `${maxHeight}px`,
       });
@@ -223,8 +260,8 @@
       list.replaceChildren();
       empty.hidden = !state.query || state.loading || state.error || results.length > 0;
       hint.hidden = !!state.query && !state.loading && !state.error;
-      hint.textContent = state.error ? 'search unavailable. type again to retry.'
-        : state.loading ? 'searching…' : 'type to search · esc to close';
+      hint.textContent = state.error ? labels.error : state.loading ? labels.loading : labels.hint;
+      if (scopeNote) scopeNote.hidden = !state.scopeFallback;
       results.forEach((result, index) => {
         const li = document.createElement('li');
         li.setAttribute('role', 'presentation');
@@ -236,7 +273,7 @@
         link.setAttribute('aria-selected', 'false');
         const path = document.createElement('span');
         path.className = 'snx-search__result-path';
-        path.textContent = `${result.url.split('/')[1] ?? ''} / ${result.meta?.section ?? 'docs'}`;
+        path.textContent = [result.meta?.productTitle ?? result.meta?.product, result.meta?.section ?? labels.docs].filter(Boolean).join(' / ');
         const title = document.createElement('span');
         title.className = 'snx-search__result-title';
         title.textContent = result.meta?.title ?? result.url;
@@ -249,14 +286,18 @@
         list.append(li);
       });
     });
+    const runSearch = () => search(input.value.trim(), {
+      product: scopeControl?.value === 'product' ? root.dataset.product : undefined,
+    });
     input.addEventListener('focus', show);
-    input.addEventListener('input', () => { show(); void search(input.value.trim()); });
+    input.addEventListener('input', () => { show(); void runSearch(); });
+    scopeControl?.addEventListener('change', () => { show(); void runSearch(); });
     document.addEventListener('keydown', (event) => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
         event.preventDefault(); input.focus(); input.select();
-      } else if (document.activeElement === input) {
-        if (event.key === 'Escape') { hide(); input.blur(); }
-        else if (!panel.hidden && results.length > 0) {
+      } else if (root.contains(document.activeElement)) {
+        if (event.key === 'Escape') { hide(); if (document.activeElement instanceof HTMLElement) document.activeElement.blur(); }
+        else if (document.activeElement === input && !panel.hidden && results.length > 0) {
           if (event.key === 'ArrowDown') { event.preventDefault(); setActive((activeIdx + 1) % results.length); }
           else if (event.key === 'ArrowUp') { event.preventDefault(); setActive((activeIdx - 1 + results.length) % results.length); }
           else if (event.key === 'Enter' && activeIdx >= 0) {

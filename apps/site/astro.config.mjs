@@ -6,7 +6,7 @@ import bcmrDocsConfig from '../../content/bcmr/docs/docs.config.ts';
 import clauditDocsConfig from '../../content/claudit/docs/docs.config.ts';
 import pikpaktuiDocsConfig from '../../content/pikpaktui/docs/docs.config.ts';
 import iconchangerDocsConfig from '../../content/iconchanger/docs/docs.config.ts';
-import { fetchProductMeta, fetchRecentCommits, readBuildInfo } from './src/data/fetch-github.ts';
+import { fetchProductMeta, fetchRecentCommits, readBuildInfo, sumProductStars } from './src/data/fetch-github.ts';
 
 const SITE_REPO = 'Bengerthelorf/snaix-docs';
 import {
@@ -44,7 +44,7 @@ const productsData = [
 ];
 
 const bcmrMeta = productMetas[0];
-const totalStars = productMetas.reduce((s, m) => s + (m.stars ?? 0), 0);
+const totalStars = sumProductStars(productMetas);
 const buildInfo = readBuildInfo();
 
 const ticker = [
@@ -120,6 +120,9 @@ const bcmrProduct = {
   githubUrl: 'https://github.com/Bengerthelorf/bcmr',
   repo: 'Bengerthelorf/bcmr',
   productRoot: '/bcmr',
+  favicon: '/icons/bcmr.svg',
+  ogImage: '/og/bcmr.png',
+  license: bcmrMeta.license,
   accent: 'var(--ink)',
   install: bcmrDocsConfig.install,
   sections: bcmrDocsConfig.sections,
@@ -161,6 +164,9 @@ const clauditProduct = {
   githubUrl: 'https://github.com/Bengerthelorf/Claudit',
   repo: 'Bengerthelorf/Claudit',
   productRoot: '/claudit',
+  favicon: '/icons/claudit.svg',
+  ogImage: '/og/claudit.png',
+  license: clauditMeta.license,
   accent: 'var(--blue)',
   install: clauditDocsConfig.install,
   sections: clauditDocsConfig.sections,
@@ -183,6 +189,9 @@ const pikpaktuiProduct = {
   githubUrl: 'https://github.com/Bengerthelorf/pikpaktui',
   repo: 'Bengerthelorf/pikpaktui',
   productRoot: '/pikpaktui',
+  favicon: '/icons/pikpaktui.svg',
+  ogImage: '/og/pikpaktui.png',
+  license: pikpaktuiMeta.license,
   accent: 'var(--yellow)',
   install: pikpaktuiDocsConfig.install,
   sections: pikpaktuiDocsConfig.sections,
@@ -213,6 +222,9 @@ const iconchangerProduct = {
   githubUrl: 'https://github.com/Bengerthelorf/macIconChanger',
   repo: 'Bengerthelorf/macIconChanger',
   productRoot: '/iconchanger',
+  favicon: '/icons/iconchanger.svg',
+  ogImage: '/og/iconchanger.png',
+  license: iconchangerMeta.license,
   accent: 'var(--red)',
   install: iconchangerDocsConfig.install,
   sections: iconchangerDocsConfig.sections,
@@ -268,6 +280,12 @@ export default defineConfig({
   trailingSlash: 'ignore',
   integrations: [
     snaixDocs({
+      brand: {
+        name: 'snaix.homes',
+        description: 'Open-source tools for files, cloud storage, macOS icons and Claude usage. Explore the tools, try the workbench and read the docs.',
+        favicon: '/icons/snaix.svg',
+        ogImage: '/og/snaix.png',
+      },
       products: [bcmrProduct, clauditProduct, pikpaktuiProduct, iconchangerProduct],
       buildStamp: buildInfo,
       markdown: { math: true, mermaid: true },

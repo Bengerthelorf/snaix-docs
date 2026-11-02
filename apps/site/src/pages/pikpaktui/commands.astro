@@ -1,4 +1,5 @@
 ---
+import WorkbenchEntry from '../../components/workbench/WorkbenchEntry.astro';
 import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
 import TopBar from '@snaix/docs-theme/components/TopBar.astro';
 import Footer from '@snaix/docs-theme/components/Footer.astro';
@@ -21,6 +22,8 @@ const spec: CliSpec = { groups: pikpaktuiCommandGroups, shellLabel };
       githubHref={pikpaktui.githubUrl}
       nav={pikpaktui.nav()}
     />
+
+    <WorkbenchEntry href="/workbench/setup/?tool=pikpaktui" label="Find your PikPak setup" description="Installation steps and troubleshooting for your system." />
 
     <section class="cli-hero rule-b">
       <div class="cli-hero-grid grid12">

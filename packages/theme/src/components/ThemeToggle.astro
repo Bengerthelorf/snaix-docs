@@ -1,34 +1,43 @@
 ---
 // Keep the shared layout native so static documentation needs no React renderer.
+import { labelsFor } from './ui-labels';
+
+interface Props { locale?: string; }
+const { locale = 'en' } = Astro.props;
+const labels = labelsFor(locale).theme;
 ---
 <button
   type="button"
   class="theme-toggle"
-  title="switch to dark"
-  aria-label="dark theme"
+  title={labels.switchToDark}
+  aria-label={labels.darkTheme}
   aria-pressed="false"
   data-theme-toggle
+  data-locale={locale}
   data-pagefind-ignore
 >
   <span class="tt-track" aria-hidden="true">
     <span class="tt-sq" />
     <span class="tt-ci" />
   </span>
-  <span class="tt-label">light</span>
+  <span class="tt-label">{labels.light}</span>
 </button>
 
 <script>
   import { readTheme, toggleTheme } from './theme.ts';
+  import { labelsFor } from './ui-labels';
 
   function syncThemeControls() {
     const isDark = readTheme(document.documentElement) === 'dark';
     for (const button of document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]')) {
+      const labels = labelsFor(button.dataset.locale ?? document.documentElement.lang).theme;
       button.setAttribute('aria-pressed', String(isDark));
-      button.title = isDark ? 'switch to light' : 'switch to dark';
+      button.title = isDark ? labels.switchToLight : labels.switchToDark;
+      button.setAttribute('aria-label', labels.darkTheme);
       button.querySelector('.tt-sq')?.classList.toggle('is-dark', isDark);
       button.querySelector('.tt-ci')?.classList.toggle('is-dark', isDark);
       const label = button.querySelector('.tt-label');
-      if (label) label.textContent = isDark ? 'dark' : 'light';
+      if (label) label.textContent = isDark ? labels.dark : labels.light;
     }
   }
 

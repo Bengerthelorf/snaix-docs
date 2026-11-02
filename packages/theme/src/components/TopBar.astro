@@ -1,5 +1,6 @@
 ---
 import { withBase } from '../utils/href.ts';
+import { snaixConfig } from 'virtual:snaix-config';
 
 interface NavItem {
   id: string;
@@ -26,8 +27,9 @@ const DEFAULT_NAV: NavItem[] = [
   { id: 'about', label: 'manifesto', href: '/about' },
 ];
 
+const siteBrand = snaixConfig.brand?.name ?? 'Documentation';
 const {
-  brand = 'bcmr',
+  brand = siteBrand,
   version = '',
   current = 'home',
   portalHref = '/',
@@ -36,7 +38,7 @@ const {
 } = Astro.props;
 ---
 <header class="topbar" data-topbar>
-  <a href={portalHref} class="topbar-brand" title="back to snaix.homes">
+  <a href={portalHref} class="topbar-brand" title={`back to ${siteBrand}`}>
     <svg class="topbar-logo" viewBox="0 0 40 40" aria-hidden="true">
       <slot name="logo">
         <rect x="0" y="0" width="20" height="20" fill="var(--red)" />

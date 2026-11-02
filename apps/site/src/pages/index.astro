@@ -1,207 +1,56 @@
 ---
+import ArrowUpRight from '../components/ArrowUpRight.astro';
 import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
 import PortalTile from '@snaix/docs-theme/components/portal/PortalTile.astro';
-import {
-  BlockReveal,
-  Tally,
-  Typewriter,
-} from '@snaix/docs-theme';
 import { snaixConfig } from 'virtual:snaix-config';
+import '../styles/portal-workbench.css';
 
-const { stats, build, ticker, activity, edition, products } = snaixConfig.siteData;
-
+const { stats, build, activity, products } = snaixConfig.siteData;
+const tools = products.filter(p => p.variant !== 'ds');
 const year = new Date().getFullYear();
+const experiences = [
+  { name: 'Build a command', product: 'bcmr', href: '/workbench/commands/', description: 'Your paths. Your options. A command ready to copy.', symbol: '>_' },
+  { name: 'Try an icon', product: 'IconChanger', href: '/workbench/icons/', description: 'Bring an image. See it on an app, a folder and the Dock.', symbol: '◈' },
+  { name: 'Explore usage', product: 'Claudit', href: '/workbench/usage/', description: 'Follow the cost and tokens through example sessions.', symbol: '▥' },
+];
 ---
-<DefaultLayout title="snaix.homes">
-  <div class="portal">
-    <header class="p-mast">
-      <div class="p-mast-top">
-        <div class="mast-brand">snaix <b>//</b> personal index</div>
-        <div>{edition} · {build.date}</div>
-        <div>open source</div>
-      </div>
-
-      <h1 class="p-mast-title">
-        <span class="w1"><BlockReveal client:visible delay={100} duration={520}>four</BlockReveal></span>
-        <span class="w2"><BlockReveal client:visible delay={400} duration={520} color="var(--red)">tools</BlockReveal></span>
-        <span class="w3"><BlockReveal client:visible delay={700} duration={520} color="var(--blue)">one hand</BlockReveal><span class="slash">/</span></span>
-      </h1>
-
-      <div class="p-mast-sub">
-        <div class="slot">
-          <span class="t-small">01 — what this is</span>
-          open source tools across cli, tui, and macos native — with flutter on the way. permissively licensed. source code in the open.
-        </div>
-        <div class="slot">
-          <span class="t-small">02 — by the numbers</span>
-          <div class="kv">
-            <div><span>tools</span> · {stats.shippingTools} shipping</div>
-            <div><span>stars</span> · <Tally client:visible to={stats.githubStars} duration={1200} /></div>
-            <div><span>docs</span> · {stats.locales} languages</div>
-            <div><span>licence</span> · mit / apache</div>
-          </div>
-        </div>
-        <div class="slot">
-          <span class="t-small">03 — get started</span>
-          <div class="kv" style="margin-bottom: 12px;">
-            <Typewriter client:visible text="$ brew install Bengerthelorf/tap/bcmr" speed={22} delay={800} cursor={false} />
-          </div>
-          <a href="#wall" class="btn-block" style="padding: 10px 16px; font-size: 11px;">↳ pick a tool</a>
-        </div>
-      </div>
-      <div class="p-mast-shapes" aria-hidden="true">
-        <div class="pms-sq" />
-        <div class="pms-ci" />
-        <div class="pms-tr" />
-        <div class="pms-bar1" />
-        <div class="pms-bar2" />
-      </div>
+<DefaultLayout title="snaix.homes — small tools, real work" description="Open-source tools for file transfers, cloud storage, macOS icons and Claude usage. Try a tool in the workbench, find your setup and read the docs.">
+  <div class="portal portal-workshop">
+    <a class="portal-skip" href="#main">Skip to content</a>
+    <header class="pw-header">
+      <a class="pw-brand" href="/" aria-label="snaix.homes home"><svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true"><rect width="14" height="14" fill="var(--red)"/><circle cx="24" cy="8" r="8" fill="var(--blue)"/><path d="M0 32 16 16v16Z" fill="var(--ink)"/><rect x="18" y="18" width="14" height="14" fill="var(--yellow)"/></svg>snaix.homes</a>
+      <nav aria-label="Main"><a href="#tools">Tools</a><a href="/workbench/">Workbench</a><a href="/about/">About</a><a href="https://github.com/Bengerthelorf">GitHub <ArrowUpRight /></a></nav>
     </header>
-
-    <div class="p-ticker">
-      <div class="p-ticker-track">
-        {[...ticker, ...ticker, ...ticker].map((it) => (
-          <Fragment><span>{it}</span><span class="sep">●</span></Fragment>
-        ))}
-      </div>
-    </div>
-
-    <section class="p-wall" id="wall">
-      <div class="p-wall-head">
-        <h2>the <em>wall</em>.</h2>
-        <div class="t-mono-sm" style="color: var(--steel-5);">§ 01 · products</div>
-      </div>
-
-      <div class="p-wall-grid">
-        {products.map((p) => (
-          <PortalTile
-            variant={p.variant}
-            n={p.eyebrow}
-            name={p.name}
-            tag={p.tag}
-            description={p.description}
-            metaLeft={p.metaLeft}
-            metaRight={p.metaRight}
-            href={p.href}
-          />
-        ))}
-      </div>
-    </section>
-
-    <section class="p-activity">
-      <div class="p-activity-left">
-        <div class="t-small" style="color: var(--red); margin-bottom: 12px; display: block;">§ 02 · activity</div>
-        <h2 class="lower">
-          <BlockReveal client:visible>shipping</BlockReveal><br/>
-          <BlockReveal client:visible delay={200} color="var(--blue)">out loud.</BlockReveal>
-        </h2>
-        <p>
-          no roadmap theatre. changes go in as they land. below is a
-          live feed of the most recent commits across the four product
-          repos and the site itself — pulled at build time.
-        </p>
-        <div style="margin-top: 30px; display: flex; gap: 10px;">
-          <span class="chip is-red"><span class="dot"/>rec</span>
-          <span class="chip is-yellow"><span class="dot"/>wip</span>
-          <span class="chip is-blue"><span class="dot"/>shipped</span>
+    <main id="main" tabindex="-1">
+      <section class="pw-hero">
+        <div class="pw-hero-main">
+          <p class="pw-intro">Independent software. Open by design.</p>
+          <h1>small tools.<br />real work<span class="pw-period">.</span></h1>
+          <p class="pw-lead">Move files with confidence. Bring your cloud to the terminal. Make your Mac your own. Know where your tokens go.</p>
+          <div class="pw-actions"><a class="pw-primary" href="/workbench/">Open the workbench <span aria-hidden="true"><ArrowUpRight /></span></a><a class="pw-secondary" href="#tools">Find your tool <span aria-hidden="true">↓</span></a></div>
+          <div class="pw-facts"><span><strong>{stats.shippingTools}</strong> open-source tools</span>{stats.githubStars !== undefined && <span><strong>{stats.githubStars.toLocaleString('en-US')}</strong> GitHub stars</span>}<span>CLI · TUI · macOS</span></div>
         </div>
-      </div>
-
-      <div class="p-stream">
-        <div class="p-stream-head">
-          <span><span class="live-dot" />live feed</span>
-          <span>updated {build.date}</span>
-        </div>
-        {activity.map((r) => (
-          <div class="p-stream-row">
-            <span class="r-time">{r.time}</span>
-            <span class={`r-proj ${r.kind}`}>{r.proj}</span>
-            <span class="r-msg" set:html={r.msg} />
-          </div>
-        ))}
-      </div>
-    </section>
-
-    <section class="p-stats">
-      <h2 class="p-stats-title">
-        <span class="u1">small</span> tools.<br/>
-        <span class="u2">big</span> years.
-      </h2>
-      <div class="p-stats-grid">
-        <div class="p-stat">
-          <div class="num"><Tally client:visible to={stats.shippingTools} duration={800} /></div>
-          <div class="cap">shipping tools</div>
-          <span class="accent-mark" />
-        </div>
-        <div class="p-stat">
-          <div class="num"><Tally client:visible to={stats.githubStars} duration={1400} /></div>
-          <div class="cap">github stars</div>
-          <span class="accent-mark" />
-        </div>
-        <div class="p-stat">
-          <div class="num"><Tally client:visible to={stats.locales} duration={1000} /></div>
-          <div class="cap">locales · across tools</div>
-          <span class="accent-mark" />
-        </div>
-        <div class="p-stat">
-          <div class="num"><Tally client:visible to={stats.telemetry} duration={600} /></div>
-          <div class="cap">zero telemetry</div>
-          <span class="accent-mark" />
-        </div>
-      </div>
-    </section>
-
-    <section class="p-manifest">
-      <div class="p-manifest-shapes" aria-hidden="true">
-        <div class="s1" />
-        <div class="s2" />
-        <div class="s3" />
-      </div>
-      <div class="t-small" style="color: var(--yellow); margin-bottom: 18px;">§ 03 · position</div>
-      <div class="p-manifest-lines">
-        <span class="hl-y">software</span> you can read.<br/>
-        tools that <span class="hl-r">don't phone home.</span><br/>
-        interfaces that<br/>
-        <span class="hl-b">respect your hands.</span>
-      </div>
-      <div class="p-manifest-sig">
-        § snaix.homes · 2023→
-      </div>
-    </section>
-
-    <footer class="p-foot">
-      <div class="p-foot-brand">
-        <div class="logo" aria-hidden="true" />
-        <div style="margin-top: 12px; font-size: 20px; font-weight: 700; letter-spacing: -0.01em;">snaix.homes</div>
-        <div class="t-mono-sm" style="color: var(--steel-5); margin-top: 6px;">small tools. big years.</div>
-      </div>
-      <div class="p-foot-col">
-        <span class="t-small">tools</span>
-        <ul>
-          {products.map((p) => (
-            <li><a href={p.href}>{p.name}</a></li>
-          ))}
-        </ul>
-      </div>
-      <div class="p-foot-col">
-        <span class="t-small">learn</span>
-        <ul>
-          {products.filter((p) => p.variant !== 'ds').map((p) => (
-            <li><a href={`${p.href}docs/getting-started`}>{p.name} docs</a></li>
-          ))}
-        </ul>
-      </div>
-      <div class="p-foot-col">
-        <span class="t-small">elsewhere</span>
-        <ul>
-          <li><a href="https://github.com/Bengerthelorf">github ↗︎</a></li>
-          <li><a href="/about/">manifesto</a></li>
-        </ul>
-      </div>
-    </footer>
-    <div class="p-foot-base">
-      <span>© 2023–{year} snaix · all open source</span>
-      <span>{edition} · built {build.date} · sha {build.sha}</span>
-    </div>
+        <a class="pw-terminal" href="/workbench/commands/" aria-label="Open the bcmr command builder">
+          <div class="pw-terminal-bar"><span class="pw-terminal-dot"></span><span>bcmr / command builder</span><span aria-hidden="true"><ArrowUpRight /></span></div>
+          <div class="pw-terminal-content"><span class="pw-terminal-comment">A backup, with a check on every byte.</span><code><span class="pw-prompt">$</span> bcmr copy \
+    --recursive \
+    --verify \
+    -- './photos/' './backup/'</code><div class="pw-terminal-rule"></div><div class="pw-terminal-meta"><span>Source → destination</span><strong>You set the options.</strong></div></div>
+          <div class="pw-terminal-bottom"><span>Build your own command</span><span aria-hidden="true">→</span></div>
+        </a>
+      </section>
+      <section class="p-wall" id="tools" aria-labelledby="tools-title">
+        <div class="pw-section-head"><div><p class="pw-intro">The collection</p><h2 id="tools-title">Four tools. A common thread.</h2></div><p>Built for everyday work.<br />Source you can read, interfaces you can learn.</p></div>
+        <div class="p-wall-grid">{tools.map(p => <PortalTile variant={p.variant} n={p.eyebrow} name={p.name} tag={p.tag} description={p.description} metaLeft={p.metaLeft} metaRight={p.metaRight} href={p.href} />)}</div>
+        <div class="pw-tools-foot"><span>Not sure where to start?</span><a href="/workbench/setup/">Find the right installation steps →</a></div>
+      </section>
+      <section class="pw-experiences" aria-labelledby="experience-title">
+        <div class="pw-section-head"><div><p class="pw-intro">The workbench</p><h2 id="experience-title">Get a feel for it.</h2></div><a class="pw-text-link" href="/workbench/">Explore the workbench <ArrowUpRight /></a></div>
+        <div class="pw-experience-grid">{experiences.map(e => <a href={e.href}><div class="pw-experience-top"><span class="pw-experience-symbol" aria-hidden="true">{e.symbol}</span><span>{e.product}</span></div><h3>{e.name}</h3><p>{e.description}</p><span class="pw-experience-arrow" aria-hidden="true"><ArrowUpRight /></span></a>)}</div>
+      </section>
+      <section class="pw-activity" aria-labelledby="activity-title"><div><p class="pw-intro">From the repositories</p><h2 id="activity-title">Work in the open.</h2><p>Recent commits across the tools and this site. Captured at build time.</p><a class="pw-text-link" href="/workbench/status/">Versions, docs & sources <ArrowUpRight /></a></div><div class="pw-stream"><div class="pw-stream-head"><span>Latest activity</span><span>Built {build.date}</span></div>{activity.map(r => <div class="pw-stream-row"><span class="pw-time">{r.time}</span><span class={`pw-project ${r.kind}`}>{r.proj}</span><span class="pw-message" set:html={r.msg} /></div>)}</div></section>
+    </main>
+    <footer class="pw-footer"><div><a class="pw-footer-brand" href="/">snaix.homes</a><p>Small tools. In your hands.</p></div><div><span class="pw-footer-label">Tools</span>{tools.map(p => <a href={p.href}>{p.name}</a>)}</div><div><span class="pw-footer-label">Explore</span><a href="/workbench/">Workbench</a><a href="/workbench/setup/">Setup guide</a><a href="/workbench/status/">Project overview</a><a href="/design-system/">Design language</a></div><div><span class="pw-footer-label">Elsewhere</span><a href="/about/">Manifesto</a><a href="https://github.com/Bengerthelorf">GitHub <ArrowUpRight /></a></div></footer>
+    <div class="pw-colophon"><span>© 2023–{year} snaix · open source</span><span>Built {build.date} · {build.sha}</span></div>
   </div>
 </DefaultLayout>

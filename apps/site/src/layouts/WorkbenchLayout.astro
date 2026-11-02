@@ -1,0 +1,49 @@
+---
+import ArrowUpRight from '../components/ArrowUpRight.astro';
+import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
+import '../styles/workbench.css';
+
+interface Props {
+  title: string;
+  description: string;
+  current: 'overview' | 'commands' | 'icons' | 'usage' | 'setup' | 'status';
+  eyebrow?: string;
+}
+const { title, description, current, eyebrow = 'snaix workbench' } = Astro.props;
+const navigation = [
+  ['overview', 'Explore', '/workbench/'],
+  ['commands', 'Command builder', '/workbench/commands/'],
+  ['icons', 'Icon studio', '/workbench/icons/'],
+  ['usage', 'Usage demo', '/workbench/usage/'],
+  ['setup', 'Setup guide', '/workbench/setup/'],
+  ['status', 'Project overview', '/workbench/status/'],
+];
+---
+<DefaultLayout title={`${title} · snaix`} description={description}>
+  <div class="wb-shell">
+    <a class="wb-skip" href="#workbench-content">Skip to content</a>
+    <header class="wb-header">
+      <a class="wb-brand" href="/" aria-label="snaix.homes home">
+        <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true"><rect width="14" height="14" fill="var(--red)"/><circle cx="24" cy="8" r="8" fill="var(--blue)"/><path d="M0 32 16 16v16Z" fill="var(--ink)"/><rect x="18" y="18" width="14" height="14" fill="var(--yellow)"/></svg>
+        <span>snaix<span class="wb-brand-separator">/</span>workbench</span>
+      </a>
+      <a class="wb-home-link" href="/">All tools <span aria-hidden="true"><ArrowUpRight /></span></a>
+    </header>
+    <nav class="wb-nav" aria-label="Workbench">
+      {navigation.map(([id, label, href]) => <a href={href} aria-current={current === id ? 'page' : undefined}>{label}</a>)}
+    </nav>
+    <main id="workbench-content" tabindex="-1">
+      <div class="wb-hero">
+        <p class="wb-kicker">{eyebrow}</p>
+        <h1>{title}</h1>
+        <p class="wb-description">{description}</p>
+      </div>
+      <slot />
+    </main>
+    <footer class="wb-footer">
+      <a href="/">snaix.homes</a>
+      <span>Small tools. Open source.</span>
+      <a href="https://github.com/Bengerthelorf/snaix-docs">View source</a>
+    </footer>
+  </div>
+</DefaultLayout>

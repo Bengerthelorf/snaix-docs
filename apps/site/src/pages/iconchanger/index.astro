@@ -1,4 +1,5 @@
 ---
+import WorkbenchEntry from '../../components/workbench/WorkbenchEntry.astro';
 import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
 import TopBar from '@snaix/docs-theme/components/TopBar.astro';
 import Footer from '@snaix/docs-theme/components/Footer.astro';
@@ -40,6 +41,8 @@ const sources = [
     >
       <Fragment slot="logo">
         <rect x="2"  y="2"  width="17" height="17" rx="4" fill="var(--red)" />
+
+    <WorkbenchEntry href="/workbench/icons/" label="Try the icon studio" description="Preview an image on an app, a folder and the Dock." />
         <rect x="21" y="2"  width="17" height="17" rx="4" fill="var(--yellow)" />
         <rect x="2"  y="21" width="17" height="17" rx="4" fill="var(--blue)" />
         <rect x="21" y="21" width="17" height="17" rx="4" fill="var(--ink)" />

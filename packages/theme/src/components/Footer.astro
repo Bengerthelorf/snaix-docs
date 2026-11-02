@@ -16,6 +16,7 @@ interface Props {
 const { product, portalHref = '/', locale = 'en', languages = [] } = Astro.props;
 
 const brand = product.title;
+const siteBrand = snaixConfig.brand?.name ?? 'Documentation';
 const blurb = Astro.props.blurb ?? (product.tagline ? `${product.tagline}. ` : '');
 
 const otherProducts = snaixConfig.siteData.products.filter((p) => p.slug !== product.slug);
@@ -41,14 +42,15 @@ const ver = String(product.version ?? '').replace(/^v/, '');
 const built = stamp.date ?? product.releaseDate ?? '';
 
 const year = new Date().getFullYear();
-const licenseTag = stamp.sig ? `${stamp.sig.split(':')[0]} licensed` : 'mit license';
+const license = product.license?.trim();
+const licenseTag = license && !/^(?:noassertion|unknown|none)$/i.test(license) ? `${license} license` : undefined;
 ---
 <footer class="footer">
   <div class="footer-grid grid12">
     <div style="grid-column: span 4;">
       <div class="t-small">{brand}</div>
       <p class="t-body" style="margin-top: 8px; color: var(--steel-7);">
-        {blurb}part of <a href={portalHref} class="link-u">snaix.homes</a>.
+        {blurb}part of <a href={portalHref} class="link-u">{siteBrand}</a>.
       </p>
     </div>
     <div style="grid-column: span 2;">
@@ -60,7 +62,7 @@ const licenseTag = stamp.sig ? `${stamp.sig.split(':')[0]} licensed` : 'mit lice
         <li><a href={changelogHref}>changelog</a></li>
       </ul>
     </div>
-    <div style="grid-column: span 2;">
+    {otherProducts.length > 0 && <div style="grid-column: span 2;">
       <div class="t-small">other tools</div>
       <ul class="footer-list">
         {otherProducts.map((p) => (
@@ -68,7 +70,7 @@ const licenseTag = stamp.sig ? `${stamp.sig.split(':')[0]} licensed` : 'mit lice
         ))}
         <li><a href={portalHref}>all →</a></li>
       </ul>
-    </div>
+    </div>}
     <div style="grid-column: span 2;">
       <div class="t-small">repo</div>
       <ul class="footer-list">
@@ -98,7 +100,7 @@ const licenseTag = stamp.sig ? `${stamp.sig.split(':')[0]} licensed` : 'mit lice
   )}
 
   <div class="footer-baseline">
-    <div class="t-mono-sm">© 2023–{year} snaix · {licenseTag}</div>
+    <div class="t-mono-sm">© {year} {siteBrand}{licenseTag && ` · ${licenseTag}`}</div>
     <div class="footer-marks" aria-hidden="true">
       <span class="mk mk-sq" style="background: var(--red);" />
       <span class="mk mk-ci" style="background: var(--yellow);" />

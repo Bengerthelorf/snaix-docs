@@ -1,0 +1,39 @@
+---
+import WorkbenchLayout from '../../layouts/WorkbenchLayout.astro';
+import CommandBuilder from '../../components/workbench/CommandBuilder.tsx';
+---
+<WorkbenchLayout title="bcmr command builder" description="Turn a backup, SSH transfer or comparison into a reviewed, copyable bcmr command." current="commands" eyebrow="bcmr / command builder">
+  <CommandBuilder client:load />
+  <noscript><p class="wb-note">Enable JavaScript to customize and copy a command. The <a href="/bcmr/commands">complete bcmr command reference</a> is available without JavaScript.</p></noscript>
+</WorkbenchLayout>
+<style>
+  :global(.command-builder h2) { margin: 0; font: 650 22px/1.2 var(--sans); letter-spacing: -.6px; }
+  :global(.command-section-head) { margin-bottom: 22px; gap: 12px; flex-wrap: wrap; }
+  :global(.command-presets) { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border: 1px solid var(--steel-3); margin-bottom: 36px; }
+  :global(.command-preset) { appearance: none; border: 0; border-right: 1px solid var(--steel-3); border-top: 4px solid transparent; background: var(--paper); color: var(--ink); text-align: left; padding: 21px 18px 24px; cursor: pointer; }
+  :global(.command-preset:last-child) { border-right: 0; }
+  :global(.command-preset.is-selected) { border-top-color: var(--red); background: var(--paper-pure); }
+  :global(.command-preset:hover) { background: var(--paper-pure); }
+  :global(.command-preset > span) { display: block; font: 650 16px/1.3 var(--sans); margin-bottom: 9px; }
+  :global(.command-preset small) { display: block; font: 13px/1.5 var(--sans); color: var(--fg-muted); }
+  :global(.command-grid) { align-items: start; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  :global(.command-builder .wb-field textarea) { width: 100%; box-sizing: border-box; resize: vertical; font: 14px/1.5 var(--mono); padding: 12px; min-height: 68px; }
+  :global(.command-builder .wb-field small) { line-height: 1.5; }
+  :global(.command-toggles) { border: 0; padding: 0; margin: 28px 0 0; display: grid; gap: 17px; }
+  :global(.command-toggles legend) { padding: 0; margin-bottom: 18px; font: 650 14px/1.4 var(--sans); }
+  :global(.command-toggle) { display: flex; gap: 12px; align-items: start; cursor: pointer; }
+  :global(.command-toggle input) { width: 17px; height: 17px; margin: 2px 0 0; accent-color: var(--red); flex-shrink: 0; }
+  :global(.command-toggle strong) { display: block; font: 550 14px/1.4 var(--sans); }
+  :global(.command-toggle small) { display: block; font: 12px/1.5 var(--mono); color: var(--fg-muted); margin-top: 3px; }
+  :global(.command-output-label) { display: block; margin: 22px 0 10px; font: 600 13px/1.4 var(--sans); }
+  :global(.command-output) { display: block; box-sizing: border-box; width: 100%; resize: vertical; min-height: 150px; margin-bottom: 18px; white-space: pre-wrap; overflow-wrap: anywhere; font: 14px/1.8 var(--mono); }
+  :global(.command-copy-status) { min-height: 20px; margin: 10px 0; }
+  :global(.command-notes) { border-top: 1px solid var(--steel-3); margin-top: 26px; padding-top: 24px; }
+  :global(.command-notes h3) { font: 650 14px/1.4 var(--sans); margin: 0 0 12px; }
+  :global(.command-notes ul) { padding-left: 18px; margin: 0; }
+  :global(.command-notes li), :global(.command-notes > p) { font: 14px/1.7 var(--sans); color: var(--fg-muted); margin-bottom: 12px; }
+  :global(.command-guide-link) { display: inline-block; margin-top: 18px; color: var(--ink); font: 550 13px/1.5 var(--sans); text-underline-offset: 4px; }
+  :global(.command-builder .wb-error) { margin: 0; }
+  @media (max-width: 1000px) { :global(.command-presets) { grid-template-columns: repeat(3, minmax(0, 1fr)); } :global(.command-preset) { border-bottom: 1px solid var(--steel-3); } :global(.command-preset:nth-child(3)) { border-right: 0; } }
+  @media (max-width: 760px) { :global(.command-grid) { grid-template-columns: minmax(0, 1fr); } :global(.command-presets) { grid-template-columns: repeat(2, minmax(0, 1fr)); } :global(.command-preset:nth-child(3)) { border-right: 1px solid var(--steel-3); } :global(.command-preset:nth-child(even)) { border-right: 0; } :global(.command-preset) { padding: 16px 14px; } }
+</style>

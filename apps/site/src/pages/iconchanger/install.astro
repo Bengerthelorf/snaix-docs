@@ -1,4 +1,5 @@
 ---
+import WorkbenchEntry from '../../components/workbench/WorkbenchEntry.astro';
 import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
 import TopBar from '@snaix/docs-theme/components/TopBar.astro';
 import Footer from '@snaix/docs-theme/components/Footer.astro';
@@ -16,6 +17,8 @@ const iconchanger = product('iconchanger');
       githubHref={iconchanger.githubUrl}
       nav={iconchanger.nav()}
     />
+
+    <WorkbenchEntry href="/workbench/setup/?tool=iconchanger" label="Get a guided setup" description="Choose your system, find installation steps and troubleshoot common problems." />
 
     <section class="install-hero">
       <div class="t-small" style="color: var(--red);">§ install</div>

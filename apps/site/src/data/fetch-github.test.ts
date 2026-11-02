@@ -3,7 +3,7 @@ import { execFileSync } from 'node:child_process';
 import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { fetchProductMeta, fetchRecentCommits, fetchReleases, readLastModifiedDate } from './fetch-github.ts';
+import { fetchProductMeta, fetchRecentCommits, fetchReleases, readLastModifiedDate, sumProductStars } from './fetch-github.ts';
 
 const originalFetch = globalThis.fetch;
 afterEach(() => { globalThis.fetch = originalFetch; });
@@ -22,6 +22,51 @@ test('concurrent consumers share GitHub requests and receive the same metadata s
   expect(first).toEqual(second);
   expect(first.version).toBe('v1');
   expect([...requests.values()]).toEqual([1, 1]);
+});
+
+test('product stars preserve real zero and omit missing or malformed counts', async () => {
+  const cases: { label: string; info: unknown; expected: number | undefined }[] = [
+    { label: 'zero', info: { stargazers_count: 0 }, expected: 0 },
+    { label: 'positive', info: { stargazers_count: 17 }, expected: 17 },
+    { label: 'missing', info: {}, expected: undefined },
+    { label: 'null-info', info: null, expected: undefined },
+    { label: 'string', info: { stargazers_count: '17' }, expected: undefined },
+    { label: 'null-count', info: { stargazers_count: null }, expected: undefined },
+    { label: 'negative', info: { stargazers_count: -1 }, expected: undefined },
+    { label: 'fractional', info: { stargazers_count: 1.5 }, expected: undefined },
+    { label: 'unsafe', info: { stargazers_count: Number.MAX_SAFE_INTEGER + 1 }, expected: undefined },
+  ];
+  for (const item of cases) {
+    globalThis.fetch = (async (input: string | URL | Request) => Response.json(String(input).endsWith('/releases/latest')
+      ? { tag_name: 'v1', published_at: '2026-11-03T00:00:00Z' } : item.info)) as typeof fetch;
+    const meta = await fetchProductMeta(`stars/${item.label}`);
+    expect(meta.stars).toBe(item.expected);
+    expect(meta.version).toBe('v1');
+  }
+});
+
+test('failed repository metadata leaves product stars unknown while retaining the release', async () => {
+  const warning = spyOn(console, 'warn').mockImplementation(() => {});
+  globalThis.fetch = (async (input: string | URL | Request) => String(input).endsWith('/releases/latest')
+    ? Response.json({ tag_name: 'v2' })
+    : new Response('Unavailable', { status: 503 })) as typeof fetch;
+  try {
+    expect(await fetchProductMeta('stars/unavailable')).toMatchObject({ version: 'v2', stars: undefined });
+  } finally {
+    warning.mockRestore();
+  }
+});
+
+test('aggregate stars retain true all-zero totals and require every product count', () => {
+  expect(sumProductStars([{ stars: 0 }, { stars: 0 }, { stars: 0 }, { stars: 0 }])).toBe(0);
+  expect(sumProductStars([{ stars: 3 }, { stars: 0 }, { stars: 17 }])).toBe(20);
+  expect(sumProductStars([{ stars: 3 }, {}, { stars: 17 }])).toBeUndefined();
+  expect(sumProductStars([{}, {}])).toBeUndefined();
+  expect(sumProductStars([])).toBeUndefined();
+  for (const stars of [-1, 1.5, NaN, Infinity, Number.MAX_SAFE_INTEGER + 1]) {
+    expect(sumProductStars([{ stars: 3 }, { stars }])).toBeUndefined();
+  }
+  expect(sumProductStars([{ stars: Number.MAX_SAFE_INTEGER }, { stars: 1 }])).toBeUndefined();
 });
 
 test('a stalled GitHub request falls back within the build timeout', async () => {

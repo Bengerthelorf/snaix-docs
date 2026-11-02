@@ -1,0 +1,16 @@
+---
+import ArrowUpRight from '../ArrowUpRight.astro';
+interface Props { href: string; label: string; description: string; }
+const { href, label, description } = Astro.props;
+---
+<aside class="workbench-entry" aria-label="Try this tool">
+  <a href={href}><span class="entry-label">{label} <span aria-hidden="true"><ArrowUpRight /></span></span><span class="entry-description">{description}</span></a>
+</aside>
+<style>
+  .workbench-entry { border-bottom: 1px solid var(--border-faint); }
+  .workbench-entry a { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 24px; padding: 16px 0; font-size: 13px; }
+  .entry-label { color: var(--blue); font-weight: 650; }
+  .entry-description { color: var(--fg-muted); }
+  .workbench-entry a:hover .entry-label { text-decoration: underline; text-underline-offset: 3px; }
+  .workbench-entry a:focus-visible { outline: 3px solid var(--blue); outline-offset: 4px; }
+</style>
