@@ -19,7 +19,7 @@ content/               # Ignored product checkouts populated per environment
 ```sh
 bun install --frozen-lockfile
 bun run content:setup
-bun --cwd apps/site run dev
+bun run dev
 ```
 
 Open <http://localhost:4321>. `content:setup` clones missing product repositories;
@@ -42,7 +42,7 @@ Cloudflare Pages project **snaix-homes**, production branch **main**, builds thi
 repository and serves `app.snaix.homes`. Build from the repository root:
 
 ```sh
-bun run content:setup && bun install --frozen-lockfile && bun --cwd apps/site run build
+bun run content:setup && bun install --frozen-lockfile && bun run build
 ```
 
 Output directory: `apps/site/dist`. Use Node 22 and Bun 1.3.13 as configured in
