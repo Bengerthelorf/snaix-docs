@@ -55,8 +55,23 @@ were skipped, and their routes are absent from the build.
 - [x] Export production Worker source and reconcile configuration.
 - [x] Verify complete portable legacy backup.
 - [x] Reproduce and repair the failing docs ingestion, then build and test.
-- [ ] Push reviewed code to the production branch and verify Pages deployment.
-- [ ] Verify live homepage/product docs and install/release proxy contracts.
-- [ ] Delete the redundant GitHub repository and verify its absence.
+- [x] Push reviewed code to the production branch and verify Pages deployment.
+- [x] Verify live homepage/product docs and install/release proxy contracts.
+- [x] Delete the redundant GitHub repository and verify its absence.
 
-Deletion is deliberately last; a successful local build alone is insufficient.
+Production commit `d0c9b30454021f848215d9a3a7b6007cbc399541` succeeded in
+Cloudflare deployment `63eb51dc-bad4-4207-93e3-724d216bb186` at 17:12 CST.
+The production build command is now the repository-owned command documented
+in README. Fresh homepage and four docs checks returned HTTP 200, canonical
+URLs and footer `built 2026.11.02 · sha d0c9b30`; bcmr reports v0.7.2.
+
+Both installers matched their exact Worker-transformed upstream contents.
+Both projects' checksum files and macOS ARM64 release archives returned 200
+through the proxy and matched GitHub origin bytes and official checksums.
+GET and HEAD checks passed. Full headers, hashes and deployment reports are
+retained in the portable backup's `live-validation/` directory.
+
+After those checks, the owner-authorized legacy repository deletion completed
+successfully. An authenticated repository lookup returned HTTP 404. The
+Cloudflare Worker remains active with the unchanged exported source; deleting
+the old Git repository does not delete that runtime resource.
