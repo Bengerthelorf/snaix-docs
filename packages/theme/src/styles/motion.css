@@ -23,6 +23,11 @@
   contain-intrinsic-size: auto 700px;
 }
 
+/* Reserve the completed text size while a counter or typewriter is running. */
+.motion-reserve { display: inline-grid; min-width: 0; max-width: 100%; vertical-align: bottom; }
+.motion-reserve > span { grid-area: 1 / 1; min-width: 0; }
+.motion-measure { visibility: hidden; pointer-events: none; user-select: none; }
+
 /* typewriter cursor */
 .tw-cursor {
   display: inline-block;

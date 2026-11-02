@@ -2,7 +2,7 @@ import { snaixConfig } from 'virtual:snaix-config';
 import type { ProductIntegration } from '@snaix/docs';
 import { buildLanguageOptions, type DocEntryLike, type LocaleOption } from '@snaix/docs/docs-nav';
 import { productHref } from '@snaix/docs-theme';
-import { LOCALES } from './docs.ts';
+import { LOCALES, DEFAULT_LOCALE, internalsSlug } from './docs.ts';
 
 export function product(slug: string) {
   const p = snaixConfig.products.find((x) => x.slug === slug) as ProductIntegration | undefined;
@@ -28,6 +28,7 @@ export function product(slug: string) {
     buildLanguageOptions(allEntries, entry.slug, currentLocale, LOCALES, {
       productRoot: p.productRoot,
       docsSubpath,
+      slugTransform: docsSubpath === '/internals' ? internalsSlug : undefined,
     });
 
   /** Emit switcher entries only for the locales the caller has pages at. Docs
@@ -40,7 +41,7 @@ export function product(slug: string) {
       .map((l) => ({
         code: l.code,
         label: l.label,
-        href: href(`${l.default ? '' : `/${l.code}`}${tail}`),
+        href: href(`${l.code === DEFAULT_LOCALE.code ? '' : `/${l.code}`}${tail}`),
         active: l.code === currentCode,
       }));
 

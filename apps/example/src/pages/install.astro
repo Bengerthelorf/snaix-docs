@@ -6,6 +6,8 @@ import { BlockReveal, InstallTabs } from '@snaix/docs-theme';
 import type { CmdLine } from '@snaix/docs-theme';
 import { snaixConfig } from 'virtual:snaix-config';
 
+const product = snaixConfig.products[0]!;
+
 const options = {
   macos:   { name: 'macOS',   cmd: 'brew install melodic-lab/tap/bcmr',  note: 'homebrew; universal binary — arm64 + x86_64' },
   linux:   { name: 'Linux',   cmd: 'curl -sSf get.bcmr.sh | sh',         note: 'debian, ubuntu, arch, alpine, fedora · musl static' },
@@ -31,9 +33,9 @@ const firstCopyScript: CmdLine[] = [
   { type: 'out',    text: 'signed · ed25519:2c…9a · 1,204 files', pause: 160 },
 ];
 ---
-<DefaultLayout title={`${snaixConfig.title} · install`}>
+<DefaultLayout title={`${product.title} · install`}>
   <div class="page install">
-    <TopBar brand={snaixConfig.title} version={snaixConfig.version} current="download" />
+    <TopBar brand={product.title} version={product.version} current="download" />
 
     <section class="install-hero">
       <div class="t-small" style="color: var(--red);">§ install</div>
@@ -50,6 +52,6 @@ const firstCopyScript: CmdLine[] = [
 
     <InstallTabs client:load options={options} verifyScript={verifyScript} firstCopyScript={firstCopyScript} />
 
-    <Footer brand={snaixConfig.title} />
+    <Footer product={product} />
   </div>
 </DefaultLayout>

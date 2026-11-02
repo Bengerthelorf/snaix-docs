@@ -1,5 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { useInView } from './useInView.ts';
+import { useReducedMotion } from './useReducedMotion.ts';
 
 interface GridFlipProps {
   items: ReactNode[];
@@ -17,10 +18,12 @@ export function GridFlip({
   className = '',
 }: GridFlipProps) {
   const [ref, inView] = useInView<HTMLDivElement>();
-  const [flipped, setFlipped] = useState<Set<number>>(() => new Set());
+  const reducedMotion = useReducedMotion();
+  const [flipped, setFlipped] = useState<Set<number> | null>(null);
 
   useEffect(() => {
-    if (!inView) return;
+    if (!inView || reducedMotion) return;
+    setFlipped(new Set());
     const timers = items.map((_, i) =>
       window.setTimeout(() => {
         setFlipped((s) => {
@@ -31,7 +34,7 @@ export function GridFlip({
       }, delay + i * stagger),
     );
     return () => timers.forEach((t) => window.clearTimeout(t));
-  }, [inView, items, delay, stagger]);
+  }, [inView, items, delay, stagger, reducedMotion]);
 
   return (
     <div
@@ -40,9 +43,9 @@ export function GridFlip({
       style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}
     >
       {items.map((item, i) => (
-        <div key={i} className={`gf-cell ${flipped.has(i) ? 'is-flipped' : ''}`}>
+        <div key={i} className={`gf-cell ${(!inView || reducedMotion || flipped === null || flipped.has(i)) ? 'is-flipped' : ''}`}>
           <div className="gf-inner">
-            <div className="gf-back" />
+            <div className="gf-back" aria-hidden="true" />
             <div className="gf-front">{item}</div>
           </div>
         </div>

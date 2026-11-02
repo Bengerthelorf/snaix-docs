@@ -5,6 +5,8 @@ import Footer from '@snaix/docs-theme/components/Footer.astro';
 import { BlockReveal } from '@snaix/docs-theme';
 import { snaixConfig } from 'virtual:snaix-config';
 
+const product = snaixConfig.products[0]!;
+
 type Group = { t: 'new' | 'fix' | 'break'; items: string[] };
 type Entry = {
   ver: string;
@@ -50,9 +52,9 @@ function groupLabel(t: Group['t']) {
   return 'breaking';
 }
 ---
-<DefaultLayout title={`${snaixConfig.title} · changelog`}>
+<DefaultLayout title={`${product.title} · changelog`}>
   <div class="page changelog">
-    <TopBar brand={snaixConfig.title} version={snaixConfig.version} current="changelog" />
+    <TopBar brand={product.title} version={product.version} current="changelog" />
 
     <section class="log-hero">
       <div class="t-small" style="color: var(--red);">§ changelog</div>
@@ -93,6 +95,6 @@ function groupLabel(t: Group['t']) {
       ))}
     </section>
 
-    <Footer brand={snaixConfig.title} />
+    <Footer product={product} />
   </div>
 </DefaultLayout>

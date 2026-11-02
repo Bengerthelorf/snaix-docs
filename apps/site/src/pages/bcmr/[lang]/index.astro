@@ -183,7 +183,7 @@ const terminalScript: CmdLine[] = locale.code === 'zh' ? [
           <p class="hero-lede">{t.lede}</p>
 
           <div class="hero-cta">
-            <a class="btn-block" href={bcmrProduct.href(`/${locale.code}/install`)}>{t.install} {bcmrProduct.version}</a>
+            <a class="btn-block" href={bcmrProduct.href('/install')}>{t.install} {bcmrProduct.version}</a>
             <a class="btn-block is-ghost" href={bcmrProduct.href(`/${locale.code}/docs/getting-started`)}>{t.docs}</a>
             <span class="hero-cta-meta t-mono-sm">
               ⌘ <span>brew install Bengerthelorf/tap/bcmr</span>
@@ -317,7 +317,7 @@ const terminalScript: CmdLine[] = locale.code === 'zh' ? [
           <BlockReveal client:visible delay={1200} color="var(--blue)">{t.sec4Headline[2]}</BlockReveal>
         </h2>
         <div class="cta-buttons">
-          <a class="btn-block" style="background: var(--c-paper-pure); color: var(--c-ink-0); border-color: var(--c-paper-pure);" href={bcmrProduct.href(`/${locale.code}/install`)}>
+          <a class="btn-block" style="background: var(--c-paper-pure); color: var(--c-ink-0); border-color: var(--c-paper-pure);" href={bcmrProduct.href('/install')}>
             {t.installBig}
           </a>
           <a class="btn-block" style="background: transparent; color: var(--c-paper-pure); border-color: var(--c-paper-pure);" href={bcmrProduct.href(`/${locale.code}/docs/getting-started`)}>

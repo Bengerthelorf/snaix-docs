@@ -6,7 +6,7 @@
     try {
       var saved = localStorage.getItem('snaix-theme');
       var prefers = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-      var theme = saved || (prefers ? 'dark' : 'light');
+      var theme = saved === 'light' || saved === 'dark' ? saved : (prefers ? 'dark' : 'light');
       document.documentElement.setAttribute('data-theme', theme);
     } catch (e) {
       document.documentElement.setAttribute('data-theme', 'light');

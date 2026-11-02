@@ -106,6 +106,10 @@ export interface ProductIntegration {
   install: InstallOptions;
   sections: NavSection[];
   tabs: TopNavTab[];
+  /** Path prefixes are rewritten longest-first. Keys containing # are exact
+   *  product-relative public path + fragment aliases, applied after path mapping
+   *  (including locale prefixes). Same-page hashes resolve via the source file.
+   *  Queries are preserved unless the alias supplies its own query. */
   linkRewrites?: Record<string, string>;
   /** Substring matched against source file paths to scope rewrites. Defaults to `content/${slug}/`. */
   contentDir?: string;
@@ -117,10 +121,4 @@ export interface SnaixDocsOptions {
   buildStamp: BuildStamp;
   siteData: SiteData;
   markdown?: Pick<MarkdownOptions, 'math' | 'mermaid'>;
-}
-
-declare global {
-  interface Window {
-    __SNAIX_CONFIG__?: SnaixDocsOptions;
-  }
 }

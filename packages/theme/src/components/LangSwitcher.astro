@@ -29,13 +29,13 @@ const useGrid = options.length >= gridAt;
         <span class="lang-dd__label">{currentOption?.label ?? current}</span>
         <span class="lang-dd__caret" aria-hidden="true">▾</span>
       </summary>
-      <div class:list={['lang-dd__menu', { 'is-grid': useGrid }]} role="menu">
+      <div class:list={['lang-dd__menu', { 'is-grid': useGrid }]}>
         {options.map((opt) => (
           <a
             href={withBase(opt.href)}
             class:list={['lang-dd__item', { 'is-active': opt.code === current }]}
             hreflang={opt.code}
-            role="menuitem"
+            aria-current={opt.code === current ? 'page' : undefined}
           >
             <span class="lang-dd__item-code">{opt.code}</span>
             <span class="lang-dd__item-label">{opt.label}</span>
@@ -50,6 +50,7 @@ const useGrid = options.length >= gridAt;
           href={withBase(opt.href)}
           class:list={['lang-pills__item', { 'is-active': opt.code === current }]}
           hreflang={opt.code}
+          aria-current={opt.code === current ? 'page' : undefined}
         >
           {opt.label}
         </a>
@@ -125,10 +126,19 @@ const useGrid = options.length >= gridAt;
     min-width: min(560px, calc(100vw - 48px));
   }
   @media (max-width: 720px) {
-    .lang-dd__menu.is-grid {
-      grid-template-columns: repeat(2, minmax(160px, 1fr));
-      min-width: min(360px, calc(100vw - 32px));
+    .lang-dd__menu {
+      position: fixed;
+      inset-inline: 16px;
+      bottom: 64px;
+      width: auto;
+      min-width: 0;
     }
+    .lang-dd__menu.is-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      min-width: 0;
+    }
+    .lang-dd__item { grid-template-columns: 1fr; gap: 2px; min-width: 0; }
+    .lang-dd__item-label { overflow-wrap: anywhere; }
   }
   .lang-dd__item {
     display: grid;
@@ -166,6 +176,7 @@ const useGrid = options.length >= gridAt;
     if (e.key === 'Escape') {
       document.querySelectorAll<HTMLDetailsElement>('details.lang-dd[open]').forEach((dd) => {
         dd.open = false;
+        dd.querySelector<HTMLElement>('summary')?.focus();
       });
     }
   });

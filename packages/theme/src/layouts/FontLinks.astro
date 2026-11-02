@@ -1,8 +1,7 @@
 ---
+import '../styles/fonts.css';
+import archivo from '@fontsource-variable/archivo/files/archivo-latin-wght-normal.woff2?url';
+import jetbrains from '@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2?url';
 ---
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link
-  rel="stylesheet"
-  href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
-/>
+<link rel="preload" href={archivo} as="font" type="font/woff2" crossorigin />
+<link rel="preload" href={jetbrains} as="font" type="font/woff2" crossorigin />

@@ -48,8 +48,9 @@ export function slugPrefix(locale: LocaleOption, locales: LocaleOption[] | undef
 
 export function bareSlug(slug: string, locales: LocaleOption[] | undefined): string {
   if (!locales) return slug;
+  const def = defaultLocale(locales);
   for (const l of locales) {
-    if (l.default) continue;
+    if (l.code === def.code) continue;
     const prefix = `${l.code.toLowerCase()}/`;
     if (slug.toLowerCase().startsWith(prefix)) {
       return slug.slice(prefix.length);
@@ -64,12 +65,18 @@ export function localeOf(slug: string, locales: LocaleOption[] | undefined): str
   const lower = slug.toLowerCase();
   // Sort longer codes first so `zh-hant` matches before `zh`.
   const sorted = [...locales]
-    .filter((l) => !l.default)
+    .filter((l) => l.code !== def.code)
     .sort((a, b) => b.code.length - a.code.length);
   for (const l of sorted) {
     if (lower.startsWith(`${l.code.toLowerCase()}/`)) return l.code;
   }
   return def.code;
+}
+
+/** Folder routing takes precedence over a schema-supplied default locale. */
+export function entryLocale(entry: DocEntryLike, locales: LocaleOption[] | undefined): string {
+  const inferred = localeOf(entry.slug, locales);
+  return inferred !== defaultLocale(locales).code ? inferred : (entry.data.locale ?? inferred);
 }
 
 export interface BuildNavOptions {
@@ -96,8 +103,7 @@ export function buildDocsNav<T extends DocEntryLike>(
   } = options;
 
   const filtered = entries.filter((e) => {
-    const l = e.data.locale ?? localeOf(e.slug, locales);
-    return l === locale.code;
+    return entryLocale(e, locales) === locale.code;
   });
 
   const bySection = new Map<string, T[]>();
@@ -145,6 +151,7 @@ export interface LanguageOptionsOptions {
   /** Product root path, no trailing slash. Emitted before the locale prefix. */
   productRoot: string;
   docsSubpath: string;
+  slugTransform?: (slug: string) => string;
 }
 
 export function buildLanguageOptions<T extends DocEntryLike>(
@@ -152,23 +159,23 @@ export function buildLanguageOptions<T extends DocEntryLike>(
   currentSlug: string,
   currentLocale: LocaleOption,
   locales: LocaleOption[],
-  { productRoot, docsSubpath }: LanguageOptionsOptions,
+  { productRoot, docsSubpath, slugTransform = (slug) => slug }: LanguageOptionsOptions,
 ): { code: string; label: string; href: string; active: boolean }[] {
   const current = bareSlug(currentSlug, locales);
+  const routeSlug = slugTransform(current);
   const root = productRoot.replace(/\/$/, '');
   return locales
     .filter((l) => {
       const prefix = slugPrefix(l, locales);
       return entries.some(
         (e) =>
-          e.slug.toLowerCase() === `${prefix}${current}`.toLowerCase() ||
-          (l.default && e.slug === current),
+          e.slug.toLowerCase() === `${prefix}${current}`.toLowerCase(),
       );
     })
     .map((l) => ({
       code: l.code,
       label: l.label,
-      href: `${root}${localePrefix(l, locales)}${docsSubpath}/${current}`,
+      href: `${root}${localePrefix(l, locales)}${docsSubpath}${routeSlug ? `/${routeSlug}` : ''}`,
       active: l.code === currentLocale.code,
     }));
 }

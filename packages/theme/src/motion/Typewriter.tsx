@@ -1,5 +1,6 @@
-import { useEffect, useState, type ElementType } from 'react';
+import { useEffect, useRef, useState, type ElementType } from 'react';
 import { useInView } from './useInView.ts';
+import { useReducedMotion } from './useReducedMotion.ts';
 
 interface TypewriterProps {
   text: string;
@@ -21,11 +22,22 @@ export function Typewriter({
   className = '',
 }: TypewriterProps) {
   const [ref, inView] = useInView<HTMLElement>();
-  const [shown, setShown] = useState('');
-  const [done, setDone] = useState(false);
+  const reducedMotion = useReducedMotion();
+  const [shown, setShown] = useState(text);
+  const [done, setDone] = useState(true);
+  const onDoneRef = useRef(onDone);
+  useEffect(() => { onDoneRef.current = onDone; }, [onDone]);
 
   useEffect(() => {
     if (!inView) return;
+    if (reducedMotion || speed <= 0 || text.length === 0) {
+      setShown(text);
+      setDone(true);
+      onDoneRef.current?.();
+      return;
+    }
+    setShown('');
+    setDone(false);
     let i = 0;
     let tickId = 0;
     const start = window.setTimeout(() => {
@@ -35,7 +47,7 @@ export function Typewriter({
         if (i >= text.length) {
           window.clearInterval(tickId);
           setDone(true);
-          onDone?.();
+          onDoneRef.current?.();
         }
       }, speed);
     }, delay);
@@ -43,12 +55,17 @@ export function Typewriter({
       window.clearTimeout(start);
       window.clearInterval(tickId);
     };
-  }, [inView, text, speed, delay, onDone]);
+  }, [inView, text, speed, delay, reducedMotion]);
 
   return (
     <Tag ref={ref as any} className={className}>
-      {shown}
-      {cursor && !done && <span className="tw-cursor">█</span>}
+      <span className="motion-reserve">
+        <span className="motion-measure" aria-hidden="true" data-pagefind-ignore>{text}</span>
+        <span>
+          {!inView || reducedMotion ? text : shown}
+          {cursor && inView && !reducedMotion && !done && <span className="tw-cursor" aria-hidden="true">█</span>}
+        </span>
+      </span>
     </Tag>
   );
 }

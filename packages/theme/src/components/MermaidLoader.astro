@@ -1,38 +1,49 @@
 ---
 ---
 <script>
-  const MERMAID_URL = 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+  let engine: Promise<typeof import('mermaid')> | undefined;
+  let running = false;
+  let requested = false;
 
-  async function bootMermaid() {
-    const nodes = document.querySelectorAll('pre.mermaid[data-source="snaix-mermaid"]:not([data-rendered="true"])');
-    if (nodes.length === 0) return;
-    for (const n of nodes) {
-      if (!n.hasAttribute('data-src')) {
-        n.setAttribute('data-src', n.textContent ?? '');
+  async function renderDiagrams() {
+    requested = true;
+    if (running) return;
+    running = true;
+    try {
+      while (requested) {
+        requested = false;
+        const nodes = Array.from(document.querySelectorAll<HTMLElement>('pre.mermaid[data-source="snaix-mermaid"]'));
+        if (!nodes.length) continue;
+        for (const node of nodes) node.dataset.src ??= node.textContent ?? '';
+        engine ??= import('mermaid').catch((error) => { engine = undefined; throw error; });
+        const { default: mermaid } = await engine;
+        const theme = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'default';
+        mermaid.initialize({ startOnLoad: false, theme, securityLevel: 'strict' });
+        for (const node of nodes) {
+          node.removeAttribute('data-processed');
+          node.textContent = node.dataset.src ?? '';
+        }
+        try {
+          await mermaid.run({ nodes });
+          nodes.forEach((node) => { node.dataset.rendered = 'true'; });
+        } catch (error) {
+          // Keep the original diagram readable when a document has bad syntax.
+          nodes.forEach((node) => {
+            node.textContent = node.dataset.src ?? '';
+            node.removeAttribute('data-processed');
+            node.removeAttribute('data-rendered');
+          });
+          console.warn('[diagram] could not render; showing source', error);
+        }
       }
-    }
-    const { default: mermaid } = await import(/* @vite-ignore */ MERMAID_URL);
-    const theme = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'default';
-    mermaid.initialize({ startOnLoad: false, theme, securityLevel: 'loose' });
-    await mermaid.run({ nodes: Array.from(nodes) });
-    nodes.forEach((n) => n.setAttribute('data-rendered', 'true'));
+    } catch (error) {
+      console.warn('[diagram] renderer unavailable; showing source', error);
+    } finally { running = false; }
   }
 
-  bootMermaid();
-
-  const obs = new MutationObserver((muts) => {
-    for (const m of muts) {
-      if (m.attributeName === 'data-theme') {
-        document.querySelectorAll('pre.mermaid[data-rendered="true"]').forEach((el) => {
-          const src = el.getAttribute('data-src') ?? '';
-          el.removeAttribute('data-rendered');
-          el.removeAttribute('data-processed');
-          el.textContent = src;
-        });
-        bootMermaid();
-        break;
-      }
-    }
+  void renderDiagrams();
+  new MutationObserver(() => { void renderDiagrams(); }).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme'],
   });
-  obs.observe(document.documentElement, { attributes: true });
 </script>

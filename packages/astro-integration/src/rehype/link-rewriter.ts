@@ -1,13 +1,10 @@
 import type { Element, Root } from 'hast';
 import { visit } from 'unist-util-visit';
-import type { ProductRewriteSpec } from '../remark/url-rewriter.ts';
+import { productForFile, rewriteProductUrl, type ProductRewriteSpec } from '../url-rewriter.ts';
 
 export interface LinkRewriterOptions {
   products?: ProductRewriteSpec[];
 }
-
-const isAbsoluteInternal = (href: string) =>
-  href.startsWith('/') && !href.startsWith('//');
 
 const TARGETS: Record<string, string> = {
   a: 'href',
@@ -21,8 +18,7 @@ export function rehypeLinkRewriter(options: LinkRewriterOptions = {}) {
   const products = options.products ?? [];
 
   return (tree: Root, file: any) => {
-    const path = String(file?.path ?? file?.history?.[0] ?? '');
-    const p = products.find((x) => path.includes(x.contentDir));
+    const p = productForFile(products, file);
     if (!p) return;
 
     visit(tree, 'element', (node: Element) => {
@@ -31,17 +27,7 @@ export function rehypeLinkRewriter(options: LinkRewriterOptions = {}) {
       const raw = node.properties?.[attr];
       if (typeof raw !== 'string') return;
 
-      let rewritten = raw;
-      for (const [from, to] of p.rewrites) {
-        if (rewritten.startsWith(from)) {
-          rewritten = to + rewritten.slice(from.length);
-          break;
-        }
-      }
-
-      if (p.base && isAbsoluteInternal(rewritten) && !rewritten.startsWith(p.base + '/')) {
-        rewritten = p.base + rewritten;
-      }
+      const rewritten = rewriteProductUrl(raw, p, file, attr === 'href');
 
       if (rewritten !== raw) {
         node.properties = { ...node.properties, [attr]: rewritten };

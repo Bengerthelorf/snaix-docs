@@ -4,11 +4,13 @@ import TopBar from '@snaix/docs-theme/components/TopBar.astro';
 import Footer from '@snaix/docs-theme/components/Footer.astro';
 import { BlockReveal, CliReference } from '@snaix/docs-theme';
 import { snaixConfig } from 'virtual:snaix-config';
+
+const product = snaixConfig.products[0]!;
 import { cliSpec } from '../data/cli-spec.ts';
 ---
-<DefaultLayout title={`${snaixConfig.title} · commands`}>
+<DefaultLayout title={`${product.title} · commands`}>
   <div class="page cli">
-    <TopBar brand={snaixConfig.title} version={snaixConfig.version} current="cli" />
+    <TopBar brand={product.title} version={product.version} current="cli" />
 
     <section class="cli-hero rule-b">
       <div class="cli-hero-grid grid12">
@@ -32,6 +34,6 @@ import { cliSpec } from '../data/cli-spec.ts';
 
     <CliReference client:load spec={cliSpec} />
 
-    <Footer brand={snaixConfig.title} />
+    <Footer product={product} />
   </div>
 </DefaultLayout>

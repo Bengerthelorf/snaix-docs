@@ -1,0 +1,48 @@
+---
+// Keep the shared layout native so static documentation needs no React renderer.
+---
+<button
+  type="button"
+  class="theme-toggle"
+  title="switch to dark"
+  aria-label="dark theme"
+  aria-pressed="false"
+  data-theme-toggle
+  data-pagefind-ignore
+>
+  <span class="tt-track" aria-hidden="true">
+    <span class="tt-sq" />
+    <span class="tt-ci" />
+  </span>
+  <span class="tt-label">light</span>
+</button>
+
+<script>
+  import { readTheme, toggleTheme } from './theme.ts';
+
+  function syncThemeControls() {
+    const isDark = readTheme(document.documentElement) === 'dark';
+    for (const button of document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]')) {
+      button.setAttribute('aria-pressed', String(isDark));
+      button.title = isDark ? 'switch to light' : 'switch to dark';
+      button.querySelector('.tt-sq')?.classList.toggle('is-dark', isDark);
+      button.querySelector('.tt-ci')?.classList.toggle('is-dark', isDark);
+      const label = button.querySelector('.tt-label');
+      if (label) label.textContent = isDark ? 'dark' : 'light';
+    }
+  }
+
+  document.addEventListener('click', (event) => {
+    const target = event.target instanceof Element ? event.target : null;
+    if (!target?.closest('[data-theme-toggle]')) return;
+    toggleTheme(document.documentElement);
+    syncThemeControls();
+  });
+
+  new MutationObserver(syncThemeControls).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme'],
+  });
+  document.addEventListener('astro:page-load', syncThemeControls);
+  syncThemeControls();
+</script>

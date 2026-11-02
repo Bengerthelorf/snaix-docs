@@ -37,30 +37,32 @@ interface Props {
 }
 
 const STORAGE_KEY = 'snaix-cli-cmd';
+const DEFAULT_EXAMPLE = ['ok'];
 
 export function CliReference({ spec }: Props) {
   const flat = useMemo(() => spec.groups.flatMap((g) => g.items), [spec]);
-  const initial = flat[0]!;
-
-  const [selected, setSelected] = useState<CliCommand>(initial);
+  const [selectedCmd, setSelectedCmd] = useState(flat[0]?.cmd ?? '');
+  const selected = flat.find((command) => command.cmd === selectedCmd) ?? flat[0];
+  const [storageReady, setStorageReady] = useState(false);
   const [query, setQuery] = useState('');
   const searchRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
-      if (!saved) return;
-      const found = flat.find((c) => c.cmd === saved);
-      if (found) setSelected(found);
+      if (saved && flat.some((command) => command.cmd === saved)) setSelectedCmd(saved);
     } catch {}
+    setStorageReady(true);
   }, [flat]);
 
   useEffect(() => {
+    if (!storageReady || !selected) return;
     try {
       localStorage.setItem(STORAGE_KEY, selected.cmd);
     } catch {}
-  }, [selected]);
+  }, [selected, storageReady]);
 
+  const normalizedQuery = query.trim().toLowerCase();
   const filtered = useMemo(
     () =>
       spec.groups
@@ -68,35 +70,38 @@ export function CliReference({ spec }: Props) {
           ...g,
           items: g.items.filter(
             (it) =>
-              !query ||
-              it.cmd.toLowerCase().includes(query.toLowerCase()) ||
-              it.desc.toLowerCase().includes(query.toLowerCase()),
+              !normalizedQuery ||
+              it.cmd.toLowerCase().includes(normalizedQuery) ||
+              it.desc.toLowerCase().includes(normalizedQuery),
           ),
         }))
         .filter((g) => g.items.length > 0),
-    [spec, query],
+    [spec, normalizedQuery],
   );
 
   const visibleFlat = useMemo(() => filtered.flatMap((g) => g.items), [filtered]);
 
   useEffect(() => {
+    if (!selected) return;
     function onKey(e: KeyboardEvent) {
-      const tag = (e.target as HTMLElement | null)?.tagName;
-      const isInput = tag === 'INPUT' || tag === 'TEXTAREA';
-      if (e.key === '/' && !isInput) {
+      if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey) return;
+      const target = e.target instanceof Element ? e.target : null;
+      const isEditable = target?.closest('input, textarea, select, [contenteditable]:not([contenteditable="false"])');
+      if (isEditable || target?.closest('[role="dialog"]')) return;
+      if (e.key === '/') {
         e.preventDefault();
         searchRef.current?.focus();
         return;
       }
-      if (isInput) return;
+      if (target?.closest('button, a, [role="button"]')) return;
       if (visibleFlat.length === 0) return;
-      const idx = visibleFlat.findIndex((c) => c.cmd === selected.cmd);
+      const idx = visibleFlat.findIndex((c) => c.cmd === selected?.cmd);
       if (e.key === 'j' || e.key === 'ArrowDown') {
         e.preventDefault();
-        setSelected(visibleFlat[Math.min(visibleFlat.length - 1, idx + 1)] ?? visibleFlat[0]!);
+        setSelectedCmd((visibleFlat[Math.min(visibleFlat.length - 1, idx + 1)] ?? visibleFlat[0]!).cmd);
       } else if (e.key === 'k' || e.key === 'ArrowUp') {
         e.preventDefault();
-        setSelected(visibleFlat[Math.max(0, idx - 1)] ?? visibleFlat[0]!);
+        setSelectedCmd((visibleFlat[Math.max(0, idx - 1)] ?? visibleFlat[0]!).cmd);
       }
     }
     window.addEventListener('keydown', onKey);
@@ -104,26 +109,28 @@ export function CliReference({ spec }: Props) {
   }, [visibleFlat, selected]);
 
   const activeGroup =
-    spec.groups.find((g) => g.items.some((i) => i.cmd === selected.cmd))?.group ?? '';
+    spec.groups.find((g) => g.items.some((i) => i.cmd === selected?.cmd))?.group ?? '';
   const flags: CliFlag[] =
-    selected.flags ?? spec.flagsByGroup?.[activeGroup] ?? [];
+    selected?.flags ?? spec.flagsByGroup?.[activeGroup] ?? [];
   const example: string[] =
-    selected.example ?? spec.examples?.[selected.cmd] ?? ['ok'];
-  const related: string[] = selected.related ?? [];
+    selected?.example ?? spec.examples?.[selected?.cmd ?? ''] ?? DEFAULT_EXAMPLE;
+  const related: string[] = selected?.related ?? [];
 
-  const lines: CmdLine[] = [
+  const lines = useMemo<CmdLine[]>(() => selected ? [
     { type: 'prompt', text: `${selected.cmd} ${selected.sig}`.trim() },
     ...example.map((text, i) => ({
       type: (i === example.length - 1 ? 'ok' : 'out') as CmdLine['type'],
       text,
       pause: 140 + i * 20,
     })),
-  ];
+  ] : [], [selected, example]);
 
   const selectByCmd = (cmd: string) => {
     const found = flat.find((c) => c.cmd === cmd);
-    if (found) setSelected(found);
+    if (found) setSelectedCmd(found.cmd);
   };
+
+  if (!selected) return null;
 
   return (
     <section className="cli-body">
@@ -132,19 +139,23 @@ export function CliReference({ spec }: Props) {
           <span className="t-mono-sm">?</span>
           <input
             ref={searchRef}
+            aria-label="Search commands"
             placeholder="grep commands…"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
         </div>
+        {filtered.length === 0 && <p className="t-mono-sm" role="status">No commands found.</p>}
         {filtered.map((g) => (
           <div key={g.group} className="cli-group">
             <div className="cli-group-label t-small">{g.group}</div>
             {g.items.map((it) => (
               <button
                 key={it.cmd}
+                type="button"
+                aria-pressed={selected.cmd === it.cmd}
                 className={`cli-item ${selected.cmd === it.cmd ? 'is-selected' : ''}`}
-                onClick={() => setSelected(it)}
+                onClick={() => setSelectedCmd(it.cmd)}
               >
                 <span className="cli-item-cmd t-mono">{it.cmd}</span>
                 <span className="cli-item-desc">{it.desc}</span>
@@ -154,7 +165,7 @@ export function CliReference({ spec }: Props) {
         ))}
       </aside>
 
-      <main className="cli-main">
+      <div className="cli-main">
         <div key={selected.cmd} className="cmd-detail fade-up">
           <div className="cmd-detail-head">
             <div>
@@ -232,7 +243,7 @@ export function CliReference({ spec }: Props) {
             </div>
           )}
         </div>
-      </main>
+      </div>
     </section>
   );
 }

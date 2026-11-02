@@ -33,7 +33,9 @@ Neither staging nor image sync modifies the source product checkouts.
 
 ```sh
 bun test
+bun run typecheck
 bun run build
+bun run check:site
 ```
 
 ## Deployment
@@ -56,3 +58,6 @@ resources maintained from this single repository.
 The historical `app-snaix-homes-portal` frontend is retired. See the
 [consolidation record](docs/operations/homepage-consolidation-2026-11-02.md)
 for source provenance, backup checksums, and validation status.
+
+The [component and performance audit](docs/operations/site-quality-2026-11-02.md)
+records browser coverage, changes, and the limits of local performance results.

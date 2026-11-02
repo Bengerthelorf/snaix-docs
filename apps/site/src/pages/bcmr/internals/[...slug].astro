@@ -4,6 +4,7 @@ import { getCollection } from 'astro:content';
 import {
   DEFAULT_LOCALE,
   docsBaseFor,
+  internalsSlug,
   navFor,
 } from '../../../lib/docs.ts';
 import { product } from '../../../lib/product.ts';
@@ -14,7 +15,7 @@ const bcmrProduct = product('bcmr');
 export async function getStaticPaths() {
   const entries = await getCollection('bcmr', (e) => (e.data.section ?? 'guide') === 'internals');
   return entries.map((entry) => {
-    const tail = entry.slug.replace(/^ablation\/?/, '');
+    const tail = internalsSlug(entry.slug);
     return {
       params: { slug: tail === '' ? undefined : tail },
       props: { entry },
@@ -30,14 +31,15 @@ const toc = headings
   .filter((h) => h.depth >= 2 && h.depth <= 3)
   .map((h) => ({ slug: h.slug, text: h.text, depth: h.depth }));
 
-const bare = entry.slug.replace(/^ablation\/?/, '') || 'index';
+const routeSlug = internalsSlug(entry.slug);
+const bare = routeSlug || 'index';
 const docsLabel = DEFAULT_LOCALE.ui?.docsLabel ?? 'docs';
 ---
 <DocsLayout
   product={bcmrProduct}
   brand={bcmrProduct.title}
   version={bcmrProduct.version}
-  current={bare}
+  current={routeSlug || entry.slug}
   nav={nav}
   title={entry.data.title}
   description={entry.data.description}

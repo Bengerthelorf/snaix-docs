@@ -129,9 +129,9 @@ const nav = [
   { id: 'feat',      label: 'features',  href: '#features' },
   { id: 'sources',   label: 'sources',   href: '#sources' },
   { id: 'docs',      label: 'docs',      href: iconchanger.href(`/${locale.code}/docs/getting-started`) },
-  { id: 'commands',  label: 'cli',       href: iconchanger.href(`/${locale.code}/commands`) },
-  { id: 'install',   label: 'install',   href: iconchanger.href(`/${locale.code}/install`) },
-  { id: 'changelog', label: 'changelog', href: iconchanger.href(`/${locale.code}/changelog`) },
+  { id: 'commands',  label: 'cli',       href: iconchanger.href('/commands') },
+  { id: 'install',   label: 'install',   href: iconchanger.href('/install') },
+  { id: 'changelog', label: 'changelog', href: iconchanger.href('/changelog') },
 ];
 ---
 <DefaultLayout title={`${iconchanger.title} — ${t.title}`} lang={locale.lang ?? locale.code}>
@@ -271,7 +271,7 @@ const nav = [
           <BlockReveal client:visible delay={700} color="var(--ink)">{t.sec4Headline[1]}</BlockReveal>
         </h2>
         <div class="buttons">
-          <a class="btn-block" style="background: var(--c-paper-pure); color: var(--c-ink-0); border-color: var(--c-paper-pure);" href={iconchanger.href(`/${locale.code}/install`)}>
+          <a class="btn-block" style="background: var(--c-paper-pure); color: var(--c-ink-0); border-color: var(--c-paper-pure);" href={iconchanger.href('/install')}>
             {t.downloadDmg}
           </a>
           <a class="btn-block" style="background: transparent; color: var(--c-paper-pure); border-color: var(--c-paper-pure);" href={`${iconchanger.githubUrl}/releases`}>

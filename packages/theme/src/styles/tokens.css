@@ -54,8 +54,8 @@
   --gridline:   rgba(10,10,11,0.04);
 
   /* ─── type ─── */
-  --sans: 'Archivo', 'Space Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --mono: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+  --sans: 'Archivo Variable', 'Space Grotesk', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --mono: 'JetBrains Mono Variable', 'IBM Plex Mono', ui-monospace, Menlo, monospace;
 
   /* ─── grid ─── */
   --gutter: 24px;

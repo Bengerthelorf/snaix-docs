@@ -17,6 +17,8 @@ import {
 import type { CmdLine } from '@snaix/docs-theme';
 import { snaixConfig } from 'virtual:snaix-config';
 
+const product = snaixConfig.products[0]!;
+
 const demoStream: CmdLine[] = [
   { type: 'prompt', text: 'bcmr cp ./src node-04:/dst' },
   { type: 'out',    text: 'hashing (blake3) ……  ok', pause: 160 },
@@ -42,9 +44,9 @@ const primary: [string, string, string][] = [
 ];
 const steel = ['--steel-1', '--steel-3', '--steel-5', '--steel-7', '--steel-9', '--ink'];
 ---
-<DefaultLayout title={`${snaixConfig.title} · design system (dev)`}>
+<DefaultLayout title={`${product.title} · design system (dev)`}>
   <div class="page">
-    <TopBar brand={snaixConfig.title} version={snaixConfig.version} current="design" />
+    <TopBar brand={product.title} version={product.version} current="design" />
 
     <section style="padding: 48px 0 24px;">
       <div class="t-mono-sm" style="color: var(--steel-5);">/_/design-system · dev-only</div>
@@ -188,6 +190,6 @@ const steel = ['--steel-1', '--steel-3', '--steel-5', '--steel-7', '--steel-9', 
       </div>
     </section>
 
-    <Footer brand={snaixConfig.title} />
+    <Footer product={product} />
   </div>
 </DefaultLayout>

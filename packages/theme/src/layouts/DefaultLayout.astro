@@ -1,7 +1,7 @@
 ---
 import ThemeInit from './ThemeInit.astro';
 import FontLinks from './FontLinks.astro';
-import { ThemeToggle } from '../components/ThemeToggle.tsx';
+import ThemeToggle from '../components/ThemeToggle.astro';
 
 import '../styles/tokens.css';
 import '../styles/theme.css';
@@ -61,107 +61,9 @@ const ogDescription = description ?? 'small tools, big years. four open-source t
   </head>
   <body class={bodyClass}>
     <slot />
-    <ThemeToggle client:load />
-    <script is:inline>
-      (() => {
-        const KEY = 'snx-code-tabs';
-        const readPref = () => {
-          try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch { return {}; }
-        };
-        const writePref = (pref) => {
-          try { localStorage.setItem(KEY, JSON.stringify(pref)); } catch {}
-        };
-        const selectByLabel = (group, label) => {
-          const tabs = group.querySelectorAll('.snx-code-tabs__tab');
-          const panels = group.querySelectorAll('.snx-code-tabs__panel');
-          let idx = [...tabs].findIndex((t) => t.dataset.tabLabel === label);
-          if (idx < 0) idx = 0;
-          tabs.forEach((t, i) => {
-            const on = i === idx;
-            t.setAttribute('aria-selected', on ? 'true' : 'false');
-            t.setAttribute('tabindex', on ? '0' : '-1');
-          });
-          panels.forEach((p, i) => { if (i === idx) p.removeAttribute('hidden'); else p.setAttribute('hidden', ''); });
-        };
-        const sync = (label) => {
-          const pref = readPref();
-          pref._last = label;
-          writePref(pref);
-          document.querySelectorAll('[data-code-tabs]').forEach((g) => {
-            if ([...g.querySelectorAll('.snx-code-tabs__tab')].some((t) => t.dataset.tabLabel === label)) {
-              selectByLabel(g, label);
-            }
-          });
-        };
-        const init = () => {
-          const pref = readPref();
-          document.querySelectorAll('[data-code-tabs]').forEach((g) => {
-            if (pref._last) selectByLabel(g, pref._last);
-            g.querySelectorAll('.snx-code-tabs__tab').forEach((tab) => {
-              tab.addEventListener('click', () => sync(tab.dataset.tabLabel));
-            });
-            g.querySelectorAll('.snx-code-tabs__copy').forEach((btn) => {
-              btn.addEventListener('click', async () => {
-                const pre = btn.parentElement?.querySelector('pre');
-                if (!pre) return;
-                try {
-                  await navigator.clipboard.writeText(pre.innerText);
-                  btn.classList.add('is-copied');
-                  btn.textContent = 'copied';
-                  setTimeout(() => { btn.classList.remove('is-copied'); btn.textContent = 'copy'; }, 1400);
-                } catch {}
-              });
-            });
-          });
-        };
-        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
-        else init();
-      })();
-    </script>
-    <script is:inline>
-      (() => {
-        const bars = [];
-        document.addEventListener('keydown', (e) => {
-          if (e.key !== 'Escape') return;
-          bars.forEach(({ bar, close }) => {
-            if (bar.hasAttribute('data-open')) close();
-          });
-        });
-        const bind = () => {
-          bars.length = 0;
-          document.querySelectorAll('[data-topbar]').forEach((bar) => {
-            const btn = bar.querySelector('[data-burger]');
-            const drawer = bar.querySelector('[data-drawer]');
-            if (!btn || !drawer) return;
-            let prevOverflow = '';
-            const close = () => {
-              bar.removeAttribute('data-open');
-              drawer.classList.remove('is-open');
-              drawer.setAttribute('aria-hidden', 'true');
-              btn.setAttribute('aria-expanded', 'false');
-              document.body.style.overflow = prevOverflow;
-            };
-            const open = () => {
-              bar.setAttribute('data-open', '');
-              drawer.classList.add('is-open');
-              drawer.setAttribute('aria-hidden', 'false');
-              btn.setAttribute('aria-expanded', 'true');
-              prevOverflow = document.body.style.overflow;
-              document.body.style.overflow = 'hidden';
-            };
-            btn.addEventListener('click', (e) => {
-              e.stopPropagation();
-              bar.hasAttribute('data-open') ? close() : open();
-            });
-            drawer.addEventListener('click', (e) => {
-              if (e.target.closest('a')) close();
-            });
-            bars.push({ bar, close });
-          });
-        };
-        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
-        else bind();
-      })();
+    <ThemeToggle />
+    <script>
+      import './layout-behavior';
     </script>
   </body>
 </html>

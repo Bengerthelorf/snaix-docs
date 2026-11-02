@@ -131,7 +131,21 @@ const bcmrProduct = {
     { id: 'install',   label: 'install',   href: '/install' },
     { id: 'changelog', label: 'changelog', href: '/changelog' },
   ],
-  linkRewrites: bcmrDocsConfig.linkRewrites,
+  linkRewrites: {
+    ...bcmrDocsConfig.linkRewrites,
+    // Upstream links predate the current generated heading IDs. These aliases
+    // retain the exact experiment, dedup section, or comparison being cited.
+    '/internals/scc#experiment-5-f-fullfsync-vs-fsync-on-macos': '/internals/scc#experiment-5-f_fullfsync-vs-fsync-on-macos',
+    '/internals/scc#experiment-6-copy-file-range-with-offset-linux': '/internals/scc#experiment-6-copy_file_range-with-offset-linux',
+    '/internals/local-perf#experiment-10-whole-source-blake3-on-the-i-o-thread': '/internals/local-perf#experiment-10-whole-source-blake3-on-the-io-thread',
+    '/internals/local-perf#experiment-13-one-spawn-blocking-for-the-whole-loop': '/internals/local-perf#experiment-13-one-spawn_blocking-for-the-whole-loop',
+    '/internals/local-perf#experiment-16-gate-session-block-hash-checkpoint-fsync-on-intent-v0-5-10': '/internals/local-perf#experiment-16-gate-session--block-hash--checkpoint-fsync-on-intent-v0510',
+    '/internals/wire-protocol#experiment-14-cap-fast-real-numbers': '/internals/wire-protocol#experiment-14-cap_fast-real-numbers',
+    '/internals/wire-protocol#serve-protocol-benefits': '/docs/remote-copy#serve-protocol-benefits',
+    '/docs/remote-copy#wire-compression-dedup': '/docs/remote-copy#content-addressed-dedup-cap_dedup',
+    '/zh/docs/remote-copy#wire-compression-dedup': '/zh/docs/remote-copy#内容寻址去重cap_dedup',
+    '/zh-Hant/docs/remote-copy#wire-compression-dedup': '/zh-Hant/docs/remote-copy#內容定址去重cap_dedup',
+  },
   contentDir: 'src/content/bcmr/',
 };
 
@@ -179,7 +193,14 @@ const pikpaktuiProduct = {
     { id: 'install',   label: 'install',  href: '/install' },
     { id: 'changelog', label: 'changelog', href: '/changelog' },
   ],
-  linkRewrites: pikpaktuiDocsConfig.linkRewrites,
+  linkRewrites: {
+    ...pikpaktuiDocsConfig.linkRewrites,
+    '/configuration': '/docs/configuration',
+    // The Traditional Chinese reference groups all three commands together.
+    '/zh-Hant/docs/cli/commands#star': '/zh-Hant/docs/cli/commands#star--unstar--starred',
+    '/zh-Hant/docs/cli/commands#unstar': '/zh-Hant/docs/cli/commands#star--unstar--starred',
+    '/zh-Hant/docs/cli/commands#starred': '/zh-Hant/docs/cli/commands#star--unstar--starred',
+  },
   contentDir: 'src/content/pikpaktui/',
 };
 

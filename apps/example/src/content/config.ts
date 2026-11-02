@@ -10,24 +10,4 @@ const docs = defineCollection({
   }),
 });
 
-const changelog = defineCollection({
-  type: 'content',
-  schema: z.object({
-    version: z.string(),
-    date: z.string(),
-    tags: z.array(z.enum(['new', 'fix', 'breaking'])).optional(),
-  }),
-});
-
-const products = defineCollection({
-  type: 'content',
-  schema: z.object({
-    slug: z.string(),
-    name: z.string(),
-    tagline: z.string(),
-    color: z.enum(['ink', 'yellow', 'red', 'blue']),
-    version: z.string().optional(),
-  }),
-});
-
-export const collections = { docs, changelog, products };
+export const collections = { docs };

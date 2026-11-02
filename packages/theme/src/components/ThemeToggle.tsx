@@ -1,26 +1,16 @@
 import { useCallback, useEffect, useState } from 'react';
 
-type Theme = 'light' | 'dark';
-
-function readTheme(): Theme {
-  if (typeof document === 'undefined') return 'light';
-  return (document.documentElement.getAttribute('data-theme') as Theme) || 'light';
-}
+import { readTheme, toggleTheme, type Theme } from './theme.ts';
 
 export function ThemeToggle() {
   const [theme, setTheme] = useState<Theme>('light');
 
   useEffect(() => {
-    setTheme(readTheme());
+    setTheme(readTheme(document.documentElement));
   }, []);
 
   const toggle = useCallback(() => {
-    setTheme((t) => {
-      const next: Theme = t === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', next);
-      try { localStorage.setItem('snaix-theme', next); } catch {}
-      return next;
-    });
+    setTheme(toggleTheme(document.documentElement));
   }, []);
 
   const isDark = theme === 'dark';
@@ -30,7 +20,8 @@ export function ThemeToggle() {
       onClick={toggle}
       className="theme-toggle"
       title={isDark ? 'switch to light' : 'switch to dark'}
-      aria-label="toggle theme"
+      aria-label="dark theme"
+      aria-pressed={isDark}
     >
       <span className="tt-track" aria-hidden>
         <span className={`tt-sq ${isDark ? 'is-dark' : ''}`} />

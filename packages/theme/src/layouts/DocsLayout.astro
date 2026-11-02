@@ -102,7 +102,7 @@ const next = i >= 0 && i < flatNav.length - 1 ? flatNav[i + 1] : undefined;
     </TopBar>
 
     <div class="docs-layout">
-      <aside class="docs-nav">
+      <aside class="docs-nav" data-pagefind-ignore>
         <div style="margin-bottom: 20px;">
           <div class="t-small" style={`color: ${product.accent}; margin-bottom: 8px;`}>{brand} / docs</div>
           {version && <div class="t-mono-sm" style="color: var(--steel-5);">{version}</div>}
@@ -124,7 +124,7 @@ const next = i >= 0 && i < flatNav.length - 1 ? flatNav[i + 1] : undefined;
 
       <article class="docs-content">
         {breadcrumb.length > 0 && (
-          <div class="docs-breadcrumb">
+          <div class="docs-breadcrumb" data-pagefind-ignore>
             {breadcrumb.slice(0, -1).map((b) => <Fragment>{b} / </Fragment>)}
             <span>{breadcrumb[breadcrumb.length - 1]}</span>
           </div>
@@ -135,7 +135,7 @@ const next = i >= 0 && i < flatNav.length - 1 ? flatNav[i + 1] : undefined;
         <slot />
 
         {pagerLabels && (prev || next) && (
-          <div class="docs-pager">
+          <div class="docs-pager" data-pagefind-ignore>
             {prev && prev.href && (
               <a href={prev.href} class="is-prev">
                 <div class="pager-label">← {pagerLabels.prev}</div>
@@ -152,7 +152,7 @@ const next = i >= 0 && i < flatNav.length - 1 ? flatNav[i + 1] : undefined;
         )}
       </article>
 
-      <aside class="docs-toc">
+      <aside class="docs-toc" data-pagefind-ignore>
         <div class="docs-toc-label">{tocLabel}</div>
         {toc.map((t) => (
           <a href={`#${t.slug}`} class={t.depth > 2 ? 'is-l2' : ''}>{t.text}</a>

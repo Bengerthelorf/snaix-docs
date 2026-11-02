@@ -5,6 +5,7 @@ import { remarkMermaid } from './remark/mermaid.ts';
 import { remarkUrlRewriter, type ProductRewriteSpec } from './remark/url-rewriter.ts';
 import { rehypeLinkRewriter } from './rehype/link-rewriter.ts';
 import { rehypeWrapTables } from './rehype/wrap-tables.ts';
+import { defaultLocale } from './docs-nav.ts';
 
 export type {
   SnaixDocsOptions,
@@ -34,7 +35,7 @@ export default function snaixDocs(opts: SnaixDocsOptions): AstroIntegration {
   return {
     name: '@snaix/docs',
     hooks: {
-      'astro:config:setup': async ({ updateConfig, injectScript, config }) => {
+      'astro:config:setup': async ({ updateConfig, config }) => {
         const serialized = JSON.stringify(opts);
 
         const remark: any[] = [...snaixRemarkPlugins];
@@ -51,6 +52,9 @@ export default function snaixDocs(opts: SnaixDocsOptions): AstroIntegration {
         }
 
         const astroBase = (config.base ?? '/').replace(/\/$/, '');
+        const localeCodes = opts.locales
+          .filter((locale) => locale.code !== defaultLocale(opts.locales).code)
+          .map((locale) => locale.code);
         const productSpecs: ProductRewriteSpec[] = opts.products.map((p) => {
           const pr = (p.productRoot ?? '').replace(/\/$/, '');
           return {
@@ -59,6 +63,7 @@ export default function snaixDocs(opts: SnaixDocsOptions): AstroIntegration {
             rewrites: Object.entries(p.linkRewrites ?? {}).sort(
               ([a], [b]) => b.length - a.length,
             ),
+            locales: localeCodes,
           };
         });
         remark.push([remarkUrlRewriter, { products: productSpecs }]);
@@ -96,11 +101,6 @@ export default function snaixDocs(opts: SnaixDocsOptions): AstroIntegration {
             ],
           },
         });
-
-        injectScript(
-          'before-hydration',
-          `globalThis.__SNAIX_CONFIG__ = ${serialized};`
-        );
       },
     },
   };

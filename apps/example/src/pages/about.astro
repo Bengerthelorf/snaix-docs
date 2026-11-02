@@ -4,10 +4,12 @@ import TopBar from '@snaix/docs-theme/components/TopBar.astro';
 import Footer from '@snaix/docs-theme/components/Footer.astro';
 import { Tally } from '@snaix/docs-theme';
 import { snaixConfig } from 'virtual:snaix-config';
+
+const product = snaixConfig.products[0]!;
 ---
-<DefaultLayout title={`${snaixConfig.title} · manifesto`}>
+<DefaultLayout title={`${product.title} · manifesto`}>
   <div class="page about">
-    <TopBar brand={snaixConfig.title} version={snaixConfig.version} current="about" />
+    <TopBar brand={product.title} version={product.version} current="about" />
 
     <section class="manifesto-hero">
       <div class="manifesto-shapes">
@@ -87,6 +89,6 @@ import { snaixConfig } from 'virtual:snaix-config';
       </div>
     </section>
 
-    <Footer brand={snaixConfig.title} />
+    <Footer product={product} />
   </div>
 </DefaultLayout>

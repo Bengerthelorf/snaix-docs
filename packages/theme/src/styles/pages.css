@@ -97,6 +97,7 @@
   padding-right: 16px;
 }
 .docs-nav-section { margin-bottom: 28px; }
+.docs-nav:has([data-search-panel]:not([hidden])) { overflow: visible; }
 .docs-nav-section-title { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--red); font-weight: 600; margin-bottom: 10px; }
 .docs-nav a {
   display: block; padding: 6px 10px; font-size: 13px; color: var(--steel-7);

@@ -27,7 +27,7 @@ const hrefFor = (id: string, fallback: string): string => {
 };
 
 const overviewHref = hrefFor('home', '/');
-const commandsHref = hrefFor('commands', '/commands');
+const commandsHref = product.tabs.some((tab) => tab.id === 'commands') ? hrefFor('commands', '/commands') : undefined;
 const installHref = hrefFor('install', '/install');
 const changelogHref = hrefFor('changelog', '/changelog');
 
@@ -55,7 +55,7 @@ const licenseTag = stamp.sig ? `${stamp.sig.split(':')[0]} licensed` : 'mit lice
       <div class="t-small">this tool</div>
       <ul class="footer-list">
         <li><a href={overviewHref}>overview</a></li>
-        <li><a href={commandsHref}>commands</a></li>
+        {commandsHref && <li><a href={commandsHref}>commands</a></li>}
         <li><a href={installHref}>install</a></li>
         <li><a href={changelogHref}>changelog</a></li>
       </ul>

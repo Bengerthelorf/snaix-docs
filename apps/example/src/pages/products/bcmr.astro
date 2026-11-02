@@ -13,6 +13,8 @@ import {
 import type { CmdLine } from '@snaix/docs-theme';
 import { snaixConfig } from 'virtual:snaix-config';
 
+const product = snaixConfig.products[0]!;
+
 const terminalScript: CmdLine[] = [
   { type: 'prompt', text: 'bcmr cp ./dataset node-04:/srv/' },
   { type: 'out',    text: 'scanning source …  2,481 files · 14.2 gb', pause: 200 },
@@ -41,7 +43,7 @@ const features = [
 ---
 <DefaultLayout title="bcmr — better copy · move · remove">
   <div class="page home">
-    <TopBar brand={snaixConfig.title} version={snaixConfig.version} current="home" logoVariant="product" showStatus={false} githubHref="https://github.com/melodic-lab/bcmr" />
+    <TopBar brand={product.title} version={product.version} current="home" logoVariant="product" showStatus={false} githubHref="https://github.com/melodic-lab/bcmr" />
 
     <!-- hero -->
     <section class="hero">
@@ -247,6 +249,6 @@ const features = [
       </div>
     </section>
 
-    <Footer brand={snaixConfig.title} />
+    <Footer product={product} />
   </div>
 </DefaultLayout>

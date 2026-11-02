@@ -13,6 +13,10 @@ export function useInView<T extends Element = HTMLDivElement>(
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    if (typeof window.IntersectionObserver !== 'function') {
+      setInView(true);
+      return;
+    }
     let done = false;
     const { reArm, ...ioOpts } = options;
 

@@ -1,5 +1,6 @@
 import { useEffect, useState, type ElementType } from 'react';
 import { useInView } from './useInView.ts';
+import { useReducedMotion } from './useReducedMotion.ts';
 
 const SCRAMBLE_CHARS =
   '!<>-_\\/[]{}—=+*^?#abcdefghijklmnopqrstuvwxyz0123456789';
@@ -20,10 +21,12 @@ export function Scramble({
   as: Tag = 'span',
 }: ScrambleProps) {
   const [ref, inView] = useInView<HTMLElement>();
-  const [shown, setShown] = useState(() => text.replace(/\S/g, ' '));
+  const reducedMotion = useReducedMotion();
+  const [shown, setShown] = useState(text);
 
   useEffect(() => {
-    if (!inView) return;
+    if (!inView || reducedMotion || duration <= 0) return;
+    setShown(text.replace(/\S/g, ' '));
     let raf = 0;
     const start = performance.now() + delay;
     const frame = (now: number) => {
@@ -44,11 +47,11 @@ export function Scramble({
     };
     raf = requestAnimationFrame(frame);
     return () => cancelAnimationFrame(raf);
-  }, [inView, text, duration, delay]);
+  }, [inView, text, duration, delay, reducedMotion]);
 
   return (
     <Tag ref={ref as any} className={className}>
-      {shown}
+      {!inView || reducedMotion || duration <= 0 ? text : shown}
     </Tag>
   );
 }

@@ -1,7 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
 import DocsLayout from '@snaix/docs-theme/layouts/DocsLayout.astro';
+import { buildDocsNav } from '@snaix/docs/docs-nav';
 import { snaixConfig } from 'virtual:snaix-config';
+
+const product = snaixConfig.products[0]!;
 
 export async function getStaticPaths() {
   const entries = await getCollection('docs');
@@ -13,20 +16,8 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const all = await getCollection('docs');
-const bySection = new Map<string, typeof all>();
-for (const e of all) {
-  const sec = e.data.section ?? 'guide';
-  if (!bySection.has(sec)) bySection.set(sec, []);
-  bySection.get(sec)!.push(e);
-}
-for (const list of bySection.values()) {
-  list.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
-}
-
-const nav = Array.from(bySection.entries()).map(([label, items]) => ({
-  label,
-  items: items.map((e) => ({ slug: e.slug, title: e.data.title })),
-}));
+const locale = snaixConfig.locales[0]!;
+const nav = buildDocsNav(all, { locale, locales: snaixConfig.locales });
 
 const { Content, headings } = await entry.render();
 
@@ -37,8 +28,9 @@ const toc = headings
 const breadcrumb = ['docs', entry.data.section ?? 'guide', entry.data.title];
 ---
 <DocsLayout
-  brand={snaixConfig.title}
-  version={snaixConfig.version}
+  product={product}
+  brand={product.title}
+  version={product.version}
   current={entry.slug}
   nav={nav}
   title={entry.data.title}
@@ -46,6 +38,8 @@ const breadcrumb = ['docs', entry.data.section ?? 'guide', entry.data.title];
   breadcrumb={breadcrumb}
   toc={toc}
   source={{ path: `docs/${entry.slug}.md` }}
+  topNav={product.tabs}
+  pagerLocale={locale}
 >
   <Content />
 </DocsLayout>

@@ -129,9 +129,9 @@ const nav = [
   { id: 'keys',      label: 'keymap',    href: '#keys' },
   { id: 'flow',      label: 'flow',      href: '#flow' },
   { id: 'docs',      label: 'docs',      href: pikpaktui.href(`/${locale.code}/docs/getting-started`) },
-  { id: 'commands',  label: 'cli',       href: pikpaktui.href(`/${locale.code}/commands`) },
-  { id: 'install',   label: 'install',   href: pikpaktui.href(`/${locale.code}/install`) },
-  { id: 'changelog', label: 'changelog', href: pikpaktui.href(`/${locale.code}/changelog`) },
+  { id: 'commands',  label: 'cli',       href: pikpaktui.href('/commands') },
+  { id: 'install',   label: 'install',   href: pikpaktui.href('/install') },
+  { id: 'changelog', label: 'changelog', href: pikpaktui.href('/changelog') },
 ];
 ---
 <DefaultLayout title={`${pikpaktui.title} — ${t.title}`} lang={locale.lang ?? locale.code}>
@@ -271,7 +271,7 @@ const nav = [
           <BlockReveal client:visible delay={700} color="var(--red)">{t.sec4Headline[1]}</BlockReveal>
         </h2>
         <div class="buttons">
-          <a class="btn-block" style="background: var(--c-ink-0); color: var(--c-yellow); border-color: var(--c-ink-0);" href={pikpaktui.href(`/${locale.code}/install`)}>
+          <a class="btn-block" style="background: var(--c-ink-0); color: var(--c-yellow); border-color: var(--c-ink-0);" href={pikpaktui.href('/install')}>
             {t.installBig}
           </a>
           <a class="btn-block" style="background: transparent; color: var(--c-ink-0); border-color: var(--c-ink-0);" href={`${pikpaktui.githubUrl}/releases`}>

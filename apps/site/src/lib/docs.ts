@@ -3,7 +3,7 @@ import {
   buildDocsNav,
   bareSlug as bareSlugLib,
   defaultLocale,
-  localeOf,
+  entryLocale,
   localePrefix,
   slugPrefix,
   type LocaleOption,
@@ -33,9 +33,11 @@ export function bareSlug(slug: string): string {
 }
 
 export function localeOfEntry(entry: DocEntry): LocaleOption {
-  const code = entry.data.locale ?? localeOf(entry.slug, LOCALES);
+  const code = entryLocale(entry, LOCALES);
   return resolveLocale(code);
 }
+
+export const internalsSlug = (slug: string) => slug.replace(/^ablation\/?/, '');
 
 export async function navFor(
   locale: LocaleOption,
@@ -52,7 +54,7 @@ export async function navFor(
     sectionOrder: ['guide', 'cli', 'internals'],
     productRoot,
     docsRoot,
-    slugTransform: isInternalsOnly ? (s) => s.replace(/^ablation\/?/, '') : undefined,
+    slugTransform: isInternalsOnly ? internalsSlug : undefined,
   });
 }
 

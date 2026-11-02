@@ -13,6 +13,7 @@ bun.lockb
 *.png
 !apps/site/public/**/*.jpeg
 !apps/site/public/**/*.png
+!apps/example/public/**/*.png
 !packages/**/public/**/*.jpeg
 !packages/**/public/**/*.png
 
