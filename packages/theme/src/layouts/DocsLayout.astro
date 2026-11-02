@@ -108,7 +108,7 @@ const next = i >= 0 && i < flatNav.length - 1 ? flatNav[i + 1] : undefined;
           {version && <div class="t-mono-sm" style="color: var(--steel-5);">{version}</div>}
         </div>
         <div style="margin-bottom: 22px;">
-          <Search />
+          <Search locale={locale} product={product} />
         </div>
         {nav.map((g) => (
           <div class="docs-nav-section">
@@ -122,7 +122,8 @@ const next = i >= 0 && i < flatNav.length - 1 ? flatNav[i + 1] : undefined;
         ))}
       </aside>
 
-      <article class="docs-content">
+      <article class="docs-content" data-product={product.slug} data-product-title={product.title}
+        data-pagefind-filter="product[data-product]" data-pagefind-meta="product[data-product], productTitle[data-product-title]">
         {breadcrumb.length > 0 && (
           <div class="docs-breadcrumb" data-pagefind-ignore>
             {breadcrumb.slice(0, -1).map((b) => <Fragment>{b} / </Fragment>)}

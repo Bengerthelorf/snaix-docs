@@ -1,0 +1,7 @@
+---
+import WorkbenchLayout from '../../layouts/WorkbenchLayout.astro';
+import UsageDemo from '../../components/workbench/UsageDemo';
+---
+<WorkbenchLayout title="Explore a usage audit" description="Filter fictional Claude sessions, inspect token totals and compare daily example costs in a hands-on Claudit demonstration." current="usage" eyebrow="Claudit">
+  <UsageDemo client:load />
+</WorkbenchLayout>

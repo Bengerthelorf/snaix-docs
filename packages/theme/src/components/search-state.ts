@@ -1,10 +1,11 @@
 export interface SearchItem {
   url: string;
-  meta?: { title?: string; section?: string };
+  meta?: { title?: string; section?: string; product?: string; productTitle?: string };
   excerpt?: string;
 }
 
 export interface SearchEngine {
+  filters?(): Promise<Record<string, Record<string, number>>>;
   debouncedSearch(query: string, options: object, delay: number): Promise<{
     results: { data(): Promise<SearchItem> }[];
   } | null>;
@@ -15,26 +16,47 @@ export interface SearchState {
   items: SearchItem[];
   loading: boolean;
   error: boolean;
+  scope: 'product' | 'all';
+  scopeFallback: boolean;
+}
+
+export interface SearchScope {
+  product?: string;
 }
 
 /** Coalesce index loading and discard responses superseded by a new input. */
 export function createSearchRunner(load: () => Promise<SearchEngine>, update: (state: SearchState) => void) {
   let index: Promise<SearchEngine> | undefined;
+  let filters: Promise<Record<string, Record<string, number>>> | undefined;
   let version = 0;
-  return async (query: string) => {
+  return async (query: string, requested: SearchScope = {}) => {
     const request = ++version;
-    update({ query, items: [], loading: !!query, error: false });
+    let scope: SearchState['scope'] = requested.product ? 'product' : 'all';
+    let scopeFallback = false;
+    update({ query, items: [], loading: !!query, error: false, scope, scopeFallback });
     if (!query) return;
     try {
       index ??= load().catch((error) => { index = undefined; throw error; });
       const engine = await index;
       if (request !== version) return;
-      const result = await engine.debouncedSearch(query, {}, 200);
+      const options: { filters?: { product: string } } = {};
+      if (requested.product) {
+        try {
+          filters ??= (engine.filters?.() ?? Promise.resolve({})).catch((error) => { filters = undefined; throw error; });
+          const available = await filters;
+          if ((available.product?.[requested.product] ?? 0) > 0) options.filters = { product: requested.product };
+        } catch {
+          // Older or partial indexes remain searchable without silently excluding documents.
+        }
+        if (request !== version) return;
+        if (!options.filters) { scope = 'all'; scopeFallback = true; }
+      }
+      const result = await engine.debouncedSearch(query, options, 200);
       if (!result || request !== version) return;
       const items = await Promise.all(result.results.slice(0, 8).map((hit) => hit.data()));
-      if (request === version) update({ query, items, loading: false, error: false });
+      if (request === version) update({ query, items, loading: false, error: false, scope, scopeFallback });
     } catch {
-      if (request === version) update({ query, items: [], loading: false, error: true });
+      if (request === version) update({ query, items: [], loading: false, error: true, scope, scopeFallback });
     }
   };
 }

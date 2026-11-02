@@ -1,0 +1,47 @@
+---
+import WorkbenchLayout from '../../layouts/WorkbenchLayout.astro';
+import InstallGuide from '../../components/workbench/InstallGuide.tsx';
+---
+<WorkbenchLayout title="From download to first run." description="Choose a product and your machine. Get the right installation steps, a version check and help for common symptoms." current="setup" eyebrow="setup / guided installation">
+  <InstallGuide client:load />
+  <noscript><p class="wb-note">Enable JavaScript to choose your installation steps. Direct guides: <a href="/bcmr/install">bcmr</a>, <a href="/pikpaktui/install">pikpaktui</a>, <a href="/iconchanger/install">IconChanger</a>, <a href="/claudit/install">Claudit</a>.</p></noscript>
+</WorkbenchLayout>
+<style>
+  :global(.install-guide h2) { margin: 0; font: 650 22px/1.25 var(--sans); letter-spacing: -.6px; }
+  :global(.setup-section-head) { margin-bottom: 22px; gap: 16px; flex-wrap: wrap; }
+  :global(.setup-products) { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--steel-3); margin-bottom: 36px; }
+  :global(.setup-product) { appearance: none; border: 0; border-right: 1px solid var(--steel-3); border-top: 4px solid transparent; color: var(--ink); background: var(--paper); padding: 23px; font: 650 20px/1.2 var(--sans); letter-spacing: -.5px; display: flex; justify-content: space-between; gap: 8px; cursor: pointer; }
+  :global(.setup-product:last-child) { border-right: 0; }
+  :global(.setup-product.is-selected) { border-top-color: var(--blue); background: var(--paper-pure); }
+  :global(.setup-product:hover) { background: var(--paper-pure); }
+  :global(.setup-product span) { color: var(--fg-muted); font-weight: 400; }
+  :global(.setup-grid) { grid-template-columns: minmax(0, .8fr) minmax(0, 1.4fr); align-items: start; }
+  :global(.setup-options > h2) { margin: 12px 0 16px; }
+  :global(.setup-options > .wb-note) { margin-bottom: 26px; }
+  :global(.setup-options .wb-field) { margin-bottom: 24px; }
+  :global(.setup-options small) { line-height: 1.6; }
+  :global(.setup-plan-meta) { display: flex; gap: 8px; flex-wrap: wrap; padding-bottom: 24px; }
+  :global(.setup-plan-meta span) { border: 1px solid var(--steel-3); padding: 5px 9px; font: 11px/1.3 var(--mono); }
+  :global(.setup-steps) { list-style: none; margin: 0; padding: 0; }
+  :global(.setup-steps > li) { display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 14px; border-top: 1px solid var(--steel-3); padding: 24px 0; }
+  :global(.setup-step-number) { color: var(--blue); font: 12px/1.6 var(--mono); padding-top: 2px; }
+  :global(.setup-steps h3) { font: 650 17px/1.4 var(--sans); margin: 0 0 8px; overflow-wrap: anywhere; }
+  :global(.setup-command) { margin-top: 14px; }
+  :global(.setup-command textarea) { box-sizing: border-box; display: block; width: 100%; min-height: 76px; resize: vertical; margin-bottom: 10px; white-space: pre-wrap; overflow-wrap: anywhere; font: 13px/1.7 var(--mono); }
+  :global(.setup-command .wb-row) { gap: 12px; justify-content: start; flex-wrap: wrap; }
+  :global(.setup-doc-link) { display: inline-block; color: var(--ink); font: 550 13px/1.6 var(--sans); text-underline-offset: 4px; margin-top: 10px; }
+  :global(.setup-verification) { background: var(--paper); border: 1px solid var(--steel-3); padding: 20px; margin: 4px 0 24px; }
+  :global(.setup-verification > .wb-note) { margin-top: 12px; }
+  :global(.setup-troubleshooting) { margin-top: 56px; padding-top: 32px; border-top: 1px solid var(--steel-3); }
+  :global(.setup-troubleshooting h2) { margin-top: 10px; font-size: 30px; letter-spacing: -1px; }
+  :global(.setup-symptoms) { border-top: 1px solid var(--steel-3); }
+  :global(.setup-symptoms details) { border-bottom: 1px solid var(--steel-3); }
+  :global(.setup-symptoms summary) { padding: 23px 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 24px; font: 550 17px/1.5 var(--sans); list-style: none; }
+  :global(.setup-symptoms summary::-webkit-details-marker) { display: none; }
+  :global(.setup-symptoms summary span) { font: 24px/1 var(--sans); transition: transform .15s; }
+  :global(.setup-symptoms details[open] summary span) { transform: rotate(45deg); }
+  :global(.setup-symptoms details > div) { max-width: 740px; padding: 0 0 24px; }
+  :global(.setup-symptoms p) { font: 15px/1.75 var(--sans); color: var(--fg-muted); margin: 0; }
+  @media (max-width: 760px) { :global(.setup-grid) { grid-template-columns: minmax(0, 1fr); } :global(.setup-products) { grid-template-columns: repeat(2, minmax(0, 1fr)); } :global(.setup-product) { padding: 18px; border-bottom: 1px solid var(--steel-3); } :global(.setup-product:nth-child(even)) { border-right: 0; } :global(.setup-steps > li) { grid-template-columns: 24px minmax(0, 1fr); gap: 8px; } :global(.setup-verification) { padding: 16px; } }
+  @media (prefers-reduced-motion: reduce) { :global(.setup-symptoms summary span) { transition: none; } }
+</style>

@@ -1,0 +1,47 @@
+---
+import { getCollection } from 'astro:content';
+import { snaixConfig } from 'virtual:snaix-config';
+import WorkbenchLayout from '../../layouts/WorkbenchLayout.astro';
+import { readContentRevision } from '../../data/workbench-status.ts';
+
+const collections = await Promise.all([
+  getCollection('bcmr'), getCollection('claudit'), getCollection('pikpaktui'), getCollection('iconchanger'),
+]);
+const slugs = ['bcmr', 'claudit', 'pikpaktui', 'iconchanger'];
+const snapshotAt = new Date().toISOString();
+const products = snaixConfig.products.map(p => {
+  const entries = collections[slugs.indexOf(p.slug)] ?? [];
+  return { ...p, pages: entries.length, languages: [...new Set(entries.map(e => e.data.locale))].sort(), revision: readContentRevision(p.slug) };
+});
+const build = snaixConfig.siteData.build;
+---
+<WorkbenchLayout title="Versions, docs & sources." description="A build-time snapshot of the four tools behind this site. See which release is listed and which source revision supplied the documentation." current="status">
+  <div class="status-summary"><div><span class="status-dot" aria-hidden="true"></span><strong>Build snapshot</strong><span>Captured {snapshotAt.slice(0, 16).replace('T', ' ')} UTC</span></div><p>This page updates when the site is rebuilt. It does not monitor live service availability.</p></div>
+  <section class="status-products" aria-label="Product versions and documentation">
+    {products.map(p => <article class="status-product">
+      <div class="status-product-head"><h2><a href={`${p.productRoot}/`}>{p.title}</a></h2><span class="status-version">{p.version || 'Release unavailable'}</span></div>
+      <dl><div><dt>Stable release date</dt><dd>{p.releaseDate || 'Unavailable at build time'}</dd></div><div><dt>Published docs</dt><dd>{p.pages} pages</dd></div><div><dt>Content languages</dt><dd>{p.languages.join(', ') || 'None'}</dd></div><div><dt>Docs source revision</dt><dd>{p.revision ? <a href={`https://github.com/${p.repo}/tree/${p.revision.sha}`}><code>{p.revision.sha.slice(0, 7)}</code></a> : 'Revision unavailable'}</dd></div></dl>
+      <div class="status-links"><a href={`${p.githubUrl}/releases`}>Releases ↗</a><a href={`${p.productRoot}/docs/getting-started`}>Read docs</a><a href={`/workbench/setup/?tool=${p.slug}`}>Set up</a></div>
+    </article>)}
+  </section>
+  <section class="wb-principle"><h2>What this tells you.</h2><div><p>Release labels come from GitHub's latest stable release endpoint. Documentation comes from the product source checkouts used for this build, which can contain changes newer than a release. Language counts describe available content, not complete translations.</p><p style="margin-top: 16px;">Site revision: {build.sha ? <a href={`https://github.com/Bengerthelorf/snaix-docs/commit/${build.sha}`}><code>{build.sha}</code></a> : 'unavailable'}. Built {build.date}. A missing release label means GitHub metadata was unavailable; it does not establish that a project has no release.</p></div></section>
+</WorkbenchLayout>
+<style>
+  .status-summary { background: var(--bg-raised); padding: 20px 24px; border-inline-start: 3px solid var(--blue); margin-bottom: 32px; }
+  .status-summary > div { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 16px; font-size: 13px; }
+  .status-summary p, .status-summary span:not(.status-dot) { color: var(--fg-muted); font-size: 13px; line-height: 1.6; }
+  .status-summary p { margin: 10px 0 0; }
+  .status-dot { width: 8px; height: 8px; background: var(--blue); display: inline-block; }
+  .status-products { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .status-product { border: 1px solid var(--border-faint); padding: 28px; }
+  .status-product-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .status-product h2 { font-size: 26px; letter-spacing: -.04em; margin: 0; }
+  .status-version { font: 12px/1.5 var(--mono); padding: 4px 8px; background: var(--bg-raised); border: 1px solid var(--border-faint); }
+  .status-product dl { margin: 24px 0; font-size: 13px; }
+  .status-product dl > div { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; border-top: 1px solid var(--border-faint); padding: 12px 0; }
+  .status-product dt { color: var(--fg-muted); }
+  .status-product dd { margin: 0; overflow-wrap: anywhere; text-align: end; }
+  .status-product dd a { text-decoration: underline; text-underline-offset: 3px; }
+  .status-links { display: flex; flex-wrap: wrap; gap: 12px 24px; font-size: 13px; color: var(--blue); }
+  @media (max-width: 760px) { .status-products { grid-template-columns: minmax(0, 1fr); gap: 16px; } .status-product { padding: 20px; } }
+</style>

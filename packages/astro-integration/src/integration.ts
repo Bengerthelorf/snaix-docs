@@ -9,6 +9,7 @@ import { defaultLocale } from './docs-nav.ts';
 
 export type {
   SnaixDocsOptions,
+  BrandMetadata,
   NavSection,
   BuildStamp,
   ActivityRow,

@@ -97,6 +97,11 @@ export interface ProductIntegration {
   version?: string;
   releaseDate?: string;
   githubUrl?: string;
+  /** Verified product license identifier; omit when unavailable or unknown. */
+  license?: string;
+  /** Product assets override the shared brand when its public route is active. */
+  favicon?: string;
+  ogImage?: string;
   /** `owner/repo` slug — used by build-time helpers that hit the github api. */
   repo?: string;
   /** No trailing slash. Pages live at `${productRoot}/*`. */
@@ -115,7 +120,15 @@ export interface ProductIntegration {
   contentDir?: string;
 }
 
+export interface BrandMetadata {
+  name?: string;
+  description?: string;
+  favicon?: string;
+  ogImage?: string;
+}
+
 export interface SnaixDocsOptions {
+  brand?: BrandMetadata;
   products: ProductIntegration[];
   locales: LocaleOption[];
   buildStamp: BuildStamp;

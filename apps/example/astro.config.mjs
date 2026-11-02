@@ -29,11 +29,15 @@ const bcmr = {
 };
 
 export default defineConfig({
-  site: 'https://snaix.homes',
+  site: 'https://docs.example.com',
   integrations: [
     react(),
     mdx(),
     snaixDocs({
+      brand: {
+        name: 'bcmr documentation',
+        description: 'A standalone documentation site for bcmr, built with @snaix/docs.',
+      },
       products: [bcmr],
       locales: [
         { code: 'en', label: 'English', default: true, ui: { pagerPrev: 'previous', pagerNext: 'next' } },
@@ -47,9 +51,6 @@ export default defineConfig({
         activity: [],
         products: [
           { slug: 'bcmr', name: 'bcmr', variant: 'bcmr', href: '/products/bcmr', eyebrow: '', tag: '', description: '', metaLeft: '', metaRight: '' },
-          { slug: 'pikpaktui', name: 'pikpaktui', variant: 'pikpak', href: '#', eyebrow: '', tag: '', description: '', metaLeft: '', metaRight: '' },
-          { slug: 'iconchanger', name: 'iconchanger', variant: 'icon', href: '#', eyebrow: '', tag: '', description: '', metaLeft: '', metaRight: '' },
-          { slug: 'claudit', name: 'claudit', variant: 'claudit', href: '#', eyebrow: '', tag: '', description: '', metaLeft: '', metaRight: '' },
         ],
       },
     }),

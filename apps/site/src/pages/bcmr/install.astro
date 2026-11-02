@@ -1,38 +1,35 @@
 ---
+import WorkbenchEntry from '../../components/workbench/WorkbenchEntry.astro';
 import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
 import TopBar from '@snaix/docs-theme/components/TopBar.astro';
 import Footer from '@snaix/docs-theme/components/Footer.astro';
 import { BlockReveal, InstallTabs } from '@snaix/docs-theme';
 import type { InstallStep } from '@snaix/docs-theme';
-import { snaixConfig } from 'virtual:snaix-config';
 import { product } from '../../lib/product.ts';
 
 const bcmrProduct = product('bcmr');
 
-const buildSha = snaixConfig.siteData.build.sha;
 const versionBare = bcmrProduct.version.replace(/^v/, '');
-const releaseIso = bcmrProduct.releaseDate.replaceAll('.', '-');
 
 const steps: InstallStep[] = [
   {
     title: 'verify',
-    description: 'confirm the binary is on your $PATH and matches the published version.',
+    description: `confirm the binary is on your $PATH; compare its reported version with the published release (${bcmrProduct.version}).`,
     panelLabel: 'verification',
     script: [
       { type: 'prompt', text: `${bcmrProduct.title} --version` },
-      { type: 'out',    text: `${bcmrProduct.title} ${versionBare} (${buildSha} · ${releaseIso})`, pause: 160 },
+      { type: 'out',    text: `expected version: ${versionBare} · your build details may differ`, pause: 160 },
     ],
   },
   {
     title: 'first copy',
-    description: 'move some bytes and verify the integrity of the destination. your first loop.',
+    description: 'copy a directory with BLAKE3 readback verification, then compare it with the source. example commands; output depends on your files.',
     panelLabel: 'first-copy',
     script: [
-      { type: 'prompt', text: 'bcmr copy ./photos ~/Backup/' },
-      { type: 'out',    text: 'scanning……  1,204 files · 2.3 gb', pause: 160 },
-      { type: 'ok',     text: 'complete · all blake3 verified',    pause: 180 },
-      { type: 'prompt', text: 'bcmr check ~/Backup/photos',         pause: 240 },
-      { type: 'ok',     text: '1,204 files · all hashes match',     pause: 160 },
+      { type: 'prompt', text: 'bcmr copy --recursive --verify ./photos/ ~/Backup/' },
+      { type: 'out',    text: 'copies into ~/Backup/photos/ and verifies copied content', pause: 160 },
+      { type: 'prompt', text: 'bcmr check --recursive ./photos/ ~/Backup/', pause: 240 },
+      { type: 'out',    text: 'compares size and mtime; hashes size-matched files when mtimes differ', pause: 160 },
     ],
     footer: { href: '/bcmr/docs/getting-started', label: 'read the full walkthrough →' },
   },
@@ -48,6 +45,8 @@ const steps: InstallStep[] = [
       nav={bcmrProduct.nav()}
     />
 
+    <WorkbenchEntry href="/workbench/setup/?tool=bcmr" label="Get a guided setup" description="Choose your system, find installation steps and troubleshoot common problems." />
+
     <section class="install-hero">
       <div class="t-small" style="color: var(--red);">§ install</div>
       <h1 class="install-title lower">
@@ -55,9 +54,9 @@ const steps: InstallStep[] = [
         <BlockReveal client:load color="var(--blue)" delay={600}>in.</BlockReveal>
       </h1>
       <p class="t-body" style="margin-top: 24px; max-width: 560px;">
-        bcmr is a single static binary. pick a channel, paste one line, you
-        are moving verified bytes in under a minute. every release is
-        signed and reproducible from source.
+        bcmr is a command-line tool for local and SSH file operations.
+        choose an installation method, check the installed version, then
+        try a copy with BLAKE3 readback verification.
       </p>
     </section>
 

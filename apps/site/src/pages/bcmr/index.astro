@@ -1,4 +1,5 @@
 ---
+import WorkbenchEntry from '../../components/workbench/WorkbenchEntry.astro';
 import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
 import TopBar from '@snaix/docs-theme/components/TopBar.astro';
 import Footer from '@snaix/docs-theme/components/Footer.astro';
@@ -44,6 +45,8 @@ const features = [
       githubHref={bcmrProduct.githubUrl}
       nav={bcmrProduct.nav()}
     />
+
+    <WorkbenchEntry href="/workbench/commands/" label="Build a bcmr command" description="Choose paths and copy options before heading to the terminal." />
 
     <section class="hero">
       <div class="hero-top rule-b">

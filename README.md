@@ -14,6 +14,16 @@ worker/                # Cloudflare app Worker: installers, releases, rebuild cr
 content/               # Ignored product checkouts populated per environment
 ```
 
+## Product workbench
+
+`/workbench/` offers a bcmr command builder, a four-product setup and troubleshooting
+guide, a browser-local icon preview, an interactive Claudit example, and a
+build-time overview of product versions and documentation sources. The homepage
+and product pages link to these experiences.
+
+See the [implementation and validation record](docs/operations/product-workbench-2026-11-03.md)
+for behavior, data boundaries and deployment details.
+
 ## Local development
 
 ```sh

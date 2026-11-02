@@ -1,0 +1,15 @@
+---
+import WorkbenchLayout from '../../layouts/WorkbenchLayout.astro';
+const experiences = [
+  { title: 'Build a command', description: 'Set your source, destination and copy options. Get a shell command you can understand and use.', href: '/workbench/commands/', symbol: '>_', type: 'bcmr · command builder' },
+  { title: 'Find your setup', description: 'Choose a tool and your system. Follow the right installation steps or work through a common problem.', href: '/workbench/setup/', symbol: '↳', type: 'all four tools · guided setup' },
+  { title: 'Try an icon', description: 'Bring your own image or choose a geometric mark. See it as an app, folder and in the Dock.', href: '/workbench/icons/', symbol: '◈', type: 'IconChanger · local preview' },
+  { title: 'Explore API usage', description: 'Filter example sessions and see how cost, tokens and activity fit together in Claudit.', href: '/workbench/usage/', symbol: '▥', type: 'Claudit · interactive example' },
+];
+---
+<WorkbenchLayout title="Put a tool to work." description="A place to try things, find the right command and get set up. Start with a task." current="overview">
+  <section class="wb-directory" aria-label="Interactive tools">
+    {experiences.map(e => <a href={e.href}><span class="wb-directory-symbol" aria-hidden="true">{e.symbol}</span><div><h2>{e.title}</h2><p>{e.description}</p><span class="wb-directory-type">{e.type}</span></div><span aria-hidden="true">↗</span></a>)}
+  </section>
+  <section class="wb-principle"><h2>Try it here.<br />Use it on your machine.</h2><p>The workbench helps you explore before installing. Commands are generated for you to review and copy. Icon images stay in this browser. The usage dashboard uses a fixed example dataset.<br /><a class="wb-button" href="/workbench/status/" style="margin-top: 20px;">See project versions and sources</a></p></section>
+</WorkbenchLayout>
