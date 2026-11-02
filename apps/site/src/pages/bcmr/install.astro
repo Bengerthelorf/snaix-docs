@@ -9,27 +9,21 @@ import { product } from '../../lib/product.ts';
 
 const bcmrProduct = product('bcmr');
 
-const versionBare = bcmrProduct.version.replace(/^v/, '');
-
 const steps: InstallStep[] = [
   {
-    title: 'verify',
-    description: `confirm the binary is on your $PATH; compare its reported version with the published release (${bcmrProduct.version}).`,
+    title: 'check the version',
+    description: 'Run bcmr --version to check the installation.',
     panelLabel: 'verification',
     script: [
       { type: 'prompt', text: `${bcmrProduct.title} --version` },
-      { type: 'out',    text: `expected version: ${versionBare} · your build details may differ`, pause: 160 },
     ],
   },
   {
     title: 'first copy',
-    description: 'copy a directory with BLAKE3 readback verification, then compare it with the source. example commands; output depends on your files.',
+    description: 'Copy a directory and verify its contents with BLAKE3.',
     panelLabel: 'first-copy',
     script: [
       { type: 'prompt', text: 'bcmr copy --recursive --verify ./photos/ ~/Backup/' },
-      { type: 'out',    text: 'copies into ~/Backup/photos/ and verifies copied content', pause: 160 },
-      { type: 'prompt', text: 'bcmr check --recursive ./photos/ ~/Backup/', pause: 240 },
-      { type: 'out',    text: 'compares size and mtime; hashes size-matched files when mtimes differ', pause: 160 },
     ],
     footer: { href: '/bcmr/docs/getting-started', label: 'read the full walkthrough →' },
   },
@@ -45,18 +39,16 @@ const steps: InstallStep[] = [
       nav={bcmrProduct.nav()}
     />
 
-    <WorkbenchEntry href="/workbench/setup/?tool=bcmr" label="Get a guided setup" description="Choose your system, find installation steps and troubleshoot common problems." />
+    <WorkbenchEntry href="/workbench/setup/?tool=bcmr" label="Get a guided setup" description="Select your system and installation method." />
 
     <section class="install-hero">
       <div class="t-small" style="color: var(--red);">§ install</div>
       <h1 class="install-title lower">
-        <BlockReveal client:load>four</BlockReveal> <BlockReveal client:load color="var(--red)" delay={300}>ways</BlockReveal><br/>
-        <BlockReveal client:load color="var(--blue)" delay={600}>in.</BlockReveal>
+        <BlockReveal client:load>install</BlockReveal><br/>
+        <BlockReveal client:load color="var(--blue)" delay={300}>bcmr.</BlockReveal>
       </h1>
       <p class="t-body" style="margin-top: 24px; max-width: 560px;">
-        bcmr is a command-line tool for local and SSH file operations.
-        choose an installation method, check the installed version, then
-        try a copy with BLAKE3 readback verification.
+        Choose an installation method, then run your first verified copy.
       </p>
     </section>
 

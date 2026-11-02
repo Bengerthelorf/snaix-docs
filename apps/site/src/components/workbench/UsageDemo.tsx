@@ -3,14 +3,13 @@ import {
   buildDailyUsage, DEMO_SESSIONS, filterUsageSessions, MODEL_LABELS, summarizeUsage,
   type UsageFilters, type UsageModel, type UsageRange,
 } from '../../lib/workbench/usage-demo';
+import { formatUsageDay, formatUsageRange, formatUsageSessionTime } from '../../lib/workbench/usage-format';
 import '../../styles/workbench-demos.css';
 
 const DEFAULT_FILTERS: UsageFilters = { range: '7d', model: 'all', project: 'all' };
 const PROJECTS = [...new Set(DEMO_SESSIONS.map((session) => session.project))].sort();
 const number = new Intl.NumberFormat('en-US');
 const usd = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
-const dayFormat = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
-const timeFormat = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hourCycle: 'h23', timeZone: 'UTC' });
 const money = (cents: number) => usd.format(cents / 100);
 
 export default function UsageDemo() {
@@ -20,9 +19,7 @@ export default function UsageDemo() {
   const totals = useMemo(() => summarizeUsage(sessions), [sessions]);
   const days = useMemo(() => buildDailyUsage(sessions, filters.range), [sessions, filters.range]);
   const chartMax = Math.max(1, ...days.map((day) => chartMetric === 'cost' ? day.costCents : day.tokens));
-  const rangeLabel = days.length === 1
-    ? `${dayFormat.format(new Date(days[0].date))}, 2026`
-    : `${dayFormat.format(new Date(days[0].date))}–${dayFormat.format(new Date(days[days.length - 1].date))}, 2026`;
+  const rangeLabel = formatUsageRange(days[0].date, days[days.length - 1].date);
   const tokenTypes = [
     { label: 'Input', value: totals.inputTokens, className: 'ud-token-input' },
     { label: 'Output', value: totals.outputTokens, className: 'ud-token-output' },
@@ -34,7 +31,7 @@ export default function UsageDemo() {
     <div className="wb-tool ud-tool" data-tool="usage-demo">
       <div className="ud-example-banner">
         <span className="ud-example-tag">Example data</span>
-        <p>Explore 18 fictional sessions from October 15–28, 2026. Cost values are fixed USD examples, not current API prices or your bill. No local logs are read.</p>
+        <p>18 sample sessions · October 15–28, 2026 · USD</p>
       </div>
 
       <section className="wb-panel ud-filters" aria-label="Example usage filters">
@@ -74,8 +71,8 @@ export default function UsageDemo() {
       {sessions.length === 0 ? <section className="wb-panel ud-empty" aria-label="No matching sessions">
         <div className="ud-empty-mark" aria-hidden="true"><span /><span /><span /></div>
         <h2>No sessions in this selection</h2>
-        <p>Try another model or project, or widen the sample date range.</p>
-        <button className="wb-button is-primary" type="button" onClick={() => setFilters(DEFAULT_FILTERS)}>Show all sample projects</button>
+
+        <button className="wb-button is-primary" type="button" onClick={() => setFilters(DEFAULT_FILTERS)}>Reset filters</button>
       </section> : <>
         <div className="ud-analysis-grid">
           <section className="wb-panel ud-chart" aria-labelledby="usage-chart-title">
@@ -86,12 +83,11 @@ export default function UsageDemo() {
                 <button type="button" aria-pressed={chartMetric === 'tokens'} onClick={() => setChartMetric('tokens')}>Tokens</button>
               </div>
             </div>
-            <p className="wb-note">One bar per UTC day. Inactive days stay visible.</p>
             <ol className="ud-chart-days" aria-label={`Daily ${chartMetric === 'cost' ? 'example cost in USD' : 'token count'}`}>
               {days.map((day) => {
                 const value = chartMetric === 'cost' ? day.costCents : day.tokens;
                 return <li key={day.date}>
-                  <time dateTime={day.date}>{dayFormat.format(new Date(day.date))}</time>
+                  <time dateTime={day.date}>{formatUsageDay(day.date)}</time>
                   <span className="ud-bar-track" aria-hidden="true"><span className={`ud-bar ud-bar-${chartMetric}`} style={{ width: `${value / chartMax * 100}%` }} /></span>
                   <span className="ud-chart-value">{chartMetric === 'cost' ? money(value) : number.format(value)}</span>
                   <span className="ud-sr-only">{day.sessions} {day.sessions === 1 ? 'session' : 'sessions'}</span>
@@ -101,8 +97,7 @@ export default function UsageDemo() {
           </section>
 
           <section className="wb-panel ud-token-panel" aria-labelledby="usage-tokens-title">
-            <h2 id="usage-tokens-title">Where the tokens went</h2>
-            <p className="wb-note">Total tokens include input, output, cache reads and cache writes.</p>
+            <h2 id="usage-tokens-title">Token breakdown</h2>
             <div className="ud-token-strip" aria-hidden="true">{tokenTypes.map((type) => <span key={type.label} className={type.className} style={{ width: `${type.value / totals.tokens * 100}%` }} />)}</div>
             <dl className="ud-token-list">{tokenTypes.map((type) => <div key={type.label}><dt><span className={`ud-token-key ${type.className}`} aria-hidden="true" />{type.label}</dt><dd>{number.format(type.value)}</dd></div>)}</dl>
             <div className="ud-model-summary">
@@ -117,13 +112,13 @@ export default function UsageDemo() {
 
         <section className="wb-panel ud-session-panel" aria-labelledby="usage-sessions-title">
           <div className="ud-panel-heading"><h2 id="usage-sessions-title">Sample sessions</h2><span>{totals.sessions} shown</span></div>
-          <p className="wb-note ud-scroll-hint">Scroll the table horizontally on narrow screens.</p>
+          <p className="wb-note ud-scroll-hint">Scroll for more columns.</p>
           <div className="ud-table-scroll" role="region" aria-label="Sample sessions table" tabIndex={0}>
             <table className="ud-session-table">
-              <caption>Fictional sessions, newest first. All times are UTC. Costs are fixed examples.</caption>
+              <caption>Example sessions · UTC</caption>
               <thead><tr><th scope="col">Session (UTC)</th><th scope="col">Project</th><th scope="col">Model</th><th scope="col">Total tokens</th><th scope="col">Example cost</th></tr></thead>
               <tbody>{sessions.map((session) => <tr key={session.id}>
-                <th scope="row"><time dateTime={session.startedAt}>{timeFormat.format(new Date(session.startedAt))}</time><span className="ud-session-id">{session.id}</span></th>
+                <th scope="row"><time dateTime={session.startedAt}>{formatUsageSessionTime(session.startedAt)}</time><span className="ud-session-id">{session.id}</span></th>
                 <td><code>{session.project}</code></td>
                 <td><span className="ud-model" data-model={session.model}>{MODEL_LABELS[session.model]}</span></td>
                 <td className="ud-numeric">{number.format(session.inputTokens + session.outputTokens + session.cacheReadTokens + session.cacheWriteTokens)}</td>
@@ -135,7 +130,7 @@ export default function UsageDemo() {
         </section>
       </>}
 
-      <div className="ud-next-step"><p>Claudit reads your real Claude session logs locally on macOS.</p><a className="wb-button" href="/claudit/install">Install Claudit</a><a href="/claudit/docs/getting-started">Read the guide</a></div>
+      <div className="ud-next-step"><a className="wb-button" href="/claudit/install">Install Claudit</a><a href="/claudit/docs/getting-started">Read the guide</a></div>
     </div>
   );
 }

@@ -3,7 +3,7 @@ import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
 import TopBar from '@snaix/docs-theme/components/TopBar.astro';
 import Footer from '@snaix/docs-theme/components/Footer.astro';
 import IcMacWindow from '@snaix/docs-theme/components/IcMacWindow.astro';
-import { BlockReveal, Scramble, Tally, Typewriter } from '@snaix/docs-theme';
+import { BlockReveal, Scramble, Typewriter } from '@snaix/docs-theme';
 import '@snaix/docs-theme/styles/iconchanger.css';
 import { resolveLocale } from '../../../lib/docs.ts';
 import { product } from '../../../lib/product.ts';
@@ -17,108 +17,108 @@ const locale = resolveLocale(Astro.params.lang!);
 
 const copy = {
   zh: {
-    title: '一次一个图标',
+    title: '更换图标，自动恢复',
     topLine: 'iconchanger / macos 原生',
-    topMid: 'swift · appkit · 已签名',
+    topMid: '应用 · 文件夹 · 自动恢复',
     overview: '§ 01 · 概览',
-    eyebrow: '// 你的 dock，你说了算。',
-    headline: ['换掉', '每一个', '图标。'],
-    ledePre: '随手替换任意 macOS 应用图标。浏览 ',
+    eyebrow: '// 应用更新后，重新应用自定义图标。',
+    headline: ['更换', '应用', '图标。'],
+    ledePre: '替换 macOS 应用和文件夹图标。可从 ',
     ledeLink: 'macosicons.com',
-    ledeMid: ' 上精选的数千个图标变体，从你自己的 ',
+    ledeMid: ' 搜索，也可选用本地 ',
     ledeCodeIcns: '.icns',
-    ledeMid2: ' 文件里挑，或者扔一张 png。dock 实时刷新。每个应用可一键还原。不改系统、完全沙盒化。',
+    ledeMid2: '、PNG 或 JPEG 文件。缓存所选图标，在应用更新后或按计划重新应用。',
     cta: '↳ 下载 macOS 版',
     ctaGhost: '了解更多',
     cmdMeta: '需要 macOS 13+',
     ribbon: [
-      { t: 'macosicons.com', d: '直接浏览社区图标库。搜索、筛选、预览。' },
-      { t: '实时 dock', d: '换之前就能在真实 dock 里看效果 —— 不是示意图。' },
-      { t: '按应用还原', d: '每个更改都可撤销。任意应用一键恢复默认。' },
-      { t: '沙盒化', d: '已签名、已公证、沙盒化。不改系统、不用 SIP 技巧。' },
+      { t: 'macosicons.com', d: '按应用名称或自定义别名搜索社区图标库。' },
+      { t: 'dock 预览', d: '在应用内的 Dock 视图中预览多款自定义图标。' },
+      { t: '恢复默认', d: '使用“恢复默认”移除所选应用的自定义图标。' },
+      { t: '自动恢复', d: '按计划或在检测到应用更新后重新应用缓存图标。' },
     ],
     sec2: '§ 02 · 特性',
-    sec2Title: ['它', '做什么。'],
-    sec2Lede: 'iconchanger 是 macos 原生 GUI，不是脚本。它真读取你的应用文件夹，写 CFBundleIconFile 条目，原地刷新 dock。三列能力，每一项都可还原。',
+    sec2Title: ['选择、应用，', '更新后恢复。'],
+    sec2Lede: '通过应用或 CLI 设置图标。启用后台恢复，在应用更新重置图标后重新应用缓存的选择。',
     features: [
-      { n: '01 · 浏览', h: '从几千个里挑。', p: '来自 macosicons.com 的实时 feed。按应用搜索，按风格筛选（扁平、aqua、单色、手绘、像素风）。提交前在真实 dock 里预览。' },
-      { n: '02 · 本地', h: '扔你自己的。', p: '把 .icns、.png 或 .jpg 拖到任意应用上。iconchanger 自动生成所需尺寸（16、32、128、256、512、1024）。' },
-      { n: '03 · 还原', h: '按应用撤销。', p: '每次更改都有记录。任意应用点还原默认，或一键全部还原。原图标从不删除 —— 和自定义图标并存。' },
+      { n: '01 · 搜索', h: '找到图标。', p: '按应用名称或别名搜索 macosicons.com，收藏图标，并在 Dock 视图中预览。' },
+      { n: '02 · 本地', h: '使用本地图片。', p: '为应用或文件夹选择 ICNS、PNG 或 JPEG 文件。也可通过 CLI 的 set-icon 命令应用图片。' },
+      { n: '03 · 恢复', h: '保留你的选择。', p: '启用定时恢复或应用更新检查，重新应用缓存图标。也可运行 iconchanger restore 批量恢复。' },
     ],
-    sec3: '§ 03 · 来源',
-    sec3Title: ['任意', '输入', '格式。'],
-    sec3Lede: '你不应该因为 iconchanger 是否支持而选择图标来源。扔任何合理格式进来，iconchanger 负责转换。',
+    sec3: '§ 03 · 工作流',
+    sec3Title: ['选择', '保存', '复用。'],
+    sec3Lede: '用收藏复用图标，用别名改善搜索结果，导出配置到另一台 Mac。',
     sources: [
-      { k: '01', h: 'macosicons.com', d: '庞大的图标库。数千个社区图标，按应用和风格搜索。' },
-      { k: '02', h: '.icns 文件',     d: 'apple 的原生格式。扔下文件，iconchanger 读取所有分辨率。' },
-      { k: '03', h: 'png / jpg',      d: 'iconchanger 降采样为所需的六种尺寸，并生成 retina 配对。' },
-      { k: '04', h: 'svg',            d: '矢量输入在首次使用时栅格化并缓存。每个尺寸都清晰。' },
-      { k: '05', h: 'emoji',          d: '输入任意 emoji，立刻得到系统字体的圆角方形 dock 图标。' },
-      { k: '06', h: '字母标记',       d: '选一个字母和背景色。适合没有明显图标的应用。' },
+      { k: '01', h: '在线搜索', d: '按应用名称搜索 macosicons.com。在“设置 → 高级”中添加 API 密钥。' },
+      { k: '02', h: '本地图片', d: '从 Mac 中选择 PNG、JPEG 或 ICNS 文件。' },
+      { k: '03', h: '文件夹图标', d: '将文件夹加入侧边栏，设置自定义图标。' },
+      { k: '04', h: '收藏', d: '保存图标，供其他应用或文件夹使用。' },
+      { k: '05', h: '搜索别名', d: '把应用或文件夹名称映射为 Photoshop 等搜索词。' },
+      { k: '06', h: '配置导出', d: '通过导入和导出，在 Mac 之间转移别名、缓存图标和设置。' },
     ],
     metrics: [
       { cap: 'appkit · 原生' },
-      { cap: '来源 · 格式' },
-      { cap: '最低 · 签名 · 公证' },
-      { cap: 'dock · 预览' },
+      { cap: '设置 · 恢复 · 导出' },
+      { cap: 'ventura 或更新版本' },
+      { cap: '定时 · 应用更新后' },
     ],
     sec4: '§ 04 · 安装',
-    sec4Headline: ['你的 dock。', '你说了算。'],
+    sec4Headline: ['设置图标。', '自动恢复。'],
     downloadDmg: '下载 dmg ↳',
-    brewCask: 'brew · cask',
-    license: 'macos 13 ventura 或更新 · Apple Silicon & Intel · ~5 MB',
+    brewCask: '版本下载',
+    license: 'macos 13 ventura 或更新 · Apple Silicon & Intel',
   },
   'zh-Hant': {
-    title: '一次一個圖示',
+    title: '更換圖示，自動還原',
     topLine: 'iconchanger / macos 原生',
-    topMid: 'swift · appkit · 已簽署',
+    topMid: '應用程式 · 資料夾 · 自動還原',
     overview: '§ 01 · 概覽',
-    eyebrow: '// 你的 dock，你說了算。',
-    headline: ['換掉', '每一個', '圖示。'],
-    ledePre: '隨手替換任何 macOS 應用圖示。瀏覽 ',
+    eyebrow: '// 應用程式更新後，重新套用自訂圖示。',
+    headline: ['更換', '應用', '圖示。'],
+    ledePre: '替換 macOS 應用程式與資料夾圖示。可從 ',
     ledeLink: 'macosicons.com',
-    ledeMid: ' 上精選的數千個圖示變體，從你自己的 ',
+    ledeMid: ' 搜尋，也可選用本機 ',
     ledeCodeIcns: '.icns',
-    ledeMid2: ' 檔案裡挑，或者丟一張 png。dock 即時重新整理。每個應用可一鍵還原。不改系統、完全沙箱化。',
+    ledeMid2: '、PNG 或 JPEG 檔案。快取所選圖示，在應用程式更新後或依排程重新套用。',
     cta: '↳ 下載 macOS 版',
     ctaGhost: '了解更多',
     cmdMeta: '需要 macOS 13+',
     ribbon: [
-      { t: 'macosicons.com', d: '直接瀏覽社群圖示庫。搜尋、篩選、預覽。' },
-      { t: '即時 dock', d: '提交前就能在真實 dock 裡看效果 —— 不是示意圖。' },
-      { t: '按應用還原', d: '每次更改都可撤銷。任何應用一鍵恢復預設。' },
-      { t: '沙箱化', d: '已簽署、已公證、沙箱化。不改系統、不用 SIP 技巧。' },
+      { t: 'macosicons.com', d: '依應用程式名稱或自訂別名搜尋社群圖示庫。' },
+      { t: 'dock 預覽', d: '在應用程式內的 Dock 檢視中預覽多款自訂圖示。' },
+      { t: '還原預設', d: '使用「還原預設」移除所選應用程式的自訂圖示。' },
+      { t: '自動還原', d: '依排程或偵測到應用程式更新後，重新套用快取圖示。' },
     ],
     sec2: '§ 02 · 特性',
-    sec2Title: ['它', '做什麼。'],
-    sec2Lede: 'iconchanger 是 macos 原生 GUI，不是腳本。它真讀取你的應用資料夾，寫 CFBundleIconFile 欄位，原地重載 dock。三欄能力，每一項都可還原。',
+    sec2Title: ['選擇、套用，', '更新後還原。'],
+    sec2Lede: '透過應用程式或 CLI 設定圖示。啟用背景還原，在應用程式更新重設圖示後重新套用快取的選擇。',
     features: [
-      { n: '01 · 瀏覽', h: '從數千個裡挑。', p: '來自 macosicons.com 的即時 feed。按應用搜尋，按風格篩選（扁平、aqua、單色、手繪、像素）。提交前在真實 dock 裡預覽。' },
-      { n: '02 · 本機', h: '丟你自己的。', p: '把 .icns、.png 或 .jpg 拖到任意應用上。iconchanger 自動產生所需尺寸（16、32、128、256、512、1024）。' },
-      { n: '03 · 還原', h: '按應用撤銷。', p: '每次更改都有記錄。任意應用點還原預設，或一鍵全部還原。原圖示從不刪除 —— 和自訂圖示並存。' },
+      { n: '01 · 搜尋', h: '找到圖示。', p: '依應用程式名稱或別名搜尋 macosicons.com，收藏圖示，並在 Dock 檢視中預覽。' },
+      { n: '02 · 本機', h: '使用本機圖片。', p: '為應用程式或資料夾選擇 ICNS、PNG 或 JPEG 檔案。也可透過 CLI 的 set-icon 指令套用圖片。' },
+      { n: '03 · 還原', h: '保留你的選擇。', p: '啟用排程還原或應用程式更新檢查，重新套用快取圖示。也可執行 iconchanger restore 批次還原。' },
     ],
-    sec3: '§ 03 · 來源',
-    sec3Title: ['任何', '輸入', '格式。'],
-    sec3Lede: '你不該因為 iconchanger 是否支援而選擇圖示來源。丟任何合理格式進來，iconchanger 負責轉換。',
+    sec3: '§ 03 · 工作流程',
+    sec3Title: ['選擇', '儲存', '重用。'],
+    sec3Lede: '用收藏重用圖示，用別名改善搜尋結果，匯出設定到另一台 Mac。',
     sources: [
-      { k: '01', h: 'macosicons.com', d: '龐大的圖示庫。數千個社群圖示，按應用和風格搜尋。' },
-      { k: '02', h: '.icns 檔案',     d: 'apple 的原生格式。丟下檔案，iconchanger 讀取所有解析度。' },
-      { k: '03', h: 'png / jpg',      d: 'iconchanger 降取樣為所需的六種尺寸，並產生 retina 對。' },
-      { k: '04', h: 'svg',            d: '向量輸入在首次使用時點陣化並快取。每個尺寸都銳利。' },
-      { k: '05', h: 'emoji',          d: '輸入任何 emoji，立刻得到系統字體的圓角方形 dock 圖示。' },
-      { k: '06', h: '字母標記',       d: '選一個字母和背景色。適合沒有明顯圖示的應用。' },
+      { k: '01', h: '線上搜尋', d: '依應用程式名稱搜尋 macosicons.com。在「設定 → 進階」加入 API 金鑰。' },
+      { k: '02', h: '本機圖片', d: '從 Mac 選擇 PNG、JPEG 或 ICNS 檔案。' },
+      { k: '03', h: '資料夾圖示', d: '將資料夾加入側邊欄，設定自訂圖示。' },
+      { k: '04', h: '收藏', d: '儲存圖示，供其他應用程式或資料夾使用。' },
+      { k: '05', h: '搜尋別名', d: '把應用程式或資料夾名稱對應至 Photoshop 等搜尋詞。' },
+      { k: '06', h: '設定匯出', d: '透過匯入與匯出，在 Mac 之間轉移別名、快取圖示與設定。' },
     ],
     metrics: [
       { cap: 'appkit · 原生' },
-      { cap: '來源 · 格式' },
-      { cap: '最低 · 簽署 · 公證' },
-      { cap: 'dock · 預覽' },
+      { cap: '設定 · 還原 · 匯出' },
+      { cap: 'ventura 或更新版本' },
+      { cap: '排程 · 應用程式更新後' },
     ],
     sec4: '§ 04 · 安裝',
-    sec4Headline: ['你的 dock。', '你說了算。'],
+    sec4Headline: ['設定圖示。', '自動還原。'],
     downloadDmg: '下載 dmg ↳',
-    brewCask: 'brew · cask',
-    license: 'macos 13 ventura 或更新 · Apple Silicon & Intel · ~5 MB',
+    brewCask: '版本下載',
+    license: 'macos 13 ventura 或更新 · Apple Silicon & Intel',
   },
 } as const;
 
@@ -127,7 +127,7 @@ const t = copy[locale.code as 'zh' | 'zh-Hant'];
 const nav = [
   { id: 'home',      label: 'overview',  href: iconchanger.href(`/${locale.code}/`) },
   { id: 'feat',      label: 'features',  href: '#features' },
-  { id: 'sources',   label: 'sources',   href: '#sources' },
+  { id: 'sources',   label: 'workflow',  href: '#sources' },
   { id: 'docs',      label: 'docs',      href: iconchanger.href(`/${locale.code}/docs/getting-started`) },
   { id: 'commands',  label: 'cli',       href: iconchanger.href('/commands') },
   { id: 'install',   label: 'install',   href: iconchanger.href('/install') },
@@ -249,7 +249,7 @@ const nav = [
           <div class="c">{t.metrics[0].cap}</div>
         </div>
         <div class="ic-metric">
-          <div class="n"><Tally client:visible to={6} duration={800} /></div>
+          <div class="n">cli</div>
           <div class="c">{t.metrics[1].cap}</div>
         </div>
         <div class="ic-metric">
@@ -257,7 +257,7 @@ const nav = [
           <div class="c">{t.metrics[2].cap}</div>
         </div>
         <div class="ic-metric">
-          <div class="n">live</div>
+          <div class="n">auto</div>
           <div class="c">{t.metrics[3].cap}</div>
         </div>
       </div>

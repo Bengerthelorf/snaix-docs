@@ -4,7 +4,7 @@ import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
 import TopBar from '@snaix/docs-theme/components/TopBar.astro';
 import Footer from '@snaix/docs-theme/components/Footer.astro';
 import ClDashMock from '@snaix/docs-theme/components/ClDashMock.astro';
-import { BlockReveal, Scramble, Tally, Typewriter } from '@snaix/docs-theme';
+import { BlockReveal, Scramble, Typewriter } from '@snaix/docs-theme';
 import '@snaix/docs-theme/styles/claudit.css';
 import { product } from '../../lib/product.ts';
 
@@ -13,7 +13,7 @@ const claudit = product('claudit');
 const nav = [
   { id: 'home',      label: 'overview',  href: claudit.href('/') },
   { id: 'audit',     label: 'audit',     href: '#audit' },
-  { id: 'local',     label: 'local',     href: '#local' },
+  { id: 'local',     label: 'data sources', href: '#local' },
   { id: 'docs',      label: 'docs',      href: claudit.href('/docs/getting-started') },
   { id: 'install',   label: 'install',   href: claudit.href('/install') },
   { id: 'changelog', label: 'changelog', href: claudit.href('/changelog') },
@@ -31,13 +31,13 @@ const nav = [
     >
       <Fragment slot="logo">
         <circle cx="20" cy="20" r="18" fill="var(--blue)" />
-
-    <WorkbenchEntry href="/workbench/usage/" label="Explore the usage demo" description="Follow costs and tokens through a set of example sessions." />
         <rect x="12" y="12" width="16" height="16" fill="var(--paper-pure)" />
         <rect x="14" y="14" width="5" height="5" fill="var(--red)" />
         <rect x="21" y="21" width="5" height="5" fill="var(--yellow)" />
       </Fragment>
     </TopBar>
+
+    <WorkbenchEntry href="/workbench/usage/" label="Explore the usage demo" description="Filter example sessions by date, model and project." />
 
     <section class="cl-hero">
       <div class="cl-hero-top rule-b">
@@ -51,20 +51,19 @@ const nav = [
           <div class="cl-hero-eyebrow">
             <span class="t-small">§ 01 · overview</span>
             <span class="t-mono-sm" style="color: var(--steel-5);">
-              <Typewriter client:visible text="// see what you actually spent." speed={24} delay={300} />
+              <Typewriter client:visible text="// claude usage in your menu bar." speed={24} delay={300} />
             </span>
           </div>
           <h1 class="cl-hero-title lower">
-            <span class="hl-line"><BlockReveal client:visible delay={300} color="var(--blue)">audit</BlockReveal></span>
-            <span class="hl-line"><BlockReveal client:visible delay={700} color="var(--red)">every</BlockReveal></span>
-            <span class="hl-line"><BlockReveal client:visible delay={1100} color="var(--yellow)">token.</BlockReveal></span>
+            <span class="hl-line"><BlockReveal client:visible delay={300} color="var(--blue)">cost.</BlockReveal></span>
+            <span class="hl-line"><BlockReveal client:visible delay={700} color="var(--red)">tokens.</BlockReveal></span>
+            <span class="hl-line"><BlockReveal client:visible delay={1100} color="var(--yellow)">quota.</BlockReveal></span>
           </h1>
           <p class="cl-lede">
-            claudit is a macos menu-bar app that reads your local claude
-            session logs and shows you the truth: today's spend at a
-            glance, heatmaps and sessions in the dashboard, quota alerts
-            before the 5-hour window lapses. parses <code>~/.claude</code>
-            jsonl directly — no api key, no upload, no dashboard-in-the-cloud.
+            Track Claude Code and OpenClaw sessions from local logs.
+            See tokens and estimated cost by project and model, read
+            conversations, and collect remote usage over SSH. Account
+            quota and reset timers sit in the macOS menu bar.
           </p>
           <div class="cl-cta">
             <a class="btn-block" href="#install">↳ install {claudit.version}</a>
@@ -83,23 +82,23 @@ const nav = [
       <div class="cl-ribbon">
         <div class="item">
           <span class="t-small">01</span>
-          <div class="lbl"><Scramble client:visible text="local-first" delay={200} /></div>
-          <div class="sub">reads <code>~/.claude</code> directly. nothing leaves the disk.</div>
+          <div class="lbl"><Scramble client:visible text="local logs" delay={200} /></div>
+          <div class="sub">Parses Claude Code and OpenClaw JSONL usage records.</div>
         </div>
         <div class="item">
           <span class="t-small">02</span>
           <div class="lbl"><Scramble client:visible text="per-project" delay={320} /></div>
-          <div class="sub">group by cwd, by repo, by model, by day. filter to one project in one keystroke.</div>
+          <div class="sub">Break down estimated cost and tokens by project, model and day.</div>
         </div>
         <div class="item">
           <span class="t-small">03</span>
           <div class="lbl"><Scramble client:visible text="session browser" delay={440} /></div>
-          <div class="sub">full transcripts — user, assistant, tool calls, diffs — rendered from the log on disk.</div>
+          <div class="sub">Search conversations and inspect thinking blocks and tool calls.</div>
         </div>
         <div class="item">
           <span class="t-small">04</span>
           <div class="lbl"><Scramble client:visible text="multi-device" delay={560} /></div>
-          <div class="sub">aggregate usage from remote machines over ssh. fingerprint-cached.</div>
+          <div class="sub">Combine local and remote usage through configured SSH hosts.</div>
         </div>
       </div>
     </section>
@@ -108,34 +107,31 @@ const nav = [
       <div class="cl-section-head">
         <div class="lhs">
           <div class="t-small">§ 02 · what it shows</div>
-          <h2 class="t-h1 lower">three<br />views of<br />the same data.</h2>
+          <h2 class="t-h1 lower">from total<br />to transcript.</h2>
         </div>
         <div class="rhs">
           <p class="t-body">
-            your sessions are already on disk — jsonl under
-            <code>~/.claude</code>. claudit indexes them into an in-memory
-            model and renders three views: spend, use, and sessions.
+            Compare project costs and model token counts, inspect activity
+            heatmaps, or open a session transcript.
           </p>
         </div>
       </div>
       <div class="cl-audit">
         <div class="col">
           <div class="n">01 · spend</div>
-          <h3 class="lower">where the money went.</h3>
+          <h3 class="lower">cost by project.</h3>
           <p>
-            price per model × tokens × time. group by project, model, or
-            day. tagged refunds for cache hits and cancelled streams.
-            export csv for bookkeeping.
+            Estimates use model prices and logged input, output, cache-read
+            and cache-write tokens. Export usage records as CSV or JSON.
           </p>
           <div class="mark" />
         </div>
         <div class="col">
           <div class="n">02 · use</div>
-          <h3 class="lower">how you reached for it.</h3>
+          <h3 class="lower">usage over time.</h3>
           <p>
-            which model you picked for which kind of task. which projects
-            lean on opus. which messages got retried. per-day histograms
-            going back as far as your logs.
+            Inspect hourly, weekly and monthly heatmaps, compare token
+            usage by model, and see which tools your sessions call.
           </p>
           <div class="mark" />
         </div>
@@ -143,9 +139,8 @@ const nav = [
           <div class="n">03 · sessions</div>
           <h3 class="lower">read a session again.</h3>
           <p>
-            pick any session, see the full transcript — user, assistant,
-            tool calls, diagnostics. no api call. rendered directly from
-            the log on disk.
+            Read user and assistant messages, expand thinking blocks and
+            tool calls, and search the conversation with <code>⌘F</code>.
           </p>
           <div class="mark" />
         </div>
@@ -155,26 +150,26 @@ const nav = [
     <section class="cl-section" id="local">
       <div class="cl-section-head">
         <div class="lhs">
-          <div class="t-small">§ 03 · local-first</div>
-          <h2 class="t-h1 lower">your data<br />stays on<br />your disk.</h2>
+          <div class="t-small">§ 03 · data sources</div>
+          <h2 class="t-h1 lower">logs.<br />quota.<br />devices.</h2>
         </div>
         <div class="rhs">
           <p class="t-body">
-            claudit is a file-reader. there is no cloud, no account, no
-            optional "sync". if you delete the binary, nothing on the
-            network changes — because nothing on the network exists.
+            Usage comes from JSONL files. Account quota and optional
+            Console billing are fetched from Anthropic. Remote devices
+            are read through SSH.
           </p>
         </div>
       </div>
       <div class="cl-local">
-        <h3 class="lower">read only.<br />no network.<br />no account.</h3>
+        <h3 class="lower">inspect logs.<br />track limits.<br />add devices.</h3>
         <ul>
-          <li><b>source</b>reads <code>~/.claude</code> jsonl logs. never modifies them.</li>
-          <li><b>api</b>zero calls to anthropic or anywhere else.</li>
-          <li><b>telemetry</b>zero. no analytics, no crash pings.</li>
-          <li><b>remote</b>opt-in ssh aggregation. reads your logs on remote machines via your ssh config.</li>
-          <li><b>export</b>csv, json — to a path you choose.</li>
-          <li><b>audit</b>open-source. read the code, read the parser, read the log.</li>
+          <li><b>logs</b>Claude Code records under <code>~/.claude</code> and OpenClaw session directories.</li>
+          <li><b>quota</b>5-hour and 7-day utilization, with reset timers and authenticated Claude access.</li>
+          <li><b>devices</b>SSH collection from a host alias or user@host, with cached usage records.</li>
+          <li><b>billing</b>Connect an Anthropic Console session for spend, credits and per-key usage.</li>
+          <li><b>export</b>Save usage records as CSV or JSON.</li>
+          <li><b>alerts</b>Set quota and budget thresholds for system notifications or configured webhooks.</li>
         </ul>
       </div>
     </section>
@@ -190,12 +185,12 @@ const nav = [
           <div class="c">min · menu bar native</div>
         </div>
         <div class="cl-metric">
-          <div class="n"><Tally client:visible to={3} duration={800} /></div>
-          <div class="c">views · spend · use · sessions</div>
+          <div class="n">jsonl</div>
+          <div class="c">claude code · openclaw</div>
         </div>
         <div class="cl-metric">
-          <div class="n"><Tally client:visible to={0} duration={600} /></div>
-          <div class="c">network calls · forever</div>
+          <div class="n">ssh</div>
+          <div class="c">remote usage · sessions</div>
         </div>
       </div>
     </section>
@@ -204,8 +199,8 @@ const nav = [
       <div class="cl-cta-inner">
         <div class="t-small" style="color: rgba(255,255,255,0.7);">§ 04 · install</div>
         <h2 class="lower">
-          <BlockReveal client:visible delay={200} color="var(--yellow)">audit.</BlockReveal><br />
-          <BlockReveal client:visible delay={700} color="var(--red)">locally.</BlockReveal>
+          <BlockReveal client:visible delay={200} color="var(--yellow)">inspect usage.</BlockReveal><br />
+          <BlockReveal client:visible delay={700} color="var(--red)">track quota.</BlockReveal>
         </h2>
         <div class="buttons">
           <a class="btn-block" style="background: var(--c-paper-pure); color: var(--c-ink-0); border-color: var(--c-paper-pure);" href={claudit.href('/install')}>
@@ -216,7 +211,7 @@ const nav = [
           </a>
         </div>
         <div class="t-mono-sm" style="margin-top: 28px; color: rgba(255,255,255,0.7);">
-          macos 15 or later · apple silicon & intel · reads only · zero network
+          macos 15 or later · apple silicon & intel
         </div>
       </div>
     </section>

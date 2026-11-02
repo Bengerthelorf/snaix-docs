@@ -76,7 +76,6 @@ export default function InstallGuide() {
           <label htmlFor="setup-channel">Installation method</label>
           <select id="setup-channel" value={selection.channel} onChange={event => setSelection(previous => ({ ...previous, channel: event.target.value as InstallChannel }))}>{getChannels(selection.product, selection.platform).map(channel => <option key={channel} value={channel}>{channelLabels[channel]}</option>)}</select>
         </div>
-        <p className="wb-note">Commands run on the machine where you paste them. The installer detects its architecture; Cargo builds for its local toolchain.</p>
       </aside>
 
       <section className="wb-panel setup-plan" aria-labelledby="setup-plan-heading" aria-live="polite">

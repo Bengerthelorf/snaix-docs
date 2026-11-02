@@ -68,8 +68,11 @@ for (const bar of document.querySelectorAll<HTMLElement>('[data-topbar]')) {
   const isOpen = () => bar.hasAttribute('data-open');
   drawer.inert = true;
 
-  const close = (restoreFocus = false) => {
+  const close = (restoreFocus: boolean | 'viewport' = false) => {
     if (!isOpen()) return;
+    const focused = document.activeElement;
+    const focusWasInMenu = focused === button || (focused instanceof Node && drawer.contains(focused));
+    const focusedHref = focused instanceof HTMLAnchorElement ? focused.getAttribute('href') : null;
     bar.removeAttribute('data-open');
     drawer.classList.remove('is-open');
     drawer.setAttribute('aria-hidden', 'true');
@@ -78,7 +81,15 @@ for (const bar of document.querySelectorAll<HTMLElement>('[data-topbar]')) {
     document.body.style.overflow = previousOverflow;
     for (const [element, wasInert] of blocked) element.inert = wasInert;
     blocked.clear();
-    if (restoreFocus) button.focus();
+    if (restoreFocus === true) button.focus();
+    else if (restoreFocus === 'viewport' && focusWasInMenu) {
+      const visible = (element: HTMLElement) => element.getClientRects().length > 0 && getComputedStyle(element).visibility !== 'hidden';
+      const desktopLinks = Array.from(bar.querySelectorAll<HTMLAnchorElement>('.topbar-nav a[href], .topbar-right a[href]')).filter(visible);
+      const equivalentLink = focusedHref ? desktopLinks.find((link) => link.getAttribute('href') === focusedHref) : undefined;
+      const brand = bar.querySelector<HTMLElement>('.topbar-brand');
+      const fallback = visible(button) ? button : desktopLinks[0] ?? (brand && visible(brand) ? brand : undefined);
+      (equivalentLink ?? fallback)?.focus();
+    }
   };
 
   const open = () => {
@@ -101,7 +112,23 @@ for (const bar of document.querySelectorAll<HTMLElement>('[data-topbar]')) {
       }
       if (node.parentElement === document.body) break;
     }
-    drawer.querySelector<HTMLElement>('a, button')?.focus();
+    const focusFirstLink = () => {
+      if (!isOpen()) return;
+      // WebKit can keep a just-opened visibility transition hidden for one
+      // frame, including with reduced motion. Hidden links cannot take focus.
+      if (getComputedStyle(drawer).visibility !== 'visible') {
+        requestAnimationFrame(focusFirstLink);
+        return;
+      }
+      const focused = document.activeElement;
+      if (focused === button || focused === document.body) {
+        const target = drawer.querySelector<HTMLElement>('a, button');
+        target?.focus();
+        // WebKit may finish applying descendant visibility after the drawer.
+        if (target && document.activeElement !== target) requestAnimationFrame(focusFirstLink);
+      }
+    };
+    focusFirstLink();
   };
 
   button.addEventListener('click', () => isOpen() ? close(true) : open());
@@ -121,7 +148,7 @@ for (const bar of document.querySelectorAll<HTMLElement>('[data-topbar]')) {
       }
     }
   });
-  const resize = () => { if (!compact()) close(); };
+  const resize = () => { if (!compact()) close('viewport'); };
   mobile.addEventListener('change', resize);
   document.addEventListener('snx:display-panel-change', resize);
 }

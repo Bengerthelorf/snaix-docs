@@ -8,41 +8,30 @@ import type { InstallStep } from '@snaix/docs-theme';
 import { product } from '../../lib/product.ts';
 
 const pikpaktui = product('pikpaktui');
-const versionBare = pikpaktui.version.replace(/^v/, '');
 
 const steps: InstallStep[] = [
   {
     title: 'verify',
-    description: 'confirm the binary is on your $PATH.',
+    description: 'check the installed version.',
     panelLabel: 'verification',
     script: [
       { type: 'prompt', text: 'pikpaktui --version' },
-      { type: 'out',    text: `pikpaktui ${versionBare}`, pause: 160 },
     ],
   },
   {
     title: 'log in',
-    description: 'authenticate once. credentials live at ~/.config/pikpaktui/login.yaml — never sent anywhere except PikPak.',
-    panelLabel: 'login',
+    description: 'sign in with your PikPak account through the first-run form.',
+    panelLabel: 'first-launch',
     script: [
-      { type: 'prompt', text: 'pikpaktui login' },
-      { type: 'out',    text: 'email: you@example.com',                       pause: 220 },
-      { type: 'out',    text: 'password: ********',                            pause: 220 },
-      { type: 'ok',     text: 'session saved to ~/.config/pikpaktui/login.yaml', pause: 180 },
+      { type: 'prompt', text: 'pikpaktui' },
     ],
   },
   {
     title: 'first browse',
-    description: 'list your drive root, or launch the tui. you\'re online.',
+    description: 'list your drive root from the CLI.',
     panelLabel: 'first-browse',
     script: [
       { type: 'prompt', text: 'pikpaktui ls /', pause: 160 },
-      { type: 'out',    text: 'Downloads/', pause: 80 },
-      { type: 'out',    text: 'Movies/',    pause: 80 },
-      { type: 'out',    text: 'My Pack/',   pause: 80 },
-      { type: 'blank' },
-      { type: 'prompt', text: 'pikpaktui',   pause: 220 },
-      { type: 'out',    text: 'entering tui · press ? for help', pause: 160 },
     ],
     footer: { href: '/pikpaktui/docs/getting-started', label: 'read the full walkthrough →' },
   },
@@ -58,7 +47,7 @@ const steps: InstallStep[] = [
       nav={pikpaktui.nav()}
     />
 
-    <WorkbenchEntry href="/workbench/setup/?tool=pikpaktui" label="Get a guided setup" description="Choose your system, find installation steps and troubleshoot common problems." />
+    <WorkbenchEntry href="/workbench/setup/?tool=pikpaktui" label="Set up pikpaktui" description="Choose your system and installation method." />
 
     <section class="install-hero">
       <div class="t-small" style="color: var(--yellow);">§ install</div>
@@ -67,8 +56,7 @@ const steps: InstallStep[] = [
         <BlockReveal client:load color="var(--blue)" delay={600}>in.</BlockReveal>
       </h1>
       <p class="t-body" style="margin-top: 24px; max-width: 560px;">
-        pikpaktui is a single static binary. pick a channel, paste one
-        line, you're browsing your pikpak drive in under a minute.
+        Install the TUI and CLI together. First launch opens the PikPak login form.
       </p>
     </section>
 

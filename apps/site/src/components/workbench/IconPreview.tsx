@@ -149,7 +149,7 @@ export default function IconPreview() {
 
   return (
     <div className="wb-tool ip-tool" data-tool="icon-preview">
-      <p className="wb-note ip-local-note"><span className="ip-local-mark" aria-hidden="true" />Your image stays in this browser. Preview only; macOS icons are unchanged.</p>
+      <p className="wb-note ip-local-note"><span className="ip-local-mark" aria-hidden="true" />Images stay in this browser.</p>
       <div className="ip-grid">
         <section className="wb-panel ip-controls" aria-label="Icon controls">
           <fieldset className="ip-fieldset">
@@ -209,11 +209,10 @@ export default function IconPreview() {
                 <span className="ip-dock-neighbor ip-neighbor-bin"><i /></span>
               </div>
             </div>}
-            <span className="ip-simulation-label" aria-hidden="true">Simulated desktop</span>
+            <span className="ip-simulation-label" aria-hidden="true">Desktop preview</span>
           </div>
           <div className="ip-preview-caption"><b>{localImage ? 'Your local image' : `${designName} design`}</b><span>{context === 'app' ? 'Application icon' : context === 'folder' ? 'Folder icon' : 'Dock icon'}</span></div>
           <div className="ip-next-step">
-            <p>Ready to change the real thing?</p>
             <a href="/iconchanger/install">Install IconChanger</a>
             <a href="/iconchanger/docs/getting-started">Read the guide</a>
           </div>

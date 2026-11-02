@@ -18,7 +18,7 @@ const iconchanger = product('iconchanger');
       nav={iconchanger.nav()}
     />
 
-    <WorkbenchEntry href="/workbench/setup/?tool=iconchanger" label="Get a guided setup" description="Choose your system, find installation steps and troubleshoot common problems." />
+    <WorkbenchEntry href="/workbench/setup/?tool=iconchanger" label="Get a guided setup" description="Installation, first launch and helper permissions." />
 
     <section class="install-hero">
       <div class="t-small" style="color: var(--red);">§ install</div>
@@ -27,8 +27,8 @@ const iconchanger = product('iconchanger');
         <BlockReveal client:load color="var(--blue)" delay={600}>in.</BlockReveal>
       </h1>
       <p class="t-body" style="margin-top: 24px; max-width: 560px;">
-        iconchanger is a native macOS app. homebrew or DMG — pick one, under a
-        minute either way. runs 100% on-device, no account needed.
+        Install with Homebrew or the DMG. Requires macOS 13 or later and
+        administrator access for the icon helper setup.
       </p>
     </section>
 
@@ -43,9 +43,9 @@ const iconchanger = product('iconchanger');
         <div>
           <ol class="install-after-steps">
             <li><span class="step-key">open</span><span class="step-desc">iconchanger from Spotlight or your Applications folder.</span></li>
-            <li><span class="step-key">drag</span><span class="step-desc">any app from <code>/Applications</code> into the window.</span></li>
-            <li><span class="step-key">pick</span><span class="step-desc">an icon — search macosicons.com, or drop a .png / .icns / .svg.</span></li>
-            <li><span class="step-key">apply</span><span class="step-desc">the Dock refreshes live. revert per-app from the same row.</span></li>
+            <li><span class="step-key">setup</span><span class="step-desc">complete the helper permission prompt, then select an app in the sidebar.</span></li>
+            <li><span class="step-key">pick</span><span class="step-desc">choose a local PNG, JPEG or ICNS image. For online search, add a macosicons.com API key in Settings → Advanced.</span></li>
+            <li><span class="step-key">restore</span><span class="step-desc">enable app-update checks or scheduled restoration in Settings → Background to reapply cached icons.</span></li>
           </ol>
           <p style="margin-top: 18px;">
             prefer the cli? see the <a class="link-u" href="/iconchanger/commands">command reference</a>.

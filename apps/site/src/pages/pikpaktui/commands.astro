@@ -23,23 +23,22 @@ const spec: CliSpec = { groups: pikpaktuiCommandGroups, shellLabel };
       nav={pikpaktui.nav()}
     />
 
-    <WorkbenchEntry href="/workbench/setup/?tool=pikpaktui" label="Find your PikPak setup" description="Installation steps and troubleshooting for your system." />
+    <WorkbenchEntry href="/workbench/setup/?tool=pikpaktui" label="Set up pikpaktui" description="Choose your system and installation method." />
 
     <section class="cli-hero rule-b">
       <div class="cli-hero-grid grid12">
         <div class="cli-hero-left">
           <div class="t-small" style="color: var(--yellow);">§ commands</div>
           <h1 class="t-h1 lower">
-            <BlockReveal client:visible delay={200}>{pikpaktuiCommandCount} verbs.</BlockReveal><br/>
-            <BlockReveal client:visible delay={600} color="var(--blue)">one tui.</BlockReveal>
+            <BlockReveal client:visible delay={200}>{pikpaktuiCommandCount} commands.</BlockReveal><br/>
+            <BlockReveal client:visible delay={600} color="var(--blue)">batch &amp; script.</BlockReveal>
           </h1>
         </div>
         <div class="cli-hero-right">
           <p class="t-body">
-            every action in pikpaktui is a command you can type, pipe, alias,
-            and commit to your shell history. below is the full surface —
-            grouped, searchable, each entry self-introspectable via{' '}
-            <code class="inline-code">--help</code> or <code class="inline-code">--json</code>.
+            use JSON listings in scripts, batch transfers with <code class="inline-code">-t</code>,
+            and preview file operations with <code class="inline-code">--dry-run</code>.
+            each command lists its options with <code class="inline-code">--help</code>.
           </p>
           <p class="t-mono-sm" style="color: var(--steel-5); margin-top: 12px;">
             press <code>/</code> to search · <code>j</code>/<code>k</code> or arrows to move

@@ -1,5 +1,5 @@
 import { expect, test } from 'bun:test';
-import { createSearchRunner, highlightExcerpt } from './search-state';
+import { createSearchRunner, highlightExcerpt, isSearchComposing } from './search-state';
 
 function deferred<T>() {
   let resolve!: (value: T) => void;
@@ -55,6 +55,14 @@ test('reports failure and permits index loading to be retried', async () => {
 test('keeps search highlighting while treating metadata markup as text', () => {
   expect(highlightExcerpt('use <mark>ssh</mark> & <img src=x onerror=alert(1)>'))
     .toBe('use <mark>ssh</mark> &amp; &lt;img src=x onerror=alert(1)&gt;');
+});
+
+test('IME candidate keys never navigate search results, including legacy composition events', () => {
+  expect(isSearchComposing({ isComposing: true, keyCode: 13 })).toBe(true);
+  expect(isSearchComposing({ isComposing: false, keyCode: 229 })).toBe(true);
+  expect(isSearchComposing({ isComposing: false, keyCode: 40 }, true)).toBe(true);
+  expect(isSearchComposing({ isComposing: false, keyCode: 13 })).toBe(false);
+  expect(isSearchComposing({}, false)).toBe(false);
 });
 
 test('limits product search to an indexed product filter and can switch to all products', async () => {

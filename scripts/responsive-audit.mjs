@@ -21,7 +21,7 @@ export default async function responsiveAudit(page, options = {}) {
       : { left:0, top:0, right:width, bottom:innerHeight };
     const clipCandidates = [], intentionalCrops = [], localScrollers = [], controlsOutside = [];
     const visible = el => {
-      if (el.checkVisibility && !el.checkVisibility({ checkOpacity: true, checkVisibilityCSS: true })) return false;
+      if (el.checkVisibility && !el.checkVisibility({ checkOpacity: true, checkVisibilityCSS: true, contentVisibilityAuto: true })) return false;
       const r = el.getBoundingClientRect();
       for (let current = el; current; current = current.parentElement) {
         const s = getComputedStyle(current);
@@ -92,15 +92,22 @@ export default async function responsiveAudit(page, options = {}) {
       const contextKey = JSON.stringify([touch, profile.displayFeature, profile.safeArea]);
       if (!context || contextKey !== currentContextKey) {
         if (context) await context.close();
-        context = await browser.newContext({ reducedMotion:'reduce', hasTouch:touch, isMobile:touch });
-        p = await context.newPage();
+        context = await browser.newContext({ reducedMotion:'reduce', hasTouch:touch, ...(browser.browserType().name() === 'firefox' ? {} : { isMobile:touch }) });
+        p = undefined;
         currentContextKey = contextKey;
         emulationSession = undefined;
       }
+      // Isolate page lifecycle events: a cancelled dynamic import from an old
+      // navigation must not be attributed to the next route.
+      if (p) await p.close();
+      p = await context.newPage();
+      emulationSession = undefined;
+      if (options.onStage) await options.onStage('page', profile.name, route);
       await p.setViewportSize({width:profile.width,height:profile.height});
       const errors=[];const onError=e=>errors.push(String(e));p.on('pageerror',onError);
       try {
         const response=await p.goto(origin+route,{waitUntil:'load',timeout:30000});
+        if (options.onStage) await options.onStage('loaded', profile.name, route);
         if (options.redirects?.[route]) {
           const target = new URL(options.redirects[route], origin);
           await p.waitForURL(url => url.origin === target.origin && url.pathname.replace(/\/$/, '') === target.pathname.replace(/\/$/, ''), { timeout:10000 });
@@ -125,19 +132,44 @@ export default async function responsiveAudit(page, options = {}) {
             }
           }, profile.textScale);
         }
-        // Visit lazy sections so full-page geometry reflects rendered content,
-        // not a stale contain-intrinsic-size estimate from an offscreen subtree.
-        await p.evaluate(async () => {
+        // Measure lazy sections while they are rendered. Firefox can retain
+        // content-box intrinsic sizes after they leave the viewport; measuring
+        // their old descendants against that skipped box reports false clips.
+        const lazyCount = await p.evaluate(() => {
           const lazy = [...document.querySelectorAll('body *')].filter(el => getComputedStyle(el).contentVisibility === 'auto');
-          for (const el of lazy) {
-            el.scrollIntoView({ block:'start', behavior:'instant' });
-            await new Promise(requestAnimationFrame);
-            el.getBoundingClientRect();
-          }
+          lazy.forEach((el, index) => el.setAttribute('data-audit-lazy', String(index)));
+          return lazy.length;
+        });
+        if (options.onStage) await options.onStage(`lazy:${lazyCount}`, profile.name, route);
+        const observations = [];
+        for (let index = 0; index < lazyCount; index++) {
+          await p.evaluate(async index => {
+            document.querySelector(`[data-audit-lazy="${index}"]`)?.scrollIntoView({ block:'start', behavior:'instant' });
+            // Headless/background tabs may suspend animation frames. Layout
+            // reads below still flush styles after this bounded scheduling turn.
+            const frame = () => new Promise(resolve => {
+              const timer = setTimeout(resolve, 100);
+              requestAnimationFrame(() => { clearTimeout(timer); resolve(); });
+            });
+            await frame();
+            await frame();
+          }, index);
+          observations.push(await p.evaluate(inspect));
+        }
+        await p.evaluate(async () => {
           window.scrollTo({ top:0, left:0, behavior:'instant' });
-          await new Promise(requestAnimationFrame);
+          await new Promise(resolve => {
+            const timer = setTimeout(resolve, 100);
+            requestAnimationFrame(() => { clearTimeout(timer); resolve(); });
+          });
         });
         const result=await p.evaluate(inspect);
+        observations.push(result);
+        for (const field of ['clipCandidates', 'intentionalCrops', 'localScrollers', 'controlsOutside', 'fixedOutside']) {
+          result[field] = [...new Map(observations.flatMap(observation => observation[field]).map(item => [JSON.stringify([item.element, item.text, item.container, item.axis]), item])).values()];
+        }
+        result.clipCount = result.clipCandidates.length;
+        result.horizontalOverflow = observations.some(observation => observation.horizontalOverflow);
         if (profile.displayFeature?.maskLength > 0 && !result.segmented) throw new Error('Requested segmented emulation did not activate the readable-panel path');
         const record={route,finalUrl:p.url(),profile:profile.name,status:response.status(),...result,errors};
         if (screenshots && screenshotDir && (result.horizontalOverflow || result.clipCount || result.controlsOutside.length || result.fixedOutside.length)) {
@@ -146,10 +178,10 @@ export default async function responsiveAudit(page, options = {}) {
         }
         records.push(record);
       } catch(e) {records.push({route,profile:profile.name,error:String(e)});}
-      finally {p.off('pageerror',onError);}
+      finally {p.off('pageerror',onError); if (options.onProgress) await options.onProgress(records.length, queue.length);}
     }
     if (context) await context.close();
   }));
   const findings=records.filter(x=>x.horizontalOverflow||x.clipCount||x.controlsOutside?.length||x.fixedOutside?.length||x.errors?.length||x.error||(x.status>=400&&x.route!='/404.html'));
-  return {recordedAt:new Date().toISOString(),origin,profiles,routeCount:routes.length,sampleCount:records.length,browser:browser.browserType().name(),methodology:'All supplied built routes, isolated Chromium contexts, reduced motion, touch/mobile emulation for profiles <=1024px unless overridden, full-document DOM text ranges and clipping ancestors; local scroll containers retained separately; visually hidden KaTeX/accessibility text and animated ticker excluded; 404 requested-path ellipsis classified separately; lazy sections scrolled into view before measurement; findings require visual review. No claim of physical-device testing.',summary:{overflow:records.filter(x=>x.horizontalOverflow).length,clipping:records.filter(x=>x.clipCount).length,controlsOutside:records.filter(x=>x.controlsOutside?.length).length,fixedOutside:records.filter(x=>x.fixedOutside?.length).length,errors:records.filter(x=>x.errors?.length||x.error).length},records,findings};
+  return {recordedAt:new Date().toISOString(),origin,profiles,routeCount:routes.length,sampleCount:records.length,browser:browser.browserType().name(),methodology:'All supplied routes, isolated browser contexts, reduced motion, touch/mobile emulation for profiles <=1024px unless overridden, full-document DOM text ranges and clipping ancestors; local scroll containers retained separately; visually hidden KaTeX/accessibility text and animated ticker excluded; 404 requested-path ellipsis classified separately; lazy sections measured while scrolled into view; findings require visual review. No claim of physical-device testing.',summary:{overflow:records.filter(x=>x.horizontalOverflow).length,clipping:records.filter(x=>x.clipCount).length,controlsOutside:records.filter(x=>x.controlsOutside?.length).length,fixedOutside:records.filter(x=>x.fixedOutside?.length).length,errors:records.filter(x=>x.errors?.length||x.error).length},records,findings};
 }

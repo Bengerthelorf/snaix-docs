@@ -1,4 +1,5 @@
-.wb-shell { max-width: 1504px; margin-inline: auto; padding: 0 max(28px, var(--safe-area-left), var(--safe-area-right)) 56px; }
+.wb-shell { --wb-error: #b31e17; max-width: 1504px; margin-inline: auto; padding: 0 max(28px, var(--safe-area-left), var(--safe-area-right)) 56px; overflow-wrap: anywhere; }
+:root[data-theme="dark"] .wb-shell { --wb-error: #ff7a73; }
 .wb-shell, .wb-shell * { min-width: 0; }
 .wb-shell a, .wb-shell button, .wb-shell input, .wb-shell select { -webkit-tap-highlight-color: transparent; }
 .wb-shell :focus-visible { outline: 3px solid var(--blue); outline-offset: 4px; }
@@ -6,7 +7,7 @@
 .wb-shell a:hover { text-decoration: underline; text-underline-offset: 4px; }
 .wb-skip { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .wb-skip:focus { position: fixed; top: 12px; left: 24px; width: auto; height: auto; overflow: visible; clip-path: none; z-index: 2000; background: var(--ink); color: var(--paper); padding: 12px 20px; }
-.wb-header { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-block: 30px; }
+.wb-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; padding-block: 30px; }
 .wb-brand { display: inline-flex; align-items: center; gap: 14px; font-size: 20px; font-weight: 650; letter-spacing: -.04em; }
 .wb-brand svg { flex: 0 0 auto; }
 .wb-brand-separator { padding-inline: 8px; color: var(--steel-5); font-weight: 400; }
@@ -41,7 +42,7 @@
 .wb-button:disabled { opacity: .5; cursor: not-allowed; }
 .wb-note { color: var(--fg-muted); font-size: 13px; line-height: 1.65; font-weight: 400; }
 .wb-note a, .wb-panel p a, .wb-panel li a { text-decoration: underline; text-underline-offset: 3px; }
-.wb-error { color: var(--red); font-size: 14px; line-height: 1.6; }
+.wb-error { color: var(--wb-error, #b31e17); font-size: 14px; line-height: 1.6; }
 .wb-output { white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; background: var(--bg); color: var(--fg); padding: 24px; border: 1px solid var(--border-faint); font: 13px/1.8 var(--mono); }
 .wb-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
 .wb-tabs button { min-height: 44px; padding: 10px 14px; border: 1px solid var(--border-faint); font-size: 13px; }
@@ -76,3 +77,45 @@
   .wb-footer { margin-top: 48px; padding-bottom: 40px; }
 }
 @media (max-width: 360px) { .wb-home-link { font-size: 12px; } .wb-brand { font-size: 15px; } .wb-panel { padding: 16px; } }
+
+@media (pointer: coarse) {
+  .wb-shell :is(input:not([type=checkbox]):not([type=radio]):not([type=range]):not([type=file]), select, textarea) { font-size: 16px; }
+  .wb-shell :is(button, select, textarea, input[type=range]) { min-height: 44px; }
+  .wb-shell .command-toggle { min-height: 44px; }
+  .wb-shell .wb-nav a, .wb-shell .wb-home-link { display: inline-flex; align-items: center; min-height: 44px; }
+}
+
+/* The full browser viewport spans both displays. Query the actual reading
+   panel only when the shared geometry fallback selects a real opaque gap. */
+:root[data-display-panel] .wb-shell { container: workbench-panel / inline-size; }
+:root[data-display-panel-compact] .wb-shell { padding-inline: max(18px, var(--safe-area-left), var(--safe-area-right)); }
+:root[data-display-panel-compact] .wb-shell .wb-panel:not(.ip-preview-panel) { padding: 20px; }
+:root[data-display-panel-small] .wb-shell .wb-panel:not(.ip-preview-panel) { padding: 16px; }
+
+@container workbench-panel (max-width: 944px) {
+  :root[data-display-panel] .command-presets { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@container workbench-panel (max-width: 704px) {
+  :root[data-display-panel] :is(.wb-grid, .wb-directory, .wb-principle, .status-products) { grid-template-columns: minmax(0, 1fr); }
+  :root[data-display-panel] .wb-hero { padding-block: 36px 28px; }
+  :root[data-display-panel] .wb-hero h1 { font-size: clamp(36px, 8cqw, 56px); }
+  :root[data-display-panel] .wb-header { padding-block: 22px; }
+  :root[data-display-panel] .wb-brand { font-size: 17px; gap: 10px; }
+  :root[data-display-panel] .wb-brand-separator { padding-inline: 5px; }
+  :root[data-display-panel] .wb-nav { gap: 0 18px; }
+  :root[data-display-panel] .wb-directory a { padding: 26px 0; grid-template-columns: 38px minmax(0, 1fr) 18px; gap: 12px; }
+  :root[data-display-panel] .wb-directory a:nth-child(odd) { border-right: 0; }
+  :root[data-display-panel] .wb-principle { gap: 16px; }
+  :root[data-display-panel] .wb-footer { margin-top: 48px; padding-bottom: 40px; }
+  :root[data-display-panel] :is(.command-presets, .setup-products) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  :root[data-display-panel] :is(.command-preset, .setup-product) { padding: 16px 14px; border-bottom: 1px solid var(--steel-3); }
+  :root[data-display-panel] :is(.command-preset, .setup-product):nth-child(even) { border-right: 0; }
+  :root[data-display-panel] .setup-product { flex-wrap: wrap; }
+  :root[data-display-panel] .setup-steps > li { grid-template-columns: 24px minmax(0, 1fr); gap: 8px; }
+  :root[data-display-panel] .setup-verification { padding: 16px; }
+}
+@container workbench-panel (max-width: 384px) {
+  :root[data-display-panel] .setup-products { grid-template-columns: minmax(0, 1fr); }
+  :root[data-display-panel] .setup-product { border-right: 0; }
+  :root[data-display-panel] .wb-brand { font-size: 15px; }
+}

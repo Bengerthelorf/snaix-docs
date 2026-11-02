@@ -114,7 +114,7 @@ const activity = liveActivity.length > 0 ? liveActivity : fallbackActivity;
 const bcmrProduct = {
   slug: 'bcmr',
   title: 'bcmr',
-  tagline: 'better copy · move · remove',
+  tagline: 'Copy, verify and resume — locally or over SSH.',
   version: bcmrMeta.version,
   releaseDate: bcmrMeta.releaseDate,
   githubUrl: 'https://github.com/Bengerthelorf/bcmr',
@@ -158,7 +158,7 @@ const iconchangerMeta = productMetas[productPresentations.findIndex((p) => p.slu
 const clauditProduct = {
   slug: 'claudit',
   title: 'claudit',
-  tagline: 'claude api usage, at a glance',
+  tagline: 'Claude usage and quota in your menu bar.',
   version: clauditMeta.version,
   releaseDate: clauditMeta.releaseDate,
   githubUrl: 'https://github.com/Bengerthelorf/Claudit',
@@ -216,7 +216,7 @@ const pikpaktuiProduct = {
 const iconchangerProduct = {
   slug: 'iconchanger',
   title: 'iconchanger',
-  tagline: 'one icon at a time',
+  tagline: 'Custom icons, reapplied after app updates.',
   version: iconchangerMeta.version,
   releaseDate: iconchangerMeta.releaseDate,
   githubUrl: 'https://github.com/Bengerthelorf/macIconChanger',
@@ -282,7 +282,7 @@ export default defineConfig({
     snaixDocs({
       brand: {
         name: 'snaix.homes',
-        description: 'Open-source tools for files, cloud storage, macOS icons and Claude usage. Explore the tools, try the workbench and read the docs.',
+        description: 'Open-source tools for file transfer, PikPak storage, macOS icons and Claude Code usage.',
         favicon: '/icons/snaix.svg',
         ogImage: '/og/snaix.png',
       },

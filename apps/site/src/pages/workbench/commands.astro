@@ -2,7 +2,7 @@
 import WorkbenchLayout from '../../layouts/WorkbenchLayout.astro';
 import CommandBuilder from '../../components/workbench/CommandBuilder.tsx';
 ---
-<WorkbenchLayout title="bcmr command builder" description="Turn a backup, SSH transfer or comparison into a reviewed, copyable bcmr command." current="commands" eyebrow="bcmr / command builder">
+<WorkbenchLayout title="bcmr command builder" description="Generate a copy or check command for local and SSH paths." current="commands" eyebrow="bcmr / command builder">
   <CommandBuilder client:load />
   <noscript><p class="wb-note">Enable JavaScript to customize and copy a command. The <a href="/bcmr/commands">complete bcmr command reference</a> is available without JavaScript.</p></noscript>
 </WorkbenchLayout>

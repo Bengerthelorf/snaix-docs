@@ -21,12 +21,12 @@ const nav = [
 ];
 
 const keys = [
-  { n: '01', k: ['j','k'],     v: 'move',      d: 'down / up by one row. arrow keys work too.' },
-  { n: '02', k: ['Enter'],     v: 'open',      d: 'descend into a folder or play a video.' },
+  { n: '01', k: ['j','k'],     v: 'move',      d: 'move down / up. arrow keys work too.' },
+  { n: '02', k: ['Enter'],     v: 'open',      d: 'open a folder or the video playback dialog.' },
   { n: '03', k: ['Backspace'], v: 'back',      d: 'return to the parent folder.' },
   { n: '04', k: ['space'],     v: 'inspect',   d: 'show details for the focused file or folder.' },
-  { n: '05', k: ['a'],         v: 'cart',      d: 'add or remove the focused item from the cart.' },
-  { n: '06', k: ['A'],         v: 'batch',     d: 'open the cart for download and batch actions.' },
+  { n: '05', k: ['a'],         v: 'collect',   d: 'add or remove the current item from the cart.' },
+  { n: '06', k: ['A'],         v: 'batch',     d: 'download, move, copy or share the cart.' },
   { n: '07', k: ['?'],         v: 'actions',   d: 'browse every available action and shortcut.' },
   { n: '08', k: ['D'],         v: 'downloads', d: 'open live transfer progress and controls.' },
 ];
@@ -43,17 +43,18 @@ const keys = [
       <Fragment slot="logo">
         <rect x="0"  y="0"  width="20" height="20" fill="var(--yellow)" />
 
-    <WorkbenchEntry href="/workbench/setup/?tool=pikpaktui" label="Find your PikPak setup" description="Installation steps and troubleshooting for your system." />
         <rect x="20" y="0"  width="20" height="20" fill="var(--ink)" />
         <rect x="0"  y="20" width="20" height="20" fill="var(--ink)" />
         <rect x="20" y="20" width="20" height="20" fill="var(--red)" />
       </Fragment>
     </TopBar>
 
+    <WorkbenchEntry href="/workbench/setup/?tool=pikpaktui" label="Set up pikpaktui" description="Choose your system and installation method." />
+
     <section class="pk-hero">
       <div class="pk-hero-top rule-b">
         <span class="t-mono-sm">pikpaktui / pikpak in your terminal</span>
-        <span class="t-mono-sm">tui · cli · ratatui</span>
+        <span class="t-mono-sm">browse · batch · script</span>
         <span class="t-mono-sm">{pikpaktui.version} · {pikpaktui.releaseDate}</span>
       </div>
 
@@ -62,7 +63,7 @@ const keys = [
           <div class="pk-hero-eyebrow">
             <span class="t-small">§ 01 · overview</span>
             <span class="t-mono-sm" style="color: var(--steel-5);">
-              <Typewriter client:visible text="// tui · keyboard-first · mouse-friendly" speed={24} delay={300} />
+              <Typewriter client:visible text="// folders · previews · batch actions" speed={24} delay={300} />
             </span>
           </div>
           <h1 class="pk-hero-title lower">
@@ -70,11 +71,9 @@ const keys = [
             <span class="hl-line r2"><BlockReveal client:visible delay={700} duration={520}>in the<em>tui</em></BlockReveal></span>
           </h1>
           <p class="pk-lede">
-            the browser is a lie. pikpaktui brings your cloud drive into the
-            terminal — responsive panes, ratatui, inline preview, and a
-            resumable download engine. use j/k to move, <code>enter</code> to
-            open, <code>a</code> to collect files, or <code>?</code> whenever
-            you want the full Actions menu.
+            browse PikPak folders side by side. collect files across folders,
+            then download, move or share the batch. use the CLI to script
+            uploads and downloads.
           </p>
           <div class="pk-cta">
             <a class="btn-block" href="#install">↳ install {pikpaktui.version}</a>
@@ -93,23 +92,23 @@ const keys = [
       <div class="pk-ribbon">
         <div class="item">
           <span class="t-small">01</span>
-          <div class="lbl"><Scramble client:visible text="responsive panes" delay={200} /></div>
-          <div class="sub">one, two, or three panes adapt to the space available in your terminal.</div>
+          <div class="lbl"><Scramble client:visible text="multi-column browser" delay={200} /></div>
+          <div class="sub">folders and previews side by side, with columns that fit your terminal.</div>
         </div>
         <div class="item">
           <span class="t-small">02</span>
-          <div class="lbl"><Scramble client:visible text="actions, revealed" delay={320} /></div>
-          <div class="sub">press ? for a scannable map of shortcuts, then run one in place.</div>
+          <div class="lbl"><Scramble client:visible text="cross-folder cart" delay={320} /></div>
+          <div class="sub">collect files across folders; download, move, copy or share them together.</div>
         </div>
         <div class="item">
           <span class="t-small">03</span>
-          <div class="lbl"><Scramble client:visible text="kitty graphics" delay={440} /></div>
-          <div class="sub">inline jpeg/png thumbs in terminals that speak the kitty graphics protocol.</div>
+          <div class="lbl"><Scramble client:visible text="inline previews" delay={440} /></div>
+          <div class="sub">see image thumbnails and video covers beside filenames.</div>
         </div>
         <div class="item">
           <span class="t-small">04</span>
-          <div class="lbl"><Scramble client:visible text="resumable dl" delay={560} /></div>
-          <div class="sub">parallel ranged transfers resume safely from partial files when supported.</div>
+          <div class="lbl"><Scramble client:visible text="resumable downloads" delay={560} /></div>
+          <div class="sub">pause, resume and retry transfers from the download queue.</div>
         </div>
       </div>
     </section>
@@ -118,13 +117,12 @@ const keys = [
       <div class="pk-section-head">
         <div class="lhs">
           <div class="t-small">§ 02 · keymap</div>
-          <h2 class="t-h1 lower">fast keys.<br />visible actions.</h2>
+          <h2 class="t-h1 lower">browse by key.<br />batch by cart.</h2>
         </div>
         <div class="rhs">
           <p class="t-body">
-            stay on the keyboard for speed, or use click, double-click, and
-            the wheel in file panes and modal lists. press <code>?</code> at
-            any time in the browser to discover the rest.
+            use j/k or the mouse to browse. press <code>?</code> to find
+            an action and its shortcut.
           </p>
         </div>
       </div>
@@ -144,13 +142,11 @@ const keys = [
       <div class="pk-section-head">
         <div class="lhs">
           <div class="t-small">§ 03 · flow</div>
-          <h2 class="t-h1 lower">open.<br />pick.<br />pull.</h2>
+          <h2 class="t-h1 lower">browse.<br />collect.<br />download.</h2>
         </div>
         <div class="rhs">
           <p class="t-body">
-            collect one file or a whole batch without losing your place.
-            downloads expose progress in the tui and can continue from
-            validated partial data.
+            add files from several folders to the cart, then download them together.
           </p>
         </div>
       </div>
@@ -158,19 +154,19 @@ const keys = [
         <div class="step">
           <div class="n">01 · open</div>
           <div class="h lower">launch the tui.</div>
-          <div class="p"><code>pikpaktui</code> in any terminal. the browser fits itself to the available width.</div>
+          <div class="p">run <code>pikpaktui</code> and sign in to PikPak.</div>
           <div class="art" />
         </div>
         <div class="step">
           <div class="n">02 · pick</div>
-          <div class="h lower">navigate, collect.</div>
-          <div class="p">use j/k to move, enter to open folders, and <code>a</code> to add files to the cart.</div>
+          <div class="h lower">fill the cart.</div>
+          <div class="p">open folders with enter. press <code>a</code> on each file to collect it.</div>
           <div class="art" />
         </div>
         <div class="step">
           <div class="n">03 · pull</div>
           <div class="h lower">start the batch.</div>
-          <div class="p">press <code>A</code>, then enter. choose a local destination and watch progress with <code>D</code>.</div>
+          <div class="p">press <code>A</code>, then enter. choose a destination; <code>D</code> shows progress.</div>
           <div class="art" />
         </div>
       </div>
@@ -180,19 +176,19 @@ const keys = [
       <div class="pk-metrics">
         <div class="pk-metric">
           <div class="n">?</div>
-          <div class="c">actions · discoverable</div>
+          <div class="c">actions · shortcuts</div>
         </div>
         <div class="pk-metric">
-          <div class="n">1–3</div>
-          <div class="c">panes · responsive</div>
+          <div class="n">auto</div>
+          <div class="c">columns · fit your terminal</div>
         </div>
         <div class="pk-metric">
-          <div class="n">ratatui</div>
-          <div class="c">render · crossterm</div>
+          <div class="n">CLI</div>
+          <div class="c">JSON · scriptable</div>
         </div>
         <div class="pk-metric">
           <div class="n">resume</div>
-          <div class="c">queue · on disk</div>
+          <div class="c">downloads · pause &amp; continue</div>
         </div>
       </div>
     </section>
@@ -201,8 +197,8 @@ const keys = [
       <div class="pk-cta-inner">
         <div class="t-small" style="color: rgba(10,10,11,0.6);">§ 04 · install</div>
         <h2 class="lower">
-          <BlockReveal client:visible delay={200} color="var(--ink)">one binary.</BlockReveal><br />
-          <BlockReveal client:visible delay={700} color="var(--red)">zero config.</BlockReveal>
+          <BlockReveal client:visible delay={200} color="var(--ink)">collect.</BlockReveal><br />
+          <BlockReveal client:visible delay={700} color="var(--red)">download.</BlockReveal>
         </h2>
         <div class="buttons">
           <a class="btn-block" style="background: var(--c-ink-0); color: var(--c-yellow); border-color: var(--c-ink-0);" href={pikpaktui.href('/install')}>
@@ -213,7 +209,7 @@ const keys = [
           </a>
         </div>
         <div class="t-mono-sm" style="margin-top: 28px; color: rgba(10,10,11,0.6);">
-          mit · apache-2.0 · nothing phones home
+          apache-2.0 · macOS · linux · windows · FreeBSD
         </div>
       </div>
     </section>

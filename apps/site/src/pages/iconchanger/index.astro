@@ -4,7 +4,7 @@ import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
 import TopBar from '@snaix/docs-theme/components/TopBar.astro';
 import Footer from '@snaix/docs-theme/components/Footer.astro';
 import IcMacWindow from '@snaix/docs-theme/components/IcMacWindow.astro';
-import { BlockReveal, Scramble, Tally, Typewriter } from '@snaix/docs-theme';
+import { BlockReveal, Scramble, Typewriter } from '@snaix/docs-theme';
 import '@snaix/docs-theme/styles/iconchanger.css';
 import { product } from '../../lib/product.ts';
 
@@ -13,7 +13,7 @@ const iconchanger = product('iconchanger');
 const nav = [
   { id: 'home',      label: 'overview',  href: iconchanger.href('/') },
   { id: 'feat',      label: 'features',  href: '#features' },
-  { id: 'sources',   label: 'sources',   href: '#sources' },
+  { id: 'sources',   label: 'workflow',  href: '#sources' },
   { id: 'docs',      label: 'docs',      href: iconchanger.href('/docs/getting-started') },
   { id: 'commands',  label: 'cli',       href: iconchanger.href('/commands') },
   { id: 'install',   label: 'install',   href: iconchanger.href('/install') },
@@ -21,12 +21,12 @@ const nav = [
 ];
 
 const sources = [
-  { k: '01', h: 'macosicons.com', d: 'the big library. thousands of community icons, searchable by app and by style.' },
-  { k: '02', h: '.icns files',    d: "apple's native format. drop the bundle, iconchanger reads all resolutions." },
-  { k: '03', h: 'png / jpg',      d: 'iconchanger downsamples to the six required sizes and generates retina pairs.' },
-  { k: '04', h: 'svg',            d: 'vector input is rasterised on first use and cached. sharp at every size.' },
-  { k: '05', h: 'emoji',          d: 'type any emoji, get a rounded-square dock icon in the system font. instant.' },
-  { k: '06', h: 'letter mark',    d: 'pick a letter and a background colour. good for apps without a clear icon.' },
+  { k: '01', h: 'online search', d: 'Search macosicons.com by app name. Add its API key in Settings → Advanced.' },
+  { k: '02', h: 'local images', d: 'Choose a PNG, JPEG or ICNS file from your Mac.' },
+  { k: '03', h: 'folder icons', d: 'Add folders to the sidebar and give them custom icons.' },
+  { k: '04', h: 'favorites', d: 'Save icons to revisit when changing another app or folder.' },
+  { k: '05', h: 'search aliases', d: 'Map an app or folder name to a search term, such as Photoshop.' },
+  { k: '06', h: 'config export', d: 'Move aliases, cached icons and settings between Macs with import and export.' },
 ];
 ---
 <DefaultLayout title={`${iconchanger.title} — ${iconchanger.tagline}`}>
@@ -41,18 +41,18 @@ const sources = [
     >
       <Fragment slot="logo">
         <rect x="2"  y="2"  width="17" height="17" rx="4" fill="var(--red)" />
-
-    <WorkbenchEntry href="/workbench/icons/" label="Try the icon studio" description="Preview an image on an app, a folder and the Dock." />
         <rect x="21" y="2"  width="17" height="17" rx="4" fill="var(--yellow)" />
         <rect x="2"  y="21" width="17" height="17" rx="4" fill="var(--blue)" />
         <rect x="21" y="21" width="17" height="17" rx="4" fill="var(--ink)" />
       </Fragment>
     </TopBar>
 
+    <WorkbenchEntry href="/workbench/icons/" label="Try the icon studio" description="Preview an image on an app, a folder and the Dock." />
+
     <section class="ic-hero">
       <div class="ic-hero-top rule-b">
         <span class="t-mono-sm">iconchanger / macos native</span>
-        <span class="t-mono-sm">swift · appkit · signed</span>
+        <span class="t-mono-sm">apps · folders · auto-restore</span>
         <span class="t-mono-sm">{iconchanger.version} · {iconchanger.releaseDate}</span>
       </div>
 
@@ -61,20 +61,19 @@ const sources = [
           <div class="ic-hero-eyebrow">
             <span class="t-small">§ 01 · overview</span>
             <span class="t-mono-sm" style="color: var(--steel-5);">
-              <Typewriter client:visible text="// your dock, your rules." speed={24} delay={300} />
+              <Typewriter client:visible text="// reapply your icons after app updates." speed={24} delay={300} />
             </span>
           </div>
           <h1 class="ic-hero-title lower">
             <span class="hl-line"><BlockReveal client:visible delay={300} duration={520} color="var(--red)">change</BlockReveal></span>
-            <span class="hl-line"><BlockReveal client:visible delay={700} duration={520} color="var(--yellow)">every</BlockReveal></span>
-            <span class="hl-line em-red"><BlockReveal client:visible delay={1100} duration={520} color="var(--blue)">icon.</BlockReveal></span>
+            <span class="hl-line"><BlockReveal client:visible delay={700} duration={520} color="var(--yellow)">app</BlockReveal></span>
+            <span class="hl-line em-red"><BlockReveal client:visible delay={1100} duration={520} color="var(--blue)">icons.</BlockReveal></span>
           </h1>
           <p class="ic-lede">
-            swap any app icon on macos. browse thousands of curated variants
-            from <a class="link-u" href="https://macosicons.com">macosicons.com</a>,
-            pick from your own <code>.icns</code> files, or drop a png. dock
-            refreshes live. revertable per-app with one click. no system
-            modifications, fully sandboxed.
+            Replace app and folder icons with local images or icons from
+            <a class="link-u" href="https://macosicons.com">macosicons.com</a>.
+            Cache your choices and reapply them after app updates, on a
+            schedule, or from the CLI.
           </p>
           <div class="ic-cta">
             <a class="btn-block" href="#install">↳ download for macos</a>
@@ -94,22 +93,22 @@ const sources = [
         <div class="item">
           <span class="t-small">01</span>
           <div class="lbl"><Scramble client:visible text="macosicons.com" delay={200} /></div>
-          <div class="sub">direct browse into the community icon library. search, filter, preview.</div>
+          <div class="sub">Search the community library by app name or your own alias.</div>
         </div>
         <div class="item">
           <span class="t-small">02</span>
-          <div class="lbl"><Scramble client:visible text="live dock" delay={320} /></div>
-          <div class="sub">see your new icon in a live dock preview before you commit. no surprises.</div>
+          <div class="lbl"><Scramble client:visible text="dock preview" delay={320} /></div>
+          <div class="sub">Preview custom icons together in the app’s Dock view.</div>
         </div>
         <div class="item">
           <span class="t-small">03</span>
           <div class="lbl"><Scramble client:visible text="per-app revert" delay={440} /></div>
-          <div class="sub">every change is reversible. restore default on any app with one click.</div>
+          <div class="sub">Remove a custom icon with Restore Default.</div>
         </div>
         <div class="item">
           <span class="t-small">04</span>
-          <div class="lbl"><Scramble client:visible text="sandboxed" delay={560} /></div>
-          <div class="sub">signed, notarised, sandboxed. no system mods, no SIP tricks.</div>
+          <div class="lbl"><Scramble client:visible text="auto-restore" delay={560} /></div>
+          <div class="sub">Reapply cached icons on a schedule or when apps update.</div>
         </div>
       </div>
     </section>
@@ -118,45 +117,42 @@ const sources = [
       <div class="ic-section-head">
         <div class="lhs">
           <div class="t-small">§ 02 · features</div>
-          <h2 class="t-h1 lower">what<br />it does.</h2>
+          <h2 class="t-h1 lower">choose.<br />apply.<br />restore.</h2>
         </div>
         <div class="rhs">
           <p class="t-body">
-            iconchanger is a macos-native gui, not a script. it reads your
-            actual applications folder, writes <code>CFBundleIconFile</code>
-            entries, and reloads the dock in-place. three columns of
-            capability, all reversible.
+            Set icons in the app or CLI. Enable background restoration to
+            reapply your cached choices when an update resets them.
           </p>
         </div>
       </div>
       <div class="ic-features">
         <div class="col">
           <div class="n">01 · browse</div>
-          <h3 class="lower">pick from thousands.</h3>
+          <h3 class="lower">find an icon.</h3>
           <p>
-            live feed from macosicons.com. search by app, filter by style
-            (flat, aqua, monochrome, hand-drawn, pixel). preview on a live
-            dock before you commit.
+            Search macosicons.com by app name or alias. Save favorites
+            and preview your selection in the Dock view.
           </p>
           <div class="mark" />
         </div>
         <div class="col">
           <div class="n">02 · local</div>
-          <h3 class="lower">drop your own.</h3>
+          <h3 class="lower">use a local image.</h3>
           <p>
-            drag a <code>.icns</code>, <code>.png</code>, or <code>.jpg</code>
-            onto any app. iconchanger generates the correct sizes (16, 32,
-            128, 256, 512, 1024) automatically.
+            Choose a <code>.icns</code>, <code>.png</code>, or <code>.jpg</code>
+            file for an app or folder. The CLI’s <code>set-icon</code>
+            command applies a local image from a script.
           </p>
           <div class="mark" />
         </div>
         <div class="col">
-          <div class="n">03 · revert</div>
-          <h3 class="lower">undo per app.</h3>
+          <div class="n">03 · restore</div>
+          <h3 class="lower">keep your choices.</h3>
           <p>
-            every change is tracked. click restore default on any app, or
-            restore all at once. the original icons are never deleted —
-            they sit beside the custom one.
+            Enable scheduled restoration or app-update checks to reapply
+            cached custom icons. Run <code>iconchanger restore</code>
+            for a manual batch restoration.
           </p>
           <div class="mark" />
         </div>
@@ -166,14 +162,13 @@ const sources = [
     <section class="ic-section" id="sources">
       <div class="ic-section-head">
         <div class="lhs">
-          <div class="t-small">§ 03 · sources</div>
-          <h2 class="t-h1 lower">every<br />kind<br />of input.</h2>
+          <div class="t-small">§ 03 · workflow</div>
+          <h2 class="t-h1 lower">choose<br />and<br />reuse.</h2>
         </div>
         <div class="rhs">
           <p class="t-body">
-            you should not have to choose your icon source by whether
-            iconchanger supports it. drop anything reasonable, iconchanger
-            does the conversion.
+            Reuse icons with favorites, improve searches with aliases,
+            and export your configuration for another Mac.
           </p>
         </div>
       </div>
@@ -195,16 +190,16 @@ const sources = [
           <div class="c">appkit · native</div>
         </div>
         <div class="ic-metric">
-          <div class="n"><Tally client:visible to={6} duration={800} /></div>
-          <div class="c">sources · formats</div>
+          <div class="n">cli</div>
+          <div class="c">set · restore · export</div>
         </div>
         <div class="ic-metric">
           <div class="n">mac 13+</div>
-          <div class="c">min · signed · notarised</div>
+          <div class="c">ventura or later</div>
         </div>
         <div class="ic-metric">
-          <div class="n">live</div>
-          <div class="c">dock · preview</div>
+          <div class="n">auto</div>
+          <div class="c">scheduled · after updates</div>
         </div>
       </div>
     </section>
@@ -213,19 +208,19 @@ const sources = [
       <div class="ic-cta-inner">
         <div class="t-small" style="color: rgba(255,255,255,0.7);">§ 04 · install</div>
         <h2 class="lower">
-          <BlockReveal client:visible delay={200} color="var(--yellow)">your dock.</BlockReveal><br />
-          <BlockReveal client:visible delay={700} color="var(--ink)">your rules.</BlockReveal>
+          <BlockReveal client:visible delay={200} color="var(--yellow)">set icons.</BlockReveal><br />
+          <BlockReveal client:visible delay={700} color="var(--ink)">keep them.</BlockReveal>
         </h2>
         <div class="buttons">
           <a class="btn-block" style="background: var(--c-paper-pure); color: var(--c-ink-0); border-color: var(--c-paper-pure);" href={iconchanger.href('/install')}>
             download dmg ↳
           </a>
           <a class="btn-block" style="background: transparent; color: var(--c-paper-pure); border-color: var(--c-paper-pure);" href={`${iconchanger.githubUrl}/releases`}>
-            brew · cask
+            release downloads
           </a>
         </div>
         <div class="t-mono-sm" style="margin-top: 28px; color: rgba(255,255,255,0.7);">
-          macos 13 ventura or later · apple silicon & intel · ~5 MB
+          macos 13 ventura or later · apple silicon & intel
         </div>
       </div>
     </section>

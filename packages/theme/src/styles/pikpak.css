@@ -342,3 +342,9 @@
   .pk-ribbon .item, .pk-keymap-cell, .pk-metric { border-right: 0; }
   .pk-ribbon .item, .pk-keymap-cell:not(:last-child), .pk-metric:not(:last-child) { border-bottom: 1px solid var(--steel-3); }
 }
+
+/* Keep black headline letters on yellow when the reading area is narrow. */
+@media (max-width: 720px) {
+  .pk-cta-full::before { display: none; }
+}
+:root[data-display-panel-compact] .pk-cta-full::before { display: none; }
