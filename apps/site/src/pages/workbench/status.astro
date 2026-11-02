@@ -1,4 +1,5 @@
 ---
+import ArrowUpRight from '../../components/ArrowUpRight.astro';
 import { getCollection } from 'astro:content';
 import { snaixConfig } from 'virtual:snaix-config';
 import WorkbenchLayout from '../../layouts/WorkbenchLayout.astro';
@@ -21,7 +22,7 @@ const build = snaixConfig.siteData.build;
     {products.map(p => <article class="status-product">
       <div class="status-product-head"><h2><a href={`${p.productRoot}/`}>{p.title}</a></h2><span class="status-version">{p.version || 'Release unavailable'}</span></div>
       <dl><div><dt>Stable release date</dt><dd>{p.releaseDate || 'Unavailable at build time'}</dd></div><div><dt>Published docs</dt><dd>{p.pages} pages</dd></div><div><dt>Content languages</dt><dd>{p.languages.join(', ') || 'None'}</dd></div><div><dt>Docs source revision</dt><dd>{p.revision ? <a href={`https://github.com/${p.repo}/tree/${p.revision.sha}`}><code>{p.revision.sha.slice(0, 7)}</code></a> : 'Revision unavailable'}</dd></div></dl>
-      <div class="status-links"><a href={`${p.githubUrl}/releases`}>Releases ↗</a><a href={`${p.productRoot}/docs/getting-started`}>Read docs</a><a href={`/workbench/setup/?tool=${p.slug}`}>Set up</a></div>
+      <div class="status-links"><a href={`${p.githubUrl}/releases`}>Releases <ArrowUpRight /></a><a href={`${p.productRoot}/docs/getting-started`}>Read docs</a><a href={`/workbench/setup/?tool=${p.slug}`}>Set up</a></div>
     </article>)}
   </section>
   <section class="wb-principle"><h2>What this tells you.</h2><div><p>Release labels come from GitHub's latest stable release endpoint. Documentation comes from the product source checkouts used for this build, which can contain changes newer than a release. Language counts describe available content, not complete translations.</p><p style="margin-top: 16px;">Site revision: {build.sha ? <a href={`https://github.com/Bengerthelorf/snaix-docs/commit/${build.sha}`}><code>{build.sha}</code></a> : 'unavailable'}. Built {build.date}. A missing release label means GitHub metadata was unavailable; it does not establish that a project has no release.</p></div></section>

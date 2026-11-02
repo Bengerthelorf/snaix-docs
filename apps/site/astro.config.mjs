@@ -6,7 +6,7 @@ import bcmrDocsConfig from '../../content/bcmr/docs/docs.config.ts';
 import clauditDocsConfig from '../../content/claudit/docs/docs.config.ts';
 import pikpaktuiDocsConfig from '../../content/pikpaktui/docs/docs.config.ts';
 import iconchangerDocsConfig from '../../content/iconchanger/docs/docs.config.ts';
-import { fetchProductMeta, fetchRecentCommits, readBuildInfo } from './src/data/fetch-github.ts';
+import { fetchProductMeta, fetchRecentCommits, readBuildInfo, sumProductStars } from './src/data/fetch-github.ts';
 
 const SITE_REPO = 'Bengerthelorf/snaix-docs';
 import {
@@ -44,7 +44,7 @@ const productsData = [
 ];
 
 const bcmrMeta = productMetas[0];
-const totalStars = productMetas.reduce((s, m) => s + (m.stars ?? 0), 0);
+const totalStars = sumProductStars(productMetas);
 const buildInfo = readBuildInfo();
 
 const ticker = [

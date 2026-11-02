@@ -98,6 +98,21 @@ No source credentials are stored in the repository.
   page errors. Keyboard skip links remain visible on focus and focus the main
   content. Dark-theme and 200px-high search-window checks passed.
 
-The original `main` branch and canonical domain continue to serve the existing
-production version. The completed implementation is committed on
+At the initial preview delivery, `main` and the canonical domain still served
+the previous production version. The completed implementation was delivered on
 `codex/product-workbench`, with both hosted previews available for review.
+
+## Production publication update — 2026-11-03
+
+The owner authorized publication to the canonical domain. Before publishing,
+all 14 new diagonal-arrow glyph instances were replaced with decorative SVGs
+after the supplied iPhone screenshot showed emoji rendering. The previous
+homepage had used a text-presentation selector; the new bare glyphs had omitted
+it. SVGs use currentColor and remain outside accessible names.
+
+The screenshot also exposed a metadata fallback: unavailable GitHub star counts
+could be shown as zero. Counts now remain unknown when absent or invalid; an
+aggregate is displayed only when every product count is known. True zero is
+preserved. The completed suite passes 132 tests / 519 assertions; typechecks,
+production build and built-site link checks pass. Phone/desktop checks confirm
+the two reported icons are SVGs even when emoji presentation is forced.

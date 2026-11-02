@@ -4,7 +4,7 @@ export interface ProductMeta {
   repo: string;
   version: string;
   releaseDate: string;
-  stars: number;
+  stars?: number;
   description: string;
   license: string;
   homepage: string;
@@ -51,6 +51,8 @@ const isRecord = (value: unknown): value is Record<string, unknown> =>
   value !== null && typeof value === 'object' && !Array.isArray(value);
 const record = (value: unknown): Record<string, unknown> => isRecord(value) ? value : {};
 const string = (value: unknown): string => typeof value === 'string' ? value : '';
+const validStarCount = (value: unknown): value is number =>
+  typeof value === 'number' && Number.isSafeInteger(value) && value >= 0;
 
 export async function fetchProductMeta(repo: string): Promise<ProductMeta> {
   const [rel, info] = await Promise.all([
@@ -63,11 +65,23 @@ export async function fetchProductMeta(repo: string): Promise<ProductMeta> {
     repo,
     version: string(release.tag_name),
     releaseDate: string(release.published_at).slice(0, 10).replaceAll('-', '.'),
-    stars: typeof repository.stargazers_count === 'number' ? repository.stargazers_count : 0,
+    stars: validStarCount(repository.stargazers_count) ? repository.stargazers_count : undefined,
     description: string(repository.description),
     license: string(record(repository.license).spdx_id).toLowerCase(),
     homepage: string(repository.homepage),
   };
+}
+
+/** An aggregate is known only when every product supplied a valid count. */
+export function sumProductStars(products: readonly Pick<ProductMeta, 'stars'>[]): number | undefined {
+  if (products.length === 0) return undefined;
+  let total = 0;
+  for (const { stars } of products) {
+    if (!validStarCount(stars)) return undefined;
+    total += stars;
+    if (!Number.isSafeInteger(total)) return undefined;
+  }
+  return total;
 }
 
 export interface ReleaseEntry {

@@ -1,4 +1,5 @@
 ---
+import ArrowUpRight from '../components/ArrowUpRight.astro';
 import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
 import '../styles/workbench.css';
 
@@ -26,7 +27,7 @@ const navigation = [
         <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true"><rect width="14" height="14" fill="var(--red)"/><circle cx="24" cy="8" r="8" fill="var(--blue)"/><path d="M0 32 16 16v16Z" fill="var(--ink)"/><rect x="18" y="18" width="14" height="14" fill="var(--yellow)"/></svg>
         <span>snaix<span class="wb-brand-separator">/</span>workbench</span>
       </a>
-      <a class="wb-home-link" href="/">All tools <span aria-hidden="true">↗</span></a>
+      <a class="wb-home-link" href="/">All tools <span aria-hidden="true"><ArrowUpRight /></span></a>
     </header>
     <nav class="wb-nav" aria-label="Workbench">
       {navigation.map(([id, label, href]) => <a href={href} aria-current={current === id ? 'page' : undefined}>{label}</a>)}

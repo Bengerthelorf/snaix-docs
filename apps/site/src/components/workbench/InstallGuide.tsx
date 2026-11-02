@@ -1,3 +1,4 @@
+import ArrowUpRight from '../ArrowUpRight.tsx';
 import { useEffect, useRef, useState } from 'react';
 import { getArchitectures, getChannels, getInstallPlan, getPlatforms, installationProducts, productFromQuery, type Architecture, type InstallChannel, type InstallSelection, type Platform, type ProductId } from '../../lib/workbench/install-guide.ts';
 
@@ -53,7 +54,7 @@ export default function InstallGuide() {
     <section aria-labelledby="setup-product-heading">
       <div className="wb-row setup-section-head"><h2 id="setup-product-heading">What are you setting up?</h2><span className="wb-kicker">01 / choose a product</span></div>
       <div className="setup-products">
-        {installationProducts.map(item => <button type="button" key={item.id} className={`setup-product${item.id === selection.product ? ' is-selected' : ''}`} aria-pressed={item.id === selection.product} onClick={() => chooseProduct(item.id)}>{item.title}<span aria-hidden="true">↗</span></button>)}
+        {installationProducts.map(item => <button type="button" key={item.id} className={`setup-product${item.id === selection.product ? ' is-selected' : ''}`} aria-pressed={item.id === selection.product} onClick={() => chooseProduct(item.id)}>{item.title}<span aria-hidden="true"><ArrowUpRight /></span></button>)}
       </div>
     </section>
 
@@ -89,7 +90,7 @@ export default function InstallGuide() {
             </li>)}
           </ol>
           <div className="setup-verification"><div className="wb-kicker">check the installed version</div><p className="wb-note">{plan.verification.detail}</p><CopyCommand key={plan.verification.command} command={plan.verification.command} label="Copy version check" /></div>
-          <div className="wb-actions"><a className="wb-button" href={plan.docsHref}>Full getting started guide</a><a className="wb-button" href={plan.releaseUrl}>Published releases <span aria-hidden="true">↗</span></a></div>
+          <div className="wb-actions"><a className="wb-button" href={plan.docsHref}>Full getting started guide</a><a className="wb-button" href={plan.releaseUrl}>Published releases <span aria-hidden="true"><ArrowUpRight /></span></a></div>
         </> : <p className="wb-error" role="alert">{plan.error}</p>}
       </section>
     </div>

@@ -1,9 +1,10 @@
 ---
+import ArrowUpRight from '../ArrowUpRight.astro';
 interface Props { href: string; label: string; description: string; }
 const { href, label, description } = Astro.props;
 ---
 <aside class="workbench-entry" aria-label="Try this tool">
-  <a href={href}><span class="entry-label">{label} <span aria-hidden="true">↗</span></span><span class="entry-description">{description}</span></a>
+  <a href={href}><span class="entry-label">{label} <span aria-hidden="true"><ArrowUpRight /></span></span><span class="entry-description">{description}</span></a>
 </aside>
 <style>
   .workbench-entry { border-bottom: 1px solid var(--border-faint); }

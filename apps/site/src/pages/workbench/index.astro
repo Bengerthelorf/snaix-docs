@@ -1,4 +1,5 @@
 ---
+import ArrowUpRight from '../../components/ArrowUpRight.astro';
 import WorkbenchLayout from '../../layouts/WorkbenchLayout.astro';
 const experiences = [
   { title: 'Build a command', description: 'Set your source, destination and copy options. Get a shell command you can understand and use.', href: '/workbench/commands/', symbol: '>_', type: 'bcmr · command builder' },
@@ -9,7 +10,7 @@ const experiences = [
 ---
 <WorkbenchLayout title="Put a tool to work." description="A place to try things, find the right command and get set up. Start with a task." current="overview">
   <section class="wb-directory" aria-label="Interactive tools">
-    {experiences.map(e => <a href={e.href}><span class="wb-directory-symbol" aria-hidden="true">{e.symbol}</span><div><h2>{e.title}</h2><p>{e.description}</p><span class="wb-directory-type">{e.type}</span></div><span aria-hidden="true">↗</span></a>)}
+    {experiences.map(e => <a href={e.href}><span class="wb-directory-symbol" aria-hidden="true">{e.symbol}</span><div><h2>{e.title}</h2><p>{e.description}</p><span class="wb-directory-type">{e.type}</span></div><span aria-hidden="true"><ArrowUpRight /></span></a>)}
   </section>
   <section class="wb-principle"><h2>Try it here.<br />Use it on your machine.</h2><p>The workbench helps you explore before installing. Commands are generated for you to review and copy. Icon images stay in this browser. The usage dashboard uses a fixed example dataset.<br /><a class="wb-button" href="/workbench/status/" style="margin-top: 20px;">See project versions and sources</a></p></section>
 </WorkbenchLayout>

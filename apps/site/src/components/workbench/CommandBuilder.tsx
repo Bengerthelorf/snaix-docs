@@ -1,3 +1,4 @@
+import ArrowUpRight from '../ArrowUpRight.tsx';
 import { useRef, useState } from 'react';
 import { buildCommand, commandPresets, type CommandOptions, type PresetId } from '../../lib/workbench/command-builder.ts';
 
@@ -104,7 +105,7 @@ export default function CommandBuilder() {
           <label className="command-output-label" htmlFor="bcmr-generated-command">{preset ? commandPresets[preset].label : 'Custom command'}</label>
           <textarea ref={output} id="bcmr-generated-command" className="wb-output command-output" value={result.ok ? result.command : ''} placeholder="Fix the highlighted path to generate your command." readOnly rows={6} spellCheck={false} aria-describedby="command-shell-note" />
           <div className="wb-actions">
-            <button className="wb-button is-primary" type="button" disabled={!result.ok} onClick={copy}>Copy command <span aria-hidden="true">↗</span></button>
+            <button className="wb-button is-primary" type="button" disabled={!result.ok} onClick={copy}>Copy command <span aria-hidden="true"><ArrowUpRight /></span></button>
             <a className="wb-button" href="/bcmr/commands">All bcmr flags</a>
           </div>
           <p className="command-copy-status wb-note" role="status" aria-live="polite">{copyStatus}</p>

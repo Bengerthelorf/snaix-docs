@@ -1,4 +1,5 @@
 ---
+import ArrowUpRight from '../components/ArrowUpRight.astro';
 import DefaultLayout from '@snaix/docs-theme/layouts/DefaultLayout.astro';
 import PortalTile from '@snaix/docs-theme/components/portal/PortalTile.astro';
 import { snaixConfig } from 'virtual:snaix-config';
@@ -18,7 +19,7 @@ const experiences = [
     <a class="portal-skip" href="#main">Skip to content</a>
     <header class="pw-header">
       <a class="pw-brand" href="/" aria-label="snaix.homes home"><svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true"><rect width="14" height="14" fill="var(--red)"/><circle cx="24" cy="8" r="8" fill="var(--blue)"/><path d="M0 32 16 16v16Z" fill="var(--ink)"/><rect x="18" y="18" width="14" height="14" fill="var(--yellow)"/></svg>snaix.homes</a>
-      <nav aria-label="Main"><a href="#tools">Tools</a><a href="/workbench/">Workbench</a><a href="/about/">About</a><a href="https://github.com/Bengerthelorf">GitHub ↗</a></nav>
+      <nav aria-label="Main"><a href="#tools">Tools</a><a href="/workbench/">Workbench</a><a href="/about/">About</a><a href="https://github.com/Bengerthelorf">GitHub <ArrowUpRight /></a></nav>
     </header>
     <main id="main" tabindex="-1">
       <section class="pw-hero">
@@ -26,11 +27,11 @@ const experiences = [
           <p class="pw-intro">Independent software. Open by design.</p>
           <h1>small tools.<br />real work<span class="pw-period">.</span></h1>
           <p class="pw-lead">Move files with confidence. Bring your cloud to the terminal. Make your Mac your own. Know where your tokens go.</p>
-          <div class="pw-actions"><a class="pw-primary" href="/workbench/">Open the workbench <span aria-hidden="true">↗</span></a><a class="pw-secondary" href="#tools">Find your tool <span aria-hidden="true">↓</span></a></div>
-          <div class="pw-facts"><span><strong>{stats.shippingTools}</strong> open-source tools</span><span><strong>{stats.githubStars?.toLocaleString('en-US')}</strong> GitHub stars</span><span>CLI · TUI · macOS</span></div>
+          <div class="pw-actions"><a class="pw-primary" href="/workbench/">Open the workbench <span aria-hidden="true"><ArrowUpRight /></span></a><a class="pw-secondary" href="#tools">Find your tool <span aria-hidden="true">↓</span></a></div>
+          <div class="pw-facts"><span><strong>{stats.shippingTools}</strong> open-source tools</span>{stats.githubStars !== undefined && <span><strong>{stats.githubStars.toLocaleString('en-US')}</strong> GitHub stars</span>}<span>CLI · TUI · macOS</span></div>
         </div>
         <a class="pw-terminal" href="/workbench/commands/" aria-label="Open the bcmr command builder">
-          <div class="pw-terminal-bar"><span class="pw-terminal-dot"></span><span>bcmr / command builder</span><span aria-hidden="true">↗</span></div>
+          <div class="pw-terminal-bar"><span class="pw-terminal-dot"></span><span>bcmr / command builder</span><span aria-hidden="true"><ArrowUpRight /></span></div>
           <div class="pw-terminal-content"><span class="pw-terminal-comment">A backup, with a check on every byte.</span><code><span class="pw-prompt">$</span> bcmr copy \
     --recursive \
     --verify \
@@ -44,12 +45,12 @@ const experiences = [
         <div class="pw-tools-foot"><span>Not sure where to start?</span><a href="/workbench/setup/">Find the right installation steps →</a></div>
       </section>
       <section class="pw-experiences" aria-labelledby="experience-title">
-        <div class="pw-section-head"><div><p class="pw-intro">The workbench</p><h2 id="experience-title">Get a feel for it.</h2></div><a class="pw-text-link" href="/workbench/">Explore the workbench ↗</a></div>
-        <div class="pw-experience-grid">{experiences.map(e => <a href={e.href}><div class="pw-experience-top"><span class="pw-experience-symbol" aria-hidden="true">{e.symbol}</span><span>{e.product}</span></div><h3>{e.name}</h3><p>{e.description}</p><span class="pw-experience-arrow" aria-hidden="true">↗</span></a>)}</div>
+        <div class="pw-section-head"><div><p class="pw-intro">The workbench</p><h2 id="experience-title">Get a feel for it.</h2></div><a class="pw-text-link" href="/workbench/">Explore the workbench <ArrowUpRight /></a></div>
+        <div class="pw-experience-grid">{experiences.map(e => <a href={e.href}><div class="pw-experience-top"><span class="pw-experience-symbol" aria-hidden="true">{e.symbol}</span><span>{e.product}</span></div><h3>{e.name}</h3><p>{e.description}</p><span class="pw-experience-arrow" aria-hidden="true"><ArrowUpRight /></span></a>)}</div>
       </section>
-      <section class="pw-activity" aria-labelledby="activity-title"><div><p class="pw-intro">From the repositories</p><h2 id="activity-title">Work in the open.</h2><p>Recent commits across the tools and this site. Captured at build time.</p><a class="pw-text-link" href="/workbench/status/">Versions, docs & sources ↗</a></div><div class="pw-stream"><div class="pw-stream-head"><span>Latest activity</span><span>Built {build.date}</span></div>{activity.map(r => <div class="pw-stream-row"><span class="pw-time">{r.time}</span><span class={`pw-project ${r.kind}`}>{r.proj}</span><span class="pw-message" set:html={r.msg} /></div>)}</div></section>
+      <section class="pw-activity" aria-labelledby="activity-title"><div><p class="pw-intro">From the repositories</p><h2 id="activity-title">Work in the open.</h2><p>Recent commits across the tools and this site. Captured at build time.</p><a class="pw-text-link" href="/workbench/status/">Versions, docs & sources <ArrowUpRight /></a></div><div class="pw-stream"><div class="pw-stream-head"><span>Latest activity</span><span>Built {build.date}</span></div>{activity.map(r => <div class="pw-stream-row"><span class="pw-time">{r.time}</span><span class={`pw-project ${r.kind}`}>{r.proj}</span><span class="pw-message" set:html={r.msg} /></div>)}</div></section>
     </main>
-    <footer class="pw-footer"><div><a class="pw-footer-brand" href="/">snaix.homes</a><p>Small tools. In your hands.</p></div><div><span class="pw-footer-label">Tools</span>{tools.map(p => <a href={p.href}>{p.name}</a>)}</div><div><span class="pw-footer-label">Explore</span><a href="/workbench/">Workbench</a><a href="/workbench/setup/">Setup guide</a><a href="/workbench/status/">Project overview</a><a href="/design-system/">Design language</a></div><div><span class="pw-footer-label">Elsewhere</span><a href="/about/">Manifesto</a><a href="https://github.com/Bengerthelorf">GitHub ↗</a></div></footer>
+    <footer class="pw-footer"><div><a class="pw-footer-brand" href="/">snaix.homes</a><p>Small tools. In your hands.</p></div><div><span class="pw-footer-label">Tools</span>{tools.map(p => <a href={p.href}>{p.name}</a>)}</div><div><span class="pw-footer-label">Explore</span><a href="/workbench/">Workbench</a><a href="/workbench/setup/">Setup guide</a><a href="/workbench/status/">Project overview</a><a href="/design-system/">Design language</a></div><div><span class="pw-footer-label">Elsewhere</span><a href="/about/">Manifesto</a><a href="https://github.com/Bengerthelorf">GitHub <ArrowUpRight /></a></div></footer>
     <div class="pw-colophon"><span>© 2023–{year} snaix · open source</span><span>Built {build.date} · {build.sha}</span></div>
   </div>
 </DefaultLayout>
