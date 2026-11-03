@@ -1,0 +1,82 @@
+[
+  {
+    "id": "firefox-rBGCprP7ku",
+    "appId": "firefox",
+    "name": "Firefox",
+    "author": "octaviotti",
+    "page": "https://macosicons.com/icon/firefox-rBGCprP7ku",
+    "image": "/workbench-assets/icons/firefox-rBGCprP7ku.png",
+    "originalImage": "https://s3-new.macosicons.com/macosicons/parse/Firefox_rBGCprP7ku_lowResPng-8b89d58010.png",
+    "sha256": "525568c69e1f60b43c8fb6bb0ef61644a316bb2d97bd35b4d18800f2c88a35aa"
+  },
+  {
+    "id": "firefox-sZ919k97Ps",
+    "appId": "firefox",
+    "name": "Firefox",
+    "author": "Henrique Baldy",
+    "page": "https://macosicons.com/icon/firefox-sZ919k97Ps",
+    "image": "/workbench-assets/icons/firefox-sZ919k97Ps.png",
+    "originalImage": "https://s3-new.macosicons.com/macosicons/parse/Firefox_sZ919k97Ps_lowResPng-b886a09e63.png",
+    "sha256": "76c267b6689aee354e3333f93e0d49a862e7e7d0ee44366a0277a4a4fb4b2cb4"
+  },
+  {
+    "id": "firefox-UPKpASrHH8",
+    "appId": "firefox",
+    "name": "Firefox",
+    "author": "badlydrawnface",
+    "page": "https://macosicons.com/icon/firefox-UPKpASrHH8",
+    "image": "/workbench-assets/icons/firefox-UPKpASrHH8.png",
+    "originalImage": "https://s3-new.macosicons.com/macosicons/parse/Firefox_UPKpASrHH8_lowResPng-501144b34e.png",
+    "sha256": "65ad84f85bb9ef180d0254a22b3bb3b51ad1e407a8648a2009643e715a340f85"
+  },
+  {
+    "id": "visual-studio-code-94TizW8oqn",
+    "appId": "vscode",
+    "name": "Visual Studio Code",
+    "author": "monochronix",
+    "page": "https://macosicons.com/icon/visual-studio-code-94TizW8oqn",
+    "image": "/workbench-assets/icons/visual-studio-code-94TizW8oqn.png",
+    "originalImage": "https://s3-new.macosicons.com/macosicons/parse/Visual_Studio_Code_94TizW8oqn_lowResPng-3e561ef7a6.png",
+    "sha256": "719745d0c6e0240230397eaae3fc906c61a68b47f9abd7459d1818899d87019a"
+  },
+  {
+    "id": "visual-studio-code-jzmnfn1AVy",
+    "appId": "vscode",
+    "name": "Visual Studio Code",
+    "author": "matthias",
+    "page": "https://macosicons.com/icon/visual-studio-code-jzmnfn1AVy",
+    "image": "/workbench-assets/icons/visual-studio-code-jzmnfn1AVy.png",
+    "originalImage": "https://s3-new.macosicons.com/macosicons/parse/Visual_Studio_Code_jzmnfn1AVy_lowResPng-06656b9be4.png",
+    "sha256": "8258a425627dac7ba56c56441b5fad6417755f02fc7459a76384eb02312cb23c"
+  },
+  {
+    "id": "visual-studio-code-gyPFnWnIRt",
+    "appId": "vscode",
+    "name": "Visual Studio Code",
+    "author": "MetalTxus",
+    "page": "https://macosicons.com/icon/visual-studio-code-gyPFnWnIRt",
+    "image": "/workbench-assets/icons/visual-studio-code-gyPFnWnIRt.png",
+    "originalImage": "https://s3-new.macosicons.com/macosicons/parse/Visual_Studio_Code_gyPFnWnIRt_lowResPng-ea620fe4b6.png",
+    "sha256": "6900324ff66229b49b15b16ea8e5106b315715795869091575fa06bce94a2af0"
+  },
+  {
+    "id": "firefox-default",
+    "appId": "firefox",
+    "name": "Default icon",
+    "author": "Mozilla",
+    "page": "https://github.com/mozilla-firefox/firefox",
+    "image": "/workbench-assets/icons/firefox-default.png",
+    "originalImage": "https://raw.githubusercontent.com/mozilla-firefox/firefox/main/browser/branding/official/default256.png",
+    "sha256": "395e0e25367f7f8b277213ea18c16c89adb12321a402ca4ba503c41fe1e2fc6f"
+  },
+  {
+    "id": "vscode-default",
+    "appId": "vscode",
+    "name": "Default icon",
+    "author": "Microsoft",
+    "page": "https://code.visualstudio.com/brand",
+    "image": "/workbench-assets/icons/vscode-default.png",
+    "originalImage": "https://code.visualstudio.com/assets/branding/app-icon.png",
+    "sha256": "7de86c2afa66102a344bdb6aae9c8eeadd4d2407a079c65ad736e96ebba56008"
+  }
+]

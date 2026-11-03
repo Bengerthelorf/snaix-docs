@@ -16,6 +16,7 @@ export interface CliCommand {
   tags: string[];
   /** Falls back to `spec.flagsByGroup[group]` when absent. */
   flags?: CliFlag[];
+  /** Executable command examples, displayed as prompts rather than output. */
   example?: string[];
   related?: string[];
 }
@@ -28,6 +29,7 @@ export interface CliGroup {
 export interface CliSpec {
   groups: CliGroup[];
   flagsByGroup?: Record<string, CliFlag[]>;
+  /** Legacy sample output. Rendered separately with an explicit label. */
   examples?: Record<string, string[]>;
   shellLabel?: string;
 }
@@ -37,7 +39,6 @@ interface Props {
 }
 
 const STORAGE_KEY = 'snaix-cli-cmd';
-const DEFAULT_EXAMPLE = ['ok'];
 
 export function CliReference({ spec }: Props) {
   const flat = useMemo(() => spec.groups.flatMap((g) => g.items), [spec]);
@@ -112,18 +113,15 @@ export function CliReference({ spec }: Props) {
     spec.groups.find((g) => g.items.some((i) => i.cmd === selected?.cmd))?.group ?? '';
   const flags: CliFlag[] =
     selected?.flags ?? spec.flagsByGroup?.[activeGroup] ?? [];
-  const example: string[] =
-    selected?.example ?? spec.examples?.[selected?.cmd ?? ''] ?? DEFAULT_EXAMPLE;
+  const examples = selected?.example;
+  const sampleOutput = spec.examples?.[selected?.cmd ?? ''];
   const related: string[] = selected?.related ?? [];
 
-  const lines = useMemo<CmdLine[]>(() => selected ? [
-    { type: 'prompt', text: `${selected.cmd} ${selected.sig}`.trim() },
-    ...example.map((text, i) => ({
-      type: (i === example.length - 1 ? 'ok' : 'out') as CmdLine['type'],
-      text,
-      pause: 140 + i * 20,
-    })),
-  ] : [], [selected, example]);
+  const lines = useMemo<CmdLine[]>(() => {
+    if (!selected) return [];
+    const commands = examples?.length ? examples : [`${selected.cmd} --help`];
+    return commands.map(text => ({ type: 'prompt', text }));
+  }, [selected, examples]);
 
   const selectByCmd = (cmd: string) => {
     const found = flat.find((c) => c.cmd === cmd);
@@ -172,7 +170,7 @@ export function CliReference({ spec }: Props) {
               <div className="t-small" style={{ color: 'var(--steel-5)' }}>command</div>
               <h2 className="cmd-detail-name t-h1 lower">{selected.cmd}</h2>
               <div className="cmd-detail-sig t-mono">
-                <span className="cmd-sigil">$</span> {selected.cmd}{' '}
+                {selected.cmd}{' '}
                 <span className="sig-args">{selected.sig || '[no args]'}</span>
               </div>
             </div>
@@ -187,7 +185,7 @@ export function CliReference({ spec }: Props) {
 
           <div className="cmd-detail-grid">
             <div>
-              <div className="t-small" style={{ marginBottom: 12 }}>usage</div>
+              <div className="t-small" style={{ marginBottom: 12 }}>Command examples</div>
               <div className="terminal-shell">
                 <div className="terminal-chrome">
                   <div className="terminal-lights"><span /><span /><span /></div>
@@ -197,6 +195,10 @@ export function CliReference({ spec }: Props) {
                   <CommandStream lines={lines} />
                 </div>
               </div>
+              {!!sampleOutput?.length && <div style={{ marginTop: 20 }}>
+                <div className="t-small" style={{ marginBottom: 12 }}>Example output</div>
+                <pre style={{ whiteSpace: 'pre-wrap', overflowWrap: 'anywhere', font: '12px/1.7 var(--mono)' }}>{sampleOutput.join('\n')}</pre>
+              </div>}
             </div>
 
             <div>

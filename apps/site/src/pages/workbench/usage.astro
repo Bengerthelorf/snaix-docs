@@ -2,7 +2,7 @@
 import WorkbenchLayout from '../../layouts/WorkbenchLayout.astro';
 import UsageDemo from '../../components/workbench/UsageDemo';
 ---
-<WorkbenchLayout title="Claude Code usage demo" description="Filter sessions by date, model and project. Compare tokens and example costs." current="usage" eyebrow="Claudit">
+<WorkbenchLayout title="Try Claudit" description="Check Usage and Quota in the menu bar, open the Dashboard, then read a session conversation." current="usage" eyebrow="Claudit">
   <UsageDemo client:load />
-  <noscript><p class="wb-note">This page shows the default example selection. Enable JavaScript to change filters, or <a href="/claudit/docs/getting-started">read the Claudit guide</a>.</p></noscript>
+  <noscript><p class="wb-note">Enable JavaScript to switch Usage and Quota, open the Dashboard and inspect a session, or <a href="/claudit/docs/getting-started">read the Claudit guide</a>.</p></noscript>
 </WorkbenchLayout>

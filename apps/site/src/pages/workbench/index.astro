@@ -4,11 +4,11 @@ import WorkbenchLayout from '../../layouts/WorkbenchLayout.astro';
 const experiences = [
   { title: 'Build a command', description: 'Choose paths and options for local copies, SSH transfers or comparisons.', href: '/workbench/commands/', symbol: '>_', type: 'bcmr · command builder' },
   { title: 'Find your setup', description: 'Installation steps and fixes for common setup problems.', href: '/workbench/setup/', symbol: '↳', type: 'all four tools · guided setup' },
-  { title: 'Try an icon', description: 'Preview your image as an app, folder or Dock icon.', href: '/workbench/icons/', symbol: '◈', type: 'IconChanger · local preview' },
-  { title: 'Explore Claude usage', description: 'Filter 18 example sessions by date, model and project.', href: '/workbench/usage/', symbol: '▥', type: 'Claudit · interactive example' },
+  { title: 'Replace an app icon', description: 'Choose an app, browse community icons, then preview and apply.', href: '/workbench/icons/', symbol: '◈', type: 'IconChanger · library demo' },
+  { title: 'Explore Claude usage', description: 'Open the menu bar, check usage and quota, then read a session.', href: '/workbench/usage/', symbol: '▥', type: 'Claudit · interactive example' },
 ];
 ---
-<WorkbenchLayout title="Try the tools." description="Build a command, preview an icon, explore usage or find installation steps." current="overview">
+<WorkbenchLayout title="Try the tools." description="Build a command, replace an icon, inspect Claude usage or find installation steps." current="overview">
   <section class="wb-directory" aria-label="Interactive tools">
     {experiences.map(e => <a href={e.href}><span class="wb-directory-symbol" aria-hidden="true">{e.symbol}</span><div><h2>{e.title}</h2><p>{e.description}</p><span class="wb-directory-type">{e.type}</span></div><span aria-hidden="true"><ArrowUpRight /></span></a>)}
   </section>

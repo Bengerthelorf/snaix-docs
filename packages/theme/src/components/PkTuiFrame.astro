@@ -28,11 +28,11 @@ const files = [
 <div class="pk-tui">
   <div class="pk-tui-chrome">
     <div class="lights"><span /><span /><span /></div>
-    <div class="title">./target/release/pikpaktui</div>
+    <div class="title">pikpaktui · example drive</div>
   </div>
-  <div class="pk-tui-panes" tabindex="0" role="region" aria-label="PikPak terminal preview">
+  <div class="pk-tui-panes" tabindex="0" role="region" aria-label="Example PikPak file browser">
     <div class="pk-tui-pane">
-      <div class="pane-head">/Drive</div>
+      <div class="pane-head">/</div>
       {rootItems.map((r) => (
         <div class:list={['row', 'kind-dir', { 'is-sel': r === 'MEDIA' }]}>
           <span class="ic" />{r}
@@ -40,12 +40,12 @@ const files = [
       ))}
     </div>
     <div class="pk-tui-pane">
-      <div class="pane-head">/Drive/MEDIA</div>
+      <div class="pane-head">/MEDIA</div>
       {dirs.map((d) => (
         <div class="row kind-dir"><span class="ic" />{d}</div>
       ))}
       {files.map((f) => (
-        <div class:list={['row', f.sel ? 'kind-dl is-cur is-sel' : 'kind-file']}>
+        <div class:list={['row', 'kind-file', { 'is-cur': f.sel, 'is-sel': f.sel }]}>
           <span class="ic" />{f.n}<span class="sz">{f.s}</span>
         </div>
       ))}
@@ -60,15 +60,14 @@ const files = [
         <div><span class="k">name:</span><span class="v is-yellow">alpha-draft.mp4</span></div>
         <div><span class="k">size:</span><span class="v">12.4 GB</span></div>
         <div><span class="k">type:</span><span class="v">video/mp4</span></div>
-        <div><span class="k">hash:</span><span class="v is-blue">blake3 ✓</span></div>
       </div>
     </div>
   </div>
   <div class="pk-tui-foot">
     <span><kbd>j/k</kbd>nav</span>
     <span><kbd>Enter</kbd>open</span>
-    <span><kbd>a</kbd>cart</span>
-    <span><kbd>A</kbd>batch</span>
+    <span><kbd>a</kbd>collect</span>
+    <span><kbd>A</kbd>cart</span>
     <span><kbd>?</kbd>actions</span>
     <span><kbd>D</kbd>downloads</span>
   </div>

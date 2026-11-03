@@ -48,3 +48,29 @@ test('local colon filenames and SSH endpoints are distinguished for two-remote c
   expect(buildCommand({ ...commandPresets.check.options, source: '../a:b', destination: 'host:/backup/' }).ok).toBe(true);
   expect(buildCommand({ ...commandPresets.check.options, source: 'C:\\a', destination: 'host:/backup/' }).ok).toBe(true);
 });
+
+test('copy rejects the unsupported dash sentinel while allowing a file named dash', () => {
+  for (const key of ['source', 'destination'] as const) {
+    const result = buildCommand({ ...commandPresets.backup.options, [key]: '-' });
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.errors[key]).toContain('./-');
+    expect(buildCommand({ ...commandPresets.backup.options, [key]: './-' }).ok).toBe(true);
+  }
+});
+
+test('wildcard guidance follows the actual operation instead of promising check expansion', () => {
+  const copied = buildCommand({ ...commandPresets.backup.options, source: './photos/*' });
+  const checked = buildCommand({ ...commandPresets.check.options, source: './photos/*' });
+  expect(copied.ok && copied.notes.join(' ')).toContain('bcmr itself expands *');
+  expect(checked.ok && checked.command).toContain("'./photos/*'");
+  expect(checked.ok && checked.notes.join(' ')).not.toContain('bcmr itself expands *');
+  expect(checked.ok && checked.notes.join(' ')).toContain('literal path');
+});
+
+test('resume guidance distinguishes saved checkpoints from strict partial-file comparison', () => {
+  const saved = buildCommand({ ...commandPresets.resume.options, strict: false });
+  const strict = buildCommand(commandPresets.resume.options);
+  expect(saved.ok && saved.notes.join(' ')).toContain('saved checkpoints');
+  expect(saved.ok && saved.notes.join(' ')).not.toContain('Strict resume');
+  expect(strict.ok && strict.notes.join(' ')).toContain('Strict resume hashes');
+});
