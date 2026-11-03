@@ -7,6 +7,7 @@ import { BlockReveal, CliReference } from '@snaix/docs-theme';
 import type { CliCommand, CliGroup, CliSpec } from '@snaix/docs-theme';
 import { getCollection } from 'astro:content';
 import { product } from '../../lib/product.ts';
+import { bcmrCommandExamples } from '../../data/bcmr-command-examples.ts';
 
 const bcmrProduct = product('bcmr');
 
@@ -21,7 +22,7 @@ for (const e of entries) {
     desc: e.data.desc,
     tags: e.data.tags,
     flags: e.data.flags,
-    example: e.data.example,
+    example: bcmrCommandExamples[e.data.cmd],
     related: e.data.related,
   });
   buckets.set(e.data.group, arr);

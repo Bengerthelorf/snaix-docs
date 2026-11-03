@@ -1,0 +1,78 @@
+/* Claudit follows its native path: status item, Usage/Quota popover, dashboard, conversation. */
+.ud-screen-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin: 0 0 20px; }
+.ud-screen-heading h2 { font-size: 24px; line-height: 1.2; font-weight: 650; letter-spacing: -.03em; margin: 0; }
+.ud-screen-heading h2:focus { outline: none; }
+.ud-tool #usage-sessions-title:focus { outline: none; }
+.ud-screen-context { display: block; margin-bottom: 7px; color: var(--fg-muted); font-size: 12px; }
+.ud-desktop-preview { border: 1px solid var(--border-faint); background: color-mix(in srgb, var(--blue) 5%, var(--paper)); min-height: 470px; padding-bottom: 30px; }
+.ud-system-bar { display: flex; align-items: center; gap: 16px; padding: 8px 18px; background: var(--paper-pure); border-bottom: 1px solid var(--border-faint); font-size: 12px; }
+.ud-system-app { margin-right: auto; font-weight: 600; }
+.ud-system-time { font-variant-numeric: tabular-nums; color: var(--fg-muted); }
+.ud-status-item { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 7px 9px; border-radius: 4px; font-size: 12px; }
+.ud-status-item b { font-variant-numeric: tabular-nums; font-weight: 600; }
+.ud-status-item[aria-expanded="true"] { background: var(--ink); color: var(--paper-pure); }
+.ud-popover { width: min(340px, calc(100% - 32px)); margin: 16px 18px 0 auto; background: var(--paper-pure); border: 1px solid var(--border-faint); border-radius: 10px; box-shadow: 0 8px 24px rgb(0 0 0 / 10%); overflow: hidden; }
+.ud-popover-tabs { display: flex; padding: 3px; margin: 16px 18px 12px; border: 1px solid var(--border-faint); border-radius: 5px; }
+.ud-popover-tabs button { flex: 1; padding: 7px 10px; font-size: 13px; border-radius: 3px; }
+.ud-popover-tabs button[aria-pressed="true"] { background: var(--ink); color: var(--paper-pure); }
+.ud-popover-body { border-top: 1px solid var(--border-faint); padding: 18px; }
+.ud-popover-body > h3 { font-size: 12px; font-weight: 500; color: var(--fg-muted); margin: 0 0 6px; }
+.ud-today-cost { margin: 0 0 20px; font-size: 36px; line-height: 1.15; font-weight: 650; letter-spacing: -.04em; font-variant-numeric: tabular-nums; }
+.ud-popover-tokens { display: grid; gap: 10px; margin: 0; font-size: 12px; }
+.ud-popover-tokens > div { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
+.ud-popover-tokens dt { color: var(--fg-muted); }
+.ud-popover-tokens dd { font-variant-numeric: tabular-nums; margin: 0; }
+.ud-period-totals { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin: 20px 0 0; padding-top: 16px; border-top: 1px solid var(--border-faint); }
+.ud-period-totals dt { font-size: 11px; color: var(--fg-muted); }
+.ud-period-totals dd { font-size: 17px; margin: 4px 0 0; font-weight: 550; font-variant-numeric: tabular-nums; }
+.ud-popover-footer { padding: 12px 18px; border-top: 1px solid var(--border-faint); }
+.ud-popover-footer button { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; font-size: 13px; color: var(--blue); font-weight: 550; text-align: left; }
+.ud-open-popover { display: block; margin: 48px auto; max-width: calc(100% - 32px); padding: 12px; border: 1px solid var(--border-faint); background: var(--paper-pure); font-size: 13px; }
+.ud-quota-windows { display: grid; gap: 24px; margin-top: 20px; }
+.ud-quota-window + .ud-quota-window { padding-top: 20px; border-top: 1px solid var(--border-faint); }
+.ud-quota-label { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 12px; align-items: baseline; }
+.ud-quota-label h4 { font-size: 12px; font-weight: 600; margin: 0; }
+.ud-quota-label > span { font-size: 11px; color: var(--fg-muted); font-variant-numeric: tabular-nums; }
+.ud-quota-window > p { font-size: 32px; font-weight: 650; letter-spacing: -.03em; margin: 10px 0 12px; font-variant-numeric: tabular-nums; }
+.ud-quota-window > p span { font-size: 13px; font-weight: 400; letter-spacing: 0; margin-left: 4px; color: var(--fg-muted); }
+.ud-quota-track { height: 9px; background: var(--steel-1); overflow: hidden; }
+.ud-quota-track > span { display: block; height: 100%; background: var(--blue); }
+.ud-session-open { display: grid; gap: 6px; width: 100%; text-align: left; padding: 4px 0; }
+.ud-session-open > span { font-size: 12px; font-weight: 550; color: var(--blue); text-decoration: underline; text-underline-offset: 3px; }
+.ud-session-open time { font-size: 11px; color: var(--fg-muted); }
+.ud-conversation-meta { display: flex; flex-wrap: wrap; gap: 8px 20px; padding-bottom: 18px; border-bottom: 1px solid var(--border-faint); font-size: 12px; color: var(--fg-muted); }
+.ud-conversation-meta > :first-child { font-family: var(--mono); color: var(--ink); }
+.ud-transcript-title { font-size: 14px; font-weight: 550; color: var(--fg-muted); margin: 24px 0 18px; }
+.ud-message { padding: 20px; border: 1px solid var(--border-faint); background: var(--paper); }
+.ud-message + .ud-message { margin-top: 16px; }
+.ud-message h4 { margin: 0 0 12px; font-size: 13px; font-weight: 650; }
+.ud-message > p, .ud-thinking p { margin: 0; max-width: 78ch; font-size: 14px; line-height: 1.65; }
+.ud-message-user { border-left: 3px solid var(--blue); }
+.ud-message-assistant { background: var(--paper-pure); }
+.ud-thinking { margin-bottom: 14px; color: var(--fg-muted); }
+.ud-thinking > summary { font-size: 12px; cursor: pointer; padding-block: 6px; }
+.ud-thinking p { padding: 10px 0; font-size: 13px; }
+.ud-tool-call { border: 1px solid var(--border-faint); margin-bottom: 16px; }
+.ud-tool-call summary { padding: 13px 14px; cursor: pointer; font-size: 12px; }
+.ud-tool-call summary b { font-weight: 600; font-family: var(--mono); margin-inline: 5px 12px; }
+.ud-tool-call summary span { color: var(--fg-muted); }
+.ud-tool-call > div { padding: 0 14px 14px; border-top: 1px solid var(--border-faint); }
+.ud-tool-call h5 { font-size: 11px; font-weight: 550; color: var(--fg-muted); margin: 15px 0 8px; }
+.ud-tool-call pre { white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; font: 12px/1.65 var(--mono); background: var(--paper); border: 1px solid var(--border-faint); padding: 12px; margin: 0; }
+.ud-tool :is(summary, .ud-status-item, .ud-session-open):focus-visible { outline: 3px solid var(--blue); outline-offset: 4px; }
+@media (max-width: 480px) {
+  .ud-system-bar { gap: 10px; padding-inline: 10px; justify-content: flex-end; }
+  .ud-system-app { display: none; }
+  .ud-popover { width: calc(100% - 20px); margin: 10px auto 0; }
+  .ud-popover-tabs { margin-inline: 12px; }
+  .ud-popover-body, .ud-popover-footer { padding-inline: 14px; }
+  .ud-screen-heading h2 { font-size: 22px; }
+  .ud-message { padding: 15px; }
+  .ud-conversation-meta { gap: 8px 14px; }
+}
+@container workbench-panel (max-width: 424px) {
+  :root[data-display-panel] .ud-system-app { display: none; }
+  :root[data-display-panel] .ud-system-bar { justify-content: flex-end; gap: 10px; padding-inline: 10px; }
+  :root[data-display-panel] .ud-popover { width: calc(100% - 20px); margin: 10px auto 0; }
+  :root[data-display-panel] .ud-message { padding: 15px; }
+}

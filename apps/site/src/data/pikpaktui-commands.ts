@@ -168,19 +168,20 @@ export const pikpaktuiCommandGroups: CliGroup[] = [
       },
       {
         cmd: 'pikpaktui download',
-        sig: '[options] <path> | -t <local_dir> <path...>',
+        sig: '[options] <path> [output] | -t <local_dir> <path...>',
         desc: 'download files or folders recursively to local storage',
         tags: ['stable', 'core'],
         flags: [
           { f: '-o, --output <file>', t: 'path', d: '—',     x: 'custom output filename (single file only)' },
           { f: '-t <local_dir>',      t: 'path', d: '—',     x: 'batch mode — download multiple items into <local_dir>' },
-          { f: '-j, --jobs <n>',      t: 'int',  d: '1',     x: 'concurrent download threads' },
+          { f: '-j, --jobs <n>',      t: '1–16', d: '1',     x: 'concurrent files within a folder download' },
           { f: '-n, --dry-run',       t: 'bool', d: 'false', x: 'preview without downloading' },
         ],
         example: [
           'pikpaktui download "/My Pack/file.txt"',
           'pikpaktui download -o output.mp4 "/My Pack/video.mp4"',
-          'pikpaktui download -j4 -t ./videos/ /a.mp4 /b.mp4',
+          'pikpaktui download -j 4 "/My Pack/Movies"',
+          'pikpaktui download -t ./videos/ /a.mp4 /b.mp4',
           'pikpaktui download -n "/My Pack/folder"',
         ],
         related: ['pikpaktui upload', 'pikpaktui offline'],
@@ -188,7 +189,7 @@ export const pikpaktuiCommandGroups: CliGroup[] = [
       {
         cmd: 'pikpaktui upload',
         sig: '[options] <local_path> [remote_path] | -t <remote_dir> <local...>',
-        desc: 'upload local files. dedup is instant if the file already exists server-side',
+        desc: 'upload local files with server-side deduplication',
         tags: ['stable', 'core'],
         flags: [
           { f: '-t <remote_dir>', t: 'path', d: '—',     x: 'batch mode — upload multiple files into <remote_dir>' },
@@ -312,6 +313,23 @@ export const pikpaktuiCommandGroups: CliGroup[] = [
         related: ['pikpaktui trash'],
       },
       {
+        cmd: 'pikpaktui empty',
+        sig: '[options] <name...> | --all',
+        desc: 'permanently delete named trash items or empty the trash',
+        tags: ['stable'],
+        flags: [
+          { f: '--all, -r, --recursive', t: 'bool', d: 'false', x: 'delete every item in the trash' },
+          { f: '-f, --force', t: 'bool', d: 'false', x: 'skip the confirmation prompt' },
+          { f: '-n, --dry-run', t: 'bool', d: 'false', x: 'preview without deleting' },
+        ],
+        example: [
+          'pikpaktui empty -n "old movie.mkv"',
+          'pikpaktui empty -n --all',
+          'pikpaktui empty "old movie.mkv"',
+        ],
+        related: ['pikpaktui trash', 'pikpaktui untrash'],
+      },
+      {
         cmd: 'pikpaktui star',
         sig: '<path...>',
         desc: 'star (bookmark) one or more files',
@@ -364,17 +382,25 @@ export const pikpaktuiCommandGroups: CliGroup[] = [
       {
         cmd: 'pikpaktui login',
         sig: '[options]',
-        desc: 'log in to PikPak. credentials saved to ~/.config/pikpaktui/login.yaml',
+        desc: 'log in to PikPak and save credentials to login.toml',
         tags: ['stable'],
         flags: [
           { f: '-u, --user <email>',     t: 'string', d: '—', x: 'PikPak account email (env: PIKPAK_USER)' },
           { f: '-p, --password <pass>',  t: 'string', d: '—', x: 'PikPak account password (env: PIKPAK_PASS)' },
         ],
         example: [
-          'pikpaktui login',
           'pikpaktui login -u user@example.com -p mypassword',
           'PIKPAK_USER=user@example.com PIKPAK_PASS=pass pikpaktui login',
         ],
+      },
+      {
+        cmd: 'pikpaktui whoami',
+        sig: '[options]',
+        desc: 'show the signed-in account',
+        tags: ['stable'],
+        flags: [{ f: '-J, --json', t: 'bool', d: 'false', x: 'output account information as JSON' }],
+        example: ['pikpaktui whoami', 'pikpaktui whoami --json'],
+        related: ['pikpaktui login', 'pikpaktui quota'],
       },
       {
         cmd: 'pikpaktui quota',
@@ -397,6 +423,21 @@ export const pikpaktuiCommandGroups: CliGroup[] = [
   {
     group: 'system',
     items: [
+      {
+        cmd: 'pikpaktui hash',
+        sig: '[options] [--] <local-file>',
+        desc: 'compute a local file’s PikPak GCID',
+        tags: ['stable', 'offline'],
+        flags: [
+          { f: '-J, --json', t: 'bool', d: 'false', x: 'output path, algorithm and hash as JSON' },
+          { f: '--', t: 'separator', d: '—', x: 'treat following arguments as file paths' },
+        ],
+        example: [
+          'pikpaktui hash ./movie.mkv',
+          'pikpaktui hash --json ./movie.mkv',
+          'pikpaktui hash -- -local-file',
+        ],
+      },
       {
         cmd: 'pikpaktui update',
         sig: '',

@@ -33,4 +33,31 @@ describe('shared interactive components', () => {
     expect(html).toContain('aria-pressed="true"');
     expect(html).not.toContain('<main');
   });
+
+  test('renders command examples as separate prompts without inventing successful output', () => {
+    const html = renderToStaticMarkup(<CliReference spec={{ groups: [{ group: 'files', items: [{
+      cmd: 'tool copy', sig: '<source> <dest>', desc: 'copy files', tags: [],
+      example: ['tool copy --verify ./source ./backup', 'tool copy --dry-run ./source ./backup'],
+    }] }] }} />);
+    expect(html.match(/class="cmd-line cmd-prompt"/g)).toHaveLength(2);
+    expect(html).not.toContain('cmd-line cmd-ok');
+    expect(html).toContain('Command examples');
+  });
+
+  test('missing examples offer real help instead of executing a placeholder signature', () => {
+    const html = renderToStaticMarkup(<CliReference spec={{ groups: [{ group: 'files', items: [{
+      cmd: 'tool copy', sig: '<source> <dest>', desc: 'copy files', tags: [],
+    }] }] }} />);
+    expect(html).toContain('tool copy --help');
+    expect(html).not.toContain('cmd-line cmd-ok');
+  });
+
+  test('legacy sample output is explicitly labelled and never assigned a success state', () => {
+    const html = renderToStaticMarkup(<CliReference spec={{ groups: [{ group: 'files', items: [{
+      cmd: 'tool copy', sig: '<source> <dest>', desc: 'copy files', tags: [],
+    }] }], examples: { 'tool copy': ['sample transfer output'] } }} />);
+    expect(html).toContain('Example output');
+    expect(html).toContain('sample transfer output');
+    expect(html).not.toContain('cmd-line cmd-ok');
+  });
 });

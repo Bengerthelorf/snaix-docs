@@ -83,7 +83,7 @@ export const productPresentations: ProductPresentation[] = [
     variant: 'icon',
     eyebrow: '03 / macos icons',
     tag: 'macOS · icons · auto-restore',
-    descriptionOverride: 'Change app and folder icons, then reapply saved icons after app updates.',
+    descriptionOverride: 'Choose icons from macOSicons.com, apply them to apps or folders, and restore them after app updates.',
     href: '/iconchanger/',
   },
   {

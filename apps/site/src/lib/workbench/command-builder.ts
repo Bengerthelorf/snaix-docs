@@ -42,7 +42,9 @@ export function buildCommand(options: CommandOptions): CommandResult {
   const errors: Partial<Record<'source' | 'destination' | 'operation', string>> = {};
   for (const key of ['source', 'destination'] as const) {
     if (!options[key].trim()) errors[key] = `Enter a ${key} path.`;
-    else if (/[\u0000-\u001f\u007f-\u009f\u2028\u2029]/.test(options[key])) {
+    else if (options.operation === 'copy' && options[key] === '-') {
+      errors[key] = 'bcmr copy does not accept - for streams. Use ./- for a file named -.';
+    } else if (/[\u0000-\u001f\u007f-\u009f\u2028\u2029]/.test(options[key])) {
       errors[key] = 'Use a single line without control characters.';
     } else if (options[key].startsWith('~') && options[key] !== '~' && !options[key].startsWith('~/')) {
       errors[key] = 'Use ~/ for your home directory or enter an absolute path.';
@@ -64,7 +66,10 @@ export function buildCommand(options: CommandOptions): CommandResult {
     if (options.strict) flags.push('--strict');
     if (options.dryRun) flags.push('--dry-run');
     if (options.verify) notes.push('BLAKE3 readback verification checks copied content at the destination.');
-    if (options.resume || options.strict) notes.push('Keep the original source and destination. Strict resume checks the existing partial content before continuing.');
+    if (options.strict) notes.push('Strict resume hashes the existing partial file against the source prefix before reusing it.');
+    else if (options.resume) notes.push(isRemotePath(options.source) || isRemotePath(options.destination)
+      ? 'Remote resume hashes the existing destination against the source prefix before reusing it.'
+      : 'Local resume validates saved checkpoints. Strict mode can check a partial file without saved state.');
     if (options.dryRun) notes.push('Dry-run previews the copy layout without writing files.');
   } else {
     if (options.noHash) flags.push('--no-hash');
@@ -73,7 +78,9 @@ export function buildCommand(options: CommandOptions): CommandResult {
       : 'Recursive check trusts files with matching size and modification time; it hashes size-matched files when their times differ. Individual file-to-file comparisons hash content.');
     notes.push('For directories, use the same destination parent as the copy. An existing backup/ directory is a parent, so photos/ is compared with backup/photos/.');
   }
-  if (options.source.includes('*')) notes.push('bcmr itself expands * in source paths, even when quoted. An exact existing path stays literal.');
+  if (options.source.includes('*')) notes.push(options.operation === 'copy'
+    ? 'bcmr itself expands * in source paths, even when quoted. An exact existing path stays literal.'
+    : 'Check treats the source as a literal path; * is not expanded.');
   if (isRemotePath(options.source) || isRemotePath(options.destination)) {
     notes.push('SSH uses your existing keys and ~/.ssh/config. Install a matching bcmr on the remote host for the serve protocol.');
   }

@@ -7,8 +7,10 @@ import ClDashMock from '@snaix/docs-theme/components/ClDashMock.astro';
 import { BlockReveal, Scramble, Typewriter } from '@snaix/docs-theme';
 import '@snaix/docs-theme/styles/claudit.css';
 import { product } from '../../lib/product.ts';
+import { getDemoDashboardPreview } from '../../lib/workbench/usage-demo-flow';
 
 const claudit = product('claudit');
+const dashboardPreview = getDemoDashboardPreview();
 
 const nav = [
   { id: 'home',      label: 'overview',  href: claudit.href('/') },
@@ -37,7 +39,7 @@ const nav = [
       </Fragment>
     </TopBar>
 
-    <WorkbenchEntry href="/workbench/usage/" label="Explore the usage demo" description="Filter example sessions by date, model and project." />
+    <WorkbenchEntry href="/workbench/usage/" label="Open the Claudit demo" description="Check Usage and Quota, then open a session conversation." />
 
     <section class="cl-hero">
       <div class="cl-hero-top rule-b">
@@ -60,10 +62,9 @@ const nav = [
             <span class="hl-line"><BlockReveal client:visible delay={1100} color="var(--yellow)">quota.</BlockReveal></span>
           </h1>
           <p class="cl-lede">
-            Track Claude Code and OpenClaw sessions from local logs.
-            See tokens and estimated cost by project and model, read
-            conversations, and collect remote usage over SSH. Account
-            quota and reset timers sit in the macOS menu bar.
+            Check today’s estimated cost and tokens from the macOS menu bar.
+            Switch to Quota for 5-hour and 7-day usage and reset timers.
+            Open the Dashboard to inspect project costs and session conversations.
           </p>
           <div class="cl-cta">
             <a class="btn-block" href="#install">↳ install {claudit.version}</a>
@@ -75,7 +76,7 @@ const nav = [
         </div>
 
         <aside class="cl-hero-right">
-          <ClDashMock />
+          <ClDashMock snapshot={dashboardPreview} />
         </aside>
       </div>
 
@@ -111,8 +112,8 @@ const nav = [
         </div>
         <div class="rhs">
           <p class="t-body">
-            Compare project costs and model token counts, inspect activity
-            heatmaps, or open a session transcript.
+            Open the Dashboard from the menu bar. Compare projects and
+            models, then select a session to read its conversation and tool calls.
           </p>
         </div>
       </div>
